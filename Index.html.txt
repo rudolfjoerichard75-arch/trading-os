@@ -1,0 +1,53 @@
+function evolutionEngine(data){
+
+    let wins = data.filter(t=>t.pnl > 0).length;
+    let total = data.length;
+
+    let winrate = total ? wins/total*100 : 0;
+
+    let mean = data.reduce((a,b)=>a+b.pnl,0)/(total||1);
+
+    let variance = data.reduce((a,b)=>
+        a + Math.pow(b.pnl - mean,2),0
+    )/(total||1);
+
+    let latest = data[0]?.pnl || 0;
+
+    // probability edge (simple intersection proxy)
+    let trendAlignedTrades = data.filter(t => t.pnl > mean).length;
+    let edgeScore = total ? trendAlignedTrades/total*100 : 0;
+
+    let streak = 0;
+    for(let i=0;i<data.length;i++){
+        if(data[i].pnl <= 0) streak++;
+        else break;
+    }
+
+    let mode = "LEARNING";
+    let msg = "";
+
+    if(winrate > 70 && variance < 30 && edgeScore > 60){
+        mode = "EVOLUTION PRO";
+        msg = "🔥 Kau dah level funded trader. Maintain discipline & scale up.";
+    }
+    else if(edgeScore > 50){
+        mode = "IMPROVING";
+        msg = "📊 Kau mula nampak edge. Jangan sabotage dengan overtrade.";
+    }
+    else if(streak >= 3){
+        mode = "RECOVERY";
+        msg = "💀 STOP TRADING. Kau dalam emotional loop.";
+    }
+    else {
+        mode = "DEVELOPMENT";
+        msg = "🧠 Fokus survive dulu. Bukan profit besar.";
+    }
+
+    return {
+        winrate: winrate.toFixed(1),
+        variance: variance.toFixed(2),
+        edgeScore: edgeScore.toFixed(1),
+        mode,
+        msg
+    };
+}
