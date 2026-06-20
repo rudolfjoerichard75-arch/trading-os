@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bosque Forex AI - XAUUSD OHLC Engine</title>
+
+<style>
+body{
+    margin:0;
+    padding:16px;
+    font-family:system-ui,sans-serif;
+    background:#050816;
+    color:#e5e7eb;
+}
+
+.card{
+    background:#111833;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+}
+.dashboard{
+    display:grid;
+    gap:16px;
+    grid-template-columns:1fr;
+}
+
+.chart-panel,
+.signal-panel{
+    min-width:0;
+}
+
+.chart-container{
+    height:500px;
+    overflow:hidden;
+    border-radius:14px;
+}
+
+@media (min-width: 992px){
+
+    .dashboard{
+        grid-template-columns:1.4fr 0.9fr;
+        align-items:start;
+    }
+
+    .chart-container{
+        height:calc(100vh - 120px);
+    }
+
+    .signal-panel{
+        max-height:calc(100vh - 120px);
+        overflow-y:auto;
+    }
+}
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+    color:white;
+    background:linear-gradient(135deg,#2563eb,#22c55e);
+}
+
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+table{
+    width:100%;
+    min-width:700px;
+    border-collapse:collapse;
+    font-size:12px;
+}
+
+th,td{
+    padding:8px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    text-align:center;
+    white-space:nowrap;
+}
+
+.buy{color:#22c55e;font-weight:700;}
+.sell{color:#ef4444;font-weight:700;}
+.wait{color:#fbbf24;font-weight:700;}
+
+.badge{
+    display:inline-block;
+    padding:6px 10px;
+    background:#1f2937;
+    border-radius:999px;
+    font-size:11px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>👑 Bosque Forex AI</h2>
+    <p>XAUUSD Real OHLC Engine</p>
+</div>
+
+<div class="dashboard">
+
+    <div class="chart-panel">
+
+        <div class="card">
+
+            <div class="chart-container">
+                <div id="tradingview_xau" style="height:100%;width:100%;"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="signal-panel">
+
+        <div class="card">
+            <button onclick="runAnalysis()">LOAD REAL DATA</button>
+            <p id="status">Ready</p>
+        </div>
+
+        <div class="card">
+            <div id="analysis"></div>
+        </div>
+
+        <div class="card">
+            <div id="dataset"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const API_KEY = "85fa7af1dcda45ff971f8e837b3a86bf";
+
+async function getOHLC(){
+
+    const url = `https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=5min&outputsize=20&apikey=${API_KEY}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    console.log(data);
+
+    if(data.status === "error"){
+        throw new Error(data.message);
+    }
+
+    if(!data.values){
+        throw new Error("No OHLC data received");
+    }
+
+    return data.values.map(candle => ({
+        time: candle.datetime,
+        open: Number(candle.open),
+        high: Number(candle.high),
+        low: Number(candle.low),
+        close: Number(candle.close)
+    }));
+}
+
+function analyze(candles){
+
+    // Susun semula: paling lama → paling baru
+    const data = [...candles].reverse();
+
+    const swingHighs = [];
+    const swingLows = [];
+
+    // Detect swing points
+    for(let i = 2; i < data.length - 2; i++){
+
+        const current = data[i];
+
+        const isSwingHigh =
+            current.high > data[i-1].high &&
+            current.high > data[i-2].high &&
+            current.high > data[i+1].high &&
+            current.high > data[i+2].high;
+
+        const isSwingLow =
+            current.low < data[i-1].low &&
+            current.low < data[i-2].low &&
+            current.low < data[i+1].low &&
+            current.low < data[i+2].low;
+
+        if(isSwingHigh){
+            swingHighs.push({
+                price: current.high,
+                time: current.time
+            });
+        }
+
+        if(isSwingLow){
+            swingLows.push({
+                price: current.low,
+                time: current.time
+            });
+        }
+    }
+
+    const latest = data[data.length - 1];
+
+    const lastSwingHigh =
+        swingHighs.length > 0
+        ? swingHighs[swingHighs.length - 1]
+        : null;
+
+    const lastSwingLow =
+        swingLows.length > 0
+        ? swingLows[swingLows.length - 1]
+        : null;
+
+    let structure = "RANGE";
+    let signal = "WAIT";
+
+    if(lastSwingHigh && latest.close > lastSwingHigh.price){
+
+        structure = "BULLISH BOS";
+        signal = "BUY";
+
+    } else if(lastSwingLow && latest.close < lastSwingLow.price){
+
+        structure = "BEARISH BOS";
+        signal = "SELL";
+    }
+
+    let tp = "-";
+    let sl = "-";
+
+    if(signal === "BUY" && lastSwingLow){
+
+        sl = lastSwingLow.price.toFixed(2);
+
+        const risk = latest.close - lastSwingLow.price;
+
+        tp = (latest.close + (risk * 2)).toFixed(2);
+    }
+
+    if(signal === "SELL" && lastSwingHigh){
+
+        sl = lastSwingHigh.price.toFixed(2);
+
+        const risk = lastSwingHigh.price - latest.close;
+
+        tp = (latest.close - (risk * 2)).toFixed(2);
+    }
+
+    return {
+
+        latestPrice: latest.close,
+
+        structure,
+
+        signal,
+
+        lastSwingHigh,
+
+        lastSwingLow,
+
+        tp,
+
+        sl
+    };
+}
+
+function renderTable(candles){
+
+    let html = `
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+        </tr>
+    `;
+
+    candles.forEach(c => {
+        html += `
+        <tr>
+            <td>${c.time}</td>
+            <td>${c.open.toFixed(2)}</td>
+<td>${c.high.toFixed(2)}</td>
+<td>${c.low.toFixed(2)}</td>
+<td>${c.close.toFixed(2)}</td>
+        </tr>
+        `;
+    });
+
+    html += `</table>`;
+
+    document.getElementById("dataset").innerHTML = `
+    <div class="table-wrapper">
+        ${html}
+    </div>
+`;
+}
+
+async function runAnalysis(){
+
+    const status = document.getElementById("status");
+
+    try{
+
+        status.innerText = "Loading OHLC data...";
+
+        const candles = await getOHLC();
+
+        renderTable(candles);
+
+        const result = analyze(candles);
+
+        const color =
+            result.signal === "BUY"
+            ? "buy"
+            : result.signal === "SELL"
+            ? "sell"
+            : "wait";
+
+        document.getElementById("analysis").innerHTML = `
+
+📊 Latest Price: <b>${result.latestPrice}</b><br><br>
+
+🧠 Structure: <b>${result.structure}</b><br><br>
+
+📈 Last Swing High:
+<b>${result.lastSwingHigh ? result.lastSwingHigh.price : "-"}</b><br>
+
+📉 Last Swing Low:
+<b>${result.lastSwingLow ? result.lastSwingLow.price : "-"}</b><br><br>
+
+🎯 TP: ${result.tp}<br>
+🛑 SL: ${result.sl}<br><br>
+
+🚨 Signal:
+<span class="${
+    result.signal === "BUY"
+    ? "buy"
+    : result.signal === "SELL"
+    ? "sell"
+    : "wait"
+}">
+${result.signal}
+</span><br><br>
+
+<span class="badge">REAL SWING ENGINE ACTIVE</span>
+
+`;
+
+        status.innerText = "Live data loaded";
+
+    } catch(error){
+
+        console.error(error);
+
+        status.innerText = `Error: ${error.message}`;
+    }
+}
+
+</script>
+  
+<script src="https://s3.tradingview.com/tv.js"></script>
+
+<script>
+
+new TradingView.widget({
+
+    "container_id": "tradingview_xau",
+
+    "autosize": true,
+
+    "symbol": "OANDA:XAUUSD",
+
+    "interval": "5",
+
+    "timezone": "Asia/Kuala_Lumpur",
+
+    "theme": "dark",
+
+    "style": "1",
+
+    "locale": "en",
+
+    "toolbar_bg": "#111833",
+
+    "enable_publishing": false,
+
+    "hide_top_toolbar": false,
+
+    "allow_symbol_change": false,
+
+    "save_image": false,
+
+    "studies": [
+        "Volume@tv-basicstudies"
+    ]
+
+});
+
+</script>
+  
+</body>
+</html>
