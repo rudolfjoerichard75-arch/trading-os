@@ -141,32 +141,43 @@ th,td{
 
 <script>
 
-const API_KEY = "aa44f75cff364b45905c13c45d2108bc";
+const API_KEY = "34667Y5VHH0MTE9W;
 
 async function getOHLC(){
 
-    const url = `https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=5min&outputsize=20&apikey=${API_KEY}`;
+    const url = `https://www.alphavantage.co/query?function=FX_INTRADAY&from_symbol=XAU&to_symbol=USD&interval=5min&outputsize=compact&apikey=${API_KEY}`;
 
     const response = await fetch(url);
     const data = await response.json();
 
     console.log(data);
 
-    if(data.status === "error"){
-        throw new Error(data.message);
+    if(data["Error Message"]){
+        throw new Error(data["Error Message"]);
     }
 
-    if(!data.values){
+    if(data["Note"]){
+        throw new Error("API limit reached. Please wait a minute.");
+    }
+
+    const timeSeries = data["Time Series FX (5min)"];
+
+    if(!timeSeries){
         throw new Error("No OHLC data received");
     }
 
-    return data.values.map(candle => ({
-        time: candle.datetime,
-        open: Number(candle.open),
-        high: Number(candle.high),
-        low: Number(candle.low),
-        close: Number(candle.close)
-    }));
+    const candles = Object.entries(timeSeries)
+        .map(([time, candle]) => ({
+            time: time,
+            open: Number(candle["1. open"]),
+            high: Number(candle["2. high"]),
+            low: Number(candle["3. low"]),
+            close: Number(candle["4. close"])
+        }))
+        .sort((a, b) => new Date(b.time) - new Date(a.time))
+        .slice(0, 20);
+
+    return candles;
 }
 
 function analyze(candles){
