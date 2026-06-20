@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading OS Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle at top, #0b1220, #050816);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 92%;
+    max-width: 520px;
+    padding: 22px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.header h1 {
+    font-size: 22px;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.header p {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+/* GLASS CARD */
+.card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(16px);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transition: 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(59,130,246,0.4);
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.25);
+    color: white;
+    outline: none;
+}
+
+input:focus {
+    border-color: #3b82f6;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 18px rgba(59,130,246,0.4);
+}
+
+/* RESULT */
+.result {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* BADGE */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+}
+
+/* STATS */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    opacity: 0.85;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+    <h1>📊 Trading OS Pro</h1>
+    <p>Elite Risk & Performance Engine</p>
+</div>
+
+<div class="card">
+    <input id="bal" type="number" placeholder="Account Balance ($)">
+    <input id="risk" type="number" placeholder="Risk %">
+    <input id="sl" type="number" placeholder="Stop Loss (points)">
+    <input id="rr" type="number" placeholder="Risk:Reward (e.g. 2)">
+
+    <button onclick="calc()">Generate Trade Setup</button>
+
+    <div id="out" class="result"></div>
+</div>
+
+<div class="card">
+    <div class="stats">
+        <span>Trades: <b id="tcount">0</b></span>
+        <span>Winrate: <b id="wr">0%</b></span>
+    </div>
+
+    <div id="history"></div>
+</div>
+
+</div>
+
+<script>
+
+let data = JSON.parse(localStorage.getItem("trades") || "[]");
+
+function calc(){
+
+    let bal = +document.getElementById("bal").value;
+    let risk = +document.getElementById("risk").value;
+    let sl = +document.getElementById("sl").value;
+    let rr = +document.getElementById("rr").value;
+
+    let riskAmt = bal * risk / 100;
+    let lot = sl ? riskAmt / sl : 0;
+    let tp = riskAmt * rr;
+
+    let trade = {riskAmt, lot, tp, rr, pnl:0, time:new Date().toLocaleString()};
+
+    data.unshift(trade);
+    localStorage.setItem("trades", JSON.stringify(data));
+
+    render(trade);
+}
+
+function render(last){
+
+    let win = data.filter(t => t.pnl > 0).length;
+    let wr = data.length ? (win/data.length*100).toFixed(1) : 0;
+
+    document.getElementById("tcount").innerText = data.length;
+    document.getElementById("wr").innerText = wr + "%";
+
+    let html = "";
+
+    data.slice(0,5).forEach(t => {
+        html += `
+        <div class="result">
+            💰 Risk: $${t.riskAmt.toFixed(2)}<br>
+            📦 Lot: ${t.lot.toFixed(2)}<br>
+            🎯 TP: $${t.tp.toFixed(2)}<br>
+            <span class="badge">RR 1:${t.rr}</span>
+        </div>`;
+    });
+
+    document.getElementById("history").innerHTML = html;
+
+    if(last){
+        document.getElementById("out").innerHTML = `
+        💡 Trade Generated<br>
+        💰 Risk: $${last.riskAmt.toFixed(2)}<br>
+        📦 Lot: ${last.lot.toFixed(2)}<br>
+        🎯 TP: $${last.tp.toFixed(2)}
+        `;
+    }
+}
+
+render();
+
+</script>
+
+</body>
+</html>
