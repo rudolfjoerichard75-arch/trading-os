@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bosque Forex AI - XAUUSD OHLC Engine</title>
+
+<style>
+body{
+    margin:0;
+    padding:16px;
+    font-family:system-ui,sans-serif;
+    background:#050816;
+    color:#e5e7eb;
+}
+
+.card{
+    background:#111833;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+    color:white;
+    background:linear-gradient(135deg,#2563eb,#22c55e);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+}
+
+th,td{
+    padding:8px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    text-align:center;
+}
+
+.buy{color:#22c55e;font-weight:700;}
+.sell{color:#ef4444;font-weight:700;}
+.wait{color:#fbbf24;font-weight:700;}
+
+.badge{
+    display:inline-block;
+    padding:6px 10px;
+    background:#1f2937;
+    border-radius:999px;
+    font-size:11px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>👑 Bosque Forex AI</h2>
+    <p>XAUUSD Real OHLC Engine</p>
+</div>
+
+<div class="card">
+    <button onclick="runAnalysis()">LOAD REAL DATA</button>
+    <p id="status">Ready</p>
+</div>
+
+<div class="card">
+    <div id="analysis"></div>
+</div>
+
+<div class="card">
+    <div id="dataset"></div>
+</div>
+
+<script>
+
+const API_KEY = "1b263dd65c9345f1a9c4631df8adcf39";
+
+async function getOHLC(){
+
+    const url = `https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=5min&outputsize=20&apikey=${API_KEY}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    console.log(data);
+
+    if(data.status === "error"){
+        throw new Error(data.message);
+    }
+
+    if(!data.values){
+        throw new Error("No OHLC data received");
+    }
+
+    return data.values.map(candle => ({
+        time: candle.datetime,
+        open: Number(candle.open),
+        high: Number(candle.high),
+        low: Number(candle.low),
+        close: Number(candle.close)
+    }));
+}
+
+function analyze(candles){
+
+    const highs = candles.map(c => c.high);
+    const lows = candles.map(c => c.low);
+
+    const swingHigh = Math.max(...highs);
+    const swingLow = Math.min(...lows);
+
+    const latest = candles[0];
+
+    let signal = "WAIT";
+    let bias = "RANGE";
+
+    if(latest.close >= swingHigh * 0.999){
+        signal = "BUY";
+        bias = "BULLISH";
+    } else if(latest.close <= swingLow * 1.001){
+        signal = "SELL";
+        bias = "BEARISH";
+    }
+
+    const tp = signal === "BUY"
+        ? (latest.close + (swingHigh - swingLow) * 0.6).toFixed(2)
+        : signal === "SELL"
+        ? (latest.close - (swingHigh - swingLow) * 0.6).toFixed(2)
+        : "-";
+
+    const sl = signal === "BUY"
+        ? swingLow.toFixed(2)
+        : signal === "SELL"
+        ? swingHigh.toFixed(2)
+        : "-";
+
+    return {
+        latestPrice: latest.close,
+        swingHigh,
+        swingLow,
+        signal,
+        bias,
+        tp,
+        sl
+    };
+}
+
+function renderTable(candles){
+
+    let html = `
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+        </tr>
+    `;
+
+    candles.forEach(c => {
+        html += `
+        <tr>
+            <td>${c.time}</td>
+            <td>${c.open}</td>
+            <td>${c.high}</td>
+            <td>${c.low}</td>
+            <td>${c.close}</td>
+        </tr>
+        `;
+    });
+
+    html += `</table>`;
+
+    document.getElementById("dataset").innerHTML = html;
+}
+
+async function runAnalysis(){
+
+    const status = document.getElementById("status");
+
+    try{
+
+        status.innerText = "Loading OHLC data...";
+
+        const candles = await getOHLC();
+
+        renderTable(candles);
+
+        const result = analyze(candles);
+
+        const color =
+            result.signal === "BUY"
+            ? "buy"
+            : result.signal === "SELL"
+            ? "sell"
+            : "wait";
+
+        document.getElementById("analysis").innerHTML = `
+            📊 Latest Price: <b>${result.latestPrice}</b><br><br>
+
+            📈 Bias: <b>${result.bias}</b><br>
+            📉 Swing High: <b>${result.swingHigh}</b><br>
+            📉 Swing Low: <b>${result.swingLow}</b><br><br>
+
+            🎯 TP: ${result.tp}<br>
+            🛑 SL: ${result.sl}<br><br>
+
+            🚨 Signal:
+            <span class="${color}">${result.signal}</span><br><br>
+
+            <span class="badge">REAL OHLC DATA ACTIVE</span>
+        `;
+
+        status.innerText = "Live data loaded";
+
+    } catch(error){
+
+        console.error(error);
+
+        status.innerText = `Error: ${error.message}`;
+    }
+}
+
+</script>
+
+</body>
+</html>
