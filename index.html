@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real OHLC Engine - XAUUSD</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:system-ui;
+    background:#050816;
+    color:#e5e7eb;
+    padding:14px;
+}
+
+.card{
+    background:rgba(17,24,51,0.7);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:12px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-weight:800;
+    background:linear-gradient(135deg,#3b82f6,#22c55e);
+    color:white;
+}
+
+table{
+    width:100%;
+    font-size:12px;
+    border-collapse:collapse;
+}
+
+td,th{
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    padding:6px;
+    text-align:center;
+}
+
+.buy{color:#22c55e;font-weight:800;}
+.sell{color:#ef4444;font-weight:800;}
+.wait{color:#fbbf24;font-weight:800;}
+
+.badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    background:#1f2937;
+    font-size:11px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+<h2>📊 REAL OHLC ENGINE</h2>
+<div style="opacity:0.7;font-size:12px;">XAUUSD - NO RANDOM DATA MODE</div>
+</div>
+
+<div class="card">
+<button onclick="run()">LOAD REAL OHLC DATA</button>
+<div id="status" style="margin-top:10px;">Ready</div>
+</div>
+
+<div class="card">
+<div id="dataset"></div>
+</div>
+
+<div class="card">
+<div id="analysis"></div>
+</div>
+
+<script>
+
+// 📊 FETCH REAL OHLC DATA
+async function getOHLC(){
+
+    // TwelveData OHLC endpoint
+    let url = "https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=1min&outputsize=10&apikey=demo";
+
+    let res = await fetch(url);
+    let data = await res.json();
+
+    if(!data.values){
+        throw new Error("No OHLC data");
+    }
+
+    // convert to clean dataset
+    return data.values.map(c => ({
+        open: parseFloat(c.open),
+        high: parseFloat(c.high),
+        low: parseFloat(c.low),
+        close: parseFloat(c.close),
+        time: c.datetime
+    }));
+}
+
+// 🧠 REAL STRUCTURE ANALYSIS (NO RANDOM)
+function analyze(candles){
+
+    let highs = candles.map(c => c.high);
+    let lows  = candles.map(c => c.low);
+
+    let swingHigh = Math.max(...highs);
+    let swingLow = Math.min(...lows);
+
+    let last = candles[0]; // latest candle
+
+    let bias = "RANGE";
+
+    if(last.close > swingHigh * 0.999) bias = "BULLISH BREAKOUT";
+    else if(last.close < swingLow * 1.001) bias = "BEARISH BREAKDOWN";
+
+    let mid = (swingHigh + swingLow) / 2;
+
+    let zone = last.close > mid ? "PREMIUM" : "DISCOUNT";
+
+    let signal = "NO TRADE";
+
+    if(bias === "BULLISH BREAKOUT") signal = "BUY";
+    if(bias === "BEARISH BREAKDOWN") signal = "SELL";
+
+    let tp = signal === "BUY" ? (last.close + (swingHigh - swingLow)*0.6).toFixed(2)
+            : signal === "SELL" ? (last.close - (swingHigh - swingLow)*0.6).toFixed(2)
+            : "-";
+
+    let sl = signal === "BUY" ? swingLow.toFixed(2)
+            : signal === "SELL" ? swingHigh.toFixed(2)
+            : "-";
+
+    return {
+        swingHigh,
+        swingLow,
+        bias,
+        zone,
+        signal,
+        tp,
+        sl
+    };
+}
+
+// 📊 RENDER TABLE
+function renderTable(candles){
+
+    let html = `
+    <table>
+    <tr>
+        <th>Time</th>
+        <th>O</th>
+        <th>H</th>
+        <th>L</th>
+        <th>C</th>
+    </tr>
+    `;
+
+    candles.forEach(c => {
+        html += `
+        <tr>
+            <td>${c.time}</td>
+            <td>${c.open}</td>
+            <td>${c.high}</td>
+            <td>${c.low}</td>
+            <td>${c.close}</td>
+        </tr>
+        `;
+    });
+
+    html += `</table>`;
+
+    document.getElementById("dataset").innerHTML = html;
+}
+
+// 🚀 MAIN
+async function run(){
+
+    document.getElementById("status").innerText = "Loading real OHLC...";
+
+    try{
+
+        let candles = await getOHLC();
+
+        renderTable(candles);
+
+        let a = analyze(candles);
+
+        document.getElementById("analysis").innerHTML = `
+
+        📊 Swing High: <b>${a.swingHigh}</b><br>
+        📉 Swing Low: <b>${a.swingLow}</b><br><br>
+
+        🧠 Bias: <b>${a.bias}</b><br>
+        ⚖️ Zone: <b>${a.zone}</b><br><br>
+
+        🚨 Signal: <b>${a.signal}</b><br>
+        🎯 TP: ${a.tp}<br>
+        🛑 SL: ${a.sl}<br><br>
+
+        <span class="badge">REAL OHLC ENGINE ACTIVE</span>
+
+        `;
+
+        document.getElementById("status").innerText = "Live OHLC Loaded";
+
+    }catch(e){
+
+        document.getElementById("status").innerText =
+        "Error loading OHLC (API limit or network issue)";
+    }
+}
+
+</script>
+
+</body>
+</html>
