@@ -153,11 +153,6 @@ async function getOHLC(){
         close: Number(candle.close)
     }));
 }
-        .sort((a, b) => new Date(b.time) - new Date(a.time))
-        .slice(0, 20);
-
-    return candles;
-}
 
 function analyze(candles){
 
@@ -363,7 +358,6 @@ ${result.signal}
         button.innerText = "LOAD REAL DATA";
     }
 }
-}
 
 </script>
   
@@ -382,8 +376,6 @@ ${result.signal}
   }
   </script>
 </div>
-
-</script>
   
 </body>
 </html>
