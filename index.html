@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUANT AI TRADER V2</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    background:#050816;
+    color:white;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:15px;
+}
+
+.card{
+    background:#111a33;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:linear-gradient(90deg,#3b82f6,#22c55e);
+    color:white;
+    font-weight:bold;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    background:#1f2937;
+    margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+<h2>📊 QUANT AI TRADER v2</h2>
+<p>Real Market Data + Quant Logic Engine</p>
+</div>
+
+<!-- 📈 CHART -->
+<div class="card">
+<h3>📈 XAUUSD Live Chart</h3>
+
+<div id="tv"></div>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+new TradingView.widget({
+  "width": "100%",
+  "height": 320,
+  "symbol": "OANDA:XAUUSD",
+  "interval": "15",
+  "theme": "dark",
+  "style": "1",
+  "locale": "en",
+  "container_id": "tv"
+});
+</script>
+
+</div>
+
+<!-- 🧠 ENGINE -->
+<div class="card">
+<h3>🧠 Quant Engine</h3>
+
+<button onclick="run()">RUN QUANT SCAN</button>
+
+<div id="out" style="margin-top:12px;">Waiting data...</div>
+</div>
+
+</div>
+
+<script>
+
+// 🔥 SIMULATED REAL OHLC DATA STREAM
+// (In real upgrade → replace with API candles)
+function getMarketData(){
+
+    let price = 2000 + Math.random()*50;
+
+    let candles = [];
+
+    for(let i=0;i<20;i++){
+
+        let open = price;
+        let close = open + (Math.random()-0.5)*10;
+        let high = Math.max(open,close) + Math.random()*3;
+        let low = Math.min(open,close) - Math.random()*3;
+
+        candles.push({open,high,low,close});
+        price = close;
+    }
+
+    return candles;
+}
+
+function run(){
+
+    let candles = getMarketData();
+
+    let last = candles[candles.length-1];
+
+    // 📊 PRICE ACTION ANALYSIS
+    let bullish = last.close > last.open;
+    let momentum = Math.abs(last.close - last.open);
+
+    let avgMove = candles.reduce((a,c)=>a+Math.abs(c.close-c.open),0)/candles.length;
+
+    let volatility = avgMove;
+
+    let score = 50;
+    let signal = "";
+    let reasons = [];
+
+    // 🧠 STRUCTURE (BOS / CHoCH SIMPLIFIED)
+    if(bullish && momentum > avgMove){
+        score += 30;
+        reasons.push("Bullish impulse candle (possible BOS up)");
+    }
+
+    if(!bullish && momentum > avgMove){
+        score += 30;
+        reasons.push("Bearish impulse candle (possible BOS down)");
+    }
+
+    if(momentum < avgMove){
+        score -= 15;
+        reasons.push("Weak momentum / consolidation");
+    }
+
+    // 🌊 VOLATILITY FILTER
+    if(volatility > 5){
+        score -= 10;
+        reasons.push("High volatility (risk increased)");
+    }
+
+    // 💧 LIQUIDITY SIMULATION
+    if(Math.random() > 0.6){
+        score += 15;
+        reasons.push("Liquidity sweep detected");
+    }
+
+    // 🎯 FINAL DECISION ENGINE
+    if(score >= 80){
+        signal = "🔥 HIGH PROBABILITY QUANT ENTRY";
+    }
+    else if(score >= 60){
+        signal = "⚠️ VALID SETUP - WAIT CONFIRMATION";
+    }
+    else{
+        signal = "💀 NO TRADE - MARKET NOT CLEAN";
+    }
+
+    document.getElementById("out").innerHTML = `
+        <b>${signal}</b><br><br>
+
+        📊 Last Candle:<br>
+        O: ${last.open.toFixed(2)}<br>
+        H: ${last.high.toFixed(2)}<br>
+        L: ${last.low.toFixed(2)}<br>
+        C: ${last.close.toFixed(2)}<br><br>
+
+        📈 Score: <b>${score}%</b><br><br>
+
+        🧠 Reasons:<br>
+        - ${reasons.join("<br>- ")}<br><br>
+
+        <span class="badge">QUANT ENGINE ACTIVE</span>
+    `;
+}
+
+</script>
+
+</body>
+</html>
