@@ -111,48 +111,108 @@ async function getOHLC(){
 
 function analyze(candles){
 
-    const highs = candles.map(c => c.high);
-    const lows = candles.map(c => c.low);
+    // Susun semula: paling lama → paling baru
+    const data = [...candles].reverse();
 
-    const swingHigh = Math.max(...highs);
-    const swingLow = Math.min(...lows);
+    const swingHighs = [];
+    const swingLows = [];
 
-    const latest = candles[0];
+    // Detect swing points
+    for(let i = 2; i < data.length - 2; i++){
 
-    let signal = "WAIT";
-    let bias = "RANGE";
+        const current = data[i];
 
-    if(latest.close >= swingHigh * 0.999){
-        signal = "BUY";
-        bias = "BULLISH";
-    } else if(latest.close <= swingLow * 1.001){
-        signal = "SELL";
-        bias = "BEARISH";
+        const isSwingHigh =
+            current.high > data[i-1].high &&
+            current.high > data[i-2].high &&
+            current.high > data[i+1].high &&
+            current.high > data[i+2].high;
+
+        const isSwingLow =
+            current.low < data[i-1].low &&
+            current.low < data[i-2].low &&
+            current.low < data[i+1].low &&
+            current.low < data[i+2].low;
+
+        if(isSwingHigh){
+            swingHighs.push({
+                price: current.high,
+                time: current.time
+            });
+        }
+
+        if(isSwingLow){
+            swingLows.push({
+                price: current.low,
+                time: current.time
+            });
+        }
     }
 
-    const tp = signal === "BUY"
-        ? (latest.close + (swingHigh - swingLow) * 0.6).toFixed(2)
-        : signal === "SELL"
-        ? (latest.close - (swingHigh - swingLow) * 0.6).toFixed(2)
-        : "-";
+    const latest = data[data.length - 1];
 
-    const sl = signal === "BUY"
-        ? swingLow.toFixed(2)
-        : signal === "SELL"
-        ? swingHigh.toFixed(2)
-        : "-";
+    const lastSwingHigh =
+        swingHighs.length > 0
+        ? swingHighs[swingHighs.length - 1]
+        : null;
+
+    const lastSwingLow =
+        swingLows.length > 0
+        ? swingLows[swingLows.length - 1]
+        : null;
+
+    let structure = "RANGE";
+    let signal = "WAIT";
+
+    if(lastSwingHigh && latest.close > lastSwingHigh.price){
+
+        structure = "BULLISH BOS";
+        signal = "BUY";
+
+    } else if(lastSwingLow && latest.close < lastSwingLow.price){
+
+        structure = "BEARISH BOS";
+        signal = "SELL";
+    }
+
+    let tp = "-";
+    let sl = "-";
+
+    if(signal === "BUY" && lastSwingLow){
+
+        sl = lastSwingLow.price.toFixed(2);
+
+        const risk = latest.close - lastSwingLow.price;
+
+        tp = (latest.close + (risk * 2)).toFixed(2);
+    }
+
+    if(signal === "SELL" && lastSwingHigh){
+
+        sl = lastSwingHigh.price.toFixed(2);
+
+        const risk = lastSwingHigh.price - latest.close;
+
+        tp = (latest.close - (risk * 2)).toFixed(2);
+    }
 
     return {
+
         latestPrice: latest.close,
-        swingHigh,
-        swingLow,
+
+        structure,
+
         signal,
-        bias,
+
+        lastSwingHigh,
+
+        lastSwingLow,
+
         tp,
+
         sl
     };
 }
-
 function renderTable(candles){
 
     let html = `
@@ -205,20 +265,34 @@ async function runAnalysis(){
             : "wait";
 
         document.getElementById("analysis").innerHTML = `
-            📊 Latest Price: <b>${result.latestPrice}</b><br><br>
 
-            📈 Bias: <b>${result.bias}</b><br>
-            📉 Swing High: <b>${result.swingHigh}</b><br>
-            📉 Swing Low: <b>${result.swingLow}</b><br><br>
+📊 Latest Price: <b>${result.latestPrice}</b><br><br>
 
-            🎯 TP: ${result.tp}<br>
-            🛑 SL: ${result.sl}<br><br>
+🧠 Structure: <b>${result.structure}</b><br><br>
 
-            🚨 Signal:
-            <span class="${color}">${result.signal}</span><br><br>
+📈 Last Swing High:
+<b>${result.lastSwingHigh ? result.lastSwingHigh.price : "-"}</b><br>
 
-            <span class="badge">REAL OHLC DATA ACTIVE</span>
-        `;
+📉 Last Swing Low:
+<b>${result.lastSwingLow ? result.lastSwingLow.price : "-"}</b><br><br>
+
+🎯 TP: ${result.tp}<br>
+🛑 SL: ${result.sl}<br><br>
+
+🚨 Signal:
+<span class="${
+    result.signal === "BUY"
+    ? "buy"
+    : result.signal === "SELL"
+    ? "sell"
+    : "wait"
+}">
+${result.signal}
+</span><br><br>
+
+<span class="badge">REAL SWING ENGINE ACTIVE</span>
+
+`;
 
         status.innerText = "Live data loaded";
 
