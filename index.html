@@ -86,17 +86,17 @@ td,th{
 // 📊 FETCH REAL OHLC DATA
 async function getOHLC(){
 
-    // TwelveData OHLC endpoint
-    let url = "https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=1min&outputsize=10&apikey=demo";
+    const url = "https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=1min&outputsize=10&apikey=demo";
 
-    let res = await fetch(url);
-    let data = await res.json();
+    const res = await fetch(url);
+    const data = await res.json();
 
-    if(!data.values){
-        throw new Error("No OHLC data");
+    console.log(data);
+
+    if(data.status === "error"){
+        throw new Error(data.message);
     }
 
-    // convert to clean dataset
     return data.values.map(c => ({
         open: parseFloat(c.open),
         high: parseFloat(c.high),
