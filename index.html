@@ -300,10 +300,13 @@ function renderTable(candles){
 
 async function runAnalysis(){
 
-    const status.innerText = `Error: ${error.message}`;
-alert(error.message);
+    const status = document.getElementById("status");
+    const button = document.querySelector("button");
 
     try{
+
+        button.disabled = true;
+        button.innerText = "LOADING...";
 
         status.innerText = "Loading OHLC data...";
 
@@ -327,22 +330,16 @@ alert(error.message);
 🧠 Structure: <b>${result.structure}</b><br><br>
 
 📈 Last Swing High:
-<b>${result.lastSwingHigh ? result.lastSwingHigh.price : "-"}</b><br>
+<b>${result.lastSwingHigh ? result.lastSwingHigh.price.toFixed(2) : "-"}</b><br>
 
 📉 Last Swing Low:
-<b>${result.lastSwingLow ? result.lastSwingLow.price : "-"}</b><br><br>
+<b>${result.lastSwingLow ? result.lastSwingLow.price.toFixed(2) : "-"}</b><br><br>
 
 🎯 TP: ${result.tp}<br>
 🛑 SL: ${result.sl}<br><br>
 
 🚨 Signal:
-<span class="${
-    result.signal === "BUY"
-    ? "buy"
-    : result.signal === "SELL"
-    ? "sell"
-    : "wait"
-}">
+<span class="${color}">
 ${result.signal}
 </span><br><br>
 
@@ -352,14 +349,19 @@ ${result.signal}
 
         status.innerText = "Live data loaded";
 
-    } 
-    catch(error){
+    } catch(error){
 
-    console.error(error);
+        console.error(error);
 
-    status.innerText = `Error: ${error.message}`;
+        status.innerText = `Error: ${error.message}`;
 
-    alert(error.message);
+        alert(error.message);
+
+    } finally {
+
+        button.disabled = false;
+        button.innerText = "LOAD REAL DATA";
+    }
 }
 }
 
