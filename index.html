@@ -33,8 +33,15 @@ button{
     background:linear-gradient(135deg,#2563eb,#22c55e);
 }
 
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
 table{
     width:100%;
+    min-width:700px;
     border-collapse:collapse;
     font-size:12px;
 }
@@ -43,6 +50,7 @@ th,td{
     padding:8px;
     border-bottom:1px solid rgba(255,255,255,.08);
     text-align:center;
+    white-space:nowrap;
 }
 
 .buy{color:#22c55e;font-weight:700;}
@@ -230,17 +238,21 @@ function renderTable(candles){
         html += `
         <tr>
             <td>${c.time}</td>
-            <td>${c.open}</td>
-            <td>${c.high}</td>
-            <td>${c.low}</td>
-            <td>${c.close}</td>
+            <td>${c.open.toFixed(2)}</td>
+<td>${c.high.toFixed(2)}</td>
+<td>${c.low.toFixed(2)}</td>
+<td>${c.close.toFixed(2)}</td>
         </tr>
         `;
     });
 
     html += `</table>`;
 
-    document.getElementById("dataset").innerHTML = html;
+    document.getElementById("dataset").innerHTML = `
+    <div class="table-wrapper">
+        ${html}
+    </div>
+`;
 }
 
 async function runAnalysis(){
