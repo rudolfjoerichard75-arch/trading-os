@@ -88,6 +88,7 @@ th,td{
 .buy{color:#22c55e;font-weight:700;}
 .sell{color:#ef4444;font-weight:700;}
 .wait{color:#fbbf24;font-weight:700;}
+.paused{color:#f97316;font-weight:700;}
 
 .badge{
     display:inline-block;
@@ -158,9 +159,9 @@ th,td{
 
 const API_KEY = "a1cca9487dba43d093d97fff64306966";
 
-async function getOHLC(){
+async function getOHLC(interval = "5min"){
 
-    const url = `https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=5min&outputsize=20&apikey=${API_KEY}`;
+    const url = `https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=${interval}&outputsize=20&apikey=${API_KEY}`;
 
     const response = await fetch(url);
     const data = await response.json();
@@ -180,8 +181,39 @@ async function getOHLC(){
         low: Number(candle.low),
         close: Number(candle.close)
     }));
-}
+    
+    }
+    
+    async function getNews(){
 
+    const response = await fetch(
+        "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+    );
+
+    const data = await response.json();
+
+    return data;
+}
+function checkHighImpactNews(news){
+
+    const now = new Date();
+
+    const upcoming = news.find(item => {
+
+        if(item.country !== "USD") return false;
+
+        if(item.impact !== "High") return false;
+
+        const eventTime = new Date(item.date);
+
+        const diffMinutes =
+            (eventTime - now) / 1000 / 60;
+
+        return diffMinutes >= 0 && diffMinutes <= 30;
+    });
+
+    return upcoming || null;
+}
 function analyze(candles){
 
     // Susun semula: paling lama → paling baru
@@ -361,41 +393,88 @@ async function runAnalysis(){
 
         status.innerText = "Loading OHLC data...";
 
-        const candles = await getOHLC();
+        const [h4Candles, h1Candles, m5Candles, news] = await Promise.all([
+    getOHLC("4h"),
+    getOHLC("1h"),
+    getOHLC("5min"),
+    getNews()
+]);
 
-        renderTable(candles);
+renderTable(m5Candles);
 
-        const result = analyze(candles);
+const h4 = analyze(h4Candles);
+const h1 = analyze(h1Candles);
+const m5 = analyze(m5Candles);
+let finalSignal = "WAIT";
 
-        const color =
-            result.signal === "BUY"
-            ? "buy"
-            : result.signal === "SELL"
-            ? "sell"
-            : "wait";
+if(
+    h4.structure === "BULLISH BOS" &&
+    h1.structure === "BULLISH BOS" &&
+    m5.signal === "BUY"
+){
+    finalSignal = "BUY";
+}
+
+if(
+    h4.structure === "BEARISH BOS" &&
+    h1.structure === "BEARISH BOS" &&
+    m5.signal === "SELL"
+){
+    finalSignal = "SELL";
+}
+    
+const highImpactNews = checkHighImpactNews(news);
+
+if(highImpactNews){
+    finalSignal = "PAUSED";
+}
+const finalColor =
+    finalSignal === "BUY"
+    ? "buy"
+    : finalSignal === "SELL"
+    ? "sell"
+    : finalSignal === "PAUSED"
+    ? "paused"
+    : "wait";
+        
 
         document.getElementById("analysis").innerHTML = `
 
-📊 Latest Price: <b>${result.latestPrice}</b><br><br>
+🕒 H4 Trend: <b>${h4.structure}</b><br><br>
 
-🧠 Structure: <b>${result.structure}</b><br><br>
+🕒 H1 Structure: <b>${h1.structure}</b><br><br>
 
-📈 Last Swing High:
-<b>${result.lastSwingHigh ? result.lastSwingHigh.price.toFixed(2) : "-"}</b><br>
+🕒 M5 Entry: <b>${m5.signal}</b><br><br>
 
-📉 Last Swing Low:
-<b>${result.lastSwingLow ? result.lastSwingLow.price.toFixed(2) : "-"}</b><br><br>
+${highImpactNews ? `
+⚠️ High Impact News Soon:<br>
+<b>${highImpactNews.title}</b><br><br>
+` : ""}
 
-🎯 Entry: ${result.entry}<br>
-🛑 SL: ${result.sl}<br>
-💰 TP: ${result.tp}<br><br>
-
-🚨 Signal:
-<span class="${color}">
-${result.signal}
+🚨 Final Signal:
+<span class="${finalColor}">
+    ${finalSignal}
 </span><br><br>
 
-<span class="badge">REAL SWING ENGINE ACTIVE</span>
+📊 Latest Price: <b>${m5.latestPrice.toFixed(2)}</b><br><br>
+
+🧠 Structure: <b>${m5.structure}</b><br><br>
+
+🟡 Midpoint:
+<b>${m5.midpoint ? m5.midpoint.toFixed(2) : "-"}</b><br><br>
+
+📈 Last Swing High:
+<b>${m5.lastSwingHigh ? m5.lastSwingHigh.price.toFixed(2) : "-"}</b><br>
+
+📉 Last Swing Low:
+<b>${m5.lastSwingLow ? m5.lastSwingLow.price.toFixed(2) : "-"}</b><br><br>
+
+🎯 Entry: ${m5.entry}<br>
+🛑 SL: ${m5.sl}<br>
+💰 TP: ${m5.tp}<br>
+⚖️ R:R = ${m5.rr}<br><br>
+
+<span class="badge">MTF ENGINE ACTIVE</span>
 
 `;
 document.getElementById("lastUpdate").innerText =
