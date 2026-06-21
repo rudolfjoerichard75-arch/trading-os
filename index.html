@@ -428,6 +428,23 @@ const highImpactNews = checkHighImpactNews(news);
 if(highImpactNews){
     finalSignal = "PAUSED";
 }
+
+const malaysiaHour = new Date().getHours();
+
+let session = "ASIAN";
+
+if(malaysiaHour >= 15 && malaysiaHour < 21){
+    session = "LONDON";
+}
+
+if(malaysiaHour >= 20 || malaysiaHour < 1){
+    session = "NEW YORK";
+}
+
+if(session === "ASIAN" && finalSignal !== "PAUSED"){
+    finalSignal = "WAIT";
+}
+
 const finalColor =
     finalSignal === "BUY"
     ? "buy"
@@ -438,7 +455,9 @@ const finalColor =
     : "wait";
         
 
-        document.getElementById("analysis").innerHTML = `
+document.getElementById("analysis").innerHTML = `
+
+🌍 Session: <b>${session}</b><br><br>
 
 🕒 H4 Trend: <b>${h4.structure}</b><br><br>
 
