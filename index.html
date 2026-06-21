@@ -96,6 +96,11 @@ th,td{
     border-radius:999px;
     font-size:11px;
 }
+#lastUpdate{
+    font-size:12px;
+    color:#9ca3af;
+    margin-top:8px;
+}
 </style>
 </head>
 
@@ -110,9 +115,12 @@ th,td{
     <div class="signal-panel">
 
         <div class="card">
-            <button onclick="runAnalysis()">LOAD REAL DATA</button>
-            <p id="status">Ready</p>
-        </div>
+    <button onclick="runAnalysis()">LOAD REAL DATA</button>
+
+    <p id="status">Ready</p>
+
+    <p id="lastUpdate">Last update: -</p>
+</div>
 
         <div class="card">
             <div id="analysis"></div>
@@ -208,55 +216,83 @@ function analyze(candles){
 
     let structure = "RANGE";
     let signal = "WAIT";
+let midpoint = null;
 
-    if(lastSwingHigh && latest.close > lastSwingHigh.price){
+if(lastSwingHigh && lastSwingLow){
+    midpoint = (lastSwingHigh.price + lastSwingLow.price) / 2;
+}
+    if(
+    lastSwingHigh &&
+    latest.close > lastSwingHigh.price
+){
 
-        structure = "BULLISH BOS";
+    structure = "BULLISH BOS";
+
+    if(midpoint && latest.close < midpoint){
         signal = "BUY";
-
-    } else if(lastSwingLow && latest.close < lastSwingLow.price){
-
-        structure = "BEARISH BOS";
-        signal = "SELL";
     }
 
-    let tp = "-";
-    let sl = "-";
+} else if(
+    lastSwingLow &&
+    latest.close < lastSwingLow.price
+){
+
+    structure = "BEARISH BOS";
+
+    if(midpoint && latest.close > midpoint){
+        signal = "SELL";
+    }
+}
+
+    let entry = latest.close.toFixed(2);
+let tp = "-";
+let sl = "-";
+let rr = "-";
 
     if(signal === "BUY" && lastSwingLow){
 
-        sl = lastSwingLow.price.toFixed(2);
+    sl = lastSwingLow.price.toFixed(2);
 
-        const risk = latest.close - lastSwingLow.price;
+    const risk = latest.close - lastSwingLow.price;
 
-        tp = (latest.close + (risk * 2)).toFixed(2);
-    }
+    tp = (latest.close + (risk * 2)).toFixed(2);
+
+    rr = "1:2";
+}
 
     if(signal === "SELL" && lastSwingHigh){
 
-        sl = lastSwingHigh.price.toFixed(2);
+    sl = lastSwingHigh.price.toFixed(2);
 
-        const risk = lastSwingHigh.price - latest.close;
+    const risk = lastSwingHigh.price - latest.close;
 
-        tp = (latest.close - (risk * 2)).toFixed(2);
-    }
+    tp = (latest.close - (risk * 2)).toFixed(2);
+
+    rr = "1:2";
+}
 
     return {
 
-        latestPrice: latest.close,
+    latestPrice: latest.close,
 
-        structure,
+    structure,
 
-        signal,
+    signal,
+    
+    midpoint,
 
-        lastSwingHigh,
+    lastSwingHigh,
 
-        lastSwingLow,
+    lastSwingLow,
 
-        tp,
+    entry,
 
-        sl
-    };
+    tp,
+
+    sl,
+
+    rr
+};
 }
 
 function renderTable(candles){
@@ -330,8 +366,9 @@ async function runAnalysis(){
 📉 Last Swing Low:
 <b>${result.lastSwingLow ? result.lastSwingLow.price.toFixed(2) : "-"}</b><br><br>
 
-🎯 TP: ${result.tp}<br>
-🛑 SL: ${result.sl}<br><br>
+🎯 Entry: ${result.entry}<br>
+🛑 SL: ${result.sl}<br>
+💰 TP: ${result.tp}<br><br>
 
 🚨 Signal:
 <span class="${color}">
@@ -341,7 +378,8 @@ ${result.signal}
 <span class="badge">REAL SWING ENGINE ACTIVE</span>
 
 `;
-
+document.getElementById("lastUpdate").innerText =
+    `Last update: ${new Date().toLocaleTimeString("en-MY")}`;
         status.innerText = "Live data loaded";
 
     } catch(error){
@@ -358,6 +396,10 @@ ${result.signal}
         button.innerText = "LOAD REAL DATA";
     }
 }
+
+setInterval(() => {
+    runAnalysis();
+}, 300000);
 
 </script>
   
