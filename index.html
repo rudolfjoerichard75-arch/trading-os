@@ -101,6 +101,9 @@ th,td{
     color:#9ca3af;
     margin-top:8px;
 }
+.hidden{
+    display:none;
+}
 </style>
 </head>
 
@@ -127,8 +130,25 @@ th,td{
         </div>
 
         <div class="card">
-            <div id="dataset"></div>
-        </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+
+        <h3 style="margin:0;">📋 OHLC Dataset</h3>
+
+        <button
+            id="toggleDatasetBtn"
+            onclick="toggleDataset()"
+            style="width:auto;padding:8px 14px;font-size:12px;">
+            Hide
+        </button>
+
+    </div>
+
+    <div id="datasetWrapper">
+        <div id="dataset"></div>
+    </div>
+
+</div>
 
     </div>
 
@@ -401,6 +421,18 @@ setInterval(() => {
     runAnalysis();
 }, 300000);
 
+function toggleDataset(){
+
+    const wrapper = document.getElementById("datasetWrapper");
+    const button = document.getElementById("toggleDatasetBtn");
+
+    wrapper.classList.toggle("hidden");
+
+    button.innerText =
+        wrapper.classList.contains("hidden")
+        ? "Show"
+        : "Hide";
+}
 </script>
   
 <div class="tradingview-widget-container">
