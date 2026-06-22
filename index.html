@@ -184,7 +184,7 @@ async function getOHLC(interval = "5min"){
     
     }
     
-    async function getNews(){
+async function getNews(){
 
     const response = await fetch(
         "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
@@ -256,6 +256,16 @@ function analyze(candles){
 
     const latest = data[data.length - 1];
 
+    const rangeHigh = Math.max(...data.map(c => c.high));
+    const rangeLow = Math.min(...data.map(c => c.low));
+
+    const equilibrium = (rangeHigh + rangeLow) / 2;
+
+    const zone =
+    latest.close < equilibrium
+    ? "DISCOUNT"
+    : "PREMIUM";
+
     const lastSwingHigh =
         swingHighs.length > 0
         ? swingHighs[swingHighs.length - 1]
@@ -268,9 +278,9 @@ function analyze(candles){
 
     let structure = "RANGE";
     let signal = "WAIT";
-let midpoint = null;
+    let midpoint = null;
 
-if(lastSwingHigh && lastSwingLow){
+    if(lastSwingHigh && lastSwingLow){
     midpoint = (lastSwingHigh.price + lastSwingLow.price) / 2;
 }
     if(
@@ -328,21 +338,15 @@ let rr = "-";
     latestPrice: latest.close,
 
     structure,
-
     signal,
-    
+    equilibrium,
+    zone,
     midpoint,
-
     lastSwingHigh,
-
     lastSwingLow,
-
     entry,
-
     tp,
-
     sl,
-
     rr
 };
 }
@@ -409,7 +413,8 @@ let finalSignal = "WAIT";
 if(
     h4.structure === "BULLISH BOS" &&
     h1.structure === "BULLISH BOS" &&
-    m5.signal === "BUY"
+    m5.signal === "BUY" &&
+    m5.zone === "DISCOUNT"
 ){
     finalSignal = "BUY";
 }
@@ -417,7 +422,8 @@ if(
 if(
     h4.structure === "BEARISH BOS" &&
     h1.structure === "BEARISH BOS" &&
-    m5.signal === "SELL"
+    m5.signal === "SELL" &&
+    m5.zone === "PREMIUM"
 ){
     finalSignal = "SELL";
 }
@@ -464,7 +470,8 @@ document.getElementById("analysis").innerHTML = `
 
 🕒 M5 Entry: <b>${m5.signal}</b><br><br>
 
-
+💎 PD Zone: <b>${m5.zone}</b><br>
+⚖️ Equilibrium: <b>${m5.equilibrium.toFixed(2)}</b><br><br>
 
 🚨 Final Signal:
 <span class="${finalColor}">
