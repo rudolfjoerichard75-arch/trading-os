@@ -393,11 +393,10 @@ async function runAnalysis(){
 
         status.innerText = "Loading OHLC data...";
 
-        const [h4Candles, h1Candles, m5Candles, news] = await Promise.all([
+const [h4Candles, h1Candles, m5Candles] = await Promise.all([
     getOHLC("4h"),
     getOHLC("1h"),
-    getOHLC("5min"),
-    getNews()
+    getOHLC("5min")
 ]);
 
 renderTable(m5Candles);
@@ -423,11 +422,11 @@ if(
     finalSignal = "SELL";
 }
     
-const highImpactNews = checkHighImpactNews(news);
+// const highImpactNews = checkHighImpactNews(news);
 
-if(highImpactNews){
-    finalSignal = "PAUSED";
-}
+// if(highImpactNews){
+//     finalSignal = "PAUSED";
+// }
 
 const malaysiaHour = new Date().getHours();
 
@@ -465,10 +464,7 @@ document.getElementById("analysis").innerHTML = `
 
 🕒 M5 Entry: <b>${m5.signal}</b><br><br>
 
-${highImpactNews ? `
-⚠️ High Impact News Soon:<br>
-<b>${highImpactNews.title}</b><br><br>
-` : ""}
+
 
 🚨 Final Signal:
 <span class="${finalColor}">
