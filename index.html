@@ -276,9 +276,10 @@ function analyze(candles){
         ? swingLows[swingLows.length - 1]
         : null;
 
-    let structure = "RANGE";
-    let signal = "WAIT";
-    let midpoint = null;
+let structure = "RANGE";
+let signal = "WAIT";
+let midpoint = null;
+let marketMode = "RANGE";
 
     if(lastSwingHigh && lastSwingLow){
     midpoint = (lastSwingHigh.price + lastSwingLow.price) / 2;
@@ -305,7 +306,25 @@ function analyze(candles){
         signal = "SELL";
     }
 }
+if(
+    structure === "RANGE"
+){
 
+    if(zone === "DISCOUNT"){
+        signal = "BUY RANGE";
+    }
+
+    if(zone === "PREMIUM"){
+        signal = "SELL RANGE";
+    }
+
+    marketMode = "RANGE";
+
+}else{
+
+    marketMode = "TREND";
+
+}
     let entry = latest.close.toFixed(2);
 let tp = "-";
 let sl = "-";
@@ -337,6 +356,7 @@ let rr = "-";
 
     latestPrice: latest.close,
 
+    marketMode,
     structure,
     signal,
     equilibrium,
@@ -408,24 +428,40 @@ renderTable(m5Candles);
 const h4 = analyze(h4Candles);
 const h1 = analyze(h1Candles);
 const m5 = analyze(m5Candles);
+
 let finalSignal = "WAIT";
+
+// TREND MODE
 
 if(
     h4.structure === "BULLISH BOS" &&
-    h1.structure === "BULLISH BOS" &&
-    m5.signal === "BUY" &&
-    m5.zone === "DISCOUNT"
+    h1.structure === "BULLISH BOS"
 ){
     finalSignal = "BUY";
 }
 
 if(
     h4.structure === "BEARISH BOS" &&
-    h1.structure === "BEARISH BOS" &&
-    m5.signal === "SELL" &&
-    m5.zone === "PREMIUM"
+    h1.structure === "BEARISH BOS"
 ){
     finalSignal = "SELL";
+}
+
+// RANGE MODE
+
+if(
+    h4.structure === "RANGE" &&
+    h1.structure === "RANGE"
+){
+
+    if(m5.signal === "BUY RANGE"){
+        finalSignal = "BUY RANGE";
+    }
+
+    if(m5.signal === "SELL RANGE"){
+        finalSignal = "SELL RANGE";
+    }
+
 }
     
 // const highImpactNews = checkHighImpactNews(news);
@@ -463,6 +499,8 @@ const finalColor =
 document.getElementById("analysis").innerHTML = `
 
 🌍 Session: <b>${session}</b><br><br>
+
+🧠 Market Mode: <b>${m5.marketMode}</b><br><br>
 
 🕒 H4 Trend: <b>${h4.structure}</b><br><br>
 
