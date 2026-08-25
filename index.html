@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bosque Forex AI - XAUUSD OHLC Engine</title>
+<title>Bosque Forex AI v2.0 - XAUUSD</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
     margin:0;
     padding:16px;
@@ -22,27 +27,17 @@ body{
     padding:16px;
     margin-bottom:14px;
 }
+
 .dashboard{
     display:grid;
     gap:16px;
     grid-template-columns:1fr;
 }
 
-.chart-panel,
-.signal-panel{
-    min-width:0;
-}
-
-.chart-container{
-    height:500px;
-    overflow:hidden;
-    border-radius:14px;
-}
-
-@media (min-width: 992px){
+@media (min-width:992px){
 
     .dashboard{
-        grid-template-columns:1.4fr 0.9fr;
+        grid-template-columns:1.4fr .9fr;
         align-items:start;
     }
 
@@ -55,6 +50,11 @@ body{
         overflow-y:auto;
     }
 }
+
+h2,h3{
+    margin-top:0;
+}
+
 button{
     width:100%;
     padding:14px;
@@ -63,12 +63,138 @@ button{
     font-weight:700;
     color:white;
     background:linear-gradient(135deg,#2563eb,#22c55e);
+    cursor:pointer;
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+select{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.1);
+    background:#0b1025;
+    color:white;
+}
+
+.badge{
+    display:inline-block;
+    padding:6px 10px;
+    background:#1f2937;
+    border-radius:999px;
+    font-size:11px;
+}
+
+.status-box{
+    padding:14px;
+    border-radius:12px;
+    background:#0b1025;
+    border:1px solid rgba(255,255,255,.08);
+    margin-bottom:12px;
+}
+
+.signal-box{
+    padding:18px;
+    border-radius:14px;
+    margin-bottom:15px;
+    text-align:center;
+    background:#0b1025;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.signal-title{
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.buy{
+    color:#22c55e;
+    font-weight:800;
+}
+
+.sell{
+    color:#ef4444;
+    font-weight:800;
+}
+
+.wait{
+    color:#fbbf24;
+    font-weight:800;
+}
+
+.paused{
+    color:#f97316;
+    font-weight:800;
+}
+
+.score{
+    font-size:34px;
+    font-weight:900;
+}
+
+.score-bar{
+    width:100%;
+    height:10px;
+    background:#1f2937;
+    border-radius:999px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.score-fill{
+    height:100%;
+    width:0%;
+    transition:.4s;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.metric{
+    background:#0b1025;
+    padding:12px;
+    border-radius:10px;
+}
+
+.metric small{
+    display:block;
+    color:#9ca3af;
+    margin-bottom:4px;
+}
+
+.metric strong{
+    font-size:14px;
+}
+
+.check{
+    display:flex;
+    justify-content:space-between;
+    padding:9px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.good{
+    color:#22c55e;
+}
+
+.bad{
+    color:#ef4444;
+}
+
+.neutral{
+    color:#fbbf24;
 }
 
 .table-wrapper{
     width:100%;
     overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
 }
 
 table{
@@ -85,510 +211,2448 @@ th,td{
     white-space:nowrap;
 }
 
-.buy{color:#22c55e;font-weight:700;}
-.sell{color:#ef4444;font-weight:700;}
-.wait{color:#fbbf24;font-weight:700;}
-.paused{color:#f97316;font-weight:700;}
-
-.badge{
-    display:inline-block;
-    padding:6px 10px;
-    background:#1f2937;
-    border-radius:999px;
-    font-size:11px;
-}
 #lastUpdate{
     font-size:12px;
     color:#9ca3af;
     margin-top:8px;
 }
+
 .hidden{
     display:none;
 }
+
+.entry-zone{
+    font-size:20px;
+    font-weight:800;
+    margin:8px 0;
+}
+
+.reason{
+    background:#0b1025;
+    padding:12px;
+    border-radius:10px;
+    margin-top:10px;
+    line-height:1.6;
+}
+
+.tradingview-widget-container{
+    width:100%;
+    min-height:500px;
+    border-radius:14px;
+    overflow:hidden;
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="card">
-    <h2>👑 Bosque Forex AI</h2>
-    <p>XAUUSD Real OHLC Engine</p>
+
+    <h2>👑 Bosque Forex AI v2.0</h2>
+
+    <p>
+        XAUUSD Real Market Intelligence Engine
+    </p>
+
+    <span class="badge">
+        MTF + LIQUIDITY + SCORING ENGINE
+    </span>
+
 </div>
 
 
-    <div class="signal-panel">
+<div class="dashboard">
 
-        <div class="card">
-    <button onclick="runAnalysis()">LOAD REAL DATA</button>
+<div>
 
-    <p id="status">Ready</p>
+<div class="card">
 
-    <p id="lastUpdate">Last update: -</p>
-</div>
+    <h3>📊 XAUUSD Live Chart</h3>
 
-        <div class="card">
-            <div id="analysis"></div>
-        </div>
+    <div class="tradingview-widget-container">
 
-        <div class="card">
+        <div class="tradingview-widget-container__widget"></div>
 
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <script
+        async
+        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js">
 
-        <h3 style="margin:0;">📋 OHLC Dataset</h3>
+        {
+            "autosize": true,
+            "symbol": "OANDA:XAUUSD",
+            "interval": "5",
+            "timezone": "Asia/Kuala_Lumpur",
+            "theme": "dark",
+            "style": "1",
+            "allow_symbol_change": false
+        }
 
-        <button
-            id="toggleDatasetBtn"
-            onclick="toggleDataset()"
-            style="width:auto;padding:8px 14px;font-size:12px;">
-            Hide
-        </button>
+        </script>
 
     </div>
 
-    <div id="datasetWrapper">
-        <div id="dataset"></div>
-    </div>
+</div>
 
 </div>
 
-    </div>
+
+<div class="signal-panel">
+
+<div class="card">
+
+    <label>
+        🎯 Signal Mode
+    </label>
+
+    <br><br>
+
+    <select id="signalMode">
+
+        <option value="balanced">
+            ⚖️ Balanced — 70+
+        </option>
+
+        <option value="conservative">
+            🛡️ Conservative — 80+
+        </option>
+
+        <option value="aggressive">
+            ⚡ Aggressive — 60+
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <button
+    id="runButton"
+    onclick="runAnalysis()">
+
+        LOAD REAL DATA
+
+    </button>
+
+    <p id="status">
+        Ready
+    </p>
+
+    <p id="lastUpdate">
+        Last update: -
+    </p>
 
 </div>
+
+
+<div class="card">
+
+<div id="analysis">
+
+    Waiting for market data...
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📋 OHLC Dataset</h3>
+
+<button
+id="toggleDatasetBtn"
+onclick="toggleDataset()"
+style="width:auto;padding:8px 14px;font-size:12px;">
+
+Hide
+
+</button>
+
+<br><br>
+
+<div id="datasetWrapper">
+
+<div id="dataset"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 
 <script>
 
+/* =========================================================
+   BOSQUE FOREX AI v2.0
+   XAUUSD MULTI TIMEFRAME ENGINE
+========================================================= */
+
+
+/* =========================================================
+   CONFIGURATION
+========================================================= */
+
 const API_KEY = "a1cca9487dba43d093d97fff64306966";
 
-async function getOHLC(interval = "5min"){
+const SYMBOL = "XAU/USD";
 
-    const url = `https://api.twelvedata.com/time_series?symbol=XAU/USD&interval=${interval}&outputsize=20&apikey=${API_KEY}`;
+const OUTPUT_SIZE = 100;
+
+
+/* =========================================================
+   SIGNAL MODES
+========================================================= */
+
+const SIGNAL_MODES = {
+
+    conservative: {
+        threshold:80
+    },
+
+    balanced:{
+        threshold:70
+    },
+
+    aggressive:{
+        threshold:60
+    }
+
+};
+
+
+/* =========================================================
+   GET OHLC
+========================================================= */
+
+async function getOHLC(interval){
+
+    const url =
+    `https://api.twelvedata.com/time_series` +
+    `?symbol=${encodeURIComponent(SYMBOL)}` +
+    `&interval=${interval}` +
+    `&outputsize=${OUTPUT_SIZE}` +
+    `&apikey=${API_KEY}`;
 
     const response = await fetch(url);
+
+    if(!response.ok){
+
+        throw new Error(
+            "Unable to connect to market data."
+        );
+
+    }
+
     const data = await response.json();
 
     if(data.status === "error"){
-        throw new Error(data.message);
+
+        throw new Error(
+            data.message || "TwelveData error"
+        );
+
     }
 
     if(!data.values){
-        throw new Error("No OHLC data received");
+
+        throw new Error(
+            "No OHLC data received."
+        );
+
     }
 
-    return data.values.map(candle => ({
-        time: candle.datetime,
-        open: Number(candle.open),
-        high: Number(candle.high),
-        low: Number(candle.low),
-        close: Number(candle.close)
-    }));
-    
-    }
-    
+    return data.values
+    .map(candle => ({
+
+        time:candle.datetime,
+
+        open:Number(candle.open),
+
+        high:Number(candle.high),
+
+        low:Number(candle.low),
+
+        close:Number(candle.close)
+
+    }))
+    .reverse();
+
+}
+
+
+/* =========================================================
+   NEWS
+========================================================= */
+
 async function getNews(){
 
-    const response = await fetch(
-        "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
-    );
+    try{
 
-    const data = await response.json();
+        const response = await fetch(
+            "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+        );
 
-    return data;
+        if(!response.ok){
+
+            return [];
+
+        }
+
+        return await response.json();
+
+    }catch(error){
+
+        console.warn(
+            "News unavailable:",
+            error
+        );
+
+        return [];
+
+    }
+
 }
+
+
+/* =========================================================
+   HIGH IMPACT NEWS
+========================================================= */
+
 function checkHighImpactNews(news){
 
     const now = new Date();
 
     const upcoming = news.find(item => {
 
-        if(item.country !== "USD") return false;
+        if(item.country !== "USD"){
+            return false;
+        }
 
-        if(item.impact !== "High") return false;
+        if(item.impact !== "High"){
+            return false;
+        }
 
-        const eventTime = new Date(item.date);
+        const eventTime =
+            new Date(item.date);
 
         const diffMinutes =
-            (eventTime - now) / 1000 / 60;
+            (eventTime - now)
+            /1000
+            /60;
 
-        return diffMinutes >= 0 && diffMinutes <= 30;
+        return (
+            diffMinutes >= -10 &&
+            diffMinutes <= 30
+        );
+
     });
 
     return upcoming || null;
+
 }
-function analyze(candles){
 
-    // Susun semula: paling lama → paling baru
-    const data = [...candles].reverse();
 
-    const swingHighs = [];
-    const swingLows = [];
+/* =========================================================
+   ATR
+========================================================= */
 
-    // Detect swing points
-    for(let i = 2; i < data.length - 2; i++){
+function calculateATR(candles, period=14){
 
-        const current = data[i];
+    if(candles.length < period + 1){
 
-        const isSwingHigh =
-            current.high > data[i-1].high &&
-            current.high > data[i-2].high &&
-            current.high > data[i+1].high &&
-            current.high > data[i+2].high;
+        return null;
 
-        const isSwingLow =
-            current.low < data[i-1].low &&
-            current.low < data[i-2].low &&
-            current.low < data[i+1].low &&
-            current.low < data[i+2].low;
+    }
 
-        if(isSwingHigh){
+    const ranges=[];
+
+    for(
+        let i=1;
+        i<candles.length;
+        i++
+    ){
+
+        const current =
+            candles[i];
+
+        const previous =
+            candles[i-1];
+
+        const trueRange =
+            Math.max(
+
+                current.high -
+                current.low,
+
+                Math.abs(
+                    current.high -
+                    previous.close
+                ),
+
+                Math.abs(
+                    current.low -
+                    previous.close
+                )
+
+            );
+
+        ranges.push(trueRange);
+
+    }
+
+    const recent =
+        ranges.slice(-period);
+
+    return recent.reduce(
+        (sum,value)=>sum+value,
+        0
+    ) / recent.length;
+
+}
+
+
+/* =========================================================
+   SWING DETECTION
+========================================================= */
+
+function detectSwings(candles){
+
+    const swingHighs=[];
+    const swingLows=[];
+
+    for(
+        let i=2;
+        i<candles.length-2;
+        i++
+    ){
+
+        const current =
+            candles[i];
+
+        const isHigh =
+
+            current.high >
+            candles[i-1].high &&
+
+            current.high >
+            candles[i-2].high &&
+
+            current.high >
+            candles[i+1].high &&
+
+            current.high >
+            candles[i+2].high;
+
+
+        const isLow =
+
+            current.low <
+            candles[i-1].low &&
+
+            current.low <
+            candles[i-2].low &&
+
+            current.low <
+            candles[i+1].low &&
+
+            current.low <
+            candles[i+2].low;
+
+
+        if(isHigh){
+
             swingHighs.push({
-                price: current.high,
-                time: current.time
+
+                price:current.high,
+
+                time:current.time
+
             });
+
         }
 
-        if(isSwingLow){
+
+        if(isLow){
+
             swingLows.push({
-                price: current.low,
-                time: current.time
+
+                price:current.low,
+
+                time:current.time
+
             });
+
         }
+
     }
-
-    const latest = data[data.length - 1];
-
-    const rangeHigh = Math.max(...data.map(c => c.high));
-    const rangeLow = Math.min(...data.map(c => c.low));
-
-    const equilibrium = (rangeHigh + rangeLow) / 2;
-
-    const zone =
-    latest.close < equilibrium
-    ? "DISCOUNT"
-    : "PREMIUM";
-
-    const lastSwingHigh =
-        swingHighs.length > 0
-        ? swingHighs[swingHighs.length - 1]
-        : null;
-
-    const lastSwingLow =
-        swingLows.length > 0
-        ? swingLows[swingLows.length - 1]
-        : null;
-
-let structure = "RANGE";
-let signal = "WAIT";
-let midpoint = null;
-let marketMode = "RANGE";
-
-    if(lastSwingHigh && lastSwingLow){
-    midpoint = (lastSwingHigh.price + lastSwingLow.price) / 2;
-}
-    if(
-    lastSwingHigh &&
-    latest.close > lastSwingHigh.price
-){
-
-    structure = "BULLISH BOS";
-
-    if(midpoint && latest.close < midpoint){
-        signal = "BUY";
-    }
-
-} else if(
-    lastSwingLow &&
-    latest.close < lastSwingLow.price
-){
-
-    structure = "BEARISH BOS";
-
-    if(midpoint && latest.close > midpoint){
-        signal = "SELL";
-    }
-}
-if(
-    structure === "RANGE"
-){
-
-    if(zone === "DISCOUNT"){
-        signal = "BUY RANGE";
-    }
-
-    if(zone === "PREMIUM"){
-        signal = "SELL RANGE";
-    }
-
-    marketMode = "RANGE";
-
-}else{
-
-    marketMode = "TREND";
-
-}
-    let entry = latest.close.toFixed(2);
-let tp = "-";
-let sl = "-";
-let rr = "-";
-
-    if(signal === "BUY" && lastSwingLow){
-
-    sl = lastSwingLow.price.toFixed(2);
-
-    const risk = latest.close - lastSwingLow.price;
-
-    tp = (latest.close + (risk * 2)).toFixed(2);
-
-    rr = "1:2";
-}
-
-    if(signal === "SELL" && lastSwingHigh){
-
-    sl = lastSwingHigh.price.toFixed(2);
-
-    const risk = lastSwingHigh.price - latest.close;
-
-    tp = (latest.close - (risk * 2)).toFixed(2);
-
-    rr = "1:2";
-}
 
     return {
 
-    latestPrice: latest.close,
+        swingHighs,
 
-    marketMode,
-    structure,
-    signal,
-    equilibrium,
-    zone,
-    midpoint,
-    lastSwingHigh,
-    lastSwingLow,
-    entry,
-    tp,
-    sl,
-    rr
-};
+        swingLows
+
+    };
+
 }
+
+
+/* =========================================================
+   MARKET ANALYSIS
+========================================================= */
+
+function analyzeMarket(candles){
+
+    const latest =
+        candles[candles.length-1];
+
+    const swings =
+        detectSwings(candles);
+
+    const swingHighs =
+        swings.swingHighs;
+
+    const swingLows =
+        swings.swingLows;
+
+
+    const lastSwingHigh =
+        swingHighs.length
+        ? swingHighs[swingHighs.length-1]
+        : null;
+
+
+    const previousSwingHigh =
+        swingHighs.length > 1
+        ? swingHighs[swingHighs.length-2]
+        : null;
+
+
+    const lastSwingLow =
+        swingLows.length
+        ? swingLows[swingLows.length-1]
+        : null;
+
+
+    const previousSwingLow =
+        swingLows.length > 1
+        ? swingLows[swingLows.length-2]
+        : null;
+
+
+    let structure =
+        "RANGE";
+
+
+    if(
+        lastSwingHigh &&
+        latest.close >
+        lastSwingHigh.price
+    ){
+
+        structure =
+            "BULLISH BOS";
+
+    }
+
+
+    if(
+        lastSwingLow &&
+        latest.close <
+        lastSwingLow.price
+    ){
+
+        structure =
+            "BEARISH BOS";
+
+    }
+
+
+    if(
+        lastSwingHigh &&
+        previousSwingHigh &&
+        lastSwingLow &&
+        previousSwingLow
+    ){
+
+        if(
+            lastSwingHigh.price >
+            previousSwingHigh.price &&
+
+            lastSwingLow.price >
+            previousSwingLow.price
+        ){
+
+            structure =
+                "BULLISH STRUCTURE";
+
+        }
+
+
+        if(
+            lastSwingHigh.price <
+            previousSwingHigh.price &&
+
+            lastSwingLow.price <
+            previousSwingLow.price
+        ){
+
+            structure =
+                "BEARISH STRUCTURE";
+
+        }
+
+    }
+
+
+    const rangeHigh =
+        Math.max(
+            ...candles.map(c=>c.high)
+        );
+
+
+    const rangeLow =
+        Math.min(
+            ...candles.map(c=>c.low)
+        );
+
+
+    const equilibrium =
+        (rangeHigh + rangeLow)/2;
+
+
+    const zone =
+        latest.close <
+        equilibrium
+        ? "DISCOUNT"
+        : "PREMIUM";
+
+
+    const midpoint =
+        lastSwingHigh &&
+        lastSwingLow
+        ?
+        (
+            lastSwingHigh.price +
+            lastSwingLow.price
+        )/2
+        : null;
+
+
+    const atr =
+        calculateATR(candles);
+
+
+    return {
+
+        latest,
+
+        structure,
+
+        swingHighs,
+
+        swingLows,
+
+        lastSwingHigh,
+
+        lastSwingLow,
+
+        previousSwingHigh,
+
+        previousSwingLow,
+
+        rangeHigh,
+
+        rangeLow,
+
+        equilibrium,
+
+        zone,
+
+        midpoint,
+
+        atr
+
+    };
+
+}
+
+
+/* =========================================================
+   LIQUIDITY SWEEP
+========================================================= */
+
+function detectLiquiditySweep(candles){
+
+    if(candles.length < 6){
+
+        return {
+
+            bullish:false,
+
+            bearish:false
+
+        };
+
+    }
+
+
+    const recent =
+        candles[candles.length-1];
+
+
+    const previous =
+        candles[candles.length-2];
+
+
+    const lookback =
+        candles.slice(
+            -7,
+            -2
+        );
+
+
+    const previousHigh =
+        Math.max(
+            ...lookback.map(
+                c=>c.high
+            )
+        );
+
+
+    const previousLow =
+        Math.min(
+            ...lookback.map(
+                c=>c.low
+            )
+        );
+
+
+    const bearishSweep =
+
+        recent.high >
+        previousHigh &&
+
+        recent.close <
+        previousHigh;
+
+
+    const bullishSweep =
+
+        recent.low <
+        previousLow &&
+
+        recent.close >
+        previousLow;
+
+
+    return {
+
+        bullish:
+            bullishSweep,
+
+        bearish:
+            bearishSweep
+
+    };
+
+}
+
+
+/* =========================================================
+   DISPLACEMENT
+========================================================= */
+
+function detectDisplacement(candles){
+
+    if(candles.length < 15){
+
+        return {
+
+            bullish:false,
+
+            bearish:false
+
+        };
+
+    }
+
+
+    const latest =
+        candles[candles.length-1];
+
+
+    const previous =
+        candles[candles.length-2];
+
+
+    const atr =
+        calculateATR(candles,14);
+
+
+    if(!atr){
+
+        return {
+
+            bullish:false,
+
+            bearish:false
+
+        };
+
+    }
+
+
+    const body =
+        Math.abs(
+            latest.close -
+            latest.open
+        );
+
+
+    const bullish =
+
+        latest.close >
+        latest.open &&
+
+        body >
+        atr * 0.8 &&
+
+        latest.close >
+        previous.high;
+
+
+    const bearish =
+
+        latest.close <
+        latest.open &&
+
+        body >
+        atr * 0.8 &&
+
+        latest.close <
+        previous.low;
+
+
+    return {
+
+        bullish,
+
+        bearish
+
+    };
+
+}
+
+
+/* =========================================================
+   M5 CONFIRMATION
+========================================================= */
+
+function detectConfirmation(candles){
+
+    const analysis =
+        analyzeMarket(candles);
+
+    const sweep =
+        detectLiquiditySweep(candles);
+
+    const displacement =
+        detectDisplacement(candles);
+
+
+    const latest =
+        candles[candles.length-1];
+
+
+    let bullish=false;
+    let bearish=false;
+
+
+    if(
+
+        (
+            analysis.structure ===
+            "BULLISH BOS"
+            ||
+
+            analysis.structure ===
+            "BULLISH STRUCTURE"
+        )
+
+        ||
+
+        sweep.bullish
+
+        ||
+
+        displacement.bullish
+
+    ){
+
+        bullish=true;
+
+    }
+
+
+    if(
+
+        (
+            analysis.structure ===
+            "BEARISH BOS"
+            ||
+
+            analysis.structure ===
+            "BEARISH STRUCTURE"
+        )
+
+        ||
+
+        sweep.bearish
+
+        ||
+
+        displacement.bearish
+
+    ){
+
+        bearish=true;
+
+    }
+
+
+    return {
+
+        bullish,
+
+        bearish,
+
+        sweep,
+
+        displacement,
+
+        structure:
+            analysis.structure,
+
+        latest
+
+    };
+
+}
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+function getSession(){
+
+    const hour =
+        new Date()
+        .getHours();
+
+
+    if(
+        hour >= 1 &&
+        hour < 8
+    ){
+
+        return "ASIAN";
+
+    }
+
+
+    if(
+        hour >= 8 &&
+        hour < 15
+    ){
+
+        return "LONDON PREP";
+
+    }
+
+
+    if(
+        hour >= 15 &&
+        hour < 20
+    ){
+
+        return "LONDON";
+
+    }
+
+
+    if(
+        hour >= 20 &&
+        hour < 1
+    ){
+
+        return "NEW YORK";
+
+    }
+
+
+    return "ASIAN";
+
+}
+
+
+/* =========================================================
+   SCORE ENGINE
+========================================================= */
+
+function calculateScore(
+
+    h4,
+    h1,
+    m15,
+    m5,
+    news
+
+){
+
+    let buyScore=0;
+
+    let sellScore=0;
+
+    const buyReasons=[];
+
+    const sellReasons=[];
+
+
+    /* H4 BIAS */
+
+    if(
+
+        h4.structure ===
+        "BULLISH BOS"
+
+        ||
+
+        h4.structure ===
+        "BULLISH STRUCTURE"
+
+    ){
+
+        buyScore += 20;
+
+        buyReasons.push(
+            "H4 bullish bias"
+        );
+
+    }
+
+
+    if(
+
+        h4.structure ===
+        "BEARISH BOS"
+
+        ||
+
+        h4.structure ===
+        "BEARISH STRUCTURE"
+
+    ){
+
+        sellScore += 20;
+
+        sellReasons.push(
+            "H4 bearish bias"
+        );
+
+    }
+
+
+    /* H1 STRUCTURE */
+
+    if(
+
+        h1.structure ===
+        "BULLISH BOS"
+
+        ||
+
+        h1.structure ===
+        "BULLISH STRUCTURE"
+
+    ){
+
+        buyScore += 15;
+
+        buyReasons.push(
+            "H1 bullish structure"
+        );
+
+    }
+
+
+    if(
+
+        h1.structure ===
+        "BEARISH BOS"
+
+        ||
+
+        h1.structure ===
+        "BEARISH STRUCTURE"
+
+    ){
+
+        sellScore += 15;
+
+        sellReasons.push(
+            "H1 bearish structure"
+        );
+
+    }
+
+
+    /* H1 ZONE */
+
+    if(
+        h1.zone ===
+        "DISCOUNT"
+    ){
+
+        buyScore += 10;
+
+        buyReasons.push(
+            "H1 discount"
+        );
+
+    }
+
+
+    if(
+        h1.zone ===
+        "PREMIUM"
+    ){
+
+        sellScore += 10;
+
+        sellReasons.push(
+            "H1 premium"
+        );
+
+    }
+
+
+    /* M15 LIQUIDITY */
+
+    const m15Sweep =
+        m15.sweep;
+
+
+    if(
+        m15Sweep.bullish
+    ){
+
+        buyScore += 20;
+
+        buyReasons.push(
+            "M15 bullish liquidity sweep"
+        );
+
+    }
+
+
+    if(
+        m15Sweep.bearish
+    ){
+
+        sellScore += 20;
+
+        sellReasons.push(
+            "M15 bearish liquidity sweep"
+        );
+
+    }
+
+
+    /* M15 STRUCTURE */
+
+    if(
+
+        m15.structure ===
+        "BULLISH BOS"
+
+        ||
+
+        m15.structure ===
+        "BULLISH STRUCTURE"
+
+    ){
+
+        buyScore += 10;
+
+        buyReasons.push(
+            "M15 bullish structure"
+        );
+
+    }
+
+
+    if(
+
+        m15.structure ===
+        "BEARISH BOS"
+
+        ||
+
+        m15.structure ===
+        "BEARISH STRUCTURE"
+
+    ){
+
+        sellScore += 10;
+
+        sellReasons.push(
+            "M15 bearish structure"
+        );
+
+    }
+
+
+    /* M5 CONFIRMATION */
+
+    if(
+        m5.bullish
+    ){
+
+        buyScore += 10;
+
+        buyReasons.push(
+            "M5 bullish confirmation"
+        );
+
+    }
+
+
+    if(
+        m5.bearish
+    ){
+
+        sellScore += 10;
+
+        sellReasons.push(
+            "M5 bearish confirmation"
+        );
+
+    }
+
+
+    /* DISPLACEMENT */
+
+    if(
+        m5.displacement.bullish
+    ){
+
+        buyScore += 10;
+
+        buyReasons.push(
+            "M5 bullish displacement"
+        );
+
+    }
+
+
+    if(
+        m5.displacement.bearish
+    ){
+
+        sellScore += 10;
+
+        sellReasons.push(
+            "M5 bearish displacement"
+        );
+
+    }
+
+
+    /* NEWS PENALTY */
+
+    if(news){
+
+        buyScore -= 10;
+
+        sellScore -= 10;
+
+    }
+
+
+    /* SESSION */
+
+    const session =
+        getSession();
+
+
+    if(
+        session === "ASIAN"
+    ){
+
+        buyScore -= 5;
+
+        sellScore -= 5;
+
+    }
+
+
+    buyScore =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                buyScore
+            )
+        );
+
+
+    sellScore =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                sellScore
+            )
+        );
+
+
+    return {
+
+        buyScore,
+
+        sellScore,
+
+        buyReasons,
+
+        sellReasons,
+
+        session
+
+    };
+
+}
+
+
+/* =========================================================
+   ENTRY ENGINE
+========================================================= */
+
+function calculateEntry(
+
+    direction,
+    m5
+
+){
+
+    const price =
+        m5.latest.close;
+
+
+    const atr =
+        m5.atr ||
+        price * 0.001;
+
+
+    let entryLow;
+    let entryHigh;
+    let sl;
+    let tp1;
+    let tp2;
+
+
+    if(
+        direction === "BUY"
+    ){
+
+        entryLow =
+            price -
+            atr * 0.20;
+
+        entryHigh =
+            price +
+            atr * 0.10;
+
+
+        sl =
+            price -
+            atr * 1.2;
+
+
+        const risk =
+            price - sl;
+
+
+        tp1 =
+            price +
+            risk * 1.5;
+
+
+        tp2 =
+            price +
+            risk * 2.5;
+
+    }
+
+
+    if(
+        direction === "SELL"
+    ){
+
+        entryLow =
+            price -
+            atr * 0.10;
+
+        entryHigh =
+            price +
+            atr * 0.20;
+
+
+        sl =
+            price +
+            atr * 1.2;
+
+
+        const risk =
+            sl - price;
+
+
+        tp1 =
+            price -
+            risk * 1.5;
+
+
+        tp2 =
+            price -
+            risk * 2.5;
+
+    }
+
+
+    const risk =
+        direction === "BUY"
+        ? price-sl
+        : sl-price;
+
+
+    const reward =
+        direction === "BUY"
+        ? tp2-price
+        : price-tp2;
+
+
+    const rr =
+        reward/risk;
+
+
+    return {
+
+        entryLow,
+
+        entryHigh,
+
+        sl,
+
+        tp1,
+
+        tp2,
+
+        rr
+
+    };
+
+}
+
+
+/* =========================================================
+   FINAL DECISION
+========================================================= */
+
+function generateSignal(
+
+    score,
+    mode,
+    news
+
+){
+
+    const threshold =
+        SIGNAL_MODES[mode]
+        .threshold;
+
+
+    let direction =
+        "WAIT";
+
+
+    let finalScore =
+        Math.max(
+            score.buyScore,
+            score.sellScore
+        );
+
+
+    if(
+        score.buyScore >
+        score.sellScore
+    ){
+
+        direction="BUY";
+
+    }
+
+
+    if(
+        score.sellScore >
+        score.buyScore
+    ){
+
+        direction="SELL";
+
+    }
+
+
+    if(
+        finalScore <
+        threshold
+    ){
+
+        return {
+
+            direction,
+            score:finalScore,
+
+            status:
+                "WATCH",
+
+            threshold,
+
+            reason:
+                "Setup detected but confirmation is not strong enough."
+
+        };
+
+    }
+
+
+    if(news){
+
+        return {
+
+            direction,
+
+            score:finalScore,
+
+            status:
+                "PAUSED",
+
+            threshold,
+
+            reason:
+                "High impact USD news detected."
+
+        };
+
+    }
+
+
+    return {
+
+        direction,
+
+        score:finalScore,
+
+        status:
+            "CONFIRMED",
+
+        threshold,
+
+        reason:
+            "Multi-timeframe conditions are aligned."
+
+    };
+
+}
+
+
+/* =========================================================
+   RENDER SCORE CHECKLIST
+========================================================= */
+
+function renderChecklist(
+
+    score,
+    m15,
+    m5
+
+){
+
+    const items=[];
+
+
+    items.push({
+
+        name:"H4 Bias",
+
+        value:
+            score.buyScore >= 20 ||
+            score.sellScore >= 20
+
+    });
+
+
+    items.push({
+
+        name:"H1 Structure",
+
+        value:
+            score.buyScore >= 35 ||
+            score.sellScore >= 35
+
+    });
+
+
+    items.push({
+
+        name:"Liquidity Sweep",
+
+        value:
+            m15.sweep.bullish ||
+            m15.sweep.bearish
+
+    });
+
+
+    items.push({
+
+        name:"M15 Structure",
+
+        value:
+            m15.structure.includes(
+                "BULLISH"
+            )
+            ||
+            m15.structure.includes(
+                "BEARISH"
+            )
+
+    });
+
+
+    items.push({
+
+        name:"M5 Confirmation",
+
+        value:
+            m5.bullish ||
+            m5.bearish
+
+    });
+
+
+    items.push({
+
+        name:"Displacement",
+
+        value:
+            m5.displacement.bullish ||
+            m5.displacement.bearish
+
+    });
+
+
+    return items.map(item=>`
+
+        <div class="check">
+
+            <span>
+                ${item.name}
+            </span>
+
+            <strong
+            class="${item.value
+                ? 'good'
+                : 'neutral'}">
+
+                ${item.value
+                    ? '✅'
+                    : '⏳'}
+
+            </strong>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================================
+   RENDER ANALYSIS
+========================================================= */
+
+function renderAnalysis(
+
+    h4,
+    h1,
+    m15,
+    m5,
+    score,
+    signal,
+    news
+
+){
+
+    const direction =
+        signal.direction;
+
+
+    const signalClass =
+        direction === "BUY"
+        ? "buy"
+        : direction === "SELL"
+        ? "sell"
+        : "wait";
+
+
+    const scoreValue =
+        signal.score;
+
+
+    let entryHTML="";
+
+
+    if(
+        signal.status ===
+        "CONFIRMED"
+        &&
+        direction !== "WAIT"
+    ){
+
+        const entry =
+            calculateEntry(
+                direction,
+                m5
+            );
+
+
+        entryHTML = `
+
+        <div class="reason">
+
+            <h3>
+                🎯 Trade Plan
+            </h3>
+
+            <div class="entry-zone">
+
+                ${entry.entryLow.toFixed(2)}
+                →
+                ${entry.entryHigh.toFixed(2)}
+
+            </div>
+
+            <div class="grid">
+
+                <div class="metric">
+
+                    <small>
+                        Stop Loss
+                    </small>
+
+                    <strong>
+                        ${entry.sl.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <small>
+                        TP1
+                    </small>
+
+                    <strong>
+                        ${entry.tp1.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <small>
+                        TP2
+                    </small>
+
+                    <strong>
+                        ${entry.tp2.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <small>
+                        Risk / Reward
+                    </small>
+
+                    <strong>
+                        1:${entry.rr.toFixed(2)}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    }
+
+
+    document.getElementById(
+        "analysis"
+    ).innerHTML = `
+
+    <div class="signal-box">
+
+        <div class="signal-title ${signalClass}">
+
+            ${direction === "BUY"
+                ? "🟢 XAUUSD BUY"
+                : direction === "SELL"
+                ? "🔴 XAUUSD SELL"
+                : "🟡 XAUUSD WAIT"}
+
+        </div>
+
+
+        <div>
+
+            Status:
+            <strong>
+
+                ${signal.status}
+
+            </strong>
+
+        </div>
+
+
+        <div class="score">
+
+            ${scoreValue}/100
+
+        </div>
+
+
+        <div>
+
+            Required:
+            ${signal.threshold}
+
+        </div>
+
+
+        <div class="score-bar">
+
+            <div
+            class="score-fill"
+            style="
+            width:${scoreValue}%;
+            background:
+            ${direction === 'BUY'
+                ? '#22c55e'
+                : direction === 'SELL'
+                ? '#ef4444'
+                : '#fbbf24'};
+            ">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="grid">
+
+        <div class="metric">
+
+            <small>
+                Session
+            </small>
+
+            <strong>
+                ${score.session}
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <small>
+                Latest Price
+            </small>
+
+            <strong>
+                ${m5.latest.close.toFixed(2)}
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <small>
+                H4
+            </small>
+
+            <strong>
+                ${h4.structure}
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <small>
+                H1
+            </small>
+
+            <strong>
+                ${h1.structure}
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <small>
+                M15
+            </small>
+
+            <strong>
+                ${m15.structure}
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <small>
+                M5
+            </small>
+
+            <strong>
+                ${m5.structure}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <br>
+
+
+    <h3>
+        🧠 Confirmation Matrix
+    </h3>
+
+
+    ${renderChecklist(
+        score,
+        m15,
+        m5
+    )}
+
+
+    ${entryHTML}
+
+
+    <div class="reason">
+
+        <strong>
+            🧠 AI Reasoning
+        </strong>
+
+        <br><br>
+
+        ${
+            direction === "BUY"
+            ? score.buyReasons.join(
+                " • "
+            )
+            : direction === "SELL"
+            ? score.sellReasons.join(
+                " • "
+            )
+            : "No directional setup."
+        }
+
+        <br><br>
+
+        ${
+            signal.status ===
+            "WATCH"
+
+            ?
+
+            "⏳ Setup is developing. Wait for stronger confirmation."
+
+            :
+
+            signal.status ===
+            "CONFIRMED"
+
+            ?
+
+            "🚨 Setup passed the current scoring threshold."
+
+            :
+
+            signal.reason
+
+        }
+
+    </div>
+
+
+    ${
+        news
+
+        ?
+
+        `
+
+        <div class="reason">
+
+            🚨
+
+            <strong>
+                HIGH IMPACT USD NEWS
+            </strong>
+
+            <br>
+
+            ${news.title || "Upcoming USD event"}
+
+        </div>
+
+        `
+
+        :
+
+        ""
+
+    }
+
+    `;
+
+}
+
+
+/* =========================================================
+   RENDER DATASET
+========================================================= */
 
 function renderTable(candles){
 
-    let html = `
+    let html=`
+
     <table>
+
         <tr>
-            <th>Time</th>
-            <th>Open</th>
-            <th>High</th>
-            <th>Low</th>
-            <th>Close</th>
+
+            <th>
+                Time
+            </th>
+
+            <th>
+                Open
+            </th>
+
+            <th>
+                High
+            </th>
+
+            <th>
+                Low
+            </th>
+
+            <th>
+                Close
+            </th>
+
         </tr>
+
     `;
 
-    candles.forEach(c => {
-        html += `
+
+    candles.forEach(c=>{
+
+        html+=`
+
         <tr>
-            <td>${c.time}</td>
-            <td>${c.open.toFixed(2)}</td>
-<td>${c.high.toFixed(2)}</td>
-<td>${c.low.toFixed(2)}</td>
-<td>${c.close.toFixed(2)}</td>
+
+            <td>
+                ${c.time}
+            </td>
+
+            <td>
+                ${c.open.toFixed(2)}
+            </td>
+
+            <td>
+                ${c.high.toFixed(2)}
+            </td>
+
+            <td>
+                ${c.low.toFixed(2)}
+            </td>
+
+            <td>
+                ${c.close.toFixed(2)}
+            </td>
+
         </tr>
+
         `;
+
     });
 
-    html += `</table>`;
 
-    document.getElementById("dataset").innerHTML = `
-    <div class="table-wrapper">
-        ${html}
-    </div>
-`;
+    html+=`
+
+    </table>
+
+    `;
+
+
+    document.getElementById(
+        "dataset"
+    ).innerHTML = `
+
+        <div class="table-wrapper">
+
+            ${html}
+
+        </div>
+
+    `;
+
 }
+
+
+/* =========================================================
+   MAIN ENGINE
+========================================================= */
 
 async function runAnalysis(){
 
-    const status = document.getElementById("status");
-    const button = document.querySelector("button");
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    const button =
+        document.getElementById(
+            "runButton"
+        );
+
 
     try{
 
-        button.disabled = true;
-        button.innerText = "LOADING...";
+        button.disabled=true;
 
-        status.innerText = "Loading OHLC data...";
+        button.innerText=
+            "ANALYZING MARKET...";
 
-const [h4Candles, h1Candles, m5Candles] = await Promise.all([
-    getOHLC("4h"),
-    getOHLC("1h"),
-    getOHLC("5min")
-]);
 
-renderTable(m5Candles);
+        status.innerText=
+            "Loading multi-timeframe data...";
 
-const h4 = analyze(h4Candles);
-const h1 = analyze(h1Candles);
-const m5 = analyze(m5Candles);
 
-let finalSignal = "WAIT";
+        const [
 
-// TREND MODE
+            h4Candles,
 
-if(
-    h4.structure === "BULLISH BOS" &&
-    h1.structure === "BULLISH BOS"
-){
-    finalSignal = "BUY";
-}
+            h1Candles,
 
-if(
-    h4.structure === "BEARISH BOS" &&
-    h1.structure === "BEARISH BOS"
-){
-    finalSignal = "SELL";
-}
+            m15Candles,
 
-// RANGE MODE
+            m5Candles,
 
-if(
-    h4.structure === "RANGE" &&
-    h1.structure === "RANGE"
-){
+            news
 
-    if(m5.signal === "BUY RANGE"){
-        finalSignal = "BUY RANGE";
-    }
+        ] = await Promise.all([
 
-    if(m5.signal === "SELL RANGE"){
-        finalSignal = "SELL RANGE";
-    }
+            getOHLC("4h"),
 
-}
-    
-// const highImpactNews = checkHighImpactNews(news);
+            getOHLC("1h"),
 
-// if(highImpactNews){
-//     finalSignal = "PAUSED";
-// }
+            getOHLC("15min"),
 
-const malaysiaHour = new Date().getHours();
+            getOHLC("5min"),
 
-let session = "ASIAN";
+            getNews()
 
-if(malaysiaHour >= 15 && malaysiaHour < 21){
-    session = "LONDON";
-}
+        ]);
 
-if(malaysiaHour >= 20 || malaysiaHour < 1){
-    session = "NEW YORK";
-}
 
-if(session === "ASIAN" && finalSignal !== "PAUSED"){
-    finalSignal = "WAIT";
-}
+        renderTable(
+            m5Candles
+        );
 
-const finalColor =
-    finalSignal === "BUY"
-    ? "buy"
-    : finalSignal === "SELL"
-    ? "sell"
-    : finalSignal === "PAUSED"
-    ? "paused"
-    : "wait";
-        
 
-document.getElementById("analysis").innerHTML = `
+        const h4 =
+            analyzeMarket(
+                h4Candles
+            );
 
-🌍 Session: <b>${session}</b><br><br>
 
-🧠 Market Mode: <b>${m5.marketMode}</b><br><br>
+        const h1 =
+            analyzeMarket(
+                h1Candles
+            );
 
-🕒 H4 Trend: <b>${h4.structure}</b><br><br>
 
-🕒 H1 Structure: <b>${h1.structure}</b><br><br>
+        const m15Base =
+            analyzeMarket(
+                m15Candles
+            );
 
-🕒 M5 Entry: <b>${m5.signal}</b><br><br>
 
-💎 PD Zone: <b>${m5.zone}</b><br>
-⚖️ Equilibrium: <b>${m5.equilibrium.toFixed(2)}</b><br><br>
+        const m15Sweep =
+            detectLiquiditySweep(
+                m15Candles
+            );
 
-🚨 Final Signal:
-<span class="${finalColor}">
-    ${finalSignal}
-</span><br><br>
 
-📊 Latest Price: <b>${m5.latestPrice.toFixed(2)}</b><br><br>
+        const m15Displacement =
+            detectDisplacement(
+                m15Candles
+            );
 
-🧠 Structure: <b>${m5.structure}</b><br><br>
 
-🟡 Midpoint:
-<b>${m5.midpoint ? m5.midpoint.toFixed(2) : "-"}</b><br><br>
+        const m15={
 
-📈 Last Swing High:
-<b>${m5.lastSwingHigh ? m5.lastSwingHigh.price.toFixed(2) : "-"}</b><br>
+            ...m15Base,
 
-📉 Last Swing Low:
-<b>${m5.lastSwingLow ? m5.lastSwingLow.price.toFixed(2) : "-"}</b><br><br>
+            sweep:m15Sweep,
 
-🎯 Entry: ${m5.entry}<br>
-🛑 SL: ${m5.sl}<br>
-💰 TP: ${m5.tp}<br>
-⚖️ R:R = ${m5.rr}<br><br>
+            displacement:
+                m15Displacement
 
-<span class="badge">MTF ENGINE ACTIVE</span>
+        };
 
-`;
-document.getElementById("lastUpdate").innerText =
-    `Last update: ${new Date().toLocaleTimeString("en-MY")}`;
-        status.innerText = "Live data loaded";
 
-    } catch(error){
+        const m5 =
+            detectConfirmation(
+                m5Candles
+            );
+
+
+        const highImpactNews =
+            checkHighImpactNews(
+                news
+            );
+
+
+        const score =
+            calculateScore(
+
+                h4,
+
+                h1,
+
+                m15,
+
+                m5,
+
+                highImpactNews
+
+            );
+
+
+        const mode =
+            document.getElementById(
+                "signalMode"
+            ).value;
+
+
+        const signal =
+            generateSignal(
+
+                score,
+
+                mode,
+
+                highImpactNews
+
+            );
+
+
+        renderAnalysis(
+
+            h4,
+
+            h1,
+
+            m15,
+
+            m5,
+
+            score,
+
+            signal,
+
+            highImpactNews
+
+        );
+
+
+        document.getElementById(
+            "lastUpdate"
+        ).innerText =
+
+            `Last update: ${
+                new Date()
+                .toLocaleTimeString(
+                    "en-MY"
+                )
+            }`;
+
+
+        status.innerText =
+            "Live market analysis complete";
+
+
+    }catch(error){
 
         console.error(error);
 
-        status.innerText = `Error: ${error.message}`;
 
-        alert(error.message);
+        status.innerText =
+            `Error: ${error.message}`;
 
-    } finally {
 
-        button.disabled = false;
-        button.innerText = "LOAD REAL DATA";
+        document.getElementById(
+            "analysis"
+        ).innerHTML = `
+
+            <div class="reason">
+
+                ❌
+
+                <strong>
+                    Engine Error
+                </strong>
+
+                <br><br>
+
+                ${error.message}
+
+            </div>
+
+        `;
+
+
+    }finally{
+
+        button.disabled=false;
+
+        button.innerText=
+            "LOAD REAL DATA";
+
     }
+
 }
 
-setInterval(() => {
-    runAnalysis();
-}, 300000);
+
+/* =========================================================
+   AUTO REFRESH
+========================================================= */
+
+setInterval(
+
+    ()=>{
+
+        runAnalysis();
+
+    },
+
+    300000
+
+);
+
+
+/* =========================================================
+   DATASET TOGGLE
+========================================================= */
 
 function toggleDataset(){
 
-    const wrapper = document.getElementById("datasetWrapper");
-    const button = document.getElementById("toggleDatasetBtn");
+    const wrapper =
+        document.getElementById(
+            "datasetWrapper"
+        );
 
-    wrapper.classList.toggle("hidden");
+
+    const button =
+        document.getElementById(
+            "toggleDatasetBtn"
+        );
+
+
+    wrapper.classList.toggle(
+        "hidden"
+    );
+
 
     button.innerText =
-        wrapper.classList.contains("hidden")
-        ? "Show"
-        : "Hide";
-}
-</script>
-  
-<div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
 
-  <script async src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js">
-  {
-    "autosize": true,
-    "symbol": "OANDA:XAUUSD",
-    "interval": "5",
-    "timezone": "Asia/Kuala_Lumpur",
-    "theme": "dark",
-    "style": "1",
-    "allow_symbol_change": false
-  }
-  </script>
-</div>
-  
+        wrapper.classList.contains(
+            "hidden"
+        )
+
+        ?
+
+        "Show"
+
+        :
+
+        "Hide";
+
+}
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+window.addEventListener(
+    "load",
+    ()=>{
+        runAnalysis();
+    }
+);
+
+</script>
+
 </body>
 </html>
