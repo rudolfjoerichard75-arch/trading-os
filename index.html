@@ -8,7 +8,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Bosque Forex AI v3.0</title>
+<title>Bosque Forex AI v4.0</title>
 
 <style>
 
@@ -17,549 +17,385 @@ content="width=device-width, initial-scale=1.0">
 }
 
 body{
-
     margin:0;
-
-    padding:18px;
-
-    font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
+    padding:16px;
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     background:#050816;
-
     color:#e5e7eb;
 }
 
 .container{
-
     max-width:1500px;
-
     margin:auto;
 }
 
 .card{
-
     background:#111833;
-
     border:1px solid rgba(255,255,255,.08);
-
     border-radius:18px;
-
     padding:18px;
-
     margin-bottom:16px;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.18);
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
 }
 
 /* HEADER */
 
 .header{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     gap:15px;
-
     flex-wrap:wrap;
 }
 
 .logo{
-
-    font-size:24px;
-
-    font-weight:800;
+    font-size:25px;
+    font-weight:900;
 }
 
 .subtitle{
-
-    margin-top:6px;
-
-    color:#9ca3af;
-
-    font-size:14px;
+    margin-top:5px;
+    color:#94a3b8;
+    font-size:13px;
 }
 
 .badges{
-
     display:flex;
-
     gap:8px;
-
     flex-wrap:wrap;
 }
 
 .badge{
-
     display:inline-flex;
-
-    align-items:center;
-
     padding:7px 10px;
-
     border-radius:999px;
-
     background:#1f2937;
-
     color:#cbd5e1;
-
-    font-size:11px;
-
-    font-weight:700;
+    font-size:10px;
+    font-weight:800;
 }
 
 /* CHART */
 
-.chart-card{
-
-    padding:18px;
-}
-
 .chart-title{
-
-    font-size:22px;
-
-    font-weight:800;
-
+    font-size:20px;
+    font-weight:900;
     margin-bottom:14px;
 }
 
 .chart-container{
-
     width:100%;
-
-    height:680px;
-
+    height:700px;
     border-radius:14px;
-
     overflow:hidden;
-
-    background:#0b1024;
+    background:#080d22;
 }
 
 /* CONTROL */
 
 .control-grid{
-
     display:grid;
-
     grid-template-columns:1fr 180px;
-
     gap:12px;
-
-    align-items:end;
 }
 
 label{
-
     display:block;
-
+    color:#94a3b8;
     font-size:12px;
-
-    color:#9ca3af;
-
     margin-bottom:7px;
 }
 
 select{
-
     width:100%;
-
     padding:14px;
-
     border-radius:12px;
-
     border:1px solid rgba(255,255,255,.08);
-
     background:#080d22;
-
     color:#e5e7eb;
-
-    font-size:14px;
 }
 
 button{
-
     width:100%;
-
     padding:14px;
-
     border:none;
-
     border-radius:12px;
-
-    font-weight:800;
-
-    color:white;
-
-    background:
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #22c55e
-    );
-
+    font-weight:900;
+    color:#fff;
+    background:linear-gradient(135deg,#2563eb,#22c55e);
     cursor:pointer;
-
-    transition:.2s;
-}
-
-button:hover{
-
-    transform:translateY(-1px);
-
-    filter:brightness(1.08);
 }
 
 button:disabled{
-
     opacity:.5;
-
     cursor:not-allowed;
-
-    transform:none;
 }
 
 .status{
+    margin-top:13px;
+    font-size:13px;
+}
 
-    margin-top:14px;
-
-    font-size:14px;
-
-    color:#cbd5e1;
+.countdown{
+    margin-top:6px;
+    color:#60a5fa;
+    font-size:12px;
+    font-weight:700;
 }
 
 .last-update{
-
-    margin-top:5px;
-
+    margin-top:4px;
     color:#64748b;
-
-    font-size:12px;
+    font-size:11px;
 }
 
-/* MAIN GRID */
+/* NEW OPPORTUNITY */
+
+.new-opportunity{
+    display:none;
+    padding:13px;
+    border-radius:12px;
+    margin-top:12px;
+    background:rgba(34,197,94,.10);
+    border:1px solid rgba(34,197,94,.30);
+    color:#86efac;
+    font-size:13px;
+    font-weight:800;
+}
+
+.new-opportunity.show{
+    display:block;
+}
+
+/* MAIN */
 
 .main-grid{
-
     display:grid;
-
-    grid-template-columns:
-    minmax(0,1.2fr)
-    minmax(340px,.8fr);
-
+    grid-template-columns:minmax(0,1.2fr) minmax(340px,.8fr);
     gap:16px;
+}
 
-    align-items:start;
+/* SECTION */
+
+.section-title{
+    font-size:18px;
+    font-weight:900;
+    margin-bottom:14px;
+}
+
+/* INFO */
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.info-box{
+    background:#080d22;
+    border-radius:12px;
+    padding:14px;
+}
+
+.info-label{
+    color:#64748b;
+    font-size:11px;
+    margin-bottom:6px;
+}
+
+.info-value{
+    font-size:14px;
+    font-weight:900;
+}
+
+/* TIMEFRAMES */
+
+.timeframe-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.tf-box{
+    background:#080d22;
+    border-radius:12px;
+    padding:13px 8px;
+    text-align:center;
+}
+
+.tf-name{
+    color:#64748b;
+    font-size:11px;
+    margin-bottom:6px;
+}
+
+.tf-value{
+    font-size:12px;
+    font-weight:900;
 }
 
 /* SIGNAL */
 
 .signal-hero{
-
     background:#080d22;
-
-    border:1px solid rgba(255,255,255,.07);
-
     border-radius:16px;
-
-    padding:22px;
-
+    padding:24px;
     text-align:center;
-
-    margin-bottom:14px;
 }
 
 .signal-direction{
-
-    font-size:24px;
-
+    font-size:25px;
     font-weight:900;
-
-    margin-bottom:8px;
 }
 
 .signal-status{
-
-    font-size:15px;
-
+    margin-top:7px;
     color:#cbd5e1;
-
-    margin-bottom:10px;
+    font-size:14px;
 }
 
 .score{
-
-    font-size:42px;
-
+    margin-top:14px;
+    font-size:45px;
     font-weight:900;
-
-    line-height:1;
 }
 
 .required{
-
-    margin-top:7px;
-
-    color:#94a3b8;
-
-    font-size:14px;
+    color:#64748b;
+    font-size:12px;
 }
 
 .progress{
-
     width:100%;
-
     height:9px;
-
-    background:#1e293b;
-
+    margin-top:15px;
     border-radius:999px;
-
+    background:#1e293b;
     overflow:hidden;
-
-    margin-top:16px;
 }
 
 .progress-bar{
-
     height:100%;
-
     width:0%;
-
     border-radius:999px;
-
-    transition:.5s;
+    transition:.4s;
 }
 
-/* INFO GRID */
+/* OPPORTUNITY TYPE */
 
-.info-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
-    gap:10px;
-}
-
-.info-box{
-
+.opportunity-type{
+    padding:16px;
     background:#080d22;
-
-    border-radius:12px;
-
-    padding:14px;
+    border-radius:14px;
+    margin-top:15px;
 }
 
-.info-label{
-
-    color:#94a3b8;
-
-    font-size:12px;
-
-    margin-bottom:5px;
-}
-
-.info-value{
-
-    font-size:14px;
-
-    font-weight:800;
-}
-
-/* INTELLIGENCE */
-
-.section-title{
-
-    font-size:18px;
-
-    font-weight:800;
-
-    margin-bottom:14px;
-}
-
-.timeframe-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
-    gap:8px;
-}
-
-.tf-box{
-
-    background:#080d22;
-
-    border-radius:12px;
-
-    padding:12px;
-
-    text-align:center;
-}
-
-.tf-name{
-
+.opportunity-label{
+    color:#64748b;
     font-size:11px;
-
-    color:#94a3b8;
-
     margin-bottom:6px;
 }
 
-.tf-value{
-
-    font-size:13px;
-
-    font-weight:800;
+.opportunity-name{
+    font-size:20px;
+    font-weight:900;
 }
 
 /* TRADE PLAN */
 
 .trade-plan{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(2,1fr);
-
+    grid-template-columns:repeat(2,1fr);
     gap:10px;
 }
 
 .plan-box{
-
     background:#080d22;
-
-    padding:14px;
-
     border-radius:12px;
+    padding:14px;
 }
 
 .plan-label{
-
+    color:#64748b;
     font-size:11px;
-
-    color:#94a3b8;
-
     margin-bottom:5px;
 }
 
 .plan-value{
-
     font-size:16px;
-
     font-weight:900;
 }
 
-/* REASON */
+/* REASONS */
 
 .reason-list{
-
     display:flex;
-
     flex-direction:column;
-
     gap:8px;
 }
 
 .reason{
-
     background:#080d22;
-
     border-radius:10px;
-
-    padding:11px;
-
+    padding:12px;
     font-size:13px;
 }
 
 /* API */
 
-.api-box{
-
+.api-row{
     display:flex;
-
     justify-content:space-between;
-
-    align-items:center;
-
     gap:10px;
-
     flex-wrap:wrap;
 }
 
-.api-status{
+.api-title{
+    font-weight:900;
+}
 
-    font-size:13px;
-
-    color:#94a3b8;
+.api-detail{
+    color:#64748b;
+    font-size:11px;
+    margin-top:4px;
 }
 
 .green{
-
     color:#22c55e;
 }
 
 .red{
-
     color:#ef4444;
 }
 
 .yellow{
-
     color:#fbbf24;
 }
 
 .orange{
-
     color:#f97316;
 }
 
 .blue{
-
     color:#60a5fa;
 }
 
-/* DISCLAIMER */
-
 .disclaimer{
-
-    font-size:11px;
-
     color:#64748b;
-
+    font-size:10px;
     line-height:1.5;
-
-    margin-top:12px;
+    margin-top:14px;
 }
 
 /* MOBILE */
 
 @media(max-width:991px){
 
-    body{
-
-        padding:12px;
-    }
-
     .chart-container{
-
-        height:560px;
+        height:600px;
     }
 
     .main-grid{
-
         grid-template-columns:1fr;
     }
 
@@ -567,51 +403,38 @@ button:disabled{
 
 @media(max-width:600px){
 
-    .header{
-
-        align-items:flex-start;
+    body{
+        padding:10px;
     }
 
     .logo{
-
         font-size:21px;
     }
 
     .chart-container{
-
         height:520px;
     }
 
     .control-grid{
-
         grid-template-columns:1fr;
     }
 
     .timeframe-grid{
-
-        grid-template-columns:
-        repeat(2,1fr);
-    }
-
-    .info-grid{
-
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:repeat(2,1fr);
     }
 
     .trade-plan{
-
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:repeat(2,1fr);
     }
 
     .signal-direction{
-
         font-size:21px;
     }
 
     .score{
-
-        font-size:38px;
+        font-size:39px;
     }
+
 }
 
 </style>
@@ -622,6 +445,7 @@ button:disabled{
 
 <div class="container">
 
+
 <!-- HEADER -->
 
 <div class="card header">
@@ -629,11 +453,11 @@ button:disabled{
     <div>
 
         <div class="logo">
-            👑 Bosque Forex AI v3.0
+            👑 Bosque Forex AI
         </div>
 
         <div class="subtitle">
-            XAUUSD Real Market Intelligence Engine
+            XAUUSD Market Intelligence & Trade Plan Engine
         </div>
 
     </div>
@@ -641,11 +465,11 @@ button:disabled{
     <div class="badges">
 
         <span class="badge">
-            🧠 MARKET INTELLIGENCE
+            🧠 INTELLIGENCE
         </span>
 
         <span class="badge">
-            🎯 TRADE PLAN
+            🎯 OPPORTUNITY ENGINE
         </span>
 
         <span class="badge">
@@ -659,10 +483,10 @@ button:disabled{
 
 <!-- CHART -->
 
-<div class="card chart-card">
+<div class="card">
 
     <div class="chart-title">
-        📊 XAUUSD Live Chart
+        📈 XAUUSD Live Chart
     </div>
 
     <div class="chart-container">
@@ -715,7 +539,7 @@ button:disabled{
         <div>
 
             <label>
-                Signal Mode
+                Opportunity Sensitivity
             </label>
 
             <select id="signalMode">
@@ -739,10 +563,10 @@ button:disabled{
         <div>
 
             <button
-            id="loadButton"
+            id="scanButton"
             onclick="runAnalysis(true)">
 
-                LOAD REAL DATA
+                ⚡ SCAN NOW
 
             </button>
 
@@ -750,19 +574,39 @@ button:disabled{
 
     </div>
 
+
     <div
     id="status"
     class="status">
 
-        Ready
+        🟢 Initialising Bosque Forex AI...
 
     </div>
+
+
+    <div
+    id="countdown"
+    class="countdown">
+
+        ⏱ Next scan: -
+
+    </div>
+
 
     <div
     id="lastUpdate"
     class="last-update">
 
-        Last update: -
+        Last scan: -
+
+    </div>
+
+
+    <div
+    id="newOpportunity"
+    class="new-opportunity">
+
+        🚨 NEW VALID OPPORTUNITY DETECTED
 
     </div>
 
@@ -774,7 +618,7 @@ button:disabled{
 <div class="main-grid">
 
 
-<!-- LEFT -->
+<!-- LEFT COLUMN -->
 
 <div>
 
@@ -786,6 +630,7 @@ button:disabled{
         <div class="section-title">
             🧠 Market Intelligence
         </div>
+
 
         <div class="info-grid">
 
@@ -805,6 +650,7 @@ button:disabled{
 
             </div>
 
+
             <div class="info-box">
 
                 <div class="info-label">
@@ -821,6 +667,7 @@ button:disabled{
 
             </div>
 
+
             <div class="info-box">
 
                 <div class="info-label">
@@ -836,6 +683,7 @@ button:disabled{
                 </div>
 
             </div>
+
 
             <div class="info-box">
 
@@ -855,13 +703,14 @@ button:disabled{
 
         </div>
 
+
         <br>
 
+
         <div class="section-title">
-
             Multi-Timeframe Structure
-
         </div>
+
 
         <div
         id="timeframes"
@@ -886,13 +735,15 @@ button:disabled{
 
             </div>
 
+
             <div
             id="signalStatus"
             class="signal-status">
 
-                Market analysis pending
+                Waiting for market data
 
             </div>
+
 
             <div
             id="score"
@@ -902,6 +753,7 @@ button:disabled{
 
             </div>
 
+
             <div
             id="required"
             class="required">
@@ -909,6 +761,7 @@ button:disabled{
                 Required: 60
 
             </div>
+
 
             <div class="progress">
 
@@ -922,13 +775,35 @@ button:disabled{
         </div>
 
 
+        <!-- OPPORTUNITY TYPE -->
+
+        <div
+        class="opportunity-type">
+
+            <div class="opportunity-label">
+                OPPORTUNITY TYPE
+            </div>
+
+            <div
+            id="opportunityType"
+            class="opportunity-name">
+
+                NO VALID OPPORTUNITY
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
         <!-- TRADE PLAN -->
 
         <div class="section-title">
-
             🎯 Trade Plan
-
         </div>
+
 
         <div
         id="tradePlan"
@@ -943,10 +818,9 @@ button:disabled{
         <!-- CONFIRMATION -->
 
         <div class="section-title">
-
-            🔎 Confirmation
-
+            🔎 Confirmation Required
         </div>
+
 
         <div
         id="confirmation"
@@ -959,20 +833,19 @@ button:disabled{
 </div>
 
 
-<!-- RIGHT -->
+<!-- RIGHT COLUMN -->
 
 <div>
 
 
-    <!-- OPPORTUNITY -->
+    <!-- OPPORTUNITY INTELLIGENCE -->
 
     <div class="card">
 
         <div class="section-title">
-
             🎯 Opportunity Intelligence
-
         </div>
+
 
         <div
         id="opportunity"
@@ -983,15 +856,14 @@ button:disabled{
     </div>
 
 
-    <!-- REASONS -->
+    <!-- WHY -->
 
     <div class="card">
 
         <div class="section-title">
-
             🧠 Why This Setup?
-
         </div>
+
 
         <div
         id="reasons"
@@ -1007,36 +879,37 @@ button:disabled{
     <div class="card">
 
         <div class="section-title">
-
             ⚡ API Smart Engine
-
         </div>
 
-        <div class="api-box">
+
+        <div class="api-row">
 
             <div>
 
                 <div
                 id="apiStatus"
-                class="green">
+                class="api-title green">
 
                     🟢 API READY
 
                 </div>
 
+
                 <div
                 id="apiDetail"
-                class="api-status">
+                class="api-detail">
 
-                    Cached M5 data will be reused.
+                    Waiting for data...
 
                 </div>
 
             </div>
 
+
             <div
             id="apiRequests"
-            class="api-status">
+            class="api-detail">
 
                 Requests: 0
 
@@ -1044,12 +917,13 @@ button:disabled{
 
         </div>
 
+
         <div class="disclaimer">
 
-            Bosque Forex AI calculates market intelligence
-            locally from received OHLC data. This is an
-            analytical tool, not financial advice. Always
-            confirm entries manually before trading.
+            Bosque Forex AI is an analytical tool.
+            Signal scores and trade plans are generated
+            from rule-based market analysis and should
+            always be manually confirmed before trading.
 
         </div>
 
@@ -1065,99 +939,133 @@ button:disabled{
 <script>
 
 /* =========================================================
-   BOSQUE FOREX AI v3.0
-   API SMART ARCHITECTURE
+   BOSQUE FOREX AI v4.0
 ========================================================= */
 
 
 /*
- IMPORTANT:
+==========================================================
+ IMPORTANT
+==========================================================
 
- Replace this with your NEW Twelve Data API key.
+Paste your NEW Twelve Data API key here.
 
- Do not publish your production API key publicly.
-
+==========================================================
 */
-const API_KEY = "067f3165906b4e37ae70360b9659770d";
+
+const API_KEY =
+"YOUR_NEW_TWELVE_DATA_API_KEY";
 
 
-const SYMBOL = "XAU/USD";
+const SYMBOL =
+"XAU/USD";
 
 
 /*
- One M5 request feeds:
+==========================================================
+ AUTO SCAN
+==========================================================
 
- M5
- M15
- H1
- H4
+5 minutes.
 
- locally.
+The first request happens when the website loads.
 
- This dramatically reduces API calls.
+Manual SCAN NOW forces fresh data.
+
+==========================================================
 */
 
-
-const REFRESH_MS = 120000;
+const AUTO_SCAN_MS =
+5 * 60 * 1000;
 
 
 /*
- Cache lifetime.
+==========================================================
+ CACHE
 
- M5:
- 2 minutes
-
- Higher timeframe data are derived
- from the same M5 dataset.
+We keep a short cache so repeated manual analysis
+doesn't unnecessarily consume API credits.
+==========================================================
 */
 
-const CACHE_KEY = "bosque_xauusd_m5_cache_v3";
+const CACHE_KEY =
+"bosque_xauusd_cache_v4";
 
-const REQUEST_KEY = "bosque_api_requests_v3";
+
+const REQUEST_KEY =
+"bosque_request_count_v4";
 
 
 let apiRequests =
-    Number(
-        localStorage.getItem(REQUEST_KEY) || 0
-    );
+Number(
+    localStorage.getItem(
+        REQUEST_KEY
+    ) || 0
+);
 
 
-document.getElementById("apiRequests").innerText =
-    `Requests: ${apiRequests}`;
+let lastOpportunityKey =
+localStorage.getItem(
+    "bosque_last_opportunity_v4"
+) || "";
+
+
+let m5CandlesGlobal = [];
+
+
+let nextScanTime =
+Date.now() + AUTO_SCAN_MS;
 
 
 /* =========================================================
-   TIME HELPERS
+   INITIAL UI
 ========================================================= */
 
-function getMalaysiaHour(){
+document.getElementById(
+    "apiRequests"
+).innerText =
+`Requests: ${apiRequests}`;
 
-    return new Date().getHours();
 
-}
-
+/* =========================================================
+   MALAYSIA SESSION
+========================================================= */
 
 function getSession(){
 
-    const hour = getMalaysiaHour();
+    const hour =
+    new Date().getHours();
 
-    if(hour >= 8 && hour < 15){
+
+    if(
+        hour >= 8 &&
+        hour < 15
+    ){
 
         return "ASIAN";
 
     }
 
-    if(hour >= 15 && hour < 20){
+
+    if(
+        hour >= 15 &&
+        hour < 20
+    ){
 
         return "LONDON";
 
     }
 
-    if(hour >= 20 || hour < 1){
+
+    if(
+        hour >= 20 ||
+        hour < 1
+    ){
 
         return "NEW YORK";
 
     }
+
 
     return "ASIAN";
 
@@ -1165,31 +1073,65 @@ function getSession(){
 
 
 /* =========================================================
-   FETCH M5 DATA
+   CACHE
 ========================================================= */
 
-async function getM5Data(force = false){
+function getCachedData(){
 
-    const cached =
-        JSON.parse(
-            localStorage.getItem(CACHE_KEY) || "null"
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(
+                CACHE_KEY
+            ) || "null"
         );
 
+    }
 
-    const now = Date.now();
+    catch{
 
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   FETCH REAL M5 DATA
+========================================================= */
+
+async function getM5Data(
+    force = false
+){
+
+    const cached =
+    getCachedData();
+
+
+    const now =
+    Date.now();
+
+
+    /*
+    Cache for 90 seconds.
+
+    This protects the API if user presses
+    SCAN NOW repeatedly.
+    */
 
     if(
         !force &&
         cached &&
         cached.timestamp &&
-        now - cached.timestamp < REFRESH_MS
+        now - cached.timestamp < 90000
     ){
 
         updateAPIStatus(
             "🟢 CACHE ACTIVE",
-            "Using cached market data — no API request."
+            "Using recent M5 data — no API credit used."
         );
+
 
         return cached.data;
 
@@ -1198,35 +1140,51 @@ async function getM5Data(force = false){
 
     if(
         !API_KEY ||
-        API_KEY === "a1cca9487dba43d093d97fff64306966"
+        API_KEY ===
+        "067f3165906b4e37ae70360b9659770d"
     ){
 
         throw new Error(
-            "Please insert your new Twelve Data API key."
+            "Please insert your Twelve Data API key first."
         );
 
     }
 
 
     updateAPIStatus(
-        "🟡 API REQUEST",
-        "Fetching fresh M5 market data..."
+        "🟡 FETCHING",
+        "Requesting fresh XAUUSD M5 data..."
     );
 
 
+    /*
+    500 M5 candles ≈ 41 hours.
+
+    Enough data to construct:
+
+    M5
+    M15
+    H1
+    H4
+
+    locally.
+    */
+
     const url =
-        `https://api.twelvedata.com/time_series` +
-        `?symbol=${encodeURIComponent(SYMBOL)}` +
-        `&interval=5min` +
-        `&outputsize=300` +
-        `&apikey=${API_KEY}`;
+    `https://api.twelvedata.com/time_series` +
+    `?symbol=${encodeURIComponent(SYMBOL)}` +
+    `&interval=5min` +
+    `&outputsize=500` +
+    `&apikey=${API_KEY}`;
 
 
     const response =
-        await fetch(url);
+    await fetch(url);
 
 
-    if(!response.ok){
+    if(
+        !response.ok
+    ){
 
         throw new Error(
             `HTTP ${response.status}`
@@ -1236,19 +1194,27 @@ async function getM5Data(force = false){
 
 
     const data =
-        await response.json();
+    await response.json();
 
 
-    if(data.status === "error"){
+    if(
+        data.status === "error"
+    ){
 
         throw new Error(
-            data.message || "Twelve Data error"
+            data.message ||
+            "Twelve Data API error"
         );
 
     }
 
 
-    if(!data.values){
+    if(
+        !data.values ||
+        !Array.isArray(
+            data.values
+        )
+    ){
 
         throw new Error(
             "No OHLC data received."
@@ -1258,48 +1224,74 @@ async function getM5Data(force = false){
 
 
     const candles =
-        data.values
-        .map(c => ({
+    data.values
+    .map(
+        candle => ({
 
             time:
-                new Date(
-                    c.datetime
-                ).getTime(),
+            new Date(
+                candle.datetime
+            ).getTime(),
 
             open:
-                Number(c.open),
+            Number(
+                candle.open
+            ),
 
             high:
-                Number(c.high),
+            Number(
+                candle.high
+            ),
 
             low:
-                Number(c.low),
+            Number(
+                candle.low
+            ),
 
             close:
-                Number(c.close)
+            Number(
+                candle.close
+            )
 
-        }))
-        .sort(
-            (a,b) => a.time - b.time
-        );
+        })
+    )
+    .filter(
+        c =>
+        Number.isFinite(
+            c.open
+        ) &&
+        Number.isFinite(
+            c.high
+        ) &&
+        Number.isFinite(
+            c.low
+        ) &&
+        Number.isFinite(
+            c.close
+        )
+    )
+    .sort(
+        (a,b) =>
+        a.time - b.time
+    );
 
 
     localStorage.setItem(
-
         CACHE_KEY,
-
         JSON.stringify({
 
-            timestamp: now,
+            timestamp:
+            now,
 
-            data: candles
+            data:
+            candles
 
         })
-
     );
 
 
     apiRequests++;
+
 
     localStorage.setItem(
         REQUEST_KEY,
@@ -1307,13 +1299,15 @@ async function getM5Data(force = false){
     );
 
 
-    document.getElementById("apiRequests").innerText =
-        `Requests: ${apiRequests}`;
+    document.getElementById(
+        "apiRequests"
+    ).innerText =
+    `Requests: ${apiRequests}`;
 
 
     updateAPIStatus(
         "🟢 FRESH DATA",
-        "1 API request used. All timeframes calculated locally."
+        "1 API request used. Timeframes calculated locally."
     );
 
 
@@ -1331,20 +1325,52 @@ function updateAPIStatus(
     detail
 ){
 
+    const status =
     document.getElementById(
         "apiStatus"
-    ).innerText = title;
+    );
+
+
+    status.innerText =
+    title;
 
 
     document.getElementById(
         "apiDetail"
-    ).innerText = detail;
+    ).innerText =
+    detail;
+
+
+    if(
+        title.includes("ERROR")
+    ){
+
+        status.className =
+        "api-title red";
+
+    }
+
+    else if(
+        title.includes("FETCHING")
+    ){
+
+        status.className =
+        "api-title yellow";
+
+    }
+
+    else{
+
+        status.className =
+        "api-title green";
+
+    }
 
 }
 
 
 /* =========================================================
-   AGGREGATE TIMEFRAMES
+   AGGREGATE CANDLES
 ========================================================= */
 
 function aggregateCandles(
@@ -1353,82 +1379,100 @@ function aggregateCandles(
 ){
 
     const bucket =
-        minutes * 60 * 1000;
+    minutes *
+    60 *
+    1000;
 
 
     const groups = {};
 
 
-    candles.forEach(c => {
+    candles.forEach(
+        candle => {
 
-        const key =
+            const key =
             Math.floor(
-                c.time / bucket
+                candle.time /
+                bucket
             ) * bucket;
 
 
-        if(!groups[key]){
+            if(
+                !groups[key]
+            ){
 
-            groups[key] = [];
+                groups[key] = [];
+
+            }
+
+
+            groups[key].push(
+                candle
+            );
 
         }
+    );
 
 
-        groups[key].push(c);
-
-    });
-
-
-    return Object.keys(groups)
-
-        .sort(
-            (a,b) =>
-                Number(a) - Number(b)
-        )
-
-        .map(key => {
+    return Object.keys(
+        groups
+    )
+    .sort(
+        (a,b) =>
+        Number(a) -
+        Number(b)
+    )
+    .map(
+        key => {
 
             const arr =
-                groups[key];
+            groups[key];
 
 
             return {
 
                 time:
-                    Number(key),
+                Number(key),
 
                 open:
-                    arr[0].open,
+                arr[0].open,
 
                 high:
-                    Math.max(
-                        ...arr.map(
-                            x => x.high
-                        )
-                    ),
+                Math.max(
+                    ...arr.map(
+                        c =>
+                        c.high
+                    )
+                ),
 
                 low:
-                    Math.min(
-                        ...arr.map(
-                            x => x.low
-                        )
-                    ),
+                Math.min(
+                    ...arr.map(
+                        c =>
+                        c.low
+                    )
+                ),
 
                 close:
-                    arr[arr.length - 1].close
+                arr[
+                    arr.length - 1
+                ].close
 
             };
 
-        });
+        }
+    );
 
 }
 
 
 /* =========================================================
-   SWING DETECTION
+   SWINGS
 ========================================================= */
 
-function getSwings(candles){
+function getSwings(
+    candles
+){
 
     const highs = [];
 
@@ -1441,58 +1485,66 @@ function getSwings(candles){
         i++
     ){
 
-        const c =
-            candles[i];
+        const current =
+        candles[i];
 
 
         const swingHigh =
-            c.high >
-            candles[i-1].high &&
+        current.high >
+        candles[i-1].high &&
 
-            c.high >
-            candles[i-2].high &&
+        current.high >
+        candles[i-2].high &&
 
-            c.high >
-            candles[i+1].high &&
+        current.high >
+        candles[i+1].high &&
 
-            c.high >
-            candles[i+2].high;
+        current.high >
+        candles[i+2].high;
 
 
         const swingLow =
-            c.low <
-            candles[i-1].low &&
+        current.low <
+        candles[i-1].low &&
 
-            c.low <
-            candles[i-2].low &&
+        current.low <
+        candles[i-2].low &&
 
-            c.low <
-            candles[i+1].low &&
+        current.low <
+        candles[i+1].low &&
 
-            c.low <
-            candles[i+2].low;
+        current.low <
+        candles[i+2].low;
 
 
-        if(swingHigh){
+        if(
+            swingHigh
+        ){
 
             highs.push({
 
-                price:c.high,
+                price:
+                current.high,
 
-                time:c.time
+                time:
+                current.time
 
             });
 
         }
 
 
-        if(swingLow){
+        if(
+            swingLow
+        ){
 
             lows.push({
 
-                price:c.low,
+                price:
+                current.low,
 
-                time:c.time
+                time:
+                current.time
 
             });
 
@@ -1502,31 +1554,35 @@ function getSwings(candles){
 
 
     return {
-
         highs,
-
         lows
-
     };
 
 }
 
 
 /* =========================================================
-   MARKET STRUCTURE
+   STRUCTURE
 ========================================================= */
 
-function analyzeStructure(candles){
+function analyzeStructure(
+    candles
+){
 
-    if(candles.length < 10){
+    if(
+        candles.length < 12
+    ){
 
         return {
 
-            structure:"INSUFFICIENT DATA",
+            trend:
+            "NEUTRAL",
 
-            trend:"NEUTRAL",
+            structure:
+            "INSUFFICIENT DATA",
 
-            swings:{
+            swings:
+            {
                 highs:[],
                 lows:[]
             }
@@ -1537,78 +1593,80 @@ function analyzeStructure(candles){
 
 
     const swings =
-        getSwings(candles);
+    getSwings(
+        candles
+    );
 
 
     const latest =
-        candles[candles.length - 1];
-
-
-    const previous =
-        candles[candles.length - 2];
+    candles[
+        candles.length - 1
+    ];
 
 
     const lastHigh =
-        swings.highs[
-            swings.highs.length - 1
-        ];
+    swings.highs[
+        swings.highs.length - 1
+    ];
 
 
-    const previousHigh =
-        swings.highs[
-            swings.highs.length - 2
-        ];
+    const prevHigh =
+    swings.highs[
+        swings.highs.length - 2
+    ];
 
 
     const lastLow =
-        swings.lows[
-            swings.lows.length - 1
-        ];
+    swings.lows[
+        swings.lows.length - 1
+    ];
 
 
-    const previousLow =
-        swings.lows[
-            swings.lows.length - 2
-        ];
+    const prevLow =
+    swings.lows[
+        swings.lows.length - 2
+    ];
 
 
     let trend =
-        "NEUTRAL";
+    "NEUTRAL";
 
 
     let structure =
-        "RANGE";
+    "RANGE";
 
 
     if(
         lastHigh &&
-        previousHigh &&
+        prevHigh &&
         lastLow &&
-        previousLow
+        prevLow
     ){
 
         if(
             lastHigh.price >
-            previousHigh.price &&
+            prevHigh.price &&
 
             lastLow.price >
-            previousLow.price
+            prevLow.price
         ){
 
-            trend = "BULLISH";
+            trend =
+            "BULLISH";
 
         }
 
 
         if(
             lastHigh.price <
-            previousHigh.price &&
+            prevHigh.price &&
 
             lastLow.price <
-            previousLow.price
+            prevLow.price
         ){
 
-            trend = "BEARISH";
+            trend =
+            "BEARISH";
 
         }
 
@@ -1621,11 +1679,11 @@ function analyzeStructure(candles){
         lastHigh.price
     ){
 
-        structure =
-            "BULLISH BOS";
-
         trend =
-            "BULLISH";
+        "BULLISH";
+
+        structure =
+        "BULLISH BOS";
 
     }
 
@@ -1636,20 +1694,20 @@ function analyzeStructure(candles){
         lastLow.price
     ){
 
-        structure =
-            "BEARISH BOS";
-
         trend =
-            "BEARISH";
+        "BEARISH";
+
+        structure =
+        "BEARISH BOS";
 
     }
 
 
     return {
 
-        structure,
-
         trend,
+
+        structure,
 
         swings
 
@@ -1659,39 +1717,43 @@ function analyzeStructure(candles){
 
 
 /* =========================================================
-   PD ZONE
+   PREMIUM / DISCOUNT
 ========================================================= */
 
-function getPDZone(candles){
+function getPDZone(
+    candles
+){
 
     const recent =
-        candles.slice(-60);
+    candles.slice(-60);
 
 
     const high =
-        Math.max(
-            ...recent.map(
-                c => c.high
-            )
-        );
+    Math.max(
+        ...recent.map(
+            c =>
+            c.high
+        )
+    );
 
 
     const low =
-        Math.min(
-            ...recent.map(
-                c => c.low
-            )
-        );
+    Math.min(
+        ...recent.map(
+            c =>
+            c.low
+        )
+    );
 
 
-    const midpoint =
-        (high + low) / 2;
+    const equilibrium =
+    (high + low) / 2;
 
 
-    const price =
-        candles[
-            candles.length - 1
-        ].close;
+    const latest =
+    candles[
+        candles.length - 1
+    ];
 
 
     return {
@@ -1700,12 +1762,13 @@ function getPDZone(candles){
 
         low,
 
-        midpoint,
+        equilibrium,
 
         zone:
-            price < midpoint
-            ? "DISCOUNT"
-            : "PREMIUM"
+        latest.close <
+        equilibrium
+        ? "DISCOUNT"
+        : "PREMIUM"
 
     };
 
@@ -1713,70 +1776,103 @@ function getPDZone(candles){
 
 
 /* =========================================================
-   LIQUIDITY
+   LIQUIDITY SWEEP
 ========================================================= */
 
-function detectLiquidity(candles){
+function detectLiquidity(
+    candles
+){
 
     const recent =
-        candles.slice(-30);
+    candles.slice(-25);
 
 
-    const high =
-        Math.max(
-            ...recent.map(
-                c => c.high
-            )
-        );
+    if(
+        recent.length < 5
+    ){
 
+        return "NEUTRAL";
 
-    const low =
-        Math.min(
-            ...recent.map(
-                c => c.low
-            )
-        );
-
-
-    const latest =
-        candles[
-            candles.length - 1
-        ];
+    }
 
 
     const previous =
-        candles[
-            candles.length - 2
-        ];
+    recent[
+        recent.length - 2
+    ];
 
 
-    let liquidity =
-        "NEUTRAL";
+    const latest =
+    recent[
+        recent.length - 1
+    ];
 
+
+    const previousHigh =
+    Math.max(
+        ...recent
+        .slice(
+            0,
+            recent.length - 2
+        )
+        .map(
+            c =>
+            c.high
+        )
+    );
+
+
+    const previousLow =
+    Math.min(
+        ...recent
+        .slice(
+            0,
+            recent.length - 2
+        )
+        .map(
+            c =>
+            c.low
+        )
+    );
+
+
+    /*
+    Price swept previous low
+    but closed back above it.
+    */
 
     if(
-        previous.low <= low &&
-        latest.close > previous.low
+        previous.low <=
+        previousLow &&
+
+        latest.close >
+        previous.low
     ){
 
-        liquidity =
-            "SELL-SIDE SWEEP";
+        return "SELL-SIDE SWEEP";
 
     }
 
 
+    /*
+    Price swept previous high
+    but closed back below it.
+    */
+
     if(
-        previous.high >= high &&
-        latest.close < previous.high
+        previous.high >=
+        previousHigh &&
+
+        latest.close <
+        previous.high
     ){
 
-        liquidity =
-            "BUY-SIDE SWEEP";
+        return "BUY-SIDE SWEEP";
 
     }
 
 
-    return liquidity;
+    return "NEUTRAL";
 
 }
 
@@ -1785,32 +1881,46 @@ function detectLiquidity(candles){
    MOMENTUM
 ========================================================= */
 
-function getMomentum(candles){
+function getMomentum(
+    candles
+){
 
     const recent =
-        candles.slice(-6);
+    candles.slice(-6);
 
 
-    let bullish = 0;
+    let bullish =
+    0;
 
-    let bearish = 0;
+
+    let bearish =
+    0;
 
 
-    recent.forEach(c => {
+    recent.forEach(
+        candle => {
 
-        if(c.close > c.open){
+            if(
+                candle.close >
+                candle.open
+            ){
 
-            bullish++;
+                bullish++;
+
+            }
+
+
+            if(
+                candle.close <
+                candle.open
+            ){
+
+                bearish++;
+
+            }
 
         }
-
-        if(c.close < c.open){
-
-            bearish++;
-
-        }
-
-    });
+    );
 
 
     if(
@@ -1837,7 +1947,257 @@ function getMomentum(candles){
 
 
 /* =========================================================
-   OPPORTUNITY ENGINE
+   DISPLACEMENT
+========================================================= */
+
+function detectDisplacement(
+    candles
+){
+
+    const recent =
+    candles.slice(-6);
+
+
+    if(
+        recent.length < 4
+    ){
+
+        return "NONE";
+
+    }
+
+
+    const ranges =
+    recent.map(
+        c =>
+        c.high -
+        c.low
+    );
+
+
+    const average =
+    ranges
+    .slice(
+        0,
+        ranges.length - 1
+    )
+    .reduce(
+        (a,b) =>
+        a + b,
+        0
+    ) /
+    (ranges.length - 1);
+
+
+    const latest =
+    recent[
+        recent.length - 1
+    ];
+
+
+    const latestRange =
+    latest.high -
+    latest.low;
+
+
+    if(
+        latestRange >
+        average * 1.5
+    ){
+
+        if(
+            latest.close >
+            latest.open
+        ){
+
+            return "BULLISH DISPLACEMENT";
+
+        }
+
+
+        if(
+            latest.close <
+            latest.open
+        ){
+
+            return "BEARISH DISPLACEMENT";
+
+        }
+
+    }
+
+
+    return "NONE";
+
+}
+
+
+/* =========================================================
+   OPPORTUNITY TYPE
+========================================================= */
+
+function detectOpportunityType(
+    direction,
+    h4,
+    h1,
+    m15,
+    m5,
+    pd,
+    liquidity,
+    displacement
+){
+
+    /*
+    Priority:
+
+    1. Liquidity reversal
+    2. Breakout
+    3. Pullback
+    4. Range rejection
+    5. Developing setup
+    */
+
+
+    if(
+        direction === "BUY" &&
+
+        liquidity ===
+        "SELL-SIDE SWEEP"
+    ){
+
+        return "💧 LIQUIDITY REVERSAL BUY";
+
+    }
+
+
+    if(
+        direction === "SELL" &&
+
+        liquidity ===
+        "BUY-SIDE SWEEP"
+    ){
+
+        return "💧 LIQUIDITY REVERSAL SELL";
+
+    }
+
+
+    if(
+        direction === "BUY" &&
+
+        (
+            h1.structure ===
+            "BULLISH BOS" ||
+
+            m15.structure ===
+            "BULLISH BOS"
+        )
+    ){
+
+        if(
+            displacement ===
+            "BULLISH DISPLACEMENT"
+        ){
+
+            return "🚀 BREAKOUT BUY";
+
+        }
+
+    }
+
+
+    if(
+        direction === "SELL" &&
+
+        (
+            h1.structure ===
+            "BEARISH BOS" ||
+
+            m15.structure ===
+            "BEARISH BOS"
+        )
+    ){
+
+        if(
+            displacement ===
+            "BEARISH DISPLACEMENT"
+        ){
+
+            return "🚀 BREAKOUT SELL";
+
+        }
+
+    }
+
+
+    if(
+        direction === "BUY" &&
+
+        h4.trend ===
+        "BULLISH" &&
+
+        pd.zone ===
+        "DISCOUNT"
+    ){
+
+        return "🎯 PULLBACK BUY";
+
+    }
+
+
+    if(
+        direction === "SELL" &&
+
+        h4.trend ===
+        "BEARISH" &&
+
+        pd.zone ===
+        "PREMIUM"
+    ){
+
+        return "🎯 PULLBACK SELL";
+
+    }
+
+
+    if(
+        direction === "BUY" &&
+        pd.zone ===
+        "DISCOUNT"
+    ){
+
+        return "📦 RANGE REJECTION BUY";
+
+    }
+
+
+    if(
+        direction === "SELL" &&
+        pd.zone ===
+        "PREMIUM"
+    ){
+
+        return "📦 RANGE REJECTION SELL";
+
+    }
+
+
+    if(
+        direction !== "WAIT"
+    ){
+
+        return "👀 DEVELOPING SETUP";
+
+    }
+
+
+    return "NO VALID OPPORTUNITY";
+
+}
+
+
+/* =========================================================
+   SCORE ENGINE
 ========================================================= */
 
 function buildOpportunity(
@@ -1847,35 +2207,47 @@ function buildOpportunity(
     m5
 ){
 
-    let buyScore = 0;
+    let buy =
+    0;
 
-    let sellScore = 0;
+
+    let sell =
+    0;
 
 
-    const reasons = [];
+    const reasons =
+    [];
 
-    const confirmations = [];
+
+    const confirmations =
+    [];
 
 
     /* H4 */
 
-    if(h4.trend === "BULLISH"){
+    if(
+        h4.trend ===
+        "BULLISH"
+    ){
 
-        buyScore += 20;
+        buy += 20;
 
         reasons.push(
-            "H4 structure supports bullish bias."
+            "H4 structure supports bullish direction."
         );
 
     }
 
 
-    if(h4.trend === "BEARISH"){
+    if(
+        h4.trend ===
+        "BEARISH"
+    ){
 
-        sellScore += 20;
+        sell += 20;
 
         reasons.push(
-            "H4 structure supports bearish bias."
+            "H4 structure supports bearish direction."
         );
 
     }
@@ -1883,23 +2255,29 @@ function buildOpportunity(
 
     /* H1 */
 
-    if(h1.trend === "BULLISH"){
+    if(
+        h1.trend ===
+        "BULLISH"
+    ){
 
-        buyScore += 15;
+        buy += 15;
 
         reasons.push(
-            "H1 confirms bullish direction."
+            "H1 confirms bullish bias."
         );
 
     }
 
 
-    if(h1.trend === "BEARISH"){
+    if(
+        h1.trend ===
+        "BEARISH"
+    ){
 
-        sellScore += 15;
+        sell += 15;
 
         reasons.push(
-            "H1 confirms bearish direction."
+            "H1 confirms bearish bias."
         );
 
     }
@@ -1907,9 +2285,12 @@ function buildOpportunity(
 
     /* M15 */
 
-    if(m15.trend === "BULLISH"){
+    if(
+        m15.trend ===
+        "BULLISH"
+    ){
 
-        buyScore += 15;
+        buy += 15;
 
         confirmations.push(
             "M15 bullish structure."
@@ -1918,9 +2299,12 @@ function buildOpportunity(
     }
 
 
-    if(m15.trend === "BEARISH"){
+    if(
+        m15.trend ===
+        "BEARISH"
+    ){
 
-        sellScore += 15;
+        sell += 15;
 
         confirmations.push(
             "M15 bearish structure."
@@ -1931,9 +2315,12 @@ function buildOpportunity(
 
     /* M5 */
 
-    if(m5.trend === "BULLISH"){
+    if(
+        m5.trend ===
+        "BULLISH"
+    ){
 
-        buyScore += 10;
+        buy += 10;
 
         confirmations.push(
             "M5 bullish structure."
@@ -1942,9 +2329,12 @@ function buildOpportunity(
     }
 
 
-    if(m5.trend === "BEARISH"){
+    if(
+        m5.trend ===
+        "BEARISH"
+    ){
 
-        sellScore += 10;
+        sell += 10;
 
         confirmations.push(
             "M5 bearish structure."
@@ -1953,35 +2343,37 @@ function buildOpportunity(
     }
 
 
+    const pd =
+    getPDZone(
+        m5CandlesGlobal
+    );
+
+
     /* PD */
 
-    const pd =
-        getPDZone(
-            m5CandlesGlobal
-        );
-
-
     if(
-        pd.zone === "DISCOUNT"
+        pd.zone ===
+        "DISCOUNT"
     ){
 
-        buyScore += 10;
+        buy += 10;
 
         confirmations.push(
-            "Price is in discount."
+            "Price is located in discount."
         );
 
     }
 
 
     if(
-        pd.zone === "PREMIUM"
+        pd.zone ===
+        "PREMIUM"
     ){
 
-        sellScore += 10;
+        sell += 10;
 
         confirmations.push(
-            "Price is in premium."
+            "Price is located in premium."
         );
 
     }
@@ -1990,9 +2382,9 @@ function buildOpportunity(
     /* LIQUIDITY */
 
     const liquidity =
-        detectLiquidity(
-            m5CandlesGlobal
-        );
+    detectLiquidity(
+        m5CandlesGlobal
+    );
 
 
     if(
@@ -2000,10 +2392,14 @@ function buildOpportunity(
         "SELL-SIDE SWEEP"
     ){
 
-        buyScore += 15;
+        buy += 15;
 
         reasons.push(
             "Sell-side liquidity sweep detected."
+        );
+
+        confirmations.push(
+            "M5 reclaimed liquidity."
         );
 
     }
@@ -2014,10 +2410,14 @@ function buildOpportunity(
         "BUY-SIDE SWEEP"
     ){
 
-        sellScore += 15;
+        sell += 15;
 
         reasons.push(
             "Buy-side liquidity sweep detected."
+        );
+
+        confirmations.push(
+            "M5 rejected buy-side liquidity."
         );
 
     }
@@ -2026,58 +2426,119 @@ function buildOpportunity(
     /* MOMENTUM */
 
     const momentum =
-        getMomentum(
-            m5CandlesGlobal
-        );
+    getMomentum(
+        m5CandlesGlobal
+    );
 
 
     if(
-        momentum === "BULLISH"
+        momentum ===
+        "BULLISH"
     ){
 
-        buyScore += 10;
+        buy += 10;
+
+        confirmations.push(
+            "Short-term momentum is bullish."
+        );
 
     }
 
 
     if(
-        momentum === "BEARISH"
+        momentum ===
+        "BEARISH"
     ){
 
-        sellScore += 10;
+        sell += 10;
+
+        confirmations.push(
+            "Short-term momentum is bearish."
+        );
+
+    }
+
+
+    /* DISPLACEMENT */
+
+    const displacement =
+    detectDisplacement(
+        m5CandlesGlobal
+    );
+
+
+    if(
+        displacement ===
+        "BULLISH DISPLACEMENT"
+    ){
+
+        buy += 10;
+
+        reasons.push(
+            "Bullish displacement detected."
+        );
+
+    }
+
+
+    if(
+        displacement ===
+        "BEARISH DISPLACEMENT"
+    ){
+
+        sell += 10;
+
+        reasons.push(
+            "Bearish displacement detected."
+        );
 
     }
 
 
     let direction =
-        "WAIT";
+    "WAIT";
 
 
     let score =
-        Math.max(
-            buyScore,
-            sellScore
-        );
+    Math.max(
+        buy,
+        sell
+    );
 
 
     if(
-        buyScore >
-        sellScore
+        buy > sell
     ){
 
         direction =
-            "BUY";
+        "BUY";
 
     }
 
 
-    if(
-        sellScore >
-        buyScore
+    else if(
+        sell > buy
     ){
 
         direction =
-            "SELL";
+        "SELL";
+
+    }
+
+
+    /*
+    If both sides are almost equal,
+    market is conflicting.
+    */
+
+    if(
+        Math.abs(
+            buy - sell
+        ) <= 5
+    ){
+
+        direction =
+        "WAIT";
 
     }
 
@@ -2088,9 +2549,9 @@ function buildOpportunity(
 
         score,
 
-        buyScore,
+        buy,
 
-        sellScore,
+        sell,
 
         reasons,
 
@@ -2100,166 +2561,13 @@ function buildOpportunity(
 
         momentum,
 
+        displacement,
+
         pd
 
     };
 
 }
-
-
-/* =========================================================
-   TRADE PLAN
-========================================================= */
-
-function buildTradePlan(
-    opportunity,
-    candles
-){
-
-    const latest =
-        candles[
-            candles.length - 1
-        ];
-
-
-    const swings =
-        getSwings(candles);
-
-
-    const lastHigh =
-        swings.highs[
-            swings.highs.length - 1
-        ];
-
-
-    const lastLow =
-        swings.lows[
-            swings.lows.length - 1
-        ];
-
-
-    const entry =
-        latest.close;
-
-
-    let sl = null;
-
-    let tp1 = null;
-
-    let tp2 = null;
-
-
-    if(
-        opportunity.direction ===
-        "BUY" &&
-        lastLow
-    ){
-
-        sl =
-            lastLow.price;
-
-
-        const risk =
-            entry - sl;
-
-
-        if(risk > 0){
-
-            tp1 =
-                entry +
-                risk * 1.5;
-
-            tp2 =
-                entry +
-                risk * 2.5;
-
-        }
-
-    }
-
-
-    if(
-        opportunity.direction ===
-        "SELL" &&
-        lastHigh
-    ){
-
-        sl =
-            lastHigh.price;
-
-
-        const risk =
-            sl - entry;
-
-
-        if(risk > 0){
-
-            tp1 =
-                entry -
-                risk * 1.5;
-
-            tp2 =
-                entry -
-                risk * 2.5;
-
-        }
-
-    }
-
-
-    let rr =
-        "-";
-
-
-    if(
-        sl &&
-        tp2
-    ){
-
-        const risk =
-            Math.abs(
-                entry - sl
-            );
-
-
-        const reward =
-            Math.abs(
-                tp2 - entry
-            );
-
-
-        if(risk > 0){
-
-            rr =
-                `1:${(reward / risk).toFixed(1)}`;
-
-        }
-
-    }
-
-
-    return {
-
-        entry,
-
-        sl,
-
-        tp1,
-
-        tp2,
-
-        rr
-
-    };
-
-}
-
-
-/* =========================================================
-   GLOBAL M5 DATA
-========================================================= */
-
-let m5CandlesGlobal = [];
 
 
 /* =========================================================
@@ -2269,13 +2577,14 @@ let m5CandlesGlobal = [];
 function getRequiredScore(){
 
     const mode =
-        document.getElementById(
-            "signalMode"
-        ).value;
+    document.getElementById(
+        "signalMode"
+    ).value;
 
 
     if(
-        mode === "aggressive"
+        mode ===
+        "aggressive"
     ){
 
         return 50;
@@ -2284,7 +2593,8 @@ function getRequiredScore(){
 
 
     if(
-        mode === "conservative"
+        mode ===
+        "conservative"
     ){
 
         return 70;
@@ -2298,7 +2608,7 @@ function getRequiredScore(){
 
 
 /* =========================================================
-   STATUS
+   SIGNAL STATUS
 ========================================================= */
 
 function getSignalStatus(
@@ -2307,11 +2617,12 @@ function getSignalStatus(
 ){
 
     const required =
-        getRequiredScore();
+    getRequiredScore();
 
 
     if(
-        direction === "WAIT"
+        direction ===
+        "WAIT"
     ){
 
         return "NO TRADE";
@@ -2352,6 +2663,171 @@ function getSignalStatus(
 
 
 /* =========================================================
+   TRADE PLAN
+========================================================= */
+
+function buildTradePlan(
+    opportunity,
+    candles
+){
+
+    const latest =
+    candles[
+        candles.length - 1
+    ];
+
+
+    const swings =
+    getSwings(
+        candles
+    );
+
+
+    const lastHigh =
+    swings.highs[
+        swings.highs.length - 1
+    ];
+
+
+    const lastLow =
+    swings.lows[
+        swings.lows.length - 1
+    ];
+
+
+    const entry =
+    latest.close;
+
+
+    let sl =
+    null;
+
+
+    let tp1 =
+    null;
+
+
+    let tp2 =
+    null;
+
+
+    if(
+        opportunity.direction ===
+        "BUY" &&
+        lastLow
+    ){
+
+        sl =
+        lastLow.price;
+
+
+        const risk =
+        entry - sl;
+
+
+        if(
+            risk > 0
+        ){
+
+            tp1 =
+            entry +
+            risk * 1.5;
+
+
+            tp2 =
+            entry +
+            risk * 2.5;
+
+        }
+
+    }
+
+
+    if(
+        opportunity.direction ===
+        "SELL" &&
+        lastHigh
+    ){
+
+        sl =
+        lastHigh.price;
+
+
+        const risk =
+        sl - entry;
+
+
+        if(
+            risk > 0
+        ){
+
+            tp1 =
+            entry -
+            risk * 1.5;
+
+
+            tp2 =
+            entry -
+            risk * 2.5;
+
+        }
+
+    }
+
+
+    let rr =
+    "-";
+
+
+    if(
+        sl !== null &&
+        tp2 !== null
+    ){
+
+        const risk =
+        Math.abs(
+            entry - sl
+        );
+
+
+        const reward =
+        Math.abs(
+            tp2 - entry
+        );
+
+
+        if(
+            risk > 0
+        ){
+
+            rr =
+            `1:${(
+                reward / risk
+            ).toFixed(1)}`;
+
+        }
+
+    }
+
+
+    return {
+
+        entry,
+
+        sl,
+
+        tp1,
+
+        tp2,
+
+        rr
+
+    };
+
+}
+
+
+/* =========================================================
    RENDER TIMEFRAMES
 ========================================================= */
 
@@ -2362,7 +2838,7 @@ function renderTimeframes(
     m5
 ){
 
-    const data = [
+    const list = [
 
         ["H4",h4],
 
@@ -2379,23 +2855,34 @@ function renderTimeframes(
         "timeframes"
     ).innerHTML =
 
-        data.map(
-            ([name,obj]) => `
+    list.map(
+        item => {
 
-            <div class="tf-box">
+            const name =
+            item[0];
 
-                <div class="tf-name">
-                    ${name}
+            const obj =
+            item[1];
+
+
+            return `
+
+                <div class="tf-box">
+
+                    <div class="tf-name">
+                        ${name}
+                    </div>
+
+                    <div class="tf-value">
+                        ${obj.structure}
+                    </div>
+
                 </div>
 
-                <div class="tf-value">
-                    ${obj.structure}
-                </div>
+            `;
 
-            </div>
-
-            `
-        ).join("");
+        }
+    ).join("");
 
 }
 
@@ -2409,12 +2896,27 @@ function renderTradePlan(
     direction
 ){
 
-    const value =
-        x =>
-        x === null ||
-        x === undefined
-        ? "-"
-        : Number(x).toFixed(2);
+    function price(
+        value
+    ){
+
+        if(
+            value ===
+            null ||
+            value ===
+            undefined
+        ){
+
+            return "-";
+
+        }
+
+
+        return Number(
+            value
+        ).toFixed(2);
+
+    }
 
 
     document.getElementById(
@@ -2433,6 +2935,7 @@ function renderTradePlan(
 
         </div>
 
+
         <div class="plan-box">
 
             <div class="plan-label">
@@ -2440,10 +2943,11 @@ function renderTradePlan(
             </div>
 
             <div class="plan-value">
-                ${value(plan.entry)}
+                ${price(plan.entry)}
             </div>
 
         </div>
+
 
         <div class="plan-box">
 
@@ -2452,10 +2956,11 @@ function renderTradePlan(
             </div>
 
             <div class="plan-value">
-                ${value(plan.sl)}
+                ${price(plan.sl)}
             </div>
 
         </div>
+
 
         <div class="plan-box">
 
@@ -2464,10 +2969,11 @@ function renderTradePlan(
             </div>
 
             <div class="plan-value">
-                ${value(plan.tp1)}
+                ${price(plan.tp1)}
             </div>
 
         </div>
+
 
         <div class="plan-box">
 
@@ -2476,10 +2982,11 @@ function renderTradePlan(
             </div>
 
             <div class="plan-value">
-                ${value(plan.tp2)}
+                ${price(plan.tp2)}
             </div>
 
         </div>
+
 
         <div class="plan-box">
 
@@ -2507,45 +3014,49 @@ function renderReasons(
 ){
 
     const reasons =
-        opportunity.reasons.length
-        ? opportunity.reasons
-        : [
-            "No strong confluence detected yet."
-        ];
+    opportunity.reasons.length
+    ? opportunity.reasons
+    : [
+        "No strong confluence detected."
+    ];
 
 
     document.getElementById(
         "reasons"
     ).innerHTML =
 
-        reasons.map(
-            x => `
-                <div class="reason">
-                    🧠 ${x}
-                </div>
-            `
-        ).join("");
+    reasons.map(
+        reason => `
+
+            <div class="reason">
+                🧠 ${reason}
+            </div>
+
+        `
+    ).join("");
 
 
     const confirmations =
-        opportunity.confirmations.length
-        ? opportunity.confirmations
-        : [
-            "Wait for clearer M5 confirmation."
-        ];
+    opportunity.confirmations.length
+    ? opportunity.confirmations
+    : [
+        "Wait for clearer M5 confirmation."
+    ];
 
 
     document.getElementById(
         "confirmation"
     ).innerHTML =
 
-        confirmations.map(
-            x => `
-                <div class="reason">
-                    🔎 ${x}
-                </div>
-            `
-        ).join("");
+    confirmations.map(
+        item => `
+
+            <div class="reason">
+                🔎 ${item}
+            </div>
+
+        `
+    ).join("");
 
 }
 
@@ -2556,18 +3067,17 @@ function renderReasons(
 
 function renderOpportunity(
     opportunity,
-    plan
+    type
 ){
 
     const status =
-        getSignalStatus(
-            opportunity.score,
-            opportunity.direction
-        );
+    getSignalStatus(
+        opportunity.score,
+        opportunity.direction
+    );
 
 
-    let message =
-        "";
+    let message;
 
 
     if(
@@ -2576,7 +3086,7 @@ function renderOpportunity(
     ){
 
         message =
-            "Strong confluence detected. Prepare trade plan and confirm entry.";
+        "Strong confluence detected. Prepare the trade plan and wait for final confirmation.";
 
     }
 
@@ -2586,23 +3096,24 @@ function renderOpportunity(
     ){
 
         message =
-            "Valid opportunity detected. Wait for final entry confirmation.";
+        "Valid opportunity detected. Do not chase. Wait for confirmation.";
 
     }
 
     else if(
-        status === "WATCH"
+        status ===
+        "WATCH"
     ){
 
         message =
-            "Setup is developing. Do not chase the move.";
+        "Setup is developing. Monitor the confirmation area.";
 
     }
 
     else{
 
         message =
-            "Market conditions are not clear enough.";
+        "Market conditions are currently unclear.";
 
     }
 
@@ -2613,15 +3124,30 @@ function renderOpportunity(
 
         <div class="reason">
 
-            🎯 <b>${status}</b>
+            🎯 Status:
+            <b>
+                ${status}
+            </b>
 
         </div>
+
+
+        <div class="reason">
+
+            🧩 Type:
+            <b>
+                ${type}
+            </b>
+
+        </div>
+
 
         <div class="reason">
 
             ${message}
 
         </div>
+
 
         <div class="reason">
 
@@ -2632,6 +3158,7 @@ function renderOpportunity(
 
         </div>
 
+
         <div class="reason">
 
             📈 Momentum:
@@ -2641,16 +3168,126 @@ function renderOpportunity(
 
         </div>
 
+
         <div class="reason">
 
-            ⚖️ PD Zone:
+            ⚡ Displacement:
             <b>
-                ${opportunity.pd.zone}
+                ${opportunity.displacement}
             </b>
 
         </div>
 
     `;
+
+}
+
+
+/* =========================================================
+   OPPORTUNITY KEY
+========================================================= */
+
+function createOpportunityKey(
+    opportunity,
+    type,
+    plan
+){
+
+    return [
+
+        opportunity.direction,
+
+        type,
+
+        Math.floor(
+            opportunity.score / 5
+        ),
+
+        plan.sl
+        ? plan.sl.toFixed(1)
+        : "-"
+
+    ].join("|");
+
+}
+
+
+/* =========================================================
+   NEW OPPORTUNITY DETECTOR
+========================================================= */
+
+function detectNewOpportunity(
+    opportunity,
+    type,
+    plan
+){
+
+    const status =
+    getSignalStatus(
+        opportunity.score,
+        opportunity.direction
+    );
+
+
+    const key =
+    createOpportunityKey(
+        opportunity,
+        type,
+        plan
+    );
+
+
+    const box =
+    document.getElementById(
+        "newOpportunity"
+    );
+
+
+    if(
+        (
+            status ===
+            "VALID OPPORTUNITY" ||
+
+            status ===
+            "HIGH-CONFLUENCE"
+        ) &&
+
+        key !==
+        lastOpportunityKey
+    ){
+
+        box.innerText =
+        `🚨 NEW VALID OPPORTUNITY DETECTED — ${type}`;
+
+
+        box.classList.add(
+            "show"
+        );
+
+
+        lastOpportunityKey =
+        key;
+
+
+        localStorage.setItem(
+            "bosque_last_opportunity_v4",
+            key
+        );
+
+    }
+
+    else{
+
+        /*
+        Keep notification hidden when
+        nothing materially changed.
+        */
+
+        box.classList.remove(
+            "show"
+        );
+
+    }
 
 }
 
@@ -2664,151 +3301,105 @@ async function runAnalysis(
 ){
 
     const button =
-        document.getElementById(
-            "loadButton"
-        );
+    document.getElementById(
+        "scanButton"
+    );
 
 
     const status =
-        document.getElementById(
-            "status"
-        );
+    document.getElementById(
+        "status"
+    );
 
 
     try{
 
-        button.disabled = true;
+        button.disabled =
+        true;
+
 
         button.innerText =
-            "ANALYSING...";
+        "SCANNING...";
 
 
         status.innerText =
-            "Reading XAUUSD market structure...";
-
-
-        /* GET ONE DATASET */
-
-        m5CandlesGlobal =
-            await getM5Data(force);
+        "🧠 Analysing XAUUSD market structure...";
 
 
         /*
-        Build all timeframes locally.
+        ONE API DATASET
+        */
+
+        m5CandlesGlobal =
+        await getM5Data(
+            force
+        );
+
+
+        /*
+        Build higher timeframes
+        locally.
         */
 
         const m15 =
-            aggregateCandles(
-                m5CandlesGlobal,
-                15
-            );
+        aggregateCandles(
+            m5CandlesGlobal,
+            15
+        );
 
 
         const h1 =
-            aggregateCandles(
-                m5CandlesGlobal,
-                60
-            );
+        aggregateCandles(
+            m5CandlesGlobal,
+            60
+        );
 
 
         const h4 =
-            aggregateCandles(
-                m5CandlesGlobal,
-                240
-            );
+        aggregateCandles(
+            m5CandlesGlobal,
+            240
+        );
 
 
         const m5 =
-            m5CandlesGlobal;
+        m5CandlesGlobal;
 
 
-        /* ANALYSE */
+        /*
+        Structure
+        */
 
-        const aM5 =
-            analyzeStructure(m5);
-
-
-        const aM15 =
-            analyzeStructure(m15);
+        const aH4 =
+        analyzeStructure(
+            h4
+        );
 
 
         const aH1 =
-            analyzeStructure(h1);
+        analyzeStructure(
+            h1
+        );
 
 
-        const aH4 =
-            analyzeStructure(h4);
+        const aM15 =
+        analyzeStructure(
+            m15
+        );
 
 
-        /* OPPORTUNITY */
+        const aM5 =
+        analyzeStructure(
+            m5
+        );
+
+
+        /*
+        Opportunity score
+        */
 
         const opportunity =
-            buildOpportunity(
-                aH4,
-                aH1,
-                aM15,
-                aM5
-            );
-
-
-        /* TRADE PLAN */
-
-        const plan =
-            buildTradePlan(
-                opportunity,
-                m5
-            );
-
-
-        /* SCORE */
-
-        const required =
-            getRequiredScore();
-
-
-        const signalStatus =
-            getSignalStatus(
-                opportunity.score,
-                opportunity.direction
-            );
-
-
-        /* RENDER */
-
-        const latest =
-            m5[
-                m5.length - 1
-            ];
-
-
-        document.getElementById(
-            "marketMode"
-        ).innerText =
-
-            opportunity.score >= 60
-            ? "TREND / OPPORTUNITY"
-            : "WAIT / RANGE";
-
-
-        document.getElementById(
-            "session"
-        ).innerText =
-            getSession();
-
-
-        document.getElementById(
-            "latestPrice"
-        ).innerText =
-            latest.close.toFixed(2);
-
-
-        document.getElementById(
-            "pdZone"
-        ).innerText =
-            opportunity.pd.zone;
-
-
-        renderTimeframes(
+        buildOpportunity(
             aH4,
             aH1,
             aM15,
@@ -2816,10 +3407,125 @@ async function runAnalysis(
         );
 
 
-        /* SIGNAL HERO */
+        /*
+        Opportunity type
+        */
+
+        const type =
+        detectOpportunityType(
+
+            opportunity.direction,
+
+            aH4,
+
+            aH1,
+
+            aM15,
+
+            aM5,
+
+            opportunity.pd,
+
+            opportunity.liquidity,
+
+            opportunity.displacement
+
+        );
+
+
+        /*
+        Trade plan
+        */
+
+        const plan =
+        buildTradePlan(
+            opportunity,
+            m5
+        );
+
+
+        /*
+        Latest
+        */
+
+        const latest =
+        m5[
+            m5.length - 1
+        ];
+
+
+        /*
+        Score threshold
+        */
+
+        const required =
+        getRequiredScore();
+
+
+        const signalStatus =
+        getSignalStatus(
+            opportunity.score,
+            opportunity.direction
+        );
+
+
+        /*
+        MARKET INTELLIGENCE
+        */
+
+        document.getElementById(
+            "marketMode"
+        ).innerText =
+
+        opportunity.score >=
+        required
+
+        ? "OPPORTUNITY"
+
+        : "MONITORING";
+
+
+        document.getElementById(
+            "session"
+        ).innerText =
+        getSession();
+
+
+        document.getElementById(
+            "latestPrice"
+        ).innerText =
+        latest.close.toFixed(2);
+
+
+        document.getElementById(
+            "pdZone"
+        ).innerText =
+        opportunity.pd.zone;
+
+
+        /*
+        TIMEFRAMES
+        */
+
+        renderTimeframes(
+
+            aH4,
+
+            aH1,
+
+            aM15,
+
+            aM5
+
+        );
+
+
+        /*
+        SIGNAL
+        */
 
         let emoji =
-            "⚪";
+        "⚪";
 
 
         if(
@@ -2828,7 +3534,7 @@ async function runAnalysis(
         ){
 
             emoji =
-                "🟢";
+            "🟢";
 
         }
 
@@ -2839,47 +3545,54 @@ async function runAnalysis(
         ){
 
             emoji =
-                "🔴";
+            "🔴";
 
         }
 
 
         document.getElementById(
             "signalDirection"
-        ).innerHTML =
+        ).innerText =
 
-            `${emoji} XAUUSD ${opportunity.direction}`;
+        `${emoji} XAUUSD ${opportunity.direction}`;
 
 
         document.getElementById(
             "signalStatus"
         ).innerText =
-            `Status: ${signalStatus}`;
+
+        `Status: ${signalStatus}`;
 
 
         document.getElementById(
             "score"
         ).innerText =
-            `${opportunity.score}/100`;
+
+        `${opportunity.score}/100`;
 
 
         document.getElementById(
             "required"
         ).innerText =
-            `Required: ${required}`;
+
+        `Required: ${required}`;
 
 
-        const bar =
-            document.getElementById(
-                "progressBar"
-            );
+        /*
+        SCORE BAR
+        */
+
+        const progress =
+        document.getElementById(
+            "progressBar"
+        );
 
 
-        bar.style.width =
-            `${Math.min(
-                opportunity.score,
-                100
-            )}%`;
+        progress.style.width =
+        `${Math.min(
+            opportunity.score,
+            100
+        )}%`;
 
 
         if(
@@ -2887,8 +3600,8 @@ async function runAnalysis(
             "BUY"
         ){
 
-            bar.style.background =
-                "#22c55e";
+            progress.style.background =
+            "#22c55e";
 
         }
 
@@ -2897,18 +3610,32 @@ async function runAnalysis(
             "SELL"
         ){
 
-            bar.style.background =
-                "#ef4444";
+            progress.style.background =
+            "#ef4444";
 
         }
 
         else{
 
-            bar.style.background =
-                "#fbbf24";
+            progress.style.background =
+            "#fbbf24";
 
         }
 
+
+        /*
+        OPPORTUNITY TYPE
+        */
+
+        document.getElementById(
+            "opportunityType"
+        ).innerText =
+        type;
+
+
+        /*
+        TRADE PLAN
+        */
 
         renderTradePlan(
             plan,
@@ -2916,64 +3643,89 @@ async function runAnalysis(
         );
 
 
+        /*
+        REASONS
+        */
+
         renderReasons(
             opportunity
         );
 
 
+        /*
+        OPPORTUNITY PANEL
+        */
+
         renderOpportunity(
             opportunity,
+            type
+        );
+
+
+        /*
+        NEW OPPORTUNITY
+        */
+
+        detectNewOpportunity(
+            opportunity,
+            type,
             plan
         );
+
+
+        /*
+        TIMERS
+        */
+
+        nextScanTime =
+        Date.now() +
+        AUTO_SCAN_MS;
 
 
         document.getElementById(
             "lastUpdate"
         ).innerText =
 
-            `Last update: ${
-                new Date()
-                .toLocaleTimeString(
-                    "en-MY"
-                )
-            }`;
+        `Last scan: ${
+            new Date()
+            .toLocaleTimeString(
+                "en-MY"
+            )
+        }`;
 
 
         status.innerText =
-            "Live market analysis complete";
+        "🟢 Market intelligence updated";
 
 
     }
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         status.innerText =
-            `Error: ${error.message}`;
+        `🔴 Error: ${error.message}`;
 
 
-        document.getElementById(
-            "apiStatus"
-        ).innerText =
-            "🔴 API ERROR";
-
-
-        document.getElementById(
-            "apiDetail"
-        ).innerText =
-            error.message;
+        updateAPIStatus(
+            "🔴 API ERROR",
+            error.message
+        );
 
     }
 
     finally{
 
         button.disabled =
-            false;
+        false;
+
 
         button.innerText =
-            "LOAD REAL DATA";
+        "⚡ SCAN NOW";
 
     }
 
@@ -2981,29 +3733,73 @@ async function runAnalysis(
 
 
 /* =========================================================
-   AUTO REFRESH
+   AUTO SCAN
 ========================================================= */
-
-/*
- Every 2 minutes.
-
- Because M5 data is cached,
- repeated analysis during the cache
- window will not make another API call.
-*/
 
 setInterval(
     () => {
 
-        runAnalysis(false);
+        runAnalysis(
+            true
+        );
 
     },
-    REFRESH_MS
+
+    AUTO_SCAN_MS
 );
 
 
 /* =========================================================
-   SIGNAL MODE CHANGE
+   COUNTDOWN
+========================================================= */
+
+setInterval(
+    () => {
+
+        const remaining =
+        Math.max(
+            0,
+            nextScanTime -
+            Date.now()
+        );
+
+
+        const totalSeconds =
+        Math.floor(
+            remaining / 1000
+        );
+
+
+        const minutes =
+        Math.floor(
+            totalSeconds / 60
+        );
+
+
+        const seconds =
+        totalSeconds % 60;
+
+
+        document.getElementById(
+            "countdown"
+        ).innerText =
+
+        `⏱ Next auto scan: ${
+            String(minutes)
+            .padStart(2,"0")
+        }:${
+            String(seconds)
+            .padStart(2,"0")
+        }`;
+
+    },
+
+    1000
+);
+
+
+/* =========================================================
+   MODE CHANGE
 ========================================================= */
 
 document.getElementById(
@@ -3016,7 +3812,9 @@ document.getElementById(
             m5CandlesGlobal.length
         ){
 
-            runAnalysis(false);
+            runAnalysis(
+                false
+            );
 
         }
 
@@ -3025,10 +3823,12 @@ document.getElementById(
 
 
 /* =========================================================
-   START
+   INITIAL LOAD
 ========================================================= */
 
-runAnalysis(false);
+runAnalysis(
+    false
+);
 
 </script>
 
