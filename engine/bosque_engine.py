@@ -1,34 +1,33 @@
 import os
 import json
-import math
 import requests
 from datetime import datetime, timezone, timedelta
 
 # ============================================================
-# BOSQUE FOREX AI
-# Production Market Intelligence Engine
+# BOSQUE FOREX AI v2
+# Production Low-Risk / High-Reward Engine
 # XAU/USD
 #
-# FEATURES
-# - Quota-safe: ONE Twelve Data request per scan
+# CORE:
+# - ONE Twelve Data request per scan
 # - M5 real OHLC
-# - Local H1/H4 aggregation from M5
+# - Local H1/H4 aggregation
+# - Closed M5 candle only
 # - Market structure
 # - Swing detection
 # - Premium / Discount
-# - Liquidity sweep detection
-# - Momentum / confirmation
+# - Liquidity sweep
+# - Momentum
+# - Candle confirmation
 # - Opportunity type
-# - 0-100 scoring engine
-# - Entry / SL / TP
-# - Risk:Reward
+# - 0-100 score
+# - LOW-RISK filter: 35-60 pips
+# - HIGH-REWARD filter: TP1 >= 120 pips
+# - Minimum R:R 1:2
+# - Entry / SL / TP1 / TP2 / TP3
 # - Estimated movement in pips
-# - Telegram alert for valid opportunities
-#
-# ENVIRONMENT VARIABLES
-# TWELVEDATA_API_KEY
-# TELEGRAM_BOT_TOKEN
-# TELEGRAM_CHAT_ID
+# - Telegram alert
+# - Anti-spam state tracking
 # ============================================================
 
 
@@ -43,12 +42,23 @@ TWELVEDATA_URL = "https://api.twelvedata.com/time_series"
 M5_INTERVAL = "5min"
 
 # 500 M5 candles ≈ 41 hours
-# Enough to construct H1 and H4 context locally.
 OUTPUT_SIZE = 500
 
+# Minimum signal score
 MIN_SCORE = 70
 
-# Gold pip assumption:
+# ------------------------------------------------------------
+# RISK / REWARD FILTER
+# ------------------------------------------------------------
+
+MIN_RISK_PIPS = 35
+MAX_RISK_PIPS = 60
+
+MIN_TP1_PIPS = 120
+
+MIN_RR = 2.0
+
+# Gold:
 # 1 pip = 0.01 price movement
 PIP_SIZE = 0.01
 
@@ -56,20 +66,35 @@ REQUEST_TIMEOUT = 20
 
 MALAYSIA_TZ = timezone(timedelta(hours=8))
 
+# State file
+STATE_FILE = os.path.join(
+    os.path.dirname(__file__),
+    "state.json"
+)
+
 
 # ============================================================
 # ENVIRONMENT
 # ============================================================
 
-API_KEY = os.getenv("TWELVEDATA_API_KEY", "").strip()
+API_KEY = os.getenv(
+    "TWELVEDATA_API_KEY",
+    ""
+).strip()
 
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+TELEGRAM_BOT_TOKEN = os.getenv(
+    "TELEGRAM_BOT_TOKEN",
+    ""
+).strip()
 
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "").strip()
+TELEGRAM_CHAT_ID = os.getenv(
+    "TELEGRAM_CHAT_ID",
+    ""
+).strip()
 
 
 # ============================================================
-# VALIDATION
+# ENVIRONMENT VALIDATION
 # ============================================================
 
 def validate_environment():
@@ -77,13 +102,19 @@ def validate_environment():
     missing = []
 
     if not API_KEY:
-        missing.append("TWELVEDATA_API_KEY")
+        missing.append(
+            "TWELVEDATA_API_KEY"
+        )
 
     if not TELEGRAM_BOT_TOKEN:
-        missing.append("TELEGRAM_BOT_TOKEN")
+        missing.append(
+            "TELEGRAM_BOT_TOKEN"
+        )
 
     if not TELEGRAM_CHAT_ID:
-        missing.append("TELEGRAM_CHAT_ID")
+        missing.append(
+            "TELEGRAM_CHAT_ID"
+        )
 
     if missing:
 
@@ -99,7 +130,9 @@ def validate_environment():
 
 def malaysia_now():
 
-    return datetime.now(MALAYSIA_TZ)
+    return datetime.now(
+        MALAYSIA_TZ
+    )
 
 
 # ============================================================
@@ -109,14 +142,22 @@ def malaysia_now():
 def get_m5_data():
 
     params = {
+
         "symbol": SYMBOL,
+
         "interval": M5_INTERVAL,
+
         "outputsize": OUTPUT_SIZE,
+
         "apikey": API_KEY,
+
         "format": "JSON"
+
     }
 
-    print("Fetching real XAU/USD M5 data...")
+    print(
+        "Fetching real XAU/USD M5 data..."
+    )
 
     response = requests.get(
         TWELVEDATA_URL,
@@ -127,11 +168,13 @@ def get_m5_data():
     if response.status_code != 200:
 
         raise RuntimeError(
-            f"Twelve Data HTTP {response.status_code}: "
+            f"Twelve Data HTTP "
+            f"{response.status_code}: "
             f"{response.text[:500]}"
         )
 
     try:
+
         data = response.json()
 
     except Exception:
@@ -144,7 +187,12 @@ def get_m5_data():
 
         raise RuntimeError(
             "Twelve Data error: "
-            + str(data.get("message", "Unknown API error"))
+            + str(
+                data.get(
+                    "message",
+                    "Unknown API error"
+                )
+            )
         )
 
     values = data.get("values")
@@ -152,7 +200,7 @@ def get_m5_data():
     if not values:
 
         raise RuntimeError(
-            "No OHLC data received from Twelve Data."
+            "No OHLC data received."
         )
 
     candles = []
@@ -162,11 +210,25 @@ def get_m5_data():
         try:
 
             candles.append({
+
                 "time": item["datetime"],
-                "open": float(item["open"]),
-                "high": float(item["high"]),
-                "low": float(item["low"]),
-                "close": float(item["close"])
+
+                "open": float(
+                    item["open"]
+                ),
+
+                "high": float(
+                    item["high"]
+                ),
+
+                "low": float(
+                    item["low"]
+                ),
+
+                "close": float(
+                    item["close"]
+                )
+
             })
 
         except Exception:
@@ -176,11 +238,13 @@ def get_m5_data():
     if len(candles) < 50:
 
         raise RuntimeError(
-            f"Insufficient OHLC data: {len(candles)} candles."
+            f"Insufficient OHLC data: "
+            f"{len(candles)} candles."
         )
 
-    # Twelve Data normally returns newest first.
-    candles.sort(key=lambda x: x["time"])
+    candles.sort(
+        key=lambda x: x["time"]
+    )
 
     print(
         f"Received {len(candles)} M5 candles."
@@ -190,7 +254,57 @@ def get_m5_data():
 
 
 # ============================================================
-# CANDLE AGGREGATION
+# CLOSED CANDLE FILTER
+# ============================================================
+
+def remove_incomplete_candle(candles):
+
+    if len(candles) < 2:
+
+        return candles
+
+    latest = candles[-1]
+
+    try:
+
+        candle_time = parse_time(
+            latest["time"]
+        )
+
+        # Normalize timezone
+        if candle_time.tzinfo is None:
+
+            candle_time = candle_time.replace(
+                tzinfo=timezone.utc
+            )
+
+        now_utc = datetime.now(
+            timezone.utc
+        )
+
+        elapsed = (
+            now_utc - candle_time
+        ).total_seconds()
+
+        # A M5 candle needs 5 minutes.
+        # Keep it only when safely closed.
+        if elapsed < 300:
+
+            print(
+                "Removing incomplete M5 candle."
+            )
+
+            return candles[:-1]
+
+    except Exception:
+
+        pass
+
+    return candles
+
+
+# ============================================================
+# TIME PARSER
 # ============================================================
 
 def parse_time(value):
@@ -198,7 +312,10 @@ def parse_time(value):
     try:
 
         return datetime.fromisoformat(
-            value.replace("Z", "+00:00")
+            value.replace(
+                "Z",
+                "+00:00"
+            )
         )
 
     except Exception:
@@ -209,7 +326,14 @@ def parse_time(value):
         )
 
 
-def aggregate_candles(candles, minutes):
+# ============================================================
+# CANDLE AGGREGATION
+# ============================================================
+
+def aggregate_candles(
+    candles,
+    minutes
+):
 
     if not candles:
 
@@ -219,7 +343,9 @@ def aggregate_candles(candles, minutes):
 
     for candle in candles:
 
-        dt = parse_time(candle["time"])
+        dt = parse_time(
+            candle["time"]
+        )
 
         if minutes == 60:
 
@@ -231,7 +357,9 @@ def aggregate_candles(candles, minutes):
 
         elif minutes == 240:
 
-            hour_block = (dt.hour // 4) * 4
+            hour_block = (
+                dt.hour // 4
+            ) * 4
 
             bucket = dt.replace(
                 hour=hour_block,
@@ -250,11 +378,15 @@ def aggregate_candles(candles, minutes):
 
             groups[key] = []
 
-        groups[key].append(candle)
+        groups[key].append(
+            candle
+        )
 
     result = []
 
-    for key in sorted(groups.keys()):
+    for key in sorted(
+        groups.keys()
+    ):
 
         group = groups[key]
 
@@ -269,11 +401,13 @@ def aggregate_candles(candles, minutes):
             "open": group[0]["open"],
 
             "high": max(
-                c["high"] for c in group
+                c["high"]
+                for c in group
             ),
 
             "low": min(
-                c["low"] for c in group
+                c["low"]
+                for c in group
             ),
 
             "close": group[-1]["close"]
@@ -287,14 +421,23 @@ def aggregate_candles(candles, minutes):
 # SWING DETECTION
 # ============================================================
 
-def detect_swings(candles, left=2, right=2):
+def detect_swings(
+    candles,
+    left=2,
+    right=2
+):
 
     swing_highs = []
     swing_lows = []
 
-    if len(candles) < left + right + 1:
+    if len(candles) < (
+        left + right + 1
+    ):
 
-        return swing_highs, swing_lows
+        return (
+            swing_highs,
+            swing_lows
+        )
 
     for i in range(
         left,
@@ -312,51 +455,83 @@ def detect_swings(candles, left=2, right=2):
         ):
 
             if j == i:
+
                 continue
 
-            if current["high"] <= candles[j]["high"]:
+            if (
+                current["high"]
+                <= candles[j]["high"]
+            ):
+
                 high_ok = False
 
-            if current["low"] >= candles[j]["low"]:
+            if (
+                current["low"]
+                >= candles[j]["low"]
+            ):
+
                 low_ok = False
 
         if high_ok:
 
             swing_highs.append({
-                "price": current["high"],
-                "time": current["time"]
+
+                "price":
+                    current["high"],
+
+                "time":
+                    current["time"]
+
             })
 
         if low_ok:
 
             swing_lows.append({
-                "price": current["low"],
-                "time": current["time"]
+
+                "price":
+                    current["low"],
+
+                "time":
+                    current["time"]
+
             })
 
-    return swing_highs, swing_lows
+    return (
+        swing_highs,
+        swing_lows
+    )
 
 
 # ============================================================
 # ATR
 # ============================================================
 
-def calculate_atr(candles, period=14):
+def calculate_atr(
+    candles,
+    period=14
+):
 
-    if len(candles) < period + 1:
+    if len(candles) < (
+        period + 1
+    ):
 
         return None
 
     true_ranges = []
 
-    for i in range(1, len(candles)):
+    for i in range(
+        1,
+        len(candles)
+    ):
 
         current = candles[i]
+
         previous = candles[i - 1]
 
         tr = max(
 
-            current["high"] - current["low"],
+            current["high"]
+            - current["low"],
 
             abs(
                 current["high"]
@@ -390,14 +565,23 @@ def analyze_structure(candles):
     if len(candles) < 20:
 
         return {
+
             "structure": "RANGE",
+
             "trend": "NEUTRAL",
+
             "last_high": None,
-            "last_low": None
+
+            "last_low": None,
+
+            "swing_highs": [],
+
+            "swing_lows": []
+
         }
 
-    swing_highs, swing_lows = detect_swings(
-        candles
+    swing_highs, swing_lows = (
+        detect_swings(candles)
     )
 
     latest = candles[-1]
@@ -415,32 +599,52 @@ def analyze_structure(candles):
     )
 
     structure = "RANGE"
+
     trend = "NEUTRAL"
 
-    if last_high and latest["close"] > last_high["price"]:
+    if (
+        last_high
+        and latest["close"]
+        > last_high["price"]
+    ):
 
         structure = "BULLISH BOS"
+
         trend = "BULLISH"
 
-    elif last_low and latest["close"] < last_low["price"]:
+    elif (
+        last_low
+        and latest["close"]
+        < last_low["price"]
+    ):
 
         structure = "BEARISH BOS"
+
         trend = "BEARISH"
 
     else:
 
-        # Determine trend from recent closes
         recent = candles[-10:]
 
-        first_close = recent[0]["close"]
-        last_close = recent[-1]["close"]
+        first_close = (
+            recent[0]["close"]
+        )
 
-        movement = last_close - first_close
+        last_close = (
+            recent[-1]["close"]
+        )
+
+        movement = (
+            last_close
+            - first_close
+        )
 
         if movement > 0:
+
             trend = "BULLISH"
 
         elif movement < 0:
+
             trend = "BEARISH"
 
     return {
@@ -469,11 +673,13 @@ def calculate_pd_zone(candles):
     recent = candles[-50:]
 
     high = max(
-        c["high"] for c in recent
+        c["high"]
+        for c in recent
     )
 
     low = min(
-        c["low"] for c in recent
+        c["low"]
+        for c in recent
     )
 
     equilibrium = (
@@ -495,51 +701,65 @@ def calculate_pd_zone(candles):
         zone = "EQUILIBRIUM"
 
     return {
+
         "high": high,
+
         "low": low,
-        "equilibrium": equilibrium,
+
+        "equilibrium":
+            equilibrium,
+
         "zone": zone
+
     }
 
 
 # ============================================================
-# LIQUIDITY DETECTION
+# LIQUIDITY SWEEP
 # ============================================================
 
-def detect_liquidity_sweep(candles):
+def detect_liquidity_sweep(
+    candles
+):
 
     if len(candles) < 10:
 
         return "NONE"
 
-    recent = candles[-8:]
-
     previous = candles[-9:-3]
 
     previous_high = max(
-        c["high"] for c in previous
+        c["high"]
+        for c in previous
     )
 
     previous_low = min(
-        c["low"] for c in previous
+        c["low"]
+        for c in previous
     )
 
     latest = candles[-1]
 
-    # Bullish liquidity sweep
-    # Price takes previous low then closes back above.
+    # SELL-SIDE LIQUIDITY TAKEN
+    # Potential bullish reversal
     if (
-        latest["low"] < previous_low
-        and latest["close"] > previous_low
+        latest["low"]
+        < previous_low
+
+        and latest["close"]
+        > previous_low
     ):
 
         return "SELL_SIDE_SWEEP"
 
-    # Bearish liquidity sweep
-    # Price takes previous high then closes back below.
+    # BUY-SIDE LIQUIDITY TAKEN
+    # Potential bearish reversal
     if (
-        latest["high"] > previous_high
-        and latest["close"] < previous_high
+        latest["high"]
+        > previous_high
+
+        and latest["close"]
+        < previous_high
     ):
 
         return "BUY_SIDE_SWEEP"
@@ -551,7 +771,9 @@ def detect_liquidity_sweep(candles):
 # MOMENTUM
 # ============================================================
 
-def calculate_momentum(candles):
+def calculate_momentum(
+    candles
+):
 
     if len(candles) < 6:
 
@@ -564,11 +786,17 @@ def calculate_momentum(candles):
 
     for candle in recent:
 
-        if candle["close"] > candle["open"]:
+        if (
+            candle["close"]
+            > candle["open"]
+        ):
 
             bullish += 1
 
-        elif candle["close"] < candle["open"]:
+        elif (
+            candle["close"]
+            < candle["open"]
+        ):
 
             bearish += 1
 
@@ -587,17 +815,21 @@ def calculate_momentum(candles):
 # CANDLE CONFIRMATION
 # ============================================================
 
-def candle_confirmation(candles):
+def candle_confirmation(
+    candles
+):
 
     if len(candles) < 3:
 
         return "NONE"
 
     previous = candles[-2]
+
     latest = candles[-1]
 
     latest_body = abs(
-        latest["close"] - latest["open"]
+        latest["close"]
+        - latest["open"]
     )
 
     latest_range = (
@@ -614,20 +846,28 @@ def candle_confirmation(candles):
         / latest_range
     )
 
-    # Bullish confirmation
+    # BULLISH
     if (
-        latest["close"] > latest["open"]
+        latest["close"]
+        > latest["open"]
+
         and body_ratio >= 0.55
-        and latest["close"] > previous["high"]
+
+        and latest["close"]
+        > previous["high"]
     ):
 
         return "BULLISH"
 
-    # Bearish confirmation
+    # BEARISH
     if (
-        latest["close"] < latest["open"]
+        latest["close"]
+        < latest["open"]
+
         and body_ratio >= 0.55
-        and latest["close"] < previous["low"]
+
+        and latest["close"]
+        < previous["low"]
     ):
 
         return "BEARISH"
@@ -675,10 +915,17 @@ def determine_opportunity(
     confirmation
 ):
 
+    # --------------------------------------------------------
+    # PULLBACK
+    # --------------------------------------------------------
+
     if (
         h4["trend"] == "BULLISH"
+
         and h1["trend"] == "BULLISH"
+
         and pd["zone"] == "DISCOUNT"
+
         and confirmation == "BULLISH"
     ):
 
@@ -686,15 +933,23 @@ def determine_opportunity(
 
     if (
         h4["trend"] == "BEARISH"
+
         and h1["trend"] == "BEARISH"
+
         and pd["zone"] == "PREMIUM"
+
         and confirmation == "BEARISH"
     ):
 
         return "SELL PULLBACK"
 
+    # --------------------------------------------------------
+    # LIQUIDITY SWEEP
+    # --------------------------------------------------------
+
     if (
         sweep == "SELL_SIDE_SWEEP"
+
         and confirmation == "BULLISH"
     ):
 
@@ -702,20 +957,29 @@ def determine_opportunity(
 
     if (
         sweep == "BUY_SIDE_SWEEP"
+
         and confirmation == "BEARISH"
     ):
 
         return "SELL LIQUIDITY SWEEP"
 
+    # --------------------------------------------------------
+    # BREAKOUT
+    # --------------------------------------------------------
+
     if (
-        m5["structure"] == "BULLISH BOS"
+        m5["structure"]
+        == "BULLISH BOS"
+
         and confirmation == "BULLISH"
     ):
 
         return "BUY BREAKOUT"
 
     if (
-        m5["structure"] == "BEARISH BOS"
+        m5["structure"]
+        == "BEARISH BOS"
+
         and confirmation == "BEARISH"
     ):
 
@@ -745,12 +1009,13 @@ def calculate_score(
     reasons_sell = []
 
     # --------------------------------------------------------
-    # H4 TREND
+    # H4
     # --------------------------------------------------------
 
     if h4["trend"] == "BULLISH":
 
         buy_score += 20
+
         reasons_buy.append(
             "H4 bullish context"
         )
@@ -758,17 +1023,19 @@ def calculate_score(
     elif h4["trend"] == "BEARISH":
 
         sell_score += 20
+
         reasons_sell.append(
             "H4 bearish context"
         )
 
     # --------------------------------------------------------
-    # H1 TREND
+    # H1
     # --------------------------------------------------------
 
     if h1["trend"] == "BULLISH":
 
         buy_score += 20
+
         reasons_buy.append(
             "H1 bullish context"
         )
@@ -776,6 +1043,7 @@ def calculate_score(
     elif h1["trend"] == "BEARISH":
 
         sell_score += 20
+
         reasons_sell.append(
             "H1 bearish context"
         )
@@ -784,27 +1052,36 @@ def calculate_score(
     # M5 STRUCTURE
     # --------------------------------------------------------
 
-    if m5["structure"] == "BULLISH BOS":
+    if (
+        m5["structure"]
+        == "BULLISH BOS"
+    ):
 
         buy_score += 15
+
         reasons_buy.append(
             "M5 bullish BOS"
         )
 
-    elif m5["structure"] == "BEARISH BOS":
+    elif (
+        m5["structure"]
+        == "BEARISH BOS"
+    ):
 
         sell_score += 15
+
         reasons_sell.append(
             "M5 bearish BOS"
         )
 
     # --------------------------------------------------------
-    # PD ZONE
+    # PD
     # --------------------------------------------------------
 
     if pd["zone"] == "DISCOUNT":
 
         buy_score += 10
+
         reasons_buy.append(
             "Price in discount"
         )
@@ -812,6 +1089,7 @@ def calculate_score(
     elif pd["zone"] == "PREMIUM":
 
         sell_score += 10
+
         reasons_sell.append(
             "Price in premium"
         )
@@ -823,6 +1101,7 @@ def calculate_score(
     if sweep == "SELL_SIDE_SWEEP":
 
         buy_score += 15
+
         reasons_buy.append(
             "Sell-side liquidity sweep"
         )
@@ -830,6 +1109,7 @@ def calculate_score(
     elif sweep == "BUY_SIDE_SWEEP":
 
         sell_score += 15
+
         reasons_sell.append(
             "Buy-side liquidity sweep"
         )
@@ -841,6 +1121,7 @@ def calculate_score(
     if momentum == "BULLISH":
 
         buy_score += 10
+
         reasons_buy.append(
             "Bullish momentum"
         )
@@ -848,6 +1129,7 @@ def calculate_score(
     elif momentum == "BEARISH":
 
         sell_score += 10
+
         reasons_sell.append(
             "Bearish momentum"
         )
@@ -859,6 +1141,7 @@ def calculate_score(
     if confirmation == "BULLISH":
 
         buy_score += 10
+
         reasons_buy.append(
             "Bullish candle confirmation"
         )
@@ -866,12 +1149,13 @@ def calculate_score(
     elif confirmation == "BEARISH":
 
         sell_score += 10
+
         reasons_sell.append(
             "Bearish candle confirmation"
         )
 
     # --------------------------------------------------------
-    # FINAL DIRECTION
+    # FINAL
     # --------------------------------------------------------
 
     if buy_score > sell_score:
@@ -885,7 +1169,8 @@ def calculate_score(
                 100
             ),
 
-            "reasons": reasons_buy
+            "reasons":
+                reasons_buy
 
         }
 
@@ -900,7 +1185,8 @@ def calculate_score(
                 100
             ),
 
-            "reasons": reasons_sell
+            "reasons":
+                reasons_sell
 
         }
 
@@ -921,7 +1207,6 @@ def calculate_score(
 
 def create_trade_plan(
     direction,
-    score,
     candles,
     m5_analysis
 ):
@@ -935,81 +1220,184 @@ def create_trade_plan(
 
     if atr is None:
 
-        atr = (
-            max(
-                c["high"] - c["low"]
-                for c in candles[-10:]
-            )
+        recent_ranges = [
+
+            c["high"] - c["low"]
+
+            for c in candles[-10:]
+
+        ]
+
+        atr = sum(
+            recent_ranges
+        ) / len(
+            recent_ranges
         )
 
-    swing_highs = m5_analysis.get(
-        "swing_highs",
-        []
+    swing_highs = (
+        m5_analysis.get(
+            "swing_highs",
+            []
+        )
     )
 
-    swing_lows = m5_analysis.get(
-        "swing_lows",
-        []
+    swing_lows = (
+        m5_analysis.get(
+            "swing_lows",
+            []
+        )
     )
 
     last_swing_high = (
+
         swing_highs[-1]["price"]
+
         if swing_highs
+
         else None
+
     )
 
     last_swing_low = (
+
         swing_lows[-1]["price"]
+
         if swing_lows
+
         else None
+
     )
 
-    # --------------------------------------------------------
+    # ========================================================
     # BUY
-    # --------------------------------------------------------
+    # ========================================================
 
     if direction == "BUY":
 
         entry = latest
 
+        # ----------------------------------------------------
+        # Structural SL
+        # ----------------------------------------------------
+
+        structural_sl = None
+
         if last_swing_low:
 
-            structural_sl = last_swing_low
+            structural_sl = (
+                last_swing_low
+            )
 
-            atr_sl = (
+        # ----------------------------------------------------
+        # ATR candidate
+        # ----------------------------------------------------
+
+        atr_sl = (
+            entry
+            - atr * 1.0
+        )
+
+        # ----------------------------------------------------
+        # Candidate selection
+        #
+        # We want SL BELOW entry.
+        # We also require 35-60 pips.
+        # ----------------------------------------------------
+
+        candidates = []
+
+        if structural_sl:
+
+            candidates.append(
+                structural_sl
+            )
+
+        candidates.append(
+            atr_sl
+        )
+
+        valid_sl = []
+
+        for sl_candidate in candidates:
+
+            risk = (
                 entry
-                - atr * 1.20
+                - sl_candidate
             )
 
-            sl = min(
-                structural_sl,
-                atr_sl
+            risk_pips = (
+                risk / PIP_SIZE
             )
 
-        else:
+            if (
+                MIN_RISK_PIPS
+                <= risk_pips
+                <= MAX_RISK_PIPS
+            ):
 
-            sl = (
-                entry
-                - atr * 1.20
-            )
+                valid_sl.append(
+                    (
+                        risk_pips,
+                        sl_candidate
+                    )
+                )
 
-        risk = entry - sl
-
-        if risk <= 0:
+        if not valid_sl:
 
             return None
 
-        tp1 = entry + (
-            risk * 1.5
+        # Prefer the tightest valid SL.
+        valid_sl.sort(
+            key=lambda x: x[0]
+        )
+
+        risk_pips, sl = (
+            valid_sl[0]
+        )
+
+        risk = (
+            entry - sl
+        )
+
+        # ----------------------------------------------------
+        # Reward
+        # ----------------------------------------------------
+
+        tp1 = entry + max(
+            risk * MIN_RR,
+            MIN_TP1_PIPS * PIP_SIZE
         )
 
         tp2 = entry + (
-            risk * 2.0
+            risk * 3.0
         )
 
         tp3 = entry + (
-            risk * 3.0
+            risk * 4.0
         )
+
+        tp1_pips = (
+            tp1 - entry
+        ) / PIP_SIZE
+
+        rr = (
+            tp1 - entry
+        ) / risk
+
+        if (
+            risk_pips < MIN_RISK_PIPS
+            or risk_pips > MAX_RISK_PIPS
+        ):
+
+            return None
+
+        if tp1_pips < MIN_TP1_PIPS:
+
+            return None
+
+        if rr < MIN_RR:
+
+            return None
 
         return {
 
@@ -1027,75 +1415,151 @@ def create_trade_plan(
 
             "risk": risk,
 
-            "rr": "1:2",
+            "risk_pips":
+                risk_pips,
 
-            "pips_to_sl": risk / PIP_SIZE,
+            "rr":
+                rr,
 
-            "pips_to_tp1": (
-                tp1 - entry
-            ) / PIP_SIZE,
+            "pips_to_sl":
+                risk_pips,
 
-            "pips_to_tp2": (
-                tp2 - entry
-            ) / PIP_SIZE,
+            "pips_to_tp1":
+                tp1_pips,
 
-            "pips_to_tp3": (
-                tp3 - entry
-            ) / PIP_SIZE,
+            "pips_to_tp2":
+                (
+                    tp2 - entry
+                ) / PIP_SIZE,
+
+            "pips_to_tp3":
+                (
+                    tp3 - entry
+                ) / PIP_SIZE,
 
             "estimated_range": (
-                risk / PIP_SIZE,
-                (tp3 - entry) / PIP_SIZE
+
+                risk_pips,
+
+                (
+                    tp3 - entry
+                ) / PIP_SIZE
+
             )
 
         }
 
-    # --------------------------------------------------------
+    # ========================================================
     # SELL
-    # --------------------------------------------------------
+    # ========================================================
 
     if direction == "SELL":
 
         entry = latest
 
+        structural_sl = None
+
         if last_swing_high:
 
-            structural_sl = last_swing_high
-
-            atr_sl = (
-                entry
-                + atr * 1.20
+            structural_sl = (
+                last_swing_high
             )
 
-            sl = max(
-                structural_sl,
-                atr_sl
+        atr_sl = (
+            entry
+            + atr * 1.0
+        )
+
+        candidates = []
+
+        if structural_sl:
+
+            candidates.append(
+                structural_sl
             )
 
-        else:
+        candidates.append(
+            atr_sl
+        )
 
-            sl = (
-                entry
-                + atr * 1.20
+        valid_sl = []
+
+        for sl_candidate in candidates:
+
+            risk = (
+                sl_candidate
+                - entry
             )
 
-        risk = sl - entry
+            risk_pips = (
+                risk / PIP_SIZE
+            )
 
-        if risk <= 0:
+            if (
+                MIN_RISK_PIPS
+                <= risk_pips
+                <= MAX_RISK_PIPS
+            ):
+
+                valid_sl.append(
+                    (
+                        risk_pips,
+                        sl_candidate
+                    )
+                )
+
+        if not valid_sl:
 
             return None
 
-        tp1 = entry - (
-            risk * 1.5
+        # Tightest valid SL
+        valid_sl.sort(
+            key=lambda x: x[0]
+        )
+
+        risk_pips, sl = (
+            valid_sl[0]
+        )
+
+        risk = (
+            sl - entry
+        )
+
+        tp1 = entry - max(
+            risk * MIN_RR,
+            MIN_TP1_PIPS * PIP_SIZE
         )
 
         tp2 = entry - (
-            risk * 2.0
+            risk * 3.0
         )
 
         tp3 = entry - (
-            risk * 3.0
+            risk * 4.0
         )
+
+        tp1_pips = (
+            entry - tp1
+        ) / PIP_SIZE
+
+        rr = (
+            entry - tp1
+        ) / risk
+
+        if (
+            risk_pips < MIN_RISK_PIPS
+            or risk_pips > MAX_RISK_PIPS
+        ):
+
+            return None
+
+        if tp1_pips < MIN_TP1_PIPS:
+
+            return None
+
+        if rr < MIN_RR:
+
+            return None
 
         return {
 
@@ -1113,25 +1577,36 @@ def create_trade_plan(
 
             "risk": risk,
 
-            "rr": "1:2",
+            "risk_pips":
+                risk_pips,
 
-            "pips_to_sl": risk / PIP_SIZE,
+            "rr":
+                rr,
 
-            "pips_to_tp1": (
-                entry - tp1
-            ) / PIP_SIZE,
+            "pips_to_sl":
+                risk_pips,
 
-            "pips_to_tp2": (
-                entry - tp2
-            ) / PIP_SIZE,
+            "pips_to_tp1":
+                tp1_pips,
 
-            "pips_to_tp3": (
-                entry - tp3
-            ) / PIP_SIZE,
+            "pips_to_tp2":
+                (
+                    entry - tp2
+                ) / PIP_SIZE,
+
+            "pips_to_tp3":
+                (
+                    entry - tp3
+                ) / PIP_SIZE,
 
             "estimated_range": (
-                risk / PIP_SIZE,
-                (entry - tp3) / PIP_SIZE
+
+                risk_pips,
+
+                (
+                    entry - tp3
+                ) / PIP_SIZE
+
             )
 
         }
@@ -1140,16 +1615,187 @@ def create_trade_plan(
 
 
 # ============================================================
+# STATE
+# ============================================================
+
+def load_state():
+
+    default_state = {
+
+        "last_alert_key": "",
+
+        "last_direction": "",
+
+        "last_score": 0,
+
+        "last_entry": 0,
+
+        "last_alert_time": "",
+
+        "last_opportunity": ""
+
+    }
+
+    if not os.path.exists(
+        STATE_FILE
+    ):
+
+        return default_state
+
+    try:
+
+        with open(
+            STATE_FILE,
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            data = json.load(
+                file
+            )
+
+        if not isinstance(
+            data,
+            dict
+        ):
+
+            return default_state
+
+        for key, value in (
+            default_state.items()
+        ):
+
+            if key not in data:
+
+                data[key] = value
+
+        return data
+
+    except Exception as error:
+
+        print(
+            "State load warning:",
+            error
+        )
+
+        return default_state
+
+
+def save_state(state):
+
+    try:
+
+        os.makedirs(
+            os.path.dirname(
+                STATE_FILE
+            ),
+            exist_ok=True
+        )
+
+        temp_file = (
+            STATE_FILE
+            + ".tmp"
+        )
+
+        with open(
+            temp_file,
+            "w",
+            encoding="utf-8"
+        ) as file:
+
+            json.dump(
+                state,
+                file,
+                indent=2
+            )
+
+        os.replace(
+            temp_file,
+            STATE_FILE
+        )
+
+        print(
+            "Engine state saved."
+        )
+
+    except Exception as error:
+
+        print(
+            "State save warning:",
+            error
+        )
+
+
+# ============================================================
+# ANTI-SPAM
+# ============================================================
+
+def build_alert_key(
+    direction,
+    opportunity,
+    entry,
+    score
+):
+
+    # Entry rounded to 0.10 price.
+    # Prevents tiny price changes from
+    # creating a brand-new alert.
+    entry_bucket = round(
+        entry / 0.10
+    )
+
+    # Score grouped into 5-point blocks.
+    score_bucket = (
+        score // 5
+    )
+
+    return (
+        f"{direction}|"
+        f"{opportunity}|"
+        f"{entry_bucket}|"
+        f"{score_bucket}"
+    )
+
+
+def should_send_alert(
+    state,
+    alert_key
+):
+
+    previous_key = (
+        state.get(
+            "last_alert_key",
+            ""
+        )
+    )
+
+    if previous_key == alert_key:
+
+        print(
+            "Duplicate opportunity."
+        )
+
+        print(
+            "Telegram alert skipped."
+        )
+
+        return False
+
+    return True
+
+
+# ============================================================
 # TELEGRAM
 # ============================================================
 
-def send_telegram(message):
+def send_telegram(
+    message
+):
 
     if not TELEGRAM_BOT_TOKEN:
 
         print(
-            "Telegram token missing. "
-            "Skipping Telegram."
+            "Telegram token missing."
         )
 
         return False
@@ -1157,8 +1803,7 @@ def send_telegram(message):
     if not TELEGRAM_CHAT_ID:
 
         print(
-            "Telegram chat ID missing. "
-            "Skipping Telegram."
+            "Telegram chat ID missing."
         )
 
         return False
@@ -1171,21 +1816,36 @@ def send_telegram(message):
 
     payload = {
 
-        "chat_id": TELEGRAM_CHAT_ID,
+        "chat_id":
+            TELEGRAM_CHAT_ID,
 
-        "text": message,
+        "text":
+            message,
 
-        "parse_mode": "HTML",
+        "parse_mode":
+            "HTML",
 
-        "disable_web_page_preview": True
+        "disable_web_page_preview":
+            True
 
     }
 
-    response = requests.post(
-        url,
-        json=payload,
-        timeout=REQUEST_TIMEOUT
-    )
+    try:
+
+        response = requests.post(
+            url,
+            json=payload,
+            timeout=REQUEST_TIMEOUT
+        )
+
+    except Exception as error:
+
+        print(
+            "Telegram request error:",
+            error
+        )
+
+        return False
 
     if response.status_code != 200:
 
@@ -1204,7 +1864,7 @@ def send_telegram(message):
 
 
 # ============================================================
-# FORMAT TELEGRAM ALERT
+# TELEGRAM FORMAT
 # ============================================================
 
 def format_alert(
@@ -1214,10 +1874,18 @@ def format_alert(
     latest_price,
     plan,
     reasons,
-    pd
+    pd,
+    h4,
+    h1,
+    m5,
+    sweep,
+    momentum,
+    confirmation
 ):
 
-    direction = plan["direction"]
+    direction = plan[
+        "direction"
+    ]
 
     emoji = (
         "🟢"
@@ -1230,14 +1898,19 @@ def format_alert(
     )
 
     reason_text = "\n".join(
+
         f"• {reason}"
+
         for reason in reasons
+
     )
 
     message = f"""
-<b>🚨 BOSQUE FOREX AI</b>
+<b>👑 BOSQUE FOREX AI</b>
 
 {emoji} <b>XAUUSD {direction}</b>
+
+<b>🔥 VALID OPPORTUNITY</b>
 
 <b>Opportunity:</b>
 {opportunity}
@@ -1245,20 +1918,40 @@ def format_alert(
 <b>Score:</b>
 🔥 {score}/100
 
-<b>Status:</b>
-VALID OPPORTUNITY
+━━━━━━━━━━━━━━━━━━
+
+<b>📊 MARKET INTELLIGENCE</b>
+
+Session:
+<b>{session}</b>
+
+Price:
+<b>{latest_price:.2f}</b>
+
+H4:
+<b>{h4["trend"]}</b>
+
+H1:
+<b>{h1["trend"]}</b>
+
+M5:
+<b>{m5["structure"]}</b>
+
+PD Zone:
+<b>{pd["zone"]}</b>
+
+Liquidity:
+<b>{sweep}</b>
+
+Momentum:
+<b>{momentum}</b>
+
+Confirmation:
+<b>{confirmation}</b>
 
 ━━━━━━━━━━━━━━━━━━
 
-<b>📊 MARKET</b>
-
-Session: {session}
-Price: {latest_price:.2f}
-PD Zone: {pd["zone"]}
-
-━━━━━━━━━━━━━━━━━━
-
-<b>🎯 TRADE PLAN</b>
+<b>🎯 LOW-RISK TRADE PLAN</b>
 
 Entry:
 <b>{plan["entry"]:.2f}</b>
@@ -1275,27 +1968,27 @@ TP2:
 TP3:
 <b>{plan["tp3"]:.2f}</b>
 
-R:R:
-<b>{plan["rr"]}</b>
-
 ━━━━━━━━━━━━━━━━━━
 
-<b>📏 ESTIMATED PRICE RANGE</b>
+<b>📏 PIP ANALYSIS</b>
 
 Risk:
 <b>{plan["pips_to_sl"]:.0f} pips</b>
 
 TP1:
-<b>{plan["pips_to_tp1"]:.0f} pips</b>
+<b>+{plan["pips_to_tp1"]:.0f} pips</b>
 
 TP2:
-<b>{plan["pips_to_tp2"]:.0f} pips</b>
+<b>+{plan["pips_to_tp2"]:.0f} pips</b>
 
 TP3:
-<b>{plan["pips_to_tp3"]:.0f} pips</b>
+<b>+{plan["pips_to_tp3"]:.0f} pips</b>
 
-Potential range:
+Potential:
 <b>{low_range:.0f} - {high_range:.0f} pips</b>
+
+R:R:
+<b>1:{plan["rr"]:.2f}</b>
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -1305,8 +1998,19 @@ Potential range:
 
 ━━━━━━━━━━━━━━━━━━
 
+<b>FILTERS PASSED</b>
+
+✅ Score 70+
+✅ Risk 35-60 pips
+✅ TP1 120+ pips
+✅ R:R 1:2+
+✅ Closed M5 candle
+✅ MTF confirmation
+
+━━━━━━━━━━━━━━━━━━
+
 ⚠️ Educational / decision-support engine.
-Always confirm the setup manually before entry.
+Confirm the setup manually before entry.
 
 <b>👑 Bosque Forex AI</b>
 """
@@ -1315,7 +2019,7 @@ Always confirm the setup manually before entry.
 
 
 # ============================================================
-# MAIN ANALYSIS
+# MAIN ENGINE
 # ============================================================
 
 def run_engine():
@@ -1323,60 +2027,82 @@ def run_engine():
     print("=" * 60)
 
     print(
-        "👑 BOSQUE FOREX AI ENGINE"
+        "👑 BOSQUE FOREX AI v2"
     )
 
     print(
-        "XAU/USD Market Intelligence"
+        "LOW-RISK / HIGH-REWARD ENGINE"
     )
 
     print("=" * 60)
 
     validate_environment()
 
-    # --------------------------------------------------------
-    # ONE API CALL ONLY
-    # --------------------------------------------------------
+    # ========================================================
+    # ONE API REQUEST
+    # ========================================================
 
     m5_candles = get_m5_data()
 
-    # --------------------------------------------------------
-    # LOCAL MTF AGGREGATION
-    # --------------------------------------------------------
+    # ========================================================
+    # REMOVE INCOMPLETE CANDLE
+    # ========================================================
 
-    h1_candles = aggregate_candles(
-        m5_candles,
-        60
+    m5_candles = (
+        remove_incomplete_candle(
+            m5_candles
+        )
     )
 
-    h4_candles = aggregate_candles(
-        m5_candles,
-        240
+    if len(m5_candles) < 50:
+
+        raise RuntimeError(
+            "Not enough closed M5 candles."
+        )
+
+    # ========================================================
+    # LOCAL MTF
+    # ========================================================
+
+    h1_candles = (
+        aggregate_candles(
+            m5_candles,
+            60
+        )
+    )
+
+    h4_candles = (
+        aggregate_candles(
+            m5_candles,
+            240
+        )
     )
 
     print(
-        f"H1 candles built: {len(h1_candles)}"
+        f"H1 candles built: "
+        f"{len(h1_candles)}"
     )
 
     print(
-        f"H4 candles built: {len(h4_candles)}"
+        f"H4 candles built: "
+        f"{len(h4_candles)}"
     )
 
     if len(h1_candles) < 10:
 
         raise RuntimeError(
-            "Not enough H1 aggregated data."
+            "Not enough H1 data."
         )
 
     if len(h4_candles) < 5:
 
         raise RuntimeError(
-            "Not enough H4 aggregated data."
+            "Not enough H4 data."
         )
 
-    # --------------------------------------------------------
+    # ========================================================
     # ANALYSIS
-    # --------------------------------------------------------
+    # ========================================================
 
     h4 = analyze_structure(
         h4_candles
@@ -1406,33 +2132,56 @@ def run_engine():
         m5_candles
     )
 
-    # --------------------------------------------------------
+    # ========================================================
     # SCORE
-    # --------------------------------------------------------
+    # ========================================================
 
     scoring = calculate_score(
+
         h4,
+
         h1,
+
         m5,
+
         pd,
+
         sweep,
+
         momentum,
+
         confirmation
+
     )
 
-    direction = scoring["direction"]
+    direction = scoring[
+        "direction"
+    ]
 
-    score = scoring["score"]
+    score = scoring[
+        "score"
+    ]
 
-    reasons = scoring["reasons"]
+    reasons = scoring[
+        "reasons"
+    ]
 
-    opportunity = determine_opportunity(
-        h4,
-        h1,
-        m5,
-        pd,
-        sweep,
-        confirmation
+    opportunity = (
+        determine_opportunity(
+
+            h4,
+
+            h1,
+
+            m5,
+
+            pd,
+
+            sweep,
+
+            confirmation
+
+        )
     )
 
     latest_price = (
@@ -1441,9 +2190,9 @@ def run_engine():
 
     session = get_session()
 
-    # --------------------------------------------------------
-    # CONSOLE OUTPUT
-    # --------------------------------------------------------
+    # ========================================================
+    # CONSOLE
+    # ========================================================
 
     print()
 
@@ -1452,150 +2201,381 @@ def run_engine():
     )
 
     print(
-        f"Latest Price  : {latest_price:.2f}"
+        f"Latest Price  : "
+        f"{latest_price:.2f}"
     )
 
     print(
-        f"H4 Trend      : {h4['trend']}"
+        f"H4 Trend      : "
+        f"{h4['trend']}"
     )
 
     print(
-        f"H4 Structure  : {h4['structure']}"
+        f"H4 Structure  : "
+        f"{h4['structure']}"
     )
 
     print(
-        f"H1 Trend      : {h1['trend']}"
+        f"H1 Trend      : "
+        f"{h1['trend']}"
     )
 
     print(
-        f"H1 Structure  : {h1['structure']}"
+        f"H1 Structure  : "
+        f"{h1['structure']}"
     )
 
     print(
-        f"M5 Trend      : {m5['trend']}"
+        f"M5 Trend      : "
+        f"{m5['trend']}"
     )
 
     print(
-        f"M5 Structure  : {m5['structure']}"
+        f"M5 Structure  : "
+        f"{m5['structure']}"
     )
 
     print(
-        f"PD Zone       : {pd['zone']}"
+        f"PD Zone       : "
+        f"{pd['zone']}"
     )
 
     print(
-        f"Liquidity     : {sweep}"
+        f"Liquidity     : "
+        f"{sweep}"
     )
 
     print(
-        f"Momentum      : {momentum}"
+        f"Momentum      : "
+        f"{momentum}"
     )
 
     print(
-        f"Confirmation  : {confirmation}"
+        f"Confirmation  : "
+        f"{confirmation}"
     )
 
     print(
-        f"Opportunity   : {opportunity}"
+        f"Opportunity   : "
+        f"{opportunity}"
     )
 
     print(
-        f"Score         : {score}/100"
+        f"Score         : "
+        f"{score}/100"
     )
 
-    # --------------------------------------------------------
-    # VALID OPPORTUNITY
-    # --------------------------------------------------------
+    # ========================================================
+    # SCORE FILTER
+    # ========================================================
 
-    if (
-        score >= MIN_SCORE
-        and direction in ["BUY", "SELL"]
-        and opportunity != "NO VALID SETUP"
+    if score < MIN_SCORE:
+
+        print()
+
+        print(
+            "⏳ Score below 70."
+        )
+
+        print(
+            "No Telegram alert."
+        )
+
+        return
+
+    if direction not in [
+        "BUY",
+        "SELL"
+    ]:
+
+        print()
+
+        print(
+            "⏳ Direction invalid."
+        )
+
+        return
+
+    if opportunity == (
+        "NO VALID SETUP"
     ):
 
-        plan = create_trade_plan(
-            direction,
-            score,
-            m5_candles,
-            m5
+        print()
+
+        print(
+            "⏳ No valid opportunity type."
         )
 
-        if not plan:
+        return
 
-            print(
-                "Trade plan could not be generated."
-            )
+    # ========================================================
+    # TRADE PLAN
+    # ========================================================
 
-            return
+    plan = create_trade_plan(
+
+        direction,
+
+        m5_candles,
+
+        m5
+
+    )
+
+    if not plan:
 
         print()
 
         print(
-            "🔥 VALID OPPORTUNITY FOUND"
+            "⛔ Setup rejected."
         )
 
         print(
-            f"Direction : {direction}"
+            "Reason:"
         )
 
         print(
-            f"Score     : {score}/100"
+            f"- Risk must be "
+            f"{MIN_RISK_PIPS}-"
+            f"{MAX_RISK_PIPS} pips"
         )
 
         print(
-            f"Entry     : {plan['entry']:.2f}"
+            f"- TP1 must be "
+            f"{MIN_TP1_PIPS}+ pips"
         )
 
         print(
-            f"SL        : {plan['sl']:.2f}"
-        )
-
-        print(
-            f"TP1       : {plan['tp1']:.2f}"
-        )
-
-        print(
-            f"TP2       : {plan['tp2']:.2f}"
-        )
-
-        print(
-            f"TP3       : {plan['tp3']:.2f}"
-        )
-
-        print(
-            f"Risk      : {plan['pips_to_sl']:.0f} pips"
-        )
-
-        print(
-            f"Potential : "
-            f"{plan['estimated_range'][0]:.0f}"
-            f"-"
-            f"{plan['estimated_range'][1]:.0f}"
-            f" pips"
-        )
-
-        alert = format_alert(
-            score,
-            opportunity,
-            session,
-            latest_price,
-            plan,
-            reasons,
-            pd
-        )
-
-        send_telegram(alert)
-
-    else:
-
-        print()
-
-        print(
-            "⏳ No valid 70+ opportunity."
+            f"- R:R must be "
+            f"1:{MIN_RR:.0f}+"
         )
 
         print(
             "Telegram notification skipped."
+        )
+
+        return
+
+    # ========================================================
+    # FINAL VALIDATION
+    # ========================================================
+
+    risk_pips = (
+        plan["risk_pips"]
+    )
+
+    tp1_pips = (
+        plan["pips_to_tp1"]
+    )
+
+    rr = (
+        plan["rr"]
+    )
+
+    if not (
+        MIN_RISK_PIPS
+        <= risk_pips
+        <= MAX_RISK_PIPS
+    ):
+
+        print(
+            "⛔ Risk filter failed."
+        )
+
+        return
+
+    if tp1_pips < MIN_TP1_PIPS:
+
+        print(
+            "⛔ TP1 filter failed."
+        )
+
+        return
+
+    if rr < MIN_RR:
+
+        print(
+            "⛔ R:R filter failed."
+        )
+
+        return
+
+    # ========================================================
+    # VALID OPPORTUNITY
+    # ========================================================
+
+    print()
+
+    print(
+        "🔥🔥🔥 VALID OPPORTUNITY"
+    )
+
+    print(
+        f"Direction : {direction}"
+    )
+
+    print(
+        f"Score     : {score}/100"
+    )
+
+    print(
+        f"Opportunity: {opportunity}"
+    )
+
+    print(
+        f"Entry     : "
+        f"{plan['entry']:.2f}"
+    )
+
+    print(
+        f"SL        : "
+        f"{plan['sl']:.2f}"
+    )
+
+    print(
+        f"Risk      : "
+        f"{risk_pips:.0f} pips"
+    )
+
+    print(
+        f"TP1       : "
+        f"{plan['tp1']:.2f}"
+    )
+
+    print(
+        f"TP1       : "
+        f"{tp1_pips:.0f} pips"
+    )
+
+    print(
+        f"TP2       : "
+        f"{plan['tp2']:.2f}"
+    )
+
+    print(
+        f"TP3       : "
+        f"{plan['tp3']:.2f}"
+    )
+
+    print(
+        f"R:R       : "
+        f"1:{rr:.2f}"
+    )
+
+    print(
+        f"Potential : "
+        f"{plan['estimated_range'][0]:.0f}"
+        f"-"
+        f"{plan['estimated_range'][1]:.0f}"
+        f" pips"
+    )
+
+    # ========================================================
+    # STATE / ANTI-SPAM
+    # ========================================================
+
+    state = load_state()
+
+    alert_key = build_alert_key(
+
+        direction,
+
+        opportunity,
+
+        plan["entry"],
+
+        score
+
+    )
+
+    if not should_send_alert(
+        state,
+        alert_key
+    ):
+
+        return
+
+    # ========================================================
+    # TELEGRAM
+    # ========================================================
+
+    alert = format_alert(
+
+        score,
+
+        opportunity,
+
+        session,
+
+        latest_price,
+
+        plan,
+
+        reasons,
+
+        pd,
+
+        h4,
+
+        h1,
+
+        m5,
+
+        sweep,
+
+        momentum,
+
+        confirmation
+
+    )
+
+    sent = send_telegram(
+        alert
+    )
+
+    # ========================================================
+    # SAVE STATE ONLY AFTER
+    # SUCCESSFUL TELEGRAM
+    # ========================================================
+
+    if sent:
+
+        state[
+            "last_alert_key"
+        ] = alert_key
+
+        state[
+            "last_direction"
+        ] = direction
+
+        state[
+            "last_score"
+        ] = score
+
+        state[
+            "last_entry"
+        ] = plan["entry"]
+
+        state[
+            "last_alert_time"
+        ] = malaysia_now().isoformat()
+
+        state[
+            "last_opportunity"
+        ] = opportunity
+
+        save_state(
+            state
+        )
+
+    else:
+
+        print(
+            "Telegram failed."
+        )
+
+        print(
+            "State was NOT updated."
         )
 
 
