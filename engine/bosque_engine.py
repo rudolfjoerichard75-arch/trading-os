@@ -3,31 +3,26 @@ import json
 import requests
 from datetime import datetime, timezone, timedelta
 
+
 # ============================================================
-# BOSQUE FOREX AI v2
-# Production Low-Risk / High-Reward Engine
+# BOSQUE FOREX AI v2.1
+# PRODUCTION LOW-RISK / HIGH-REWARD ENGINE
 # XAU/USD
 #
-# CORE:
-# - ONE Twelve Data request per scan
-# - M5 real OHLC
-# - Local H1/H4 aggregation
-# - Closed M5 candle only
-# - Market structure
-# - Swing detection
-# - Premium / Discount
-# - Liquidity sweep
-# - Momentum
-# - Candle confirmation
-# - Opportunity type
-# - 0-100 score
-# - LOW-RISK filter: 35-60 pips
-# - HIGH-REWARD filter: TP1 >= 120 pips
-# - Minimum R:R 1:2
-# - Entry / SL / TP1 / TP2 / TP3
-# - Estimated movement in pips
-# - Telegram alert
-# - Anti-spam state tracking
+# PIP STANDARD — LOCKED
+#
+# 100 points = 10 pips
+# 10 points  = 1 pip
+# 0.10 price  = 1 pip
+#
+# Example:
+#
+# Entry 3350.00
+# SL    3345.00
+#
+# Difference = 5.00
+# Risk       = 50 pips
+#
 # ============================================================
 
 
@@ -37,7 +32,9 @@ from datetime import datetime, timezone, timedelta
 
 SYMBOL = "XAU/USD"
 
-TWELVEDATA_URL = "https://api.twelvedata.com/time_series"
+TWELVEDATA_URL = (
+    "https://api.twelvedata.com/time_series"
+)
 
 M5_INTERVAL = "5min"
 
@@ -47,9 +44,10 @@ OUTPUT_SIZE = 500
 # Minimum signal score
 MIN_SCORE = 70
 
-# ------------------------------------------------------------
-# RISK / REWARD FILTER
-# ------------------------------------------------------------
+
+# ============================================================
+# LOCKED RISK / REWARD FILTER
+# ============================================================
 
 MIN_RISK_PIPS = 35
 MAX_RISK_PIPS = 60
@@ -58,15 +56,31 @@ MIN_TP1_PIPS = 120
 
 MIN_RR = 2.0
 
-# Gold:
-# 1 pip = 0.01 price movement
-PIP_SIZE = 0.01
+
+# ============================================================
+# XAUUSD PIP STANDARD
+# ============================================================
+#
+# 0.10 price movement = 1 pip
+#
+# Therefore:
+#
+# 1.00 price movement = 10 pips
+# 10.00 price movement = 100 pips
+#
+# ============================================================
+
+PIP_SIZE = 0.10
+
 
 REQUEST_TIMEOUT = 20
 
-MALAYSIA_TZ = timezone(timedelta(hours=8))
 
-# State file
+MALAYSIA_TZ = timezone(
+    timedelta(hours=8)
+)
+
+
 STATE_FILE = os.path.join(
     os.path.dirname(__file__),
     "state.json"
@@ -82,10 +96,12 @@ API_KEY = os.getenv(
     ""
 ).strip()
 
+
 TELEGRAM_BOT_TOKEN = os.getenv(
     "TELEGRAM_BOT_TOKEN",
     ""
 ).strip()
+
 
 TELEGRAM_CHAT_ID = os.getenv(
     "TELEGRAM_CHAT_ID",
@@ -133,6 +149,29 @@ def malaysia_now():
     return datetime.now(
         MALAYSIA_TZ
     )
+
+
+# ============================================================
+# TIME PARSER
+# ============================================================
+
+def parse_time(value):
+
+    try:
+
+        return datetime.fromisoformat(
+            value.replace(
+                "Z",
+                "+00:00"
+            )
+        )
+
+    except Exception:
+
+        return datetime.strptime(
+            value,
+            "%Y-%m-%d %H:%M:%S"
+        )
 
 
 # ============================================================
@@ -211,23 +250,20 @@ def get_m5_data():
 
             candles.append({
 
-                "time": item["datetime"],
+                "time":
+                    item["datetime"],
 
-                "open": float(
-                    item["open"]
-                ),
+                "open":
+                    float(item["open"]),
 
-                "high": float(
-                    item["high"]
-                ),
+                "high":
+                    float(item["high"]),
 
-                "low": float(
-                    item["low"]
-                ),
+                "low":
+                    float(item["low"]),
 
-                "close": float(
-                    item["close"]
-                )
+                "close":
+                    float(item["close"])
 
             })
 
@@ -247,7 +283,8 @@ def get_m5_data():
     )
 
     print(
-        f"Received {len(candles)} M5 candles."
+        f"Received {len(candles)} "
+        f"M5 candles."
     )
 
     return candles
@@ -271,7 +308,6 @@ def remove_incomplete_candle(candles):
             latest["time"]
         )
 
-        # Normalize timezone
         if candle_time.tzinfo is None:
 
             candle_time = candle_time.replace(
@@ -286,44 +322,23 @@ def remove_incomplete_candle(candles):
             now_utc - candle_time
         ).total_seconds()
 
-        # A M5 candle needs 5 minutes.
-        # Keep it only when safely closed.
         if elapsed < 300:
 
             print(
-                "Removing incomplete M5 candle."
+                "Removing incomplete "
+                "M5 candle."
             )
 
             return candles[:-1]
 
-    except Exception:
+    except Exception as error:
 
-        pass
+        print(
+            "Candle close check warning:",
+            error
+        )
 
     return candles
-
-
-# ============================================================
-# TIME PARSER
-# ============================================================
-
-def parse_time(value):
-
-    try:
-
-        return datetime.fromisoformat(
-            value.replace(
-                "Z",
-                "+00:00"
-            )
-        )
-
-    except Exception:
-
-        return datetime.strptime(
-            value,
-            "%Y-%m-%d %H:%M:%S"
-        )
 
 
 # ============================================================
@@ -398,19 +413,23 @@ def aggregate_candles(
 
             "time": key,
 
-            "open": group[0]["open"],
+            "open":
+                group[0]["open"],
 
-            "high": max(
-                c["high"]
-                for c in group
-            ),
+            "high":
+                max(
+                    c["high"]
+                    for c in group
+                ),
 
-            "low": min(
-                c["low"]
-                for c in group
-            ),
+            "low":
+                min(
+                    c["low"]
+                    for c in group
+                ),
 
-            "close": group[-1]["close"]
+            "close":
+                group[-1]["close"]
 
         })
 
@@ -430,9 +449,13 @@ def detect_swings(
     swing_highs = []
     swing_lows = []
 
-    if len(candles) < (
-        left + right + 1
-    ):
+    minimum = (
+        left
+        + right
+        + 1
+    )
+
+    if len(candles) < minimum:
 
         return (
             swing_highs,
@@ -551,9 +574,12 @@ def calculate_atr(
 
         return None
 
-    return sum(
-        true_ranges[-period:]
-    ) / period
+    return (
+        sum(
+            true_ranges[-period:]
+        )
+        / period
+    )
 
 
 # ============================================================
@@ -566,17 +592,23 @@ def analyze_structure(candles):
 
         return {
 
-            "structure": "RANGE",
+            "structure":
+                "RANGE",
 
-            "trend": "NEUTRAL",
+            "trend":
+                "NEUTRAL",
 
-            "last_high": None,
+            "last_high":
+                None,
 
-            "last_low": None,
+            "last_low":
+                None,
 
-            "swing_highs": [],
+            "swing_highs":
+                [],
 
-            "swing_lows": []
+            "swing_lows":
+                []
 
         }
 
@@ -649,17 +681,23 @@ def analyze_structure(candles):
 
     return {
 
-        "structure": structure,
+        "structure":
+            structure,
 
-        "trend": trend,
+        "trend":
+            trend,
 
-        "last_high": last_high,
+        "last_high":
+            last_high,
 
-        "last_low": last_low,
+        "last_low":
+            last_low,
 
-        "swing_highs": swing_highs,
+        "swing_highs":
+            swing_highs,
 
-        "swing_lows": swing_lows
+        "swing_lows":
+            swing_lows
 
     }
 
@@ -702,14 +740,17 @@ def calculate_pd_zone(candles):
 
     return {
 
-        "high": high,
+        "high":
+            high,
 
-        "low": low,
+        "low":
+            low,
 
         "equilibrium":
             equilibrium,
 
-        "zone": zone
+        "zone":
+            zone
 
     }
 
@@ -891,7 +932,9 @@ def get_session():
 
         return "LONDON"
 
-    if 20 <= hour <= 23:
+    if (
+        20 <= hour <= 23
+    ):
 
         return "NEW YORK"
 
@@ -915,9 +958,9 @@ def determine_opportunity(
     confirmation
 ):
 
-    # --------------------------------------------------------
+    # ========================================================
     # PULLBACK
-    # --------------------------------------------------------
+    # ========================================================
 
     if (
         h4["trend"] == "BULLISH"
@@ -943,9 +986,10 @@ def determine_opportunity(
 
         return "SELL PULLBACK"
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # LIQUIDITY SWEEP
-    # --------------------------------------------------------
+    # ========================================================
 
     if (
         sweep == "SELL_SIDE_SWEEP"
@@ -963,9 +1007,10 @@ def determine_opportunity(
 
         return "SELL LIQUIDITY SWEEP"
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # BREAKOUT
-    # --------------------------------------------------------
+    # ========================================================
 
     if (
         m5["structure"]
@@ -984,6 +1029,7 @@ def determine_opportunity(
     ):
 
         return "SELL BREAKOUT"
+
 
     return "NO VALID SETUP"
 
@@ -1008,9 +1054,10 @@ def calculate_score(
     reasons_buy = []
     reasons_sell = []
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # H4
-    # --------------------------------------------------------
+    # ========================================================
 
     if h4["trend"] == "BULLISH":
 
@@ -1028,9 +1075,10 @@ def calculate_score(
             "H4 bearish context"
         )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # H1
-    # --------------------------------------------------------
+    # ========================================================
 
     if h1["trend"] == "BULLISH":
 
@@ -1048,9 +1096,10 @@ def calculate_score(
             "H1 bearish context"
         )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # M5 STRUCTURE
-    # --------------------------------------------------------
+    # ========================================================
 
     if (
         m5["structure"]
@@ -1074,9 +1123,10 @@ def calculate_score(
             "M5 bearish BOS"
         )
 
-    # --------------------------------------------------------
-    # PD
-    # --------------------------------------------------------
+
+    # ========================================================
+    # PREMIUM / DISCOUNT
+    # ========================================================
 
     if pd["zone"] == "DISCOUNT":
 
@@ -1094,9 +1144,10 @@ def calculate_score(
             "Price in premium"
         )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # LIQUIDITY
-    # --------------------------------------------------------
+    # ========================================================
 
     if sweep == "SELL_SIDE_SWEEP":
 
@@ -1114,9 +1165,10 @@ def calculate_score(
             "Buy-side liquidity sweep"
         )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # MOMENTUM
-    # --------------------------------------------------------
+    # ========================================================
 
     if momentum == "BULLISH":
 
@@ -1134,9 +1186,10 @@ def calculate_score(
             "Bearish momentum"
         )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # CONFIRMATION
-    # --------------------------------------------------------
+    # ========================================================
 
     if confirmation == "BULLISH":
 
@@ -1154,51 +1207,103 @@ def calculate_score(
             "Bearish candle confirmation"
         )
 
-    # --------------------------------------------------------
+
+    # ========================================================
     # FINAL
-    # --------------------------------------------------------
+    # ========================================================
 
     if buy_score > sell_score:
 
         return {
 
-            "direction": "BUY",
+            "direction":
+                "BUY",
 
-            "score": min(
-                buy_score,
-                100
-            ),
+            "score":
+                min(
+                    buy_score,
+                    100
+                ),
 
             "reasons":
                 reasons_buy
 
         }
 
+
     if sell_score > buy_score:
 
         return {
 
-            "direction": "SELL",
+            "direction":
+                "SELL",
 
-            "score": min(
-                sell_score,
-                100
-            ),
+            "score":
+                min(
+                    sell_score,
+                    100
+                ),
 
             "reasons":
                 reasons_sell
 
         }
 
+
     return {
 
-        "direction": "WAIT",
+        "direction":
+            "WAIT",
 
-        "score": 0,
+        "score":
+            0,
 
-        "reasons": []
+        "reasons":
+            []
 
     }
+
+
+# ============================================================
+# PIP CONVERSION
+# ============================================================
+
+def price_to_pips(price_difference):
+
+    """
+    Convert XAUUSD price movement to
+    Bosque standard pips.
+
+    Example:
+
+    5.00 price movement
+    / 0.10
+    = 50 pips
+    """
+
+    return (
+        abs(price_difference)
+        / PIP_SIZE
+    )
+
+
+def pips_to_price(pips):
+
+    """
+    Convert Bosque pips back to
+    XAUUSD price distance.
+
+    Example:
+
+    120 pips
+    * 0.10
+    = 12.00 price movement
+    """
+
+    return (
+        pips
+        * PIP_SIZE
+    )
 
 
 # ============================================================
@@ -1228,11 +1333,11 @@ def create_trade_plan(
 
         ]
 
-        atr = sum(
-            recent_ranges
-        ) / len(
-            recent_ranges
+        atr = (
+            sum(recent_ranges)
+            / len(recent_ranges)
         )
+
 
     swing_highs = (
         m5_analysis.get(
@@ -1248,6 +1353,7 @@ def create_trade_plan(
         )
     )
 
+
     last_swing_high = (
 
         swing_highs[-1]["price"]
@@ -1257,6 +1363,7 @@ def create_trade_plan(
         else None
 
     )
+
 
     last_swing_low = (
 
@@ -1268,6 +1375,7 @@ def create_trade_plan(
 
     )
 
+
     # ========================================================
     # BUY
     # ========================================================
@@ -1275,10 +1383,6 @@ def create_trade_plan(
     if direction == "BUY":
 
         entry = latest
-
-        # ----------------------------------------------------
-        # Structural SL
-        # ----------------------------------------------------
 
         structural_sl = None
 
@@ -1288,46 +1392,50 @@ def create_trade_plan(
                 last_swing_low
             )
 
-        # ----------------------------------------------------
-        # ATR candidate
-        # ----------------------------------------------------
 
         atr_sl = (
             entry
-            - atr * 1.0
+            - atr
         )
 
-        # ----------------------------------------------------
-        # Candidate selection
-        #
-        # We want SL BELOW entry.
-        # We also require 35-60 pips.
-        # ----------------------------------------------------
 
         candidates = []
+
 
         if structural_sl:
 
             candidates.append(
-                structural_sl
+                (
+                    "STRUCTURAL",
+                    structural_sl
+                )
             )
 
+
         candidates.append(
-            atr_sl
+            (
+                "ATR",
+                atr_sl
+            )
         )
+
 
         valid_sl = []
 
-        for sl_candidate in candidates:
 
-            risk = (
+        for method, sl_candidate in candidates:
+
+            risk_price = (
                 entry
                 - sl_candidate
             )
 
             risk_pips = (
-                risk / PIP_SIZE
+                price_to_pips(
+                    risk_price
+                )
             )
+
 
             if (
                 MIN_RISK_PIPS
@@ -1338,51 +1446,82 @@ def create_trade_plan(
                 valid_sl.append(
                     (
                         risk_pips,
-                        sl_candidate
+                        sl_candidate,
+                        method
                     )
                 )
+
 
         if not valid_sl:
 
             return None
 
-        # Prefer the tightest valid SL.
+
+        # Tightest valid SL
         valid_sl.sort(
             key=lambda x: x[0]
         )
 
-        risk_pips, sl = (
+
+        risk_pips, sl, sl_method = (
             valid_sl[0]
         )
 
-        risk = (
+
+        risk_price = (
             entry - sl
         )
 
-        # ----------------------------------------------------
-        # Reward
-        # ----------------------------------------------------
 
-        tp1 = entry + max(
-            risk * MIN_RR,
-            MIN_TP1_PIPS * PIP_SIZE
+        # ====================================================
+        # TP
+        # ====================================================
+
+        tp1_pips = max(
+            risk_pips * MIN_RR,
+            MIN_TP1_PIPS
         )
 
-        tp2 = entry + (
-            risk * 3.0
+
+        tp2_pips = (
+            risk_pips * 3.0
         )
 
-        tp3 = entry + (
-            risk * 4.0
+
+        tp3_pips = (
+            risk_pips * 4.0
         )
 
-        tp1_pips = (
-            tp1 - entry
-        ) / PIP_SIZE
+
+        tp1 = (
+            entry
+            + pips_to_price(
+                tp1_pips
+            )
+        )
+
+
+        tp2 = (
+            entry
+            + pips_to_price(
+                tp2_pips
+            )
+        )
+
+
+        tp3 = (
+            entry
+            + pips_to_price(
+                tp3_pips
+            )
+        )
+
 
         rr = (
-            tp1 - entry
-        ) / risk
+            tp1_pips
+            / risk_pips
+        )
+
 
         if (
             risk_pips < MIN_RISK_PIPS
@@ -1391,29 +1530,42 @@ def create_trade_plan(
 
             return None
 
+
         if tp1_pips < MIN_TP1_PIPS:
 
             return None
+
 
         if rr < MIN_RR:
 
             return None
 
+
         return {
 
-            "direction": "BUY",
+            "direction":
+                "BUY",
 
-            "entry": entry,
+            "entry":
+                entry,
 
-            "sl": sl,
+            "sl":
+                sl,
 
-            "tp1": tp1,
+            "tp1":
+                tp1,
 
-            "tp2": tp2,
+            "tp2":
+                tp2,
 
-            "tp3": tp3,
+            "tp3":
+                tp3,
 
-            "risk": risk,
+            "sl_method":
+                sl_method,
+
+            "risk":
+                risk_price,
 
             "risk_pips":
                 risk_pips,
@@ -1428,26 +1580,21 @@ def create_trade_plan(
                 tp1_pips,
 
             "pips_to_tp2":
-                (
-                    tp2 - entry
-                ) / PIP_SIZE,
+                tp2_pips,
 
             "pips_to_tp3":
-                (
-                    tp3 - entry
-                ) / PIP_SIZE,
+                tp3_pips,
 
             "estimated_range": (
 
                 risk_pips,
 
-                (
-                    tp3 - entry
-                ) / PIP_SIZE
+                tp3_pips
 
             )
 
         }
+
 
     # ========================================================
     # SELL
@@ -1465,35 +1612,50 @@ def create_trade_plan(
                 last_swing_high
             )
 
+
         atr_sl = (
             entry
-            + atr * 1.0
+            + atr
         )
 
+
         candidates = []
+
 
         if structural_sl:
 
             candidates.append(
-                structural_sl
+                (
+                    "STRUCTURAL",
+                    structural_sl
+                )
             )
 
+
         candidates.append(
-            atr_sl
+            (
+                "ATR",
+                atr_sl
+            )
         )
+
 
         valid_sl = []
 
-        for sl_candidate in candidates:
 
-            risk = (
+        for method, sl_candidate in candidates:
+
+            risk_price = (
                 sl_candidate
                 - entry
             )
 
             risk_pips = (
-                risk / PIP_SIZE
+                price_to_pips(
+                    risk_price
+                )
             )
+
 
             if (
                 MIN_RISK_PIPS
@@ -1504,47 +1666,81 @@ def create_trade_plan(
                 valid_sl.append(
                     (
                         risk_pips,
-                        sl_candidate
+                        sl_candidate,
+                        method
                     )
                 )
+
 
         if not valid_sl:
 
             return None
 
-        # Tightest valid SL
+
         valid_sl.sort(
             key=lambda x: x[0]
         )
 
-        risk_pips, sl = (
+
+        risk_pips, sl, sl_method = (
             valid_sl[0]
         )
 
-        risk = (
+
+        risk_price = (
             sl - entry
         )
 
-        tp1 = entry - max(
-            risk * MIN_RR,
-            MIN_TP1_PIPS * PIP_SIZE
+
+        # ====================================================
+        # TP
+        # ====================================================
+
+        tp1_pips = max(
+            risk_pips * MIN_RR,
+            MIN_TP1_PIPS
         )
 
-        tp2 = entry - (
-            risk * 3.0
+
+        tp2_pips = (
+            risk_pips * 3.0
         )
 
-        tp3 = entry - (
-            risk * 4.0
+
+        tp3_pips = (
+            risk_pips * 4.0
         )
 
-        tp1_pips = (
-            entry - tp1
-        ) / PIP_SIZE
+
+        tp1 = (
+            entry
+            - pips_to_price(
+                tp1_pips
+            )
+        )
+
+
+        tp2 = (
+            entry
+            - pips_to_price(
+                tp2_pips
+            )
+        )
+
+
+        tp3 = (
+            entry
+            - pips_to_price(
+                tp3_pips
+            )
+        )
+
 
         rr = (
-            entry - tp1
-        ) / risk
+            tp1_pips
+            / risk_pips
+        )
+
 
         if (
             risk_pips < MIN_RISK_PIPS
@@ -1553,29 +1749,42 @@ def create_trade_plan(
 
             return None
 
+
         if tp1_pips < MIN_TP1_PIPS:
 
             return None
+
 
         if rr < MIN_RR:
 
             return None
 
+
         return {
 
-            "direction": "SELL",
+            "direction":
+                "SELL",
 
-            "entry": entry,
+            "entry":
+                entry,
 
-            "sl": sl,
+            "sl":
+                sl,
 
-            "tp1": tp1,
+            "tp1":
+                tp1,
 
-            "tp2": tp2,
+            "tp2":
+                tp2,
 
-            "tp3": tp3,
+            "tp3":
+                tp3,
 
-            "risk": risk,
+            "sl_method":
+                sl_method,
+
+            "risk":
+                risk_price,
 
             "risk_pips":
                 risk_pips,
@@ -1590,26 +1799,21 @@ def create_trade_plan(
                 tp1_pips,
 
             "pips_to_tp2":
-                (
-                    entry - tp2
-                ) / PIP_SIZE,
+                tp2_pips,
 
             "pips_to_tp3":
-                (
-                    entry - tp3
-                ) / PIP_SIZE,
+                tp3_pips,
 
             "estimated_range": (
 
                 risk_pips,
 
-                (
-                    entry - tp3
-                ) / PIP_SIZE
+                tp3_pips
 
             )
 
         }
+
 
     return None
 
@@ -1622,25 +1826,33 @@ def load_state():
 
     default_state = {
 
-        "last_alert_key": "",
+        "last_alert_key":
+            "",
 
-        "last_direction": "",
+        "last_direction":
+            "",
 
-        "last_score": 0,
+        "last_score":
+            0,
 
-        "last_entry": 0,
+        "last_entry":
+            0,
 
-        "last_alert_time": "",
+        "last_alert_time":
+            "",
 
-        "last_opportunity": ""
+        "last_opportunity":
+            ""
 
     }
+
 
     if not os.path.exists(
         STATE_FILE
     ):
 
         return default_state
+
 
     try:
 
@@ -1654,12 +1866,14 @@ def load_state():
                 file
             )
 
+
         if not isinstance(
             data,
             dict
         ):
 
             return default_state
+
 
         for key, value in (
             default_state.items()
@@ -1669,7 +1883,9 @@ def load_state():
 
                 data[key] = value
 
+
         return data
+
 
     except Exception as error:
 
@@ -1681,21 +1897,31 @@ def load_state():
         return default_state
 
 
+# ============================================================
+# SAVE STATE
+# ============================================================
+
 def save_state(state):
 
     try:
 
-        os.makedirs(
-            os.path.dirname(
-                STATE_FILE
-            ),
-            exist_ok=True
+        directory = os.path.dirname(
+            STATE_FILE
         )
+
+        if directory:
+
+            os.makedirs(
+                directory,
+                exist_ok=True
+            )
+
 
         temp_file = (
             STATE_FILE
             + ".tmp"
         )
+
 
         with open(
             temp_file,
@@ -1709,14 +1935,17 @@ def save_state(state):
                 indent=2
             )
 
+
         os.replace(
             temp_file,
             STATE_FILE
         )
 
+
         print(
             "Engine state saved."
         )
+
 
     except Exception as error:
 
@@ -1737,17 +1966,26 @@ def build_alert_key(
     score
 ):
 
-    # Entry rounded to 0.10 price.
-    # Prevents tiny price changes from
-    # creating a brand-new alert.
+    # Entry bucket:
+    #
+    # 0.10 price = 1 pip
+    #
+    # 0.10 bucket prevents
+    # tiny price fluctuations
+    # from creating new alerts.
+
     entry_bucket = round(
         entry / 0.10
     )
 
-    # Score grouped into 5-point blocks.
+
+    # Score grouped into
+    # 5-point blocks.
+
     score_bucket = (
         score // 5
     )
+
 
     return (
         f"{direction}|"
@@ -1769,6 +2007,7 @@ def should_send_alert(
         )
     )
 
+
     if previous_key == alert_key:
 
         print(
@@ -1780,6 +2019,7 @@ def should_send_alert(
         )
 
         return False
+
 
     return True
 
@@ -1800,6 +2040,7 @@ def send_telegram(
 
         return False
 
+
     if not TELEGRAM_CHAT_ID:
 
         print(
@@ -1808,11 +2049,13 @@ def send_telegram(
 
         return False
 
+
     url = (
         "https://api.telegram.org/bot"
         + TELEGRAM_BOT_TOKEN
         + "/sendMessage"
     )
+
 
     payload = {
 
@@ -1830,6 +2073,7 @@ def send_telegram(
 
     }
 
+
     try:
 
         response = requests.post(
@@ -1837,6 +2081,7 @@ def send_telegram(
             json=payload,
             timeout=REQUEST_TIMEOUT
         )
+
 
     except Exception as error:
 
@@ -1847,6 +2092,7 @@ def send_telegram(
 
         return False
 
+
     if response.status_code != 200:
 
         print(
@@ -1855,6 +2101,7 @@ def send_telegram(
         )
 
         return False
+
 
     print(
         "Telegram notification sent."
@@ -1887,15 +2134,18 @@ def format_alert(
         "direction"
     ]
 
+
     emoji = (
         "🟢"
         if direction == "BUY"
         else "🔴"
     )
 
+
     low_range, high_range = (
         plan["estimated_range"]
     )
+
 
     reason_text = "\n".join(
 
@@ -1904,6 +2154,7 @@ def format_alert(
         for reason in reasons
 
     )
+
 
     message = f"""
 <b>👑 BOSQUE FOREX AI</b>
@@ -1968,9 +2219,14 @@ TP2:
 TP3:
 <b>{plan["tp3"]:.2f}</b>
 
+SL Method:
+<b>{plan["sl_method"]}</b>
+
 ━━━━━━━━━━━━━━━━━━
 
 <b>📏 PIP ANALYSIS</b>
+
+<b>Standard: 0.10 = 1 pip</b>
 
 Risk:
 <b>{plan["pips_to_sl"]:.0f} pips</b>
@@ -2000,9 +2256,9 @@ R:R:
 
 <b>FILTERS PASSED</b>
 
-✅ Score 70+
-✅ Risk 35-60 pips
-✅ TP1 120+ pips
+✅ Score {MIN_SCORE}+
+✅ Risk {MIN_RISK_PIPS}-{MAX_RISK_PIPS} pips
+✅ TP1 {MIN_TP1_PIPS}+ pips
 ✅ R:R 1:2+
 ✅ Closed M5 candle
 ✅ MTF confirmation
@@ -2014,6 +2270,7 @@ Confirm the setup manually before entry.
 
 <b>👑 Bosque Forex AI</b>
 """
+
 
     return message.strip()
 
@@ -2027,22 +2284,29 @@ def run_engine():
     print("=" * 60)
 
     print(
-        "👑 BOSQUE FOREX AI v2"
+        "👑 BOSQUE FOREX AI v2.1"
     )
 
     print(
         "LOW-RISK / HIGH-REWARD ENGINE"
     )
 
+    print(
+        "PIP STANDARD: 0.10 PRICE = 1 PIP"
+    )
+
     print("=" * 60)
 
+
     validate_environment()
+
 
     # ========================================================
     # ONE API REQUEST
     # ========================================================
 
     m5_candles = get_m5_data()
+
 
     # ========================================================
     # REMOVE INCOMPLETE CANDLE
@@ -2054,11 +2318,14 @@ def run_engine():
         )
     )
 
+
     if len(m5_candles) < 50:
 
         raise RuntimeError(
-            "Not enough closed M5 candles."
+            "Not enough closed "
+            "M5 candles."
         )
+
 
     # ========================================================
     # LOCAL MTF
@@ -2071,6 +2338,7 @@ def run_engine():
         )
     )
 
+
     h4_candles = (
         aggregate_candles(
             m5_candles,
@@ -2078,15 +2346,18 @@ def run_engine():
         )
     )
 
+
     print(
         f"H1 candles built: "
         f"{len(h1_candles)}"
     )
 
+
     print(
         f"H4 candles built: "
         f"{len(h4_candles)}"
     )
+
 
     if len(h1_candles) < 10:
 
@@ -2094,11 +2365,13 @@ def run_engine():
             "Not enough H1 data."
         )
 
+
     if len(h4_candles) < 5:
 
         raise RuntimeError(
             "Not enough H4 data."
         )
+
 
     # ========================================================
     # ANALYSIS
@@ -2108,29 +2381,36 @@ def run_engine():
         h4_candles
     )
 
+
     h1 = analyze_structure(
         h1_candles
     )
+
 
     m5 = analyze_structure(
         m5_candles
     )
 
+
     pd = calculate_pd_zone(
         m5_candles
     )
+
 
     sweep = detect_liquidity_sweep(
         m5_candles
     )
 
+
     momentum = calculate_momentum(
         m5_candles
     )
 
+
     confirmation = candle_confirmation(
         m5_candles
     )
+
 
     # ========================================================
     # SCORE
@@ -2154,17 +2434,21 @@ def run_engine():
 
     )
 
+
     direction = scoring[
         "direction"
     ]
+
 
     score = scoring[
         "score"
     ]
 
+
     reasons = scoring[
         "reasons"
     ]
+
 
     opportunity = (
         determine_opportunity(
@@ -2184,11 +2468,14 @@ def run_engine():
         )
     )
 
+
     latest_price = (
         m5_candles[-1]["close"]
     )
 
+
     session = get_session()
+
 
     # ========================================================
     # CONSOLE
@@ -2265,6 +2552,7 @@ def run_engine():
         f"{score}/100"
     )
 
+
     # ========================================================
     # SCORE FILTER
     # ========================================================
@@ -2274,7 +2562,8 @@ def run_engine():
         print()
 
         print(
-            "⏳ Score below 70."
+            f"⏳ Score below "
+            f"{MIN_SCORE}."
         )
 
         print(
@@ -2282,6 +2571,7 @@ def run_engine():
         )
 
         return
+
 
     if direction not in [
         "BUY",
@@ -2296,6 +2586,7 @@ def run_engine():
 
         return
 
+
     if opportunity == (
         "NO VALID SETUP"
     ):
@@ -2303,10 +2594,12 @@ def run_engine():
         print()
 
         print(
-            "⏳ No valid opportunity type."
+            "⏳ No valid "
+            "opportunity type."
         )
 
         return
+
 
     # ========================================================
     # TRADE PLAN
@@ -2321,6 +2614,7 @@ def run_engine():
         m5
 
     )
+
 
     if not plan:
 
@@ -2356,6 +2650,7 @@ def run_engine():
 
         return
 
+
     # ========================================================
     # FINAL VALIDATION
     # ========================================================
@@ -2364,13 +2659,16 @@ def run_engine():
         plan["risk_pips"]
     )
 
+
     tp1_pips = (
         plan["pips_to_tp1"]
     )
 
+
     rr = (
         plan["rr"]
     )
+
 
     if not (
         MIN_RISK_PIPS
@@ -2384,6 +2682,7 @@ def run_engine():
 
         return
 
+
     if tp1_pips < MIN_TP1_PIPS:
 
         print(
@@ -2392,6 +2691,7 @@ def run_engine():
 
         return
 
+
     if rr < MIN_RR:
 
         print(
@@ -2399,6 +2699,7 @@ def run_engine():
         )
 
         return
+
 
     # ========================================================
     # VALID OPPORTUNITY
@@ -2411,15 +2712,18 @@ def run_engine():
     )
 
     print(
-        f"Direction : {direction}"
+        f"Direction : "
+        f"{direction}"
     )
 
     print(
-        f"Score     : {score}/100"
+        f"Score     : "
+        f"{score}/100"
     )
 
     print(
-        f"Opportunity: {opportunity}"
+        f"Opportunity: "
+        f"{opportunity}"
     )
 
     print(
@@ -2470,11 +2774,13 @@ def run_engine():
         f" pips"
     )
 
+
     # ========================================================
     # STATE / ANTI-SPAM
     # ========================================================
 
     state = load_state()
+
 
     alert_key = build_alert_key(
 
@@ -2488,12 +2794,14 @@ def run_engine():
 
     )
 
+
     if not should_send_alert(
         state,
         alert_key
     ):
 
         return
+
 
     # ========================================================
     # TELEGRAM
@@ -2529,9 +2837,11 @@ def run_engine():
 
     )
 
+
     sent = send_telegram(
         alert
     )
+
 
     # ========================================================
     # SAVE STATE ONLY AFTER
@@ -2544,29 +2854,36 @@ def run_engine():
             "last_alert_key"
         ] = alert_key
 
+
         state[
             "last_direction"
         ] = direction
+
 
         state[
             "last_score"
         ] = score
 
+
         state[
             "last_entry"
         ] = plan["entry"]
+
 
         state[
             "last_alert_time"
         ] = malaysia_now().isoformat()
 
+
         state[
             "last_opportunity"
         ] = opportunity
 
+
         save_state(
             state
         )
+
 
     else:
 
