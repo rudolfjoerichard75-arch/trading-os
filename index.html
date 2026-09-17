@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 
 <meta
@@ -9,30 +10,22 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>Bosque Forex AI - XAUUSD Trade Intelligence</title>
+<title>
+  Bosque Forex AI - XAUUSD Trade Intelligence
+</title>
 
 <style>
 
 *{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
+  box-sizing:border-box
 }
 
 body{
   margin:0;
   padding:14px;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:#050816;
-  color:#e5e7eb;
+  color:#e5e7eb
 }
 
 .card{
@@ -41,420 +34,234 @@ body{
   border-radius:14px;
   padding:16px;
   margin-bottom:14px;
-
-  box-shadow:
-    0 8px 30px rgba(0,0,0,.18);
+  box-shadow:0 8px 30px rgba(0,0,0,.18)
 }
-
-/* =========================================================
-   HEADER
-========================================================= */
 
 .header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
+  gap:12px
 }
 
 .header h2{
-  margin:0 0 4px;
+  margin:0 0 4px
 }
 
 .header p{
   margin:0;
   color:#94a3b8;
-  font-size:13px;
+  font-size:13px
 }
 
 .live{
   padding:6px 10px;
   border-radius:999px;
-
   background:rgba(34,197,94,.12);
   color:#22c55e;
-
   font-size:11px;
   font-weight:800;
-  white-space:nowrap;
+  white-space:nowrap
 }
-
-.live.offline{
-  background:rgba(239,68,68,.12);
-  color:#ef4444;
-}
-
-/* =========================================================
-   LAYOUT
-========================================================= */
 
 .dashboard{
   display:grid;
-
-  grid-template-columns:
-    minmax(0,1.7fr)
-    minmax(320px,.9fr);
-
+  grid-template-columns:minmax(0,1.7fr) minmax(320px,.9fr);
   gap:14px;
-
-  align-items:start;
+  align-items:start
 }
 
 .chart-card{
-  padding:8px;
+  padding:8px
 }
 
 .chart-container{
   width:100%;
   height:calc(100vh - 110px);
   min-height:620px;
-
   overflow:hidden;
-  border-radius:12px;
+  border-radius:12px
 }
 
-.chart-container > div{
-  height:100%;
+.chart-container>div{
+  height:100%
 }
 
 .signal-panel{
   max-height:calc(100vh - 110px);
-
   overflow-y:auto;
-
-  padding-right:2px;
+  padding-right:2px
 }
-
-/* =========================================================
-   STATUS
-========================================================= */
 
 .status-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
-
   gap:10px;
-
-  font-size:12px;
+  font-size:12px
 }
 
-.badge{
-  display:inline-block;
-
-  padding:5px 9px;
-
-  background:#1f2937;
-
-  border-radius:999px;
-
-  font-size:10px;
-  font-weight:700;
-}
-
-.badge.valid{
-  background:rgba(34,197,94,.14);
-  color:#22c55e;
-}
-
-.badge.wait{
-  background:rgba(251,191,36,.12);
-  color:#fbbf24;
-}
-
-.badge.error{
-  background:rgba(239,68,68,.12);
-  color:#ef4444;
-}
-
-/* =========================================================
-   SCORE
-========================================================= */
-
-.score-label{
-  font-size:11px;
-
-  color:#94a3b8;
-
-  text-transform:uppercase;
-
-  letter-spacing:.08em;
+.status{
+  color:#94a3b8
 }
 
 .score{
-  font-size:58px;
-
+  font-size:42px;
   font-weight:900;
-
   line-height:1;
-
-  margin:8px 0;
+  margin:8px 0
 }
 
-.score.buy{
-  color:#22c55e;
+.score-label{
+  font-size:11px;
+  color:#94a3b8;
+  text-transform:uppercase;
+  letter-spacing:.08em
 }
-
-.score.sell{
-  color:#ef4444;
-}
-
-.score.wait{
-  color:#fbbf24;
-}
-
-/* =========================================================
-   SIGNAL
-========================================================= */
 
 .signal{
-  font-size:28px;
-
+  font-size:25px;
   font-weight:900;
-
-  margin:5px 0;
+  margin:5px 0
 }
 
 .buy{
-  color:#22c55e;
+  color:#22c55e
 }
 
 .sell{
-  color:#ef4444;
+  color:#ef4444
 }
 
 .wait{
-  color:#fbbf24;
+  color:#fbbf24
+}
+
+.paused{
+  color:#f97316
 }
 
 .muted{
-  color:#94a3b8;
+  color:#94a3b8
 }
-
-/* =========================================================
-   METRICS
-========================================================= */
 
 .grid{
   display:grid;
-
   grid-template-columns:1fr 1fr;
-
-  gap:10px;
+  gap:10px
 }
 
 .metric{
   background:rgba(255,255,255,.035);
-
   border:1px solid rgba(255,255,255,.06);
-
   border-radius:11px;
-
-  padding:11px;
+  padding:11px
 }
 
 .metric small{
   display:block;
-
   color:#94a3b8;
-
   font-size:10px;
-
   margin-bottom:4px;
-
-  text-transform:uppercase;
+  text-transform:uppercase
 }
 
 .metric b{
-  font-size:14px;
+  font-size:14px
 }
-
-/* =========================================================
-   TRADE PLAN
-========================================================= */
 
 .plan{
   border-left:3px solid #2563eb;
-
-  padding-left:12px;
-
-  margin-top:10px;
+  padding-left:12px
 }
 
 .row{
   display:flex;
-
   justify-content:space-between;
-
   gap:10px;
-
-  padding:8px 0;
-
-  border-bottom:
-    1px solid rgba(255,255,255,.06);
-
-  font-size:12px;
+  padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:12px
 }
 
 .row:last-child{
-  border-bottom:0;
+  border-bottom:0
 }
 
-.row b{
-  text-align:right;
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  background:#1f2937;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:700
 }
-
-/* =========================================================
-   RISK STATUS
-========================================================= */
-
-.risk-box{
-  margin-top:12px;
-
-  padding:12px;
-
-  border-radius:11px;
-
-  background:rgba(255,255,255,.035);
-
-  border:1px solid rgba(255,255,255,.06);
-}
-
-.risk-good{
-  color:#22c55e;
-}
-
-.risk-bad{
-  color:#ef4444;
-}
-
-.reward-good{
-  color:#22c55e;
-}
-
-.reward-bad{
-  color:#ef4444;
-}
-
-/* =========================================================
-   POTENTIAL
-========================================================= */
 
 .potential{
   font-size:25px;
-
   font-weight:900;
-
-  margin:4px 0;
+  margin:4px 0
 }
 
 .confidence{
   font-size:11px;
-
-  font-weight:800;
+  font-weight:800
 }
 
 .high{
-  color:#22c55e;
+  color:#22c55e
 }
 
 .medium{
-  color:#fbbf24;
+  color:#fbbf24
 }
 
 .low{
-  color:#ef4444;
+  color:#ef4444
 }
 
-/* =========================================================
-   CONFIRMATION
-========================================================= */
+.pip-note{
+  margin-top:8px;
+  padding:8px 10px;
+  background:rgba(37,99,235,.10);
+  border:1px solid rgba(37,99,235,.20);
+  border-radius:8px;
+  font-size:10px;
+  color:#93c5fd
+}
 
 ul{
   margin:8px 0 0;
-
   padding-left:18px;
-
   color:#cbd5e1;
-
   font-size:12px;
-
-  line-height:1.6;
-}
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-button{
-  border:0;
-
-  border-radius:9px;
-
-  padding:9px 12px;
-
-  background:#2563eb;
-
-  color:white;
-
-  font-size:11px;
-
-  font-weight:800;
-
-  cursor:pointer;
-}
-
-button:active{
-  transform:scale(.98);
-}
-
-button.secondary{
-  background:#1f2937;
-}
-
-/* =========================================================
-   FOOTER INFO
-========================================================= */
-
-.info{
-  font-size:11px;
-
-  line-height:1.6;
-
-  color:#64748b;
+  line-height:1.6
 }
 
 #lastUpdate{
   font-size:11px;
-
   color:#64748b;
-
-  margin-top:8px;
+  margin-top:8px
 }
-
-/* =========================================================
-   MOBILE
-========================================================= */
 
 @media(max-width:991px){
 
   body{
-    padding:10px;
+    padding:10px
   }
 
   .dashboard{
-    grid-template-columns:1fr;
+    grid-template-columns:1fr
   }
 
   .chart-container{
     height:58vh;
-    min-height:420px;
+    min-height:420px
   }
 
   .signal-panel{
     max-height:none;
-
-    overflow:visible;
+    overflow:visible
   }
 
 }
@@ -467,15 +274,17 @@ button.secondary{
 <body>
 
 
-<!-- =======================================================
+<!-- ========================================================
      HEADER
-======================================================= -->
+======================================================== -->
 
 <div class="card header">
 
   <div>
 
-    <h2>👑 Bosque Forex AI</h2>
+    <h2>
+      👑 Bosque Forex AI
+    </h2>
 
     <p>
       XAUUSD Trade Intelligence Engine
@@ -483,748 +292,532 @@ button.secondary{
 
   </div>
 
-  <div
-    class="live"
-    id="liveStatus"
-  >
-    ● ENGINE LIVE
+  <div class="live">
+    ● AUTO LIVE
   </div>
 
 </div>
 
 
-<!-- =======================================================
+<!-- ========================================================
      DASHBOARD
-======================================================= -->
+======================================================== -->
 
 <div class="dashboard">
 
 
-<!-- =======================================================
-     TRADINGVIEW
-======================================================= -->
+  <!-- ======================================================
+       TRADINGVIEW
+  ======================================================= -->
 
-<div class="card chart-card">
+  <div class="card chart-card">
 
-  <div class="chart-container">
-
-    <div
-      class="tradingview-widget-container"
-      style="height:100%;width:100%"
-    >
+    <div class="chart-container">
 
       <div
-        class="tradingview-widget-container__widget"
+        class="tradingview-widget-container"
         style="height:100%;width:100%"
-      ></div>
-
-      <script
-        async
-        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
       >
-      {
-        "autosize":true,
-        "symbol":"OANDA:XAUUSD",
-        "interval":"5",
-        "timezone":"Asia/Kuala_Lumpur",
-        "theme":"dark",
-        "style":"1",
-        "locale":"en",
-        "allow_symbol_change":false,
-        "hide_top_toolbar":false,
-        "hide_legend":false,
-        "save_image":false,
-        "calendar":false
-      }
-      </script>
+
+        <div
+          class="tradingview-widget-container__widget"
+          style="height:100%;width:100%"
+        ></div>
+
+        <script
+          async
+          src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+        >
+
+        {
+          "autosize":true,
+          "symbol":"OANDA:XAUUSD",
+          "interval":"5",
+          "timezone":"Asia/Kuala_Lumpur",
+          "theme":"dark",
+          "style":"1",
+          "locale":"en",
+          "allow_symbol_change":false,
+          "hide_top_toolbar":false,
+          "hide_legend":false,
+          "save_image":false,
+          "calendar":false
+        }
+
+        </script>
+
+      </div>
 
     </div>
 
   </div>
 
-</div>
+
+  <!-- ======================================================
+       SIGNAL PANEL
+  ======================================================= -->
+
+  <div class="signal-panel">
 
 
-<!-- =======================================================
-     SIGNAL PANEL
-======================================================= -->
+    <!-- MARKET INTELLIGENCE -->
 
-<div class="signal-panel">
+    <div class="card">
 
+      <div class="status-row">
 
-<!-- =======================================================
-     MARKET INTELLIGENCE
-======================================================= -->
+        <b>
+          🧠 Market Intelligence
+        </b>
 
-<div class="card">
+        <span
+          class="badge"
+          id="engineStatus"
+        >
+          STARTING
+        </span>
 
-  <div class="status-row">
-
-    <b>
-      🧠 Market Intelligence
-    </b>
-
-    <span
-      class="badge wait"
-      id="engineStatus"
-    >
-      STARTING
-    </span>
-
-  </div>
+      </div>
 
 
-  <div class="score-label">
-
-    Opportunity Score
-
-  </div>
+      <div class="score-label">
+        Opportunity Score
+      </div>
 
 
-  <div
-    class="score wait"
-    id="score"
-  >
-    --
-  </div>
-
-
-  <div
-    class="signal wait"
-    id="finalSignal"
-  >
-    WAIT
-  </div>
-
-
-  <div
-    class="muted"
-    id="opportunityType"
-  >
-    Waiting for engine data...
-  </div>
-
-
-  <div
-    class="grid"
-    style="margin-top:14px"
-  >
-
-    <div class="metric">
-
-      <small>
-        Session
-      </small>
-
-      <b id="session">
+      <div
+        class="score wait"
+        id="score"
+      >
         --
-      </b>
-
-    </div>
+      </div>
 
 
-    <div class="metric">
-
-      <small>
-        Market Mode
-      </small>
-
-      <b id="marketMode">
-        --
-      </b>
-
-    </div>
-
-
-    <div class="metric">
-
-      <small>
-        Latest Price
-      </small>
-
-      <b id="latestPrice">
-        --
-      </b>
-
-    </div>
-
-
-    <div class="metric">
-
-      <small>
-        PD Zone
-      </small>
-
-      <b id="pdZone">
-        --
-      </b>
-
-    </div>
-
-  </div>
-
-
-  <div id="lastUpdate">
-
-    Last update: --
-
-  </div>
-
-</div>
-
-
-<!-- =======================================================
-     TRADE PLAN
-======================================================= -->
-
-<div class="card">
-
-  <b>
-    🎯 Trade Plan
-  </b>
-
-
-  <div class="plan">
-
-    <div class="row">
-
-      <span>
-        Direction
-      </span>
-
-      <b id="planDirection">
+      <div
+        class="signal wait"
+        id="finalSignal"
+      >
         WAIT
+      </div>
+
+
+      <div
+        class="muted"
+        id="opportunityType"
+      >
+        Scanning market...
+      </div>
+
+
+      <div
+        class="grid"
+        style="margin-top:14px"
+      >
+
+        <div class="metric">
+
+          <small>
+            Session
+          </small>
+
+          <b id="session">
+            --
+          </b>
+
+        </div>
+
+
+        <div class="metric">
+
+          <small>
+            Market Mode
+          </small>
+
+          <b id="marketMode">
+            --
+          </b>
+
+        </div>
+
+
+        <div class="metric">
+
+          <small>
+            Latest Price
+          </small>
+
+          <b id="latestPrice">
+            --
+          </b>
+
+        </div>
+
+
+        <div class="metric">
+
+          <small>
+            PD Zone
+          </small>
+
+          <b id="pdZone">
+            --
+          </b>
+
+        </div>
+
+      </div>
+
+
+      <div id="lastUpdate">
+        Last update: --
+      </div>
+
+
+      <div class="pip-note">
+
+        📏 Gold pip convention:
+        <b>1 pip = 0.10 price movement</b>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- TRADE PLAN -->
+
+    <div class="card">
+
+      <b>
+        🎯 Trade Plan
       </b>
 
+
+      <div
+        class="plan"
+        style="margin-top:10px"
+      >
+
+        <div class="row">
+
+          <span>
+            Direction
+          </span>
+
+          <b id="planDirection">
+            WAIT
+          </b>
+
+        </div>
+
+
+        <div class="row">
+
+          <span>
+            Entry
+          </span>
+
+          <b id="entry">
+            --
+          </b>
+
+        </div>
+
+
+        <div class="row">
+
+          <span>
+            Stop Loss
+          </span>
+
+          <b id="sl">
+            --
+          </b>
+
+        </div>
+
+
+        <div class="row">
+
+          <span>
+            TP Range
+          </span>
+
+          <b id="tpRange">
+            --
+          </b>
+
+        </div>
+
+
+        <div class="row">
+
+          <span>
+            Risk
+          </span>
+
+          <b id="riskPips">
+            --
+          </b>
+
+        </div>
+
+
+        <div class="row">
+
+          <span>
+            Estimated R:R
+          </span>
+
+          <b id="rrRange">
+            --
+          </b>
+
+        </div>
+
+      </div>
+
     </div>
 
 
-    <div class="row">
 
-      <span>
-        Entry
-      </span>
+    <!-- PRICE POTENTIAL -->
 
-      <b id="entry">
-        --
+    <div class="card">
+
+      <b>
+        📏 Estimated Price Potential
       </b>
 
+
+      <div
+        class="potential"
+        id="potentialRange"
+      >
+        -- pips
+      </div>
+
+
+      <div
+        class="confidence medium"
+        id="potentialConfidence"
+      >
+        SCANNING
+      </div>
+
+
+      <p
+        class="muted"
+        style="font-size:11px;margin-bottom:0"
+      >
+
+        Estimate based on recent movement,
+        structure and nearby liquidity.
+        Not a guaranteed target.
+
+      </p>
+
     </div>
 
 
-    <div class="row">
 
-      <span>
-        Stop Loss
-      </span>
+    <!-- CONFIRMATION -->
 
-      <b id="sl">
-        --
+    <div class="card">
+
+      <b>
+        🔎 Setup Confirmation
       </b>
 
+      <ul id="confirmationList">
+
+        <li>
+          Waiting for market data...
+        </li>
+
+      </ul>
+
     </div>
 
 
-    <div class="row">
 
-      <span>
-        TP Range
-      </span>
+    <!-- VALID OPPORTUNITIES -->
 
-      <b id="tpRange">
-        --
+    <div class="card">
+
+      <b>
+        🚨 Valid Opportunities
       </b>
 
-    </div>
+      <p
+        class="muted"
+        style="font-size:11px"
+      >
+
+        Browser notification triggers only
+        when a fresh setup reaches 70+
+        and avoids repeated alerts.
+
+      </p>
 
 
-    <div class="row">
+      <div class="status-row">
 
-      <span>
-        Risk
-      </span>
+        <span>
+          Notification
+        </span>
 
-      <b id="riskPips">
-        --
-      </b>
+        <span
+          class="badge"
+          id="notificationStatus"
+        >
+          NOT REQUESTED
+        </span>
 
-    </div>
-
-
-    <div class="row">
-
-      <span>
-        Reward
-      </span>
-
-      <b id="rewardPips">
-        --
-      </b>
-
-    </div>
-
-
-    <div class="row">
-
-      <span>
-        Estimated R:R
-      </span>
-
-      <b id="rrRange">
-        --
-      </b>
+      </div>
 
     </div>
 
-  </div>
-
-
-  <!-- RISK FILTER -->
-
-  <div
-    class="risk-box"
-    id="riskFilter"
-  >
-
-    <div class="status-row">
-
-      <span>
-        🛡️ Risk Filter
-      </span>
-
-      <b id="riskFilterStatus">
-        CHECKING
-      </b>
-
-    </div>
-
-
-    <div
-      class="muted"
-      style="font-size:11px;margin-top:6px"
-    >
-
-      Required:
-      <b>35–60 pips risk</b>
-      •
-      <b>120+ pips reward</b>
-      •
-      <b>R:R ≥ 1:2</b>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =======================================================
-     ESTIMATED PRICE POTENTIAL
-======================================================= -->
-
-<div class="card">
-
-  <b>
-    📏 Estimated Price Potential
-  </b>
-
-
-  <div
-    class="potential"
-    id="potentialRange"
-  >
-    -- pips
-  </div>
-
-
-  <div
-    class="confidence medium"
-    id="potentialConfidence"
-  >
-    SCANNING
-  </div>
-
-
-  <p
-    class="muted"
-    style="font-size:11px;margin-bottom:0"
-  >
-
-    Estimated from the engine using
-    market structure, liquidity and recent
-    price movement.
-
-    This is not a guaranteed target.
-
-  </p>
-
-</div>
-
-
-<!-- =======================================================
-     CONFIRMATION
-======================================================= -->
-
-<div class="card">
-
-  <b>
-    🔎 Setup Confirmation
-  </b>
-
-
-  <ul id="confirmationList">
-
-    <li>
-      Waiting for engine data...
-    </li>
-
-  </ul>
-
-</div>
-
-
-<!-- =======================================================
-     NOTIFICATION
-======================================================= -->
-
-<div class="card">
-
-  <div class="status-row">
-
-    <b>
-      🚨 Valid Opportunities
-    </b>
-
-    <span
-      class="badge"
-      id="notificationStatus"
-    >
-      NOT REQUESTED
-    </span>
-
-  </div>
-
-
-  <p
-    class="muted"
-    style="font-size:11px"
-  >
-
-    Notification is triggered only when
-    the engine reports a valid setup.
-
-    Requirements:
-
-    <br>
-
-    Score ≥ 70
-
-    <br>
-
-    Risk 35–60 pips
-
-    <br>
-
-    Reward ≥ 120 pips
-
-    <br>
-
-    R:R ≥ 1:2
-
-  </p>
-
-
-  <button
-    id="notificationButton"
-    onclick="requestNotificationPermission()"
-  >
-
-    🔔 Enable Notifications
-
-  </button>
-
-</div>
-
-
-<!-- =======================================================
-     ENGINE INFORMATION
-======================================================= -->
-
-<div class="card">
-
-  <b>
-    ⚙️ Engine Information
-  </b>
-
-
-  <div
-    class="info"
-    style="margin-top:8px"
-  >
-
-    <div>
-      Data source:
-      <b>Production Engine</b>
-    </div>
-
-    <div>
-      Symbol:
-      <b>XAU/USD</b>
-    </div>
-
-    <div>
-      Primary analysis:
-      <b>H4 → H1 → M5</b>
-    </div>
-
-    <div>
-      Minimum score:
-      <b>70/100</b>
-    </div>
-
-    <div>
-      Risk target:
-      <b>35–60 pips</b>
-    </div>
-
-    <div>
-      Minimum reward:
-      <b>120 pips</b>
-    </div>
-
-    <div>
-      Minimum R:R:
-      <b>1:2</b>
-    </div>
-
-    <div>
-      Browser API requests:
-      <b>ZERO market-data requests</b>
-    </div>
 
   </div>
 
 </div>
 
 
-</div>
-
-</div>
-
-
-<!-- =======================================================
-     JAVASCRIPT
-======================================================= -->
 
 <script>
 
 
-/* =========================================================
-   CONFIG
-========================================================= */
+// ============================================================
+// CONFIG
+// ============================================================
 
-/*
-   IMPORTANT:
-
-   This page DOES NOT connect directly to Twelve Data.
-
-   The production Python engine generates:
-
-       engine/state.json
-
-   The dashboard reads that file.
-*/
-
-const STATE_URL =
-  "./engine/state.json";
-
+const API_KEY =
+  "a1cca9487dba43d093d97fff64306966";
 
 const OPPORTUNITY_THRESHOLD = 70;
-
-
-/*
-   Refresh every 5 minutes.
-
-   GitHub Pages is static, therefore this only
-   reloads the latest state.json generated by
-   the GitHub Actions engine.
-*/
 
 const REFRESH_MS = 300000;
 
 
-/*
-   Hard risk requirements.
-*/
+// ============================================================
+// GOLD PIP CONVENTION
+// ============================================================
 
-const MIN_RISK_PIPS = 35;
+// IMPORTANT:
+// 1 pip = 0.10 XAUUSD price movement
 
-const MAX_RISK_PIPS = 60;
-
-const MIN_REWARD_PIPS = 120;
-
-const MIN_RR = 2.0;
+const PIP_SIZE = 0.10;
 
 
-/* =========================================================
-   STATE
-========================================================= */
+// ============================================================
+// PIP HELPERS
+// ============================================================
+
+function priceToPips(priceDistance){
+
+  return priceDistance / PIP_SIZE;
+
+}
+
+
+function pipsToPrice(pips){
+
+  return pips * PIP_SIZE;
+
+}
+
+
+// ============================================================
+// STATE
+// ============================================================
 
 let lastAlertKey = "";
 
 let notificationPermissionAsked = false;
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
+// ============================================================
+// OHLC
+// ============================================================
 
-function setText(id,text){
+async function getOHLC(
+  interval="5min",
+  outputsize=80
+){
 
-  const element =
-    document.getElementById(id);
-
-  if(element){
-
-    element.innerText =
-      text ?? "--";
-
-  }
-
-}
+  const url =
+    `https://api.twelvedata.com/time_series` +
+    `?symbol=XAU/USD` +
+    `&interval=${interval}` +
+    `&outputsize=${outputsize}` +
+    `&apikey=${API_KEY}`;
 
 
-function numberOrNull(value){
+  const response =
+    await fetch(url);
+
+
+  const data =
+    await response.json();
+
 
   if(
-    value === null ||
-    value === undefined ||
-    value === ""
+    data.status === "error"
   ){
 
-    return null;
+    throw new Error(
+      data.message ||
+      "TwelveData error"
+    );
 
   }
 
-  const number =
-    Number(value);
-
-  return Number.isFinite(number)
-    ? number
-    : null;
-
-}
-
-
-function fmt(value){
-
-  const number =
-    numberOrNull(value);
-
-  if(number === null){
-
-    return "--";
-
-  }
-
-  return number.toFixed(2);
-
-}
-
-
-function fmtPips(value){
-
-  const number =
-    numberOrNull(value);
-
-  if(number === null){
-
-    return "--";
-
-  }
-
-  return Math.round(number);
-
-}
-
-
-function normalizeDirection(value){
-
-  const direction =
-    String(value || "WAIT")
-      .toUpperCase();
 
   if(
-    direction === "BUY" ||
-    direction === "SELL"
+    !data.values ||
+    !data.values.length
   ){
 
-    return direction;
+    throw new Error(
+      "No OHLC data received"
+    );
 
   }
 
-  return "WAIT";
+
+  return data.values.map(
+    c => ({
+
+      time:c.datetime,
+
+      open:+c.open,
+
+      high:+c.high,
+
+      low:+c.low,
+
+      close:+c.close
+
+    })
+  );
 
 }
 
 
-function calculateRR(reward,risk){
-
-  reward =
-    numberOrNull(reward);
-
-  risk =
-    numberOrNull(risk);
-
-  if(
-    reward === null ||
-    risk === null ||
-    risk <= 0
-  ){
-
-    return null;
-
-  }
-
-  return reward / risk;
-
-}
-
-
-/* =========================================================
-   SESSION
-========================================================= */
+// ============================================================
+// SESSION
+// ============================================================
 
 function getSession(){
 
-  /*
-     Malaysia timezone.
-
-     This is only a UI fallback.
-     The engine's session value takes priority.
-  */
-
-  const now =
-    new Date();
-
-  const malaysia =
-    new Date(
-      now.toLocaleString(
-        "en-US",
-        {
-          timeZone:
-            "Asia/Kuala_Lumpur"
-        }
-      )
-    );
-
-  const hour =
-    malaysia.getHours();
+  const h =
+    new Date().getHours();
 
 
   if(
-    hour >= 15 &&
-    hour < 20
+    h >= 15 &&
+    h < 20
   ){
 
     return "LONDON";
@@ -1233,8 +826,8 @@ function getSession(){
 
 
   if(
-    hour >= 20 ||
-    hour < 1
+    h >= 20 ||
+    h < 1
   ){
 
     return "NEW YORK";
@@ -1247,1060 +840,1033 @@ function getSession(){
 }
 
 
-/* =========================================================
-   EXTRACT ENGINE DATA
-========================================================= */
+// ============================================================
+// MARKET ANALYSIS
+// ============================================================
 
-function extractEngineState(raw){
+function analyze(candles){
 
-  /*
-     Supports both:
-
-       state.json
-       {
-         opportunity:{},
-         plan:{},
-         potential:{},
-         ...
-       }
-
-     and:
-
-       state.json
-       {
-         result:{
-           opportunity:{},
-           plan:{},
-           ...
-         }
-       }
-  */
-
-  const root =
-    raw?.result ||
-    raw?.data ||
-    raw ||
-    {};
+  const data =
+    [...candles].reverse();
 
 
-  const opportunity =
-    root.opportunity ||
-    root.signal ||
-    {};
+  const latest =
+    data[data.length - 1];
 
 
-  const plan =
-    root.plan ||
-    root.trade_plan ||
-    root.tradePlan ||
-    {};
+  const swingHighs = [];
+
+  const swingLows = [];
 
 
-  const potential =
-    root.potential ||
-    root.price_potential ||
-    root.pricePotential ||
-    {};
+  for(
+    let i = 2;
+    i < data.length - 2;
+    i++
+  ){
+
+    const c =
+      data[i];
 
 
-  const h4 =
-    root.h4 ||
-    root.H4 ||
-    {};
+    if(
+      c.high >
+      data[i-1].high &&
+
+      c.high >
+      data[i-2].high &&
+
+      c.high >
+      data[i+1].high &&
+
+      c.high >
+      data[i+2].high
+    ){
+
+      swingHighs.push({
+
+        price:c.high,
+
+        time:c.time,
+
+        index:i
+
+      });
+
+    }
 
 
-  const h1 =
-    root.h1 ||
-    root.H1 ||
-    {};
+    if(
+      c.low <
+      data[i-1].low &&
+
+      c.low <
+      data[i-2].low &&
+
+      c.low <
+      data[i+1].low &&
+
+      c.low <
+      data[i+2].low
+    ){
+
+      swingLows.push({
+
+        price:c.low,
+
+        time:c.time,
+
+        index:i
+
+      });
+
+    }
+
+  }
 
 
-  const m5 =
-    root.m5 ||
-    root.M5 ||
-    {};
+  const recent =
+    data.slice(-30);
 
 
-  const direction =
-    normalizeDirection(
-      opportunity.direction ||
-      plan.direction ||
-      root.direction
+  const rangeHigh =
+    Math.max(
+      ...recent.map(
+        c => c.high
+      )
     );
 
 
-  const score =
-    numberOrNull(
-      opportunity.score ??
-      root.score
+  const rangeLow =
+    Math.min(
+      ...recent.map(
+        c => c.low
+      )
     );
+
+
+  const equilibrium =
+    (
+      rangeHigh +
+      rangeLow
+    ) / 2;
+
+
+  const zone =
+    latest.close < equilibrium
+      ? "DISCOUNT"
+      : "PREMIUM";
+
+
+  const lastSwingHigh =
+    swingHighs.at(-1) ||
+    null;
+
+
+  const lastSwingLow =
+    swingLows.at(-1) ||
+    null;
+
+
+  let structure =
+    "RANGE";
+
+
+  if(
+    lastSwingHigh &&
+    latest.close >
+    lastSwingHigh.price
+  ){
+
+    structure =
+      "BULLISH BOS";
+
+  }
+
+  else if(
+    lastSwingLow &&
+    latest.close <
+    lastSwingLow.price
+  ){
+
+    structure =
+      "BEARISH BOS";
+
+  }
+
+
+  const ranges =
+    data.slice(-20).map(
+      c =>
+        c.high -
+        c.low
+    );
+
+
+  const avgRange =
+    ranges.reduce(
+      (a,b) => a + b,
+      0
+    ) /
+    ranges.length;
 
 
   return {
 
-    raw,
+    latestPrice:
+      latest.close,
 
-    opportunity,
+    structure,
 
-    plan,
+    zone,
 
-    potential,
+    equilibrium,
 
-    h4,
+    lastSwingHigh,
 
-    h1,
+    lastSwingLow,
 
-    m5,
+    avgRange,
 
-    direction,
+    recentRange:
+      rangeHigh -
+      rangeLow,
 
-    score,
+    rangeHigh,
 
-    session:
-      root.session ||
-      getSession()
+    rangeLow
 
   };
 
 }
 
 
-/* =========================================================
-   EXTRACT RISK
-========================================================= */
+// ============================================================
+// OPPORTUNITY SCORE
+// ============================================================
 
-function getRiskPips(plan){
+function scoreOpportunity(
+  h4,
+  h1,
+  m5
+){
 
-  /*
-     Prefer engine-calculated risk.
+  let buy = 0;
 
-     Never recalculate SL here if the engine
-     already supplied risk.
-  */
+  let sell = 0;
 
-  return numberOrNull(
-    plan.riskPips ??
-    plan.risk_pips ??
-    plan.pips_to_sl ??
-    plan.risk
-  );
-
-}
+  const confirm = [];
 
 
-/* =========================================================
-   EXTRACT REWARD
-========================================================= */
+  if(
+    h4.structure ===
+    "BULLISH BOS"
+  ){
 
-function getRewardPips(plan,potential){
+    buy += 25;
 
-  /*
-     Reward priority:
-
-       1. rewardPips
-       2. reward_pips
-       3. pips_to_tp3
-       4. potential.maxPips
-       5. potential.max_pips
-  */
-
-  return numberOrNull(
-
-    plan.rewardPips ??
-
-    plan.reward_pips ??
-
-    plan.pips_to_tp3 ??
-
-    potential.maxPips ??
-
-    potential.max_pips
-
-  );
-
-}
-
-
-/* =========================================================
-   EXTRACT RR
-========================================================= */
-
-function getRR(plan,reward,risk){
-
-  const directMin =
-    numberOrNull(
-      plan.rrMin ??
-      plan.rr_min
+    confirm.push(
+      "H4 bullish structure confirmed"
     );
 
+  }
 
-  const directMax =
-    numberOrNull(
-      plan.rrMax ??
-      plan.rr_max
+  else if(
+    h4.structure ===
+    "BEARISH BOS"
+  ){
+
+    sell += 25;
+
+    confirm.push(
+      "H4 bearish structure confirmed"
+    );
+
+  }
+
+
+  if(
+    h1.structure ===
+    "BULLISH BOS"
+  ){
+
+    buy += 25;
+
+    confirm.push(
+      "H1 bullish structure confirmed"
+    );
+
+  }
+
+  else if(
+    h1.structure ===
+    "BEARISH BOS"
+  ){
+
+    sell += 25;
+
+    confirm.push(
+      "H1 bearish structure confirmed"
+    );
+
+  }
+
+
+  if(
+    m5.zone ===
+    "DISCOUNT"
+  ){
+
+    buy += 15;
+
+    confirm.push(
+      "Price is in discount"
+    );
+
+  }
+
+
+  if(
+    m5.zone ===
+    "PREMIUM"
+  ){
+
+    sell += 15;
+
+    confirm.push(
+      "Price is in premium"
+    );
+
+  }
+
+
+  if(
+    m5.structure ===
+    "BULLISH BOS"
+  ){
+
+    buy += 20;
+
+    confirm.push(
+      "M5 bullish BOS"
+    );
+
+  }
+
+  else if(
+    m5.structure ===
+    "BEARISH BOS"
+  ){
+
+    sell += 20;
+
+    confirm.push(
+      "M5 bearish BOS"
+    );
+
+  }
+
+
+  const ratio =
+    m5.recentRange /
+    Math.max(
+      m5.avgRange,
+      0.0001
     );
 
 
   if(
-    directMin !== null ||
-    directMax !== null
+    ratio >= 2
+  ){
+
+    if(buy > sell)
+      buy += 10;
+
+    else if(sell > buy)
+      sell += 10;
+
+
+    confirm.push(
+      "Strong recent range expansion"
+    );
+
+  }
+
+  else if(
+    ratio >= 1.3
+  ){
+
+    if(buy > sell)
+      buy += 5;
+
+    else if(sell > buy)
+      sell += 5;
+
+
+    confirm.push(
+      "Healthy market movement"
+    );
+
+  }
+
+
+  if(
+    buy >= sell &&
+    buy >= 70
   ){
 
     return {
 
-      min:
-        directMin,
+      direction:"BUY",
 
-      max:
-        directMax
+      score:
+        Math.min(100,buy),
+
+      confirmations:
+        confirm
 
     };
 
   }
 
 
-  const calculated =
-    calculateRR(
-      reward,
-      risk
-    );
+  if(
+    sell > buy &&
+    sell >= 70
+  ){
+
+    return {
+
+      direction:"SELL",
+
+      score:
+        Math.min(100,sell),
+
+      confirmations:
+        confirm
+
+    };
+
+  }
 
 
   return {
 
-    min:
-      calculated,
+    direction:"WAIT",
 
-    max:
-      calculated
+    score:
+      Math.max(
+        buy,
+        sell
+      ),
+
+    confirmations:
+      confirm
 
   };
 
 }
 
 
-/* =========================================================
-   HARD VALIDATION
-========================================================= */
+// ============================================================
+// POTENTIAL
+// ============================================================
 
-function validateTradePlan(
-  direction,
-  score,
-  risk,
-  reward,
-  rr
+function calculatePotential(
+  m5,
+  direction
 ){
 
-  const reasons = [];
-
-
   if(
-    direction !== "BUY" &&
-    direction !== "SELL"
+    direction ===
+    "WAIT"
   ){
 
-    reasons.push(
-      "No BUY/SELL direction"
-    );
+    return {
+
+      minPips:0,
+
+      maxPips:0,
+
+      tp1:null,
+
+      tp2:null,
+
+      confidence:"LOW"
+
+    };
 
   }
 
 
-  if(
-    score === null ||
-    score < OPPORTUNITY_THRESHOLD
-  ){
-
-    reasons.push(
-      `Score below ${OPPORTUNITY_THRESHOLD}`
-    );
-
-  }
+  const price =
+    m5.latestPrice;
 
 
-  if(
-    risk === null
-  ){
-
-    reasons.push(
-      "Risk data unavailable"
-    );
-
-  }
-  else if(
-    risk < MIN_RISK_PIPS
-  ){
-
-    reasons.push(
-      `Risk below ${MIN_RISK_PIPS} pips`
-    );
-
-  }
-  else if(
-    risk > MAX_RISK_PIPS
-  ){
-
-    reasons.push(
-      `Risk above ${MAX_RISK_PIPS} pips`
-    );
-
-  }
+  const swingTarget =
+    direction === "BUY"
+      ? (
+          m5.lastSwingHigh?.price
+          ??
+          m5.rangeHigh
+        )
+      : (
+          m5.lastSwingLow?.price
+          ??
+          m5.rangeLow
+        );
 
 
-  if(
-    reward === null
-  ){
-
-    reasons.push(
-      "Reward data unavailable"
-    );
-
-  }
-  else if(
-    reward < MIN_REWARD_PIPS
-  ){
-
-    reasons.push(
-      `Reward below ${MIN_REWARD_PIPS} pips`
-    );
-
-  }
-
-
-  const rrMin =
-    rr?.min ??
-    null;
-
-
-  if(
-    rrMin === null
-  ){
-
-    reasons.push(
-      "R:R unavailable"
-    );
-
-  }
-  else if(
-    rrMin < MIN_RR
-  ){
-
-    reasons.push(
-      `R:R below 1:${MIN_RR}`
-    );
-
-  }
-
-
-  return {
-
-    valid:
-      reasons.length === 0,
-
-    reasons
-
-  };
-
-}
-
-
-/* =========================================================
-   RENDER
-========================================================= */
-
-function render(state){
-
-  const {
-    opportunity,
-    plan,
-    potential,
-    h4,
-    h1,
-    m5,
-    direction,
-    score,
-    session
-  } = state;
-
-
-  const risk =
-    getRiskPips(plan);
-
-
-  const reward =
-    getRewardPips(
-      plan,
-      potential
+  const structureDistance =
+    Math.abs(
+      swingTarget -
+      price
     );
 
 
-  const rr =
-    getRR(
-      plan,
-      reward,
-      risk
+  const baseMove =
+    Math.max(
+      structureDistance,
+      m5.avgRange * 3
     );
 
 
-  const validation =
-    validateTradePlan(
-      direction,
-      score,
-      risk,
-      reward,
-      rr
+  const minMove =
+    Math.max(
+      m5.avgRange * 2,
+      baseMove * 0.65
     );
 
 
-  /* =======================================================
-     STATUS
-  ======================================================= */
-
-  const status =
-    document.getElementById(
-      "engineStatus"
+  const maxMove =
+    Math.max(
+      m5.avgRange * 4,
+      baseMove * 1.15
     );
 
 
-  const signal =
-    document.getElementById(
-      "finalSignal"
-    );
+  // ========================================================
+  // CORRECT GOLD PIP CONVERSION
+  // 1 pip = 0.10
+  // ========================================================
 
-
-  const scoreElement =
-    document.getElementById(
-      "score"
-    );
-
-
-  const live =
-    document.getElementById(
-      "liveStatus"
-    );
-
-
-  if(validation.valid){
-
-    setText(
-      "engineStatus",
-      "OPPORTUNITY FOUND"
-    );
-
-    status.className =
-      "badge valid";
-
-
-    live.className =
-      "live";
-
-
-  }
-  else{
-
-    setText(
-      "engineStatus",
-      "WAIT"
-    );
-
-    status.className =
-      "badge wait";
-
-  }
-
-
-  /* =======================================================
-     SCORE
-  ======================================================= */
-
-  setText(
-    "score",
-    score === null
-      ? "--"
-      : score
-  );
-
-
-  scoreElement.className =
-    "score " +
-    (
-      validation.valid
-        ? direction === "BUY"
-          ? "buy"
-          : "sell"
-        : "wait"
-    );
-
-
-  /* =======================================================
-     SIGNAL
-  ======================================================= */
-
-  /*
-     IMPORTANT:
-
-     A BUY/SELL is only shown as a valid
-     opportunity when ALL hard filters pass.
-  */
-
-  if(validation.valid){
-
-    setText(
-      "finalSignal",
-      direction
-    );
-
-    signal.className =
-      "signal " +
-      (
-        direction === "BUY"
-          ? "buy"
-          : "sell"
-      );
-
-
-    setText(
-      "opportunityType",
-      opportunity.type ||
-      opportunity.opportunity ||
-      (
-        direction === "BUY"
-          ? "Bullish valid opportunity"
-          : "Bearish valid opportunity"
+  const minPips =
+    Math.max(
+      1,
+      Math.round(
+        priceToPips(minMove)
       )
     );
 
-  }
-  else{
 
-    setText(
-      "finalSignal",
-      "WAIT"
+  const maxPips =
+    Math.max(
+      minPips + 1,
+      Math.round(
+        priceToPips(maxMove)
+      )
     );
 
-    signal.className =
-      "signal wait";
+
+  const tp1 =
+    direction === "BUY"
+
+      ? price +
+        pipsToPrice(
+          minPips
+        )
+
+      : price -
+        pipsToPrice(
+          minPips
+        );
 
 
-    if(
-      validation.reasons.length
-    ){
+  const tp2 =
+    direction === "BUY"
 
-      setText(
-        "opportunityType",
-        "Setup rejected by risk/reward filter"
-      );
+      ? price +
+        pipsToPrice(
+          maxPips
+        )
 
-    }
-    else{
+      : price -
+        pipsToPrice(
+          maxPips
+        );
 
-      setText(
-        "opportunityType",
-        "Waiting for valid setup..."
-      );
 
-    }
+  let confidence =
+    "LOW";
+
+
+  if(
+    structureDistance >=
+    m5.avgRange * 4
+  ){
+
+    confidence =
+      "HIGH";
+
+  }
+
+  else if(
+    structureDistance >=
+    m5.avgRange * 2
+  ){
+
+    confidence =
+      "MEDIUM";
 
   }
 
 
-  /* =======================================================
-     MARKET
-  ======================================================= */
+  return {
+
+    minPips,
+
+    maxPips,
+
+    tp1,
+
+    tp2,
+
+    confidence
+
+  };
+
+}
+
+
+// ============================================================
+// TRADE PLAN
+// ============================================================
+
+function buildTradePlan(
+  m5,
+  direction,
+  p
+){
+
+  if(
+    direction ===
+    "WAIT"
+  ){
+
+    return {
+
+      entry:
+        m5.latestPrice,
+
+      sl:null,
+
+      tp1:null,
+
+      tp2:null,
+
+      riskPips:null,
+
+      rrMin:null,
+
+      rrMax:null
+
+    };
+
+  }
+
+
+  const entry =
+    m5.latestPrice;
+
+
+  let sl;
+
+
+  if(
+    direction ===
+    "BUY"
+  ){
+
+    sl =
+      m5.lastSwingLow?.price
+      ??
+      entry -
+      Math.max(
+        m5.avgRange * 2,
+        0.50
+      );
+
+  }
+
+  else {
+
+    sl =
+      m5.lastSwingHigh?.price
+      ??
+      entry +
+      Math.max(
+        m5.avgRange * 2,
+        0.50
+      );
+
+  }
+
+
+  // ========================================================
+  // CORRECT GOLD PIP CONVERSION
+  // 1 pip = 0.10
+  // ========================================================
+
+  const riskPips =
+    Math.max(
+      1,
+      Math.round(
+        priceToPips(
+          Math.abs(
+            entry - sl
+          )
+        )
+      )
+    );
+
+
+  return {
+
+    entry,
+
+    sl,
+
+    tp1:p.tp1,
+
+    tp2:p.tp2,
+
+    riskPips,
+
+    rrMin:
+      (
+        p.minPips /
+        riskPips
+      ).toFixed(1),
+
+    rrMax:
+      (
+        p.maxPips /
+        riskPips
+      ).toFixed(1)
+
+  };
+
+}
+
+
+// ============================================================
+// DOM HELPERS
+// ============================================================
+
+const setText =
+(
+  id,
+  text
+) => {
+
+  const e =
+    document.getElementById(
+      id
+    );
+
+
+  if(e)
+    e.innerText =
+      text;
+
+};
+
+
+const fmt =
+v =>
+  v == null
+    ? "--"
+    : Number(v).toFixed(2);
+
+
+// ============================================================
+// RENDER
+// ============================================================
+
+function render(r){
+
+  const {
+    opportunity,
+    potential,
+    plan,
+    h4,
+    h1,
+    m5,
+    session
+  } = r;
+
 
   setText(
-    "session",
-    session || getSession()
+    "score",
+    opportunity.score
   );
 
 
-  const marketMode =
-    h4.structure ||
-    h1.structure
-      ? "TREND"
-      : "RANGE";
+  setText(
+    "finalSignal",
+    opportunity.direction
+  );
+
+
+  setText(
+    "opportunityType",
+
+    opportunity.direction ===
+    "BUY"
+
+      ? "Bullish valid opportunity"
+
+      : opportunity.direction ===
+        "SELL"
+
+          ? "Bearish valid opportunity"
+
+          : "No high-confidence setup yet"
+  );
+
+
+  setText(
+    "session",
+    session
+  );
 
 
   setText(
     "marketMode",
-    marketMode
+
+    h4.structure !== "RANGE" ||
+    h1.structure !== "RANGE"
+
+      ? "TREND"
+
+      : "RANGE"
   );
-
-
-  const latestPrice =
-    numberOrNull(
-      plan.entry ??
-      m5.latestPrice ??
-      m5.latest_price ??
-      opportunity.price
-    );
 
 
   setText(
     "latestPrice",
-    fmt(latestPrice)
+    fmt(m5.latestPrice)
   );
 
 
   setText(
     "pdZone",
-    m5.zone ||
-    m5.pdZone ||
-    m5.pd_zone ||
-    "--"
+    m5.zone
   );
 
 
-  /* =======================================================
-     TRADE PLAN
-  ======================================================= */
-
-  /*
-     Even when invalid, we display the engine plan
-     for transparency, but signal remains WAIT.
-  */
-
   setText(
     "planDirection",
-    validation.valid
-      ? direction
-      : "WAIT"
+    opportunity.direction
   );
 
 
   setText(
     "entry",
-    fmt(
-      plan.entry
-    )
+    fmt(plan.entry)
   );
 
 
   setText(
     "sl",
-    fmt(
-      plan.sl ??
-      plan.stopLoss ??
-      plan.stop_loss
-    )
+    fmt(plan.sl)
   );
 
 
-  let tp1 =
-    numberOrNull(
-      plan.tp1
-    );
+  setText(
 
+    "tpRange",
 
-  let tp2 =
-    numberOrNull(
-      plan.tp2
-    );
+    opportunity.direction ===
+    "WAIT"
 
+      ? "--"
 
-  let tp3 =
-    numberOrNull(
-      plan.tp3
-    );
+      : `${fmt(plan.tp1)}
+         – ${fmt(plan.tp2)}`
+  );
 
-
-  if(
-    tp1 !== null &&
-    tp2 !== null
-  ){
-
-    setText(
-      "tpRange",
-      `${fmt(tp1)} – ${fmt(tp2)}`
-    );
-
-  }
-  else if(
-    tp1 !== null &&
-    tp3 !== null
-  ){
-
-    setText(
-      "tpRange",
-      `${fmt(tp1)} – ${fmt(tp3)}`
-    );
-
-  }
-  else{
-
-    setText(
-      "tpRange",
-      "--"
-    );
-
-  }
-
-
-  /* =======================================================
-     RISK
-  ======================================================= */
 
   setText(
+
     "riskPips",
-    risk === null
+
+    plan.riskPips == null
+
       ? "--"
-      : `${fmtPips(risk)} pips`
+
+      : `${plan.riskPips} pips`
   );
 
 
   setText(
-    "rewardPips",
-    reward === null
+
+    "rrRange",
+
+    plan.rrMin == null
+
       ? "--"
-      : `${fmtPips(reward)} pips`
+
+      : `1:${plan.rrMin}
+         – 1:${plan.rrMax}`
   );
 
 
-  /* =======================================================
-     RR
-  ======================================================= */
+  setText(
 
-  if(
-    rr.min !== null &&
-    rr.max !== null
-  ){
+    "potentialRange",
 
-    if(
-      Math.abs(
-        rr.min - rr.max
-      ) < 0.05
-    ){
+    opportunity.direction ===
+    "WAIT"
 
-      setText(
-        "rrRange",
-        `1:${rr.min.toFixed(1)}`
-      );
+      ? "-- pips"
 
-    }
-    else{
-
-      setText(
-        "rrRange",
-        `1:${rr.min.toFixed(1)} – 1:${rr.max.toFixed(1)}`
-      );
-
-    }
-
-  }
-  else if(
-    rr.min !== null
-  ){
-
-    setText(
-      "rrRange",
-      `1:${rr.min.toFixed(1)}`
-    );
-
-  }
-  else{
-
-    setText(
-      "rrRange",
-      "--"
-    );
-
-  }
-
-
-  /* =======================================================
-     RISK FILTER UI
-  ======================================================= */
-
-  const riskStatus =
-    document.getElementById(
-      "riskFilterStatus"
-    );
-
-
-  if(validation.valid){
-
-    riskStatus.innerText =
-      "PASS ✓";
-
-    riskStatus.className =
-      "risk-good";
-
-
-  }
-  else{
-
-    riskStatus.innerText =
-      "REJECTED ✕";
-
-    riskStatus.className =
-      "risk-bad";
-
-  }
-
-
-  /* =======================================================
-     POTENTIAL
-  ======================================================= */
-
-  const minPotential =
-    numberOrNull(
-      potential.minPips ??
-      potential.min_pips
-    );
-
-
-  const maxPotential =
-    numberOrNull(
-      potential.maxPips ??
-      potential.max_pips
-    );
-
-
-  if(
-    minPotential !== null &&
-    maxPotential !== null
-  ){
-
-    setText(
-      "potentialRange",
-      `${fmtPips(minPotential)}–${fmtPips(maxPotential)} pips`
-    );
-
-  }
-  else if(
-    reward !== null
-  ){
-
-    setText(
-      "potentialRange",
-      `${fmtPips(reward)}+ pips`
-    );
-
-  }
-  else{
-
-    setText(
-      "potentialRange",
-      "-- pips"
-    );
-
-  }
-
-
-  const confidence =
-    String(
-      potential.confidence ||
-      "SCANNING"
-    ).toUpperCase();
+      : `${potential.minPips}
+         – ${potential.maxPips}
+         pips`
+  );
 
 
   setText(
+
     "potentialConfidence",
-    validation.valid
-      ? `${confidence} CONFIDENCE`
-      : "FILTERED"
+
+    opportunity.direction ===
+    "WAIT"
+
+      ? "SCANNING"
+
+      : `${potential.confidence}
+         CONFIDENCE`
   );
 
 
-  const confidenceElement =
+  const sig =
+    document.getElementById(
+      "finalSignal"
+    );
+
+
+  const score =
+    document.getElementById(
+      "score"
+    );
+
+
+  const pc =
     document.getElementById(
       "potentialConfidence"
     );
 
 
-  confidenceElement.className =
-    "confidence " +
+  sig.className =
+    "signal " +
+
     (
-      confidence === "HIGH"
+      opportunity.direction ===
+      "BUY"
+
+        ? "buy"
+
+        : opportunity.direction ===
+          "SELL"
+
+            ? "sell"
+
+            : "wait"
+    );
+
+
+  score.className =
+    "score " +
+
+    (
+      opportunity.score >= 70
+
+        ? (
+            opportunity.direction ===
+            "BUY"
+
+              ? "buy"
+
+              : "sell"
+          )
+
+        : "wait"
+    );
+
+
+  pc.className =
+    "confidence " +
+
+    (
+      potential.confidence ===
+      "HIGH"
+
         ? "high"
-        : confidence === "MEDIUM"
-          ? "medium"
-          : "low"
+
+        : potential.confidence ===
+          "MEDIUM"
+
+            ? "medium"
+
+            : "low"
     );
 
 
-  /* =======================================================
-     CONFIRMATION
-  ======================================================= */
+  document.getElementById(
+    "confirmationList"
+  ).innerHTML =
 
-  const confirmationList =
-    document.getElementById(
-      "confirmationList"
-    );
+    opportunity.confirmations.length
 
+      ? opportunity.confirmations
+          .slice(-7)
+          .map(
+            x =>
+              `<li>${x}</li>`
+          )
+          .join("")
 
-  let confirmations =
-    opportunity.confirmations ||
-    opportunity.confirmation ||
-    opportunity.reasons ||
-    [];
-
-
-  if(
-    !Array.isArray(confirmations)
-  ){
-
-    confirmations =
-      [String(confirmations)];
-
-  }
-
-
-  if(validation.valid){
-
-    const items =
-      confirmations.length
-        ? confirmations.slice(-8)
-        : [
-            "Score requirement passed",
-            "Risk 35–60 pips passed",
-            "Reward 120+ pips passed",
-            "R:R ≥ 1:2 passed"
-          ];
-
-
-    confirmationList.innerHTML =
-      items
-        .map(
-          item =>
-            `<li>${escapeHtml(item)}</li>`
-        )
-        .join("");
-
-  }
-  else{
-
-    const reasons =
-      validation.reasons.length
-        ? validation.reasons
-        : [
-            "Waiting for stronger confirmation"
-          ];
-
-
-    confirmationList.innerHTML =
-      reasons
-        .map(
-          reason =>
-            `<li>${escapeHtml(reason)}</li>`
-        )
-        .join("");
-
-  }
-
-
-  /* =======================================================
-     LAST UPDATE
-  ======================================================= */
-
-  const engineTimestamp =
-    state.raw.updated_at ||
-    state.raw.updatedAt ||
-    state.raw.timestamp ||
-    state.raw.generated_at ||
-    null;
-
-
-  let timestampText;
-
-
-  if(engineTimestamp){
-
-    timestampText =
-      formatTimestamp(
-        engineTimestamp
-      );
-
-  }
-  else{
-
-    timestampText =
-      new Date()
-        .toLocaleTimeString(
-          "en-MY"
-        );
-
-  }
+      : "<li>Waiting for stronger confirmation...</li>";
 
 
   setText(
+
+    "engineStatus",
+
+    opportunity.score >= 70
+
+      ? "OPPORTUNITY FOUND"
+
+      : "SCANNING"
+  );
+
+
+  setText(
+
     "lastUpdate",
-    `Last engine update: ${timestampText}`
-  );
 
-
-  /* =======================================================
-     NOTIFICATION
-  ======================================================= */
-
-  notifyOpportunity(
-    state,
-    validation,
-    risk,
-    reward
+    `Last update:
+     ${new Date().toLocaleTimeString("en-MY")}`
   );
 
 }
 
 
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
-
-function escapeHtml(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-/* =========================================================
-   TIMESTAMP
-========================================================= */
-
-function formatTimestamp(value){
-
-  try{
-
-    const date =
-      new Date(value);
-
-    if(
-      Number.isNaN(
-        date.getTime()
-      )
-    ){
-
-      return String(value);
-
-    }
-
-    return date.toLocaleString(
-      "en-MY",
-      {
-        timeZone:
-          "Asia/Kuala_Lumpur"
-      }
-    );
-
-  }
-  catch{
-
-    return String(value);
-
-  }
-
-}
-
-
-/* =========================================================
-   NOTIFICATION PERMISSION
-========================================================= */
+// ============================================================
+// NOTIFICATION PERMISSION
+// ============================================================
 
 async function requestNotificationPermission(){
 
@@ -2363,47 +1929,28 @@ async function requestNotificationPermission(){
 
   try{
 
-    const permission =
+    const p =
       await Notification.requestPermission();
 
 
-    if(
-      permission === "granted"
-    ){
+    setText(
 
-      setText(
-        "notificationStatus",
-        "ENABLED"
-      );
+      "notificationStatus",
 
-    }
-    else if(
-      permission === "denied"
-    ){
+      p === "granted"
 
-      setText(
-        "notificationStatus",
-        "BLOCKED"
-      );
+        ? "ENABLED"
 
-    }
-    else{
+        : p === "denied"
 
-      setText(
-        "notificationStatus",
-        "NOT GRANTED"
-      );
+          ? "BLOCKED"
 
-    }
-
-  }
-  catch(error){
-
-    console.warn(
-      "Notification permission error:",
-      error
+          : "NOT GRANTED"
     );
 
+  }
+
+  catch{
 
     setText(
       "notificationStatus",
@@ -2415,92 +1962,33 @@ async function requestNotificationPermission(){
 }
 
 
-/* =========================================================
-   NOTIFICATION STATUS
-========================================================= */
+// ============================================================
+// BROWSER NOTIFICATION
+// ============================================================
 
-function updateNotificationStatus(){
+function notifyOpportunity(r){
+
+  const {
+    opportunity,
+    potential,
+    plan
+  } = r;
+
 
   if(
+
+    opportunity.score <
+    OPPORTUNITY_THRESHOLD
+
+    ||
+
     !("Notification" in window)
-  ){
 
-    setText(
-      "notificationStatus",
-      "NOT SUPPORTED"
-    );
+    ||
 
-    return;
-
-  }
-
-
-  if(
-    Notification.permission ===
-    "granted"
-  ){
-
-    setText(
-      "notificationStatus",
-      "ENABLED"
-    );
-
-  }
-  else if(
-    Notification.permission ===
-    "denied"
-  ){
-
-    setText(
-      "notificationStatus",
-      "BLOCKED"
-    );
-
-  }
-  else{
-
-    setText(
-      "notificationStatus",
-      "NOT REQUESTED"
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   VALID OPPORTUNITY NOTIFICATION
-========================================================= */
-
-function notifyOpportunity(
-  state,
-  validation,
-  risk,
-  reward
-){
-
-  if(
-    !validation.valid
-  ){
-
-    return;
-
-  }
-
-
-  if(
-    !("Notification" in window)
-  ){
-
-    return;
-
-  }
-
-
-  if(
     Notification.permission !==
     "granted"
+
   ){
 
     return;
@@ -2508,40 +1996,28 @@ function notifyOpportunity(
   }
 
 
-  const direction =
-    state.direction;
+  // Entry bucket uses pip convention:
+  // 1 pip = 0.10
 
-
-  const score =
-    state.score;
-
-
-  const entry =
-    numberOrNull(
-      state.plan.entry
+  const entryPipBucket =
+    Math.round(
+      priceToPips(
+        plan.entry
+      )
     );
 
 
-  /*
-     Unique key.
-
-     Prevents repeated notifications
-     for the exact same setup.
-  */
-
   const key =
-    [
-      direction,
-      score,
-      entry,
-      risk,
-      reward
-    ]
-    .join("-");
+    `${opportunity.direction}` +
+    `-${Math.floor(
+      opportunity.score / 5
+    )}` +
+    `-${entryPipBucket}`;
 
 
   if(
-    key === lastAlertKey
+    key ===
+    lastAlertKey
   ){
 
     return;
@@ -2556,27 +2032,37 @@ function notifyOpportunity(
   try{
 
     new Notification(
-      `🚨 Bosque AI: ${direction} Opportunity`,
+
+      `🚨 Bosque AI:
+       ${opportunity.direction}
+       Opportunity`,
+
       {
 
         body:
-          `XAUUSD • Score ${score}/100\n` +
-          `Entry ${fmt(entry)}\n` +
-          `Risk ${fmtPips(risk)} pips\n` +
-          `Reward ${fmtPips(reward)}+ pips`,
+          `XAUUSD • Score ` +
+          `${opportunity.score}/100\n` +
+
+          `Entry ${fmt(plan.entry)} • ` +
+
+          `Potential ` +
+          `${potential.minPips}-` +
+          `${potential.maxPips} pips`,
 
         tag:
           "bosque-forex-ai-opportunity"
 
       }
+
     );
 
   }
-  catch(error){
+
+  catch(e){
 
     console.warn(
-      "Notification failed:",
-      error
+      "Notification failed",
+      e
     );
 
   }
@@ -2584,11 +2070,11 @@ function notifyOpportunity(
 }
 
 
-/* =========================================================
-   LOAD ENGINE STATE
-========================================================= */
+// ============================================================
+// MAIN ANALYSIS
+// ============================================================
 
-async function loadEngineState(){
+async function runAnalysis(){
 
   try{
 
@@ -2598,204 +2084,169 @@ async function loadEngineState(){
     );
 
 
-    const live =
-      document.getElementById(
-        "liveStatus"
+    const [
+      h4c,
+      h1c,
+      m5c
+    ] = await Promise.all([
+
+      getOHLC(
+        "4h",
+        60
+      ),
+
+      getOHLC(
+        "1h",
+        60
+      ),
+
+      getOHLC(
+        "5min",
+        80
+      )
+
+    ]);
+
+
+    const h4 =
+      analyze(h4c);
+
+
+    const h1 =
+      analyze(h1c);
+
+
+    const m5 =
+      analyze(m5c);
+
+
+    const opportunity =
+      scoreOpportunity(
+        h4,
+        h1,
+        m5
       );
 
 
-    live.className =
-      "live";
+    const direction =
+
+      opportunity.direction ===
+      "BUY"
+
+        ||
+
+      opportunity.direction ===
+      "SELL"
+
+        ? opportunity.direction
+
+        : "WAIT";
 
 
-    /*
-       Cache bust.
-
-       Prevents GitHub Pages/browser
-       from displaying stale state.json.
-    */
-
-    const url =
-      `${STATE_URL}?t=${Date.now()}`;
-
-
-    const response =
-      await fetch(
-        url,
-        {
-          method:"GET",
-
-          cache:"no-store",
-
-          headers:{
-            "Cache-Control":
-              "no-cache"
-          }
-        }
+    const potential =
+      calculatePotential(
+        m5,
+        direction
       );
 
 
-    if(
-      !response.ok
-    ){
-
-      throw new Error(
-        `Engine state HTTP ${response.status}`
+    const plan =
+      buildTradePlan(
+        m5,
+        direction,
+        potential
       );
 
-    }
+
+    const result = {
+
+      h4,
+
+      h1,
+
+      m5,
+
+      opportunity,
+
+      potential,
+
+      plan,
+
+      session:
+        getSession()
+
+    };
 
 
-    const raw =
-      await response.json();
+    render(
+      result
+    );
 
 
-    const state =
-      extractEngineState(raw);
-
-
-    render(state);
-
+    notifyOpportunity(
+      result
+    );
 
   }
+
+
   catch(error){
 
     console.error(
-      "Bosque Engine:",
       error
     );
 
 
     setText(
       "engineStatus",
-      "OFFLINE"
+      "ERROR"
     );
-
-
-    const status =
-      document.getElementById(
-        "engineStatus"
-      );
-
-
-    status.className =
-      "badge error";
-
-
-    const live =
-      document.getElementById(
-        "liveStatus"
-      );
-
-
-    live.className =
-      "live offline";
-
-
-    setText(
-      "finalSignal",
-      "WAIT"
-    );
-
-
-    const signal =
-      document.getElementById(
-        "finalSignal"
-      );
-
-
-    signal.className =
-      "signal wait";
 
 
     setText(
       "opportunityType",
-      "Engine state unavailable"
+      error.message ||
+      "Failed to load market data"
     );
 
 
     setText(
       "lastUpdate",
-      `Engine error: ${error.message}`
+      "Update failed"
     );
-
-
-    setText(
-      "riskFilterStatus",
-      "WAIT"
-    );
-
-
-    document.getElementById(
-      "riskFilterStatus"
-    ).className =
-      "risk-bad";
 
   }
 
 }
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+// ============================================================
+// START
+// ============================================================
 
 window.addEventListener(
   "load",
   () => {
 
-    updateNotificationStatus();
-
-    /*
-       Load latest engine state.
-    */
-
-    loadEngineState();
-
-
-    /*
-       Refresh every 5 minutes.
-
-       This does NOT consume Twelve Data quota.
-
-       It only reads state.json.
-    */
-
-    setInterval(
-      loadEngineState,
-      REFRESH_MS
+    setTimeout(
+      requestNotificationPermission,
+      1200
     );
 
-  }
-);
 
-
-/* =========================================================
-   VISIBILITY REFRESH
-========================================================= */
-
-document.addEventListener(
-  "visibilitychange",
-  () => {
-
-    /*
-       When user returns to the website,
-       immediately refresh engine state.
-    */
-
-    if(
-      !document.hidden
-    ){
-
-      loadEngineState();
-
-    }
+    runAnalysis();
 
   }
 );
+
+
+setInterval(
+  runAnalysis,
+  REFRESH_MS
+);
+
 
 </script>
-
 
 </body>
 
