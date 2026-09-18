@@ -2422,36 +2422,7 @@ if __name__ == "__main__":
 
     try:
 
-        # ====================================================
-        # TELEGRAM TEST
-        # ====================================================
-
-        test_message = """
-🟢 BOSQUE FOREX AI — TEST ALERT
-
-Telegram notification is working ✅
-
-━━━━━━━━━━━━━━━━━━
-📊 Engine: ONLINE
-🥇 Symbol: XAUUSD
-⏱ Timeframe: H4 → H1 → M5
-🔔 Notification: TEST
-━━━━━━━━━━━━━━━━━━
-
-If you receive this message,
-Telegram Bot connection is SUCCESSFUL.
-"""
-
-        print()
-        print("📨 Sending Telegram test...")
-        
-        telegram_ok = send_telegram(test_message)
-
-        if telegram_ok:
-            print("✅ TELEGRAM TEST SUCCESSFUL")
-            print("📱 Check your Telegram bot.")
-        else:
-            print("❌ TELEGRAM TEST FAILED")
+        run_engine()
 
     except Exception as error:
 
