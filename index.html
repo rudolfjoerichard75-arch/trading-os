@@ -11,21 +11,27 @@
 >
 
 <title>
-  Bosque Forex AI - XAUUSD Trade Intelligence
+Bosque Forex AI - XAUUSD Scalping Intelligence
 </title>
+
 
 <style>
 
 *{
-  box-sizing:border-box
+  box-sizing:border-box;
 }
 
 body{
   margin:0;
   padding:14px;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   background:#050816;
-  color:#e5e7eb
+  color:#e5e7eb;
 }
 
 .card{
@@ -34,24 +40,24 @@ body{
   border-radius:14px;
   padding:16px;
   margin-bottom:14px;
-  box-shadow:0 8px 30px rgba(0,0,0,.18)
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
 }
 
 .header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px
+  gap:12px;
 }
 
 .header h2{
-  margin:0 0 4px
+  margin:0 0 4px;
 }
 
 .header p{
   margin:0;
   color:#94a3b8;
-  font-size:13px
+  font-size:13px;
 }
 
 .live{
@@ -61,18 +67,20 @@ body{
   color:#22c55e;
   font-size:11px;
   font-weight:800;
-  white-space:nowrap
+  white-space:nowrap;
 }
 
 .dashboard{
   display:grid;
-  grid-template-columns:minmax(0,1.7fr) minmax(320px,.9fr);
+  grid-template-columns:
+    minmax(0,1.7fr)
+    minmax(320px,.9fr);
   gap:14px;
-  align-items:start
+  align-items:start;
 }
 
 .chart-card{
-  padding:8px
+  padding:8px;
 }
 
 .chart-container{
@@ -80,17 +88,17 @@ body{
   height:calc(100vh - 110px);
   min-height:620px;
   overflow:hidden;
-  border-radius:12px
+  border-radius:12px;
 }
 
 .chart-container>div{
-  height:100%
+  height:100%;
 }
 
 .signal-panel{
   max-height:calc(100vh - 110px);
   overflow-y:auto;
-  padding-right:2px
+  padding-right:2px;
 }
 
 .status-row{
@@ -98,64 +106,64 @@ body{
   justify-content:space-between;
   align-items:center;
   gap:10px;
-  font-size:12px
+  font-size:12px;
 }
 
 .status{
-  color:#94a3b8
+  color:#94a3b8;
 }
 
 .score{
   font-size:42px;
   font-weight:900;
   line-height:1;
-  margin:8px 0
+  margin:8px 0;
 }
 
 .score-label{
   font-size:11px;
   color:#94a3b8;
   text-transform:uppercase;
-  letter-spacing:.08em
+  letter-spacing:.08em;
 }
 
 .signal{
   font-size:25px;
   font-weight:900;
-  margin:5px 0
+  margin:5px 0;
 }
 
 .buy{
-  color:#22c55e
+  color:#22c55e;
 }
 
 .sell{
-  color:#ef4444
+  color:#ef4444;
 }
 
 .wait{
-  color:#fbbf24
+  color:#fbbf24;
 }
 
 .paused{
-  color:#f97316
+  color:#f97316;
 }
 
 .muted{
-  color:#94a3b8
+  color:#94a3b8;
 }
 
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px
+  gap:10px;
 }
 
 .metric{
   background:rgba(255,255,255,.035);
   border:1px solid rgba(255,255,255,.06);
   border-radius:11px;
-  padding:11px
+  padding:11px;
 }
 
 .metric small{
@@ -163,16 +171,16 @@ body{
   color:#94a3b8;
   font-size:10px;
   margin-bottom:4px;
-  text-transform:uppercase
+  text-transform:uppercase;
 }
 
 .metric b{
-  font-size:14px
+  font-size:14px;
 }
 
 .plan{
   border-left:3px solid #2563eb;
-  padding-left:12px
+  padding-left:12px;
 }
 
 .row{
@@ -181,11 +189,11 @@ body{
   gap:10px;
   padding:7px 0;
   border-bottom:1px solid rgba(255,255,255,.06);
-  font-size:12px
+  font-size:12px;
 }
 
 .row:last-child{
-  border-bottom:0
+  border-bottom:0;
 }
 
 .badge{
@@ -194,40 +202,30 @@ body{
   background:#1f2937;
   border-radius:999px;
   font-size:10px;
-  font-weight:700
+  font-weight:700;
 }
 
 .potential{
   font-size:25px;
   font-weight:900;
-  margin:4px 0
+  margin:4px 0;
 }
 
 .confidence{
   font-size:11px;
-  font-weight:800
+  font-weight:800;
 }
 
 .high{
-  color:#22c55e
+  color:#22c55e;
 }
 
 .medium{
-  color:#fbbf24
+  color:#fbbf24;
 }
 
 .low{
-  color:#ef4444
-}
-
-.pip-note{
-  margin-top:8px;
-  padding:8px 10px;
-  background:rgba(37,99,235,.10);
-  border:1px solid rgba(37,99,235,.20);
-  border-radius:8px;
-  font-size:10px;
-  color:#93c5fd
+  color:#ef4444;
 }
 
 ul{
@@ -235,33 +233,55 @@ ul{
   padding-left:18px;
   color:#cbd5e1;
   font-size:12px;
-  line-height:1.6
+  line-height:1.6;
 }
 
 #lastUpdate{
   font-size:11px;
   color:#64748b;
-  margin-top:8px
+  margin-top:8px;
+}
+
+.gate{
+  display:flex;
+  justify-content:space-between;
+  padding:6px 0;
+  font-size:11px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.gate:last-child{
+  border-bottom:0;
+}
+
+.gate-pass{
+  color:#22c55e;
+  font-weight:800;
+}
+
+.gate-fail{
+  color:#ef4444;
+  font-weight:800;
 }
 
 @media(max-width:991px){
 
   body{
-    padding:10px
+    padding:10px;
   }
 
   .dashboard{
-    grid-template-columns:1fr
+    grid-template-columns:1fr;
   }
 
   .chart-container{
     height:58vh;
-    min-height:420px
+    min-height:420px;
   }
 
   .signal-panel{
     max-height:none;
-    overflow:visible
+    overflow:visible;
   }
 
 }
@@ -287,7 +307,8 @@ ul{
     </h2>
 
     <p>
-      XAUUSD Trade Intelligence Engine
+      XAUUSD Scalping Intelligence Engine
+      • H1 → M15 → M5
     </p>
 
   </div>
@@ -306,384 +327,654 @@ ul{
 <div class="dashboard">
 
 
-  <!-- ======================================================
-       TRADINGVIEW
-  ======================================================= -->
+<!-- ========================================================
+     TRADINGVIEW
+======================================================== -->
 
-  <div class="card chart-card">
+<div class="card chart-card">
 
-    <div class="chart-container">
+  <div class="chart-container">
+
+    <div
+      class="tradingview-widget-container"
+      style="height:100%;width:100%"
+    >
 
       <div
-        class="tradingview-widget-container"
+        class="tradingview-widget-container__widget"
         style="height:100%;width:100%"
+      ></div>
+
+      <script
+        async
+        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
       >
 
-        <div
-          class="tradingview-widget-container__widget"
-          style="height:100%;width:100%"
-        ></div>
+      {
+        "autosize":true,
+        "symbol":"OANDA:XAUUSD",
+        "interval":"5",
+        "timezone":"Asia/Kuala_Lumpur",
+        "theme":"dark",
+        "style":"1",
+        "locale":"en",
+        "allow_symbol_change":false,
+        "hide_top_toolbar":false,
+        "hide_legend":false,
+        "save_image":false,
+        "calendar":false
+      }
 
-        <script
-          async
-          src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
-        >
-
-        {
-          "autosize":true,
-          "symbol":"OANDA:XAUUSD",
-          "interval":"5",
-          "timezone":"Asia/Kuala_Lumpur",
-          "theme":"dark",
-          "style":"1",
-          "locale":"en",
-          "allow_symbol_change":false,
-          "hide_top_toolbar":false,
-          "hide_legend":false,
-          "save_image":false,
-          "calendar":false
-        }
-
-        </script>
-
-      </div>
+      </script>
 
     </div>
-
-  </div>
-
-
-  <!-- ======================================================
-       SIGNAL PANEL
-  ======================================================= -->
-
-  <div class="signal-panel">
-
-
-    <!-- MARKET INTELLIGENCE -->
-
-    <div class="card">
-
-      <div class="status-row">
-
-        <b>
-          🧠 Market Intelligence
-        </b>
-
-        <span
-          class="badge"
-          id="engineStatus"
-        >
-          STARTING
-        </span>
-
-      </div>
-
-
-      <div class="score-label">
-        Opportunity Score
-      </div>
-
-
-      <div
-        class="score wait"
-        id="score"
-      >
-        --
-      </div>
-
-
-      <div
-        class="signal wait"
-        id="finalSignal"
-      >
-        WAIT
-      </div>
-
-
-      <div
-        class="muted"
-        id="opportunityType"
-      >
-        Scanning market...
-      </div>
-
-
-      <div
-        class="grid"
-        style="margin-top:14px"
-      >
-
-        <div class="metric">
-
-          <small>
-            Session
-          </small>
-
-          <b id="session">
-            --
-          </b>
-
-        </div>
-
-
-        <div class="metric">
-
-          <small>
-            Market Mode
-          </small>
-
-          <b id="marketMode">
-            --
-          </b>
-
-        </div>
-
-
-        <div class="metric">
-
-          <small>
-            Latest Price
-          </small>
-
-          <b id="latestPrice">
-            --
-          </b>
-
-        </div>
-
-
-        <div class="metric">
-
-          <small>
-            PD Zone
-          </small>
-
-          <b id="pdZone">
-            --
-          </b>
-
-        </div>
-
-      </div>
-
-
-      <div id="lastUpdate">
-        Last update: --
-      </div>
-
-
-      <div class="pip-note">
-
-        📏 Gold pip convention:
-        <b>1 pip = 0.10 price movement</b>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- TRADE PLAN -->
-
-    <div class="card">
-
-      <b>
-        🎯 Trade Plan
-      </b>
-
-
-      <div
-        class="plan"
-        style="margin-top:10px"
-      >
-
-        <div class="row">
-
-          <span>
-            Direction
-          </span>
-
-          <b id="planDirection">
-            WAIT
-          </b>
-
-        </div>
-
-
-        <div class="row">
-
-          <span>
-            Entry
-          </span>
-
-          <b id="entry">
-            --
-          </b>
-
-        </div>
-
-
-        <div class="row">
-
-          <span>
-            Stop Loss
-          </span>
-
-          <b id="sl">
-            --
-          </b>
-
-        </div>
-
-
-        <div class="row">
-
-          <span>
-            TP Range
-          </span>
-
-          <b id="tpRange">
-            --
-          </b>
-
-        </div>
-
-
-        <div class="row">
-
-          <span>
-            Risk
-          </span>
-
-          <b id="riskPips">
-            --
-          </b>
-
-        </div>
-
-
-        <div class="row">
-
-          <span>
-            Estimated R:R
-          </span>
-
-          <b id="rrRange">
-            --
-          </b>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- PRICE POTENTIAL -->
-
-    <div class="card">
-
-      <b>
-        📏 Estimated Price Potential
-      </b>
-
-
-      <div
-        class="potential"
-        id="potentialRange"
-      >
-        -- pips
-      </div>
-
-
-      <div
-        class="confidence medium"
-        id="potentialConfidence"
-      >
-        SCANNING
-      </div>
-
-
-      <p
-        class="muted"
-        style="font-size:11px;margin-bottom:0"
-      >
-
-        Estimate based on recent movement,
-        structure and nearby liquidity.
-        Not a guaranteed target.
-
-      </p>
-
-    </div>
-
-
-
-    <!-- CONFIRMATION -->
-
-    <div class="card">
-
-      <b>
-        🔎 Setup Confirmation
-      </b>
-
-      <ul id="confirmationList">
-
-        <li>
-          Waiting for market data...
-        </li>
-
-      </ul>
-
-    </div>
-
-
-
-    <!-- VALID OPPORTUNITIES -->
-
-    <div class="card">
-
-      <b>
-        🚨 Valid Opportunities
-      </b>
-
-      <p
-        class="muted"
-        style="font-size:11px"
-      >
-
-        Browser notification triggers only
-        when a fresh setup reaches 70+
-        and avoids repeated alerts.
-
-      </p>
-
-
-      <div class="status-row">
-
-        <span>
-          Notification
-        </span>
-
-        <span
-          class="badge"
-          id="notificationStatus"
-        >
-          NOT REQUESTED
-        </span>
-
-      </div>
-
-    </div>
-
 
   </div>
 
 </div>
 
 
+<!-- ========================================================
+     SIGNAL PANEL
+======================================================== -->
+
+<div class="signal-panel">
+
+
+<!-- ========================================================
+     MARKET INTELLIGENCE
+======================================================== -->
+
+<div class="card">
+
+  <div class="status-row">
+
+    <b>
+      🧠 Market Intelligence
+    </b>
+
+    <span
+      class="badge"
+      id="engineStatus"
+    >
+      STARTING
+    </span>
+
+  </div>
+
+
+  <div class="score-label">
+    Opportunity Score
+  </div>
+
+  <div
+    class="score wait"
+    id="score"
+  >
+    --
+  </div>
+
+
+  <div
+    class="signal wait"
+    id="finalSignal"
+  >
+    WAIT
+  </div>
+
+
+  <div
+    class="muted"
+    id="opportunityType"
+  >
+    Scanning market...
+  </div>
+
+
+  <div
+    class="grid"
+    style="margin-top:14px"
+  >
+
+    <div class="metric">
+
+      <small>
+        Session
+      </small>
+
+      <b id="session">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="metric">
+
+      <small>
+        Market Mode
+      </small>
+
+      <b id="marketMode">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="metric">
+
+      <small>
+        Latest Price
+      </small>
+
+      <b id="latestPrice">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="metric">
+
+      <small>
+        PD Zone
+      </small>
+
+      <b id="pdZone">
+        --
+      </b>
+
+    </div>
+
+  </div>
+
+
+  <div id="lastUpdate">
+    Last update: --
+  </div>
+
+</div>
+
+
+<!-- ========================================================
+     MTF INTELLIGENCE
+======================================================== -->
+
+<div class="card">
+
+  <b>
+    📊 MTF Intelligence
+  </b>
+
+
+  <div
+    class="plan"
+    style="margin-top:10px"
+  >
+
+    <div class="row">
+
+      <span>
+        H1 Bias
+      </span>
+
+      <b id="h1Bias">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        H1 Structure
+      </span>
+
+      <b id="h1Structure">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        M15 Trend
+      </span>
+
+      <b id="m15Trend">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        M15 Structure
+      </span>
+
+      <b id="m15Structure">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        M15 Range
+      </span>
+
+      <b id="m15Range">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        M15 Liquidity
+      </span>
+
+      <b id="m15Liquidity">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        M5 BOS / CHOCH
+      </span>
+
+      <b id="m5Bos">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        M5 Confirmation
+      </span>
+
+      <b id="m5Confirmation">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        M5 Momentum
+      </span>
+
+      <b id="m5Momentum">
+        --
+      </b>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ========================================================
+     TRADE PLAN
+======================================================== -->
+
+<div class="card">
+
+  <b>
+    🎯 Trade Plan
+  </b>
+
+
+  <div
+    class="plan"
+    style="margin-top:10px"
+  >
+
+    <div class="row">
+
+      <span>
+        Direction
+      </span>
+
+      <b id="planDirection">
+        WAIT
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        Entry
+      </span>
+
+      <b id="entry">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        Stop Loss
+      </span>
+
+      <b id="sl">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        TP1
+      </span>
+
+      <b id="tp1">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        TP2
+      </span>
+
+      <b id="tp2">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        TP3
+      </span>
+
+      <b id="tp3">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        Risk
+      </span>
+
+      <b id="riskPips">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="row">
+
+      <span>
+        R:R
+      </span>
+
+      <b id="rrRange">
+        --
+      </b>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ========================================================
+     PRICE POTENTIAL
+======================================================== -->
+
+<div class="card">
+
+  <b>
+    📏 Estimated Price Potential
+  </b>
+
+
+  <div
+    class="potential"
+    id="potentialRange"
+  >
+    -- pips
+  </div>
+
+
+  <div
+    class="confidence medium"
+    id="potentialConfidence"
+  >
+    SCANNING
+  </div>
+
+
+  <p
+    class="muted"
+    style="font-size:11px;margin-bottom:0"
+  >
+    Based on M15 structure, liquidity,
+    recent movement and available target room.
+  </p>
+
+</div>
+
+
+<!-- ========================================================
+     HARD GATES
+======================================================== -->
+
+<div class="card">
+
+  <b>
+    🛡️ Trade Filters
+  </b>
+
+
+  <div
+    style="margin-top:10px"
+  >
+
+    <div class="gate">
+
+      <span>
+        Score 70+
+      </span>
+
+      <b id="gateScore">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="gate">
+
+      <span>
+        M15 Setup
+      </span>
+
+      <b id="gateSetup">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="gate">
+
+      <span>
+        M5 Confirmation
+      </span>
+
+      <b id="gateM5">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="gate">
+
+      <span>
+        Risk 35-60 pips
+      </span>
+
+      <b id="gateRisk">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="gate">
+
+      <span>
+        TP1 60+ pips
+      </span>
+
+      <b id="gateTP1">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="gate">
+
+      <span>
+        TP2 R:R 1:2+
+      </span>
+
+      <b id="gateRR">
+        --
+      </b>
+
+    </div>
+
+
+    <div class="gate">
+
+      <span>
+        Room To Target
+      </span>
+
+      <b id="gateRoom">
+        --
+      </b>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ========================================================
+     CONFIRMATION
+======================================================== -->
+
+<div class="card">
+
+  <b>
+    🔎 Setup Confirmation
+  </b>
+
+
+  <ul id="confirmationList">
+
+    <li>
+      Waiting for market data...
+    </li>
+
+  </ul>
+
+</div>
+
+
+<!-- ========================================================
+     NOTIFICATION
+======================================================== -->
+
+<div class="card">
+
+  <b>
+    🚨 Valid Opportunities
+  </b>
+
+
+  <p
+    class="muted"
+    style="font-size:11px"
+  >
+    Browser notification triggers only
+    when a fresh setup reaches 70+
+    and passes the main filters.
+  </p>
+
+
+  <div class="status-row">
+
+    <span>
+      Notification
+    </span>
+
+    <span
+      class="badge"
+      id="notificationStatus"
+    >
+      NOT REQUESTED
+    </span>
+
+  </div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- ========================================================
+     JAVASCRIPT
+======================================================== -->
 
 <script>
 
@@ -692,31 +983,41 @@ ul{
 // CONFIG
 // ============================================================
 
-const API_KEY =
-  "a1cca9487dba43d093d97fff64306966";
+// PASTE YOUR TWELVE DATA API KEY HERE
+const API_KEY = "a1cca9487dba43d093d97fff64306966";
 
-const OPPORTUNITY_THRESHOLD = 70;
+
+const SYMBOL = "XAU/USD";
+
+const OUTPUT_SIZE = 500;
+
+const MIN_SCORE = 70;
+
+const PIP_SIZE = 0.10;
+
+const MIN_RISK_PIPS = 35;
+
+const MAX_RISK_PIPS = 60;
+
+const TP1_PIPS = 60;
+
+const MIN_RR = 2.0;
 
 const REFRESH_MS = 300000;
 
 
-// ============================================================
-// GOLD PIP CONVENTION
-// ============================================================
+let lastAlertKey = "";
 
-// IMPORTANT:
-// 1 pip = 0.10 XAUUSD price movement
-
-const PIP_SIZE = 0.10;
+let notificationPermissionAsked = false;
 
 
 // ============================================================
-// PIP HELPERS
+// HELPERS
 // ============================================================
 
-function priceToPips(priceDistance){
+function priceToPips(distance){
 
-  return priceDistance / PIP_SIZE;
+  return distance / PIP_SIZE;
 
 }
 
@@ -728,29 +1029,83 @@ function pipsToPrice(pips){
 }
 
 
+function fmt(value){
+
+  if(value === null || value === undefined){
+
+    return "--";
+
+  }
+
+  return Number(value).toFixed(2);
+
+}
+
+
+function setText(id,value){
+
+  const element =
+    document.getElementById(id);
+
+  if(element){
+
+    element.innerText = value;
+
+  }
+
+}
+
+
 // ============================================================
-// STATE
+// TIME
 // ============================================================
 
-let lastAlertKey = "";
+function malaysiaNow(){
 
-let notificationPermissionAsked = false;
+  return new Date();
+
+}
+
+
+function getSession(){
+
+  const hour =
+    new Date().getHours();
+
+  if(hour >= 0 && hour < 8){
+
+    return "ASIAN";
+
+  }
+
+  if(hour >= 8 && hour < 16){
+
+    return "LONDON";
+
+  }
+
+  if(hour >= 16 && hour < 20){
+
+    return "LONDON / NEW YORK";
+
+  }
+
+  return "NEW YORK";
+
+}
 
 
 // ============================================================
-// OHLC
+// DATA
 // ============================================================
 
-async function getOHLC(
-  interval="5min",
-  outputsize=80
-){
+async function getM5Data(){
 
   const url =
     `https://api.twelvedata.com/time_series` +
-    `?symbol=XAU/USD` +
-    `&interval=${interval}` +
-    `&outputsize=${outputsize}` +
+    `?symbol=${encodeURIComponent(SYMBOL)}` +
+    `&interval=5min` +
+    `&outputsize=${OUTPUT_SIZE}` +
     `&apikey=${API_KEY}`;
 
 
@@ -758,26 +1113,30 @@ async function getOHLC(
     await fetch(url);
 
 
-  const data =
-    await response.json();
-
-
-  if(
-    data.status === "error"
-  ){
+  if(!response.ok){
 
     throw new Error(
-      data.message ||
-      "TwelveData error"
+      `Twelve Data HTTP ${response.status}`
     );
 
   }
 
 
-  if(
-    !data.values ||
-    !data.values.length
-  ){
+  const data =
+    await response.json();
+
+
+  if(data.status === "error"){
+
+    throw new Error(
+      data.message ||
+      "Twelve Data error"
+    );
+
+  }
+
+
+  if(!data.values || !data.values.length){
 
     throw new Error(
       "No OHLC data received"
@@ -786,73 +1145,213 @@ async function getOHLC(
   }
 
 
-  return data.values.map(
-    c => ({
+  const candles =
+    data.values
+      .map(c => ({
 
-      time:c.datetime,
+        time:c.datetime,
 
-      open:+c.open,
+        open:Number(c.open),
 
-      high:+c.high,
+        high:Number(c.high),
 
-      low:+c.low,
+        low:Number(c.low),
 
-      close:+c.close
+        close:Number(c.close)
 
-    })
+      }))
+      .sort(
+        (a,b) =>
+          new Date(a.time) -
+          new Date(b.time)
+      );
+
+
+  return removeIncompleteCandle(
+    candles
   );
 
 }
 
 
 // ============================================================
-// SESSION
+// CLOSED CANDLE
 // ============================================================
 
-function getSession(){
+function removeIncompleteCandle(
+  candles
+){
 
-  const h =
-    new Date().getHours();
+  if(candles.length < 2){
 
-
-  if(
-    h >= 15 &&
-    h < 20
-  ){
-
-    return "LONDON";
+    return candles;
 
   }
 
 
-  if(
-    h >= 20 ||
-    h < 1
-  ){
+  const latest =
+    candles[candles.length - 1];
 
-    return "NEW YORK";
+
+  const candleTime =
+    new Date(latest.time);
+
+
+  const now =
+    new Date();
+
+
+  const elapsed =
+    (now - candleTime) / 1000;
+
+
+  if(elapsed < 300){
+
+    return candles.slice(
+      0,
+      -1
+    );
 
   }
 
 
-  return "ASIAN";
+  return candles;
 
 }
 
 
 // ============================================================
-// MARKET ANALYSIS
+// AGGREGATE
 // ============================================================
 
-function analyze(candles){
+function aggregateCandles(
+  candles,
+  minutes
+){
 
-  const data =
-    [...candles].reverse();
+  const groups = {};
 
 
-  const latest =
-    data[data.length - 1];
+  for(const candle of candles){
 
+    const dt =
+      new Date(candle.time);
+
+
+    let bucket;
+
+
+    if(minutes === 15){
+
+      const minute =
+        Math.floor(
+          dt.getMinutes() / 15
+        ) * 15;
+
+
+      bucket =
+        new Date(dt);
+
+      bucket.setMinutes(
+        minute,
+        0,
+        0
+      );
+
+    }
+
+
+    else if(minutes === 60){
+
+      bucket =
+        new Date(dt);
+
+      bucket.setMinutes(
+        0,
+        0,
+        0
+      );
+
+    }
+
+
+    else{
+
+      continue;
+
+    }
+
+
+    const key =
+      bucket.toISOString();
+
+
+    if(!groups[key]){
+
+      groups[key] = [];
+
+    }
+
+
+    groups[key].push(
+      candle
+    );
+
+  }
+
+
+  const result = [];
+
+
+  for(const key of Object.keys(groups).sort()){
+
+    const group =
+      groups[key];
+
+
+    result.push({
+
+      time:key,
+
+      open:
+        group[0].open,
+
+      high:
+        Math.max(
+          ...group.map(
+            c => c.high
+          )
+        ),
+
+      low:
+        Math.min(
+          ...group.map(
+            c => c.low
+          )
+        ),
+
+      close:
+        group[group.length - 1].close
+
+    });
+
+  }
+
+
+  return result;
+
+}
+
+
+// ============================================================
+// SWINGS
+// ============================================================
+
+function detectSwings(
+  candles,
+  left = 2,
+  right = 2
+){
 
   const swingHighs = [];
 
@@ -860,63 +1359,75 @@ function analyze(candles){
 
 
   for(
-    let i = 2;
-    i < data.length - 2;
+    let i = left;
+    i < candles.length - right;
     i++
   ){
 
-    const c =
-      data[i];
+    const current =
+      candles[i];
 
 
-    if(
-      c.high >
-      data[i-1].high &&
+    let highOK = true;
 
-      c.high >
-      data[i-2].high &&
+    let lowOK = true;
 
-      c.high >
-      data[i+1].high &&
 
-      c.high >
-      data[i+2].high
+    for(
+      let j = i-left;
+      j <= i+right;
+      j++
     ){
+
+      if(j === i){
+
+        continue;
+
+      }
+
+
+      if(
+        current.high <=
+        candles[j].high
+      ){
+
+        highOK = false;
+
+      }
+
+
+      if(
+        current.low >=
+        candles[j].low
+      ){
+
+        lowOK = false;
+
+      }
+
+    }
+
+
+    if(highOK){
 
       swingHighs.push({
 
-        price:c.high,
+        price:current.high,
 
-        time:c.time,
-
-        index:i
+        time:current.time
 
       });
 
     }
 
 
-    if(
-      c.low <
-      data[i-1].low &&
-
-      c.low <
-      data[i-2].low &&
-
-      c.low <
-      data[i+1].low &&
-
-      c.low <
-      data[i+2].low
-    ){
+    if(lowOK){
 
       swingLows.push({
 
-        price:c.low,
+        price:current.low,
 
-        time:c.time,
-
-        index:i
+        time:current.time
 
       });
 
@@ -925,11 +1436,212 @@ function analyze(candles){
   }
 
 
+  return {
+
+    swingHighs,
+
+    swingLows
+
+  };
+
+}
+
+
+// ============================================================
+// STRUCTURE
+// ============================================================
+
+function analyzeStructure(
+  candles
+){
+
+  if(candles.length < 20){
+
+    return {
+
+      trend:"NEUTRAL",
+
+      structure:"RANGE",
+
+      swingHighs:[],
+
+      swingLows:[],
+
+      lastHigh:null,
+
+      lastLow:null
+
+    };
+
+  }
+
+
+  const swings =
+    detectSwings(candles);
+
+
+  const swingHighs =
+    swings.swingHighs;
+
+
+  const swingLows =
+    swings.swingLows;
+
+
+  const latest =
+    candles[candles.length - 1];
+
+
+  const lastHigh =
+    swingHighs.length
+      ? swingHighs[swingHighs.length - 1]
+      : null;
+
+
+  const lastLow =
+    swingLows.length
+      ? swingLows[swingLows.length - 1]
+      : null;
+
+
+  let structure =
+    "RANGE";
+
+
+  let trend =
+    "NEUTRAL";
+
+
+  if(
+    lastHigh &&
+    latest.close >
+    lastHigh.price
+  ){
+
+    structure =
+      "BULLISH BOS";
+
+    trend =
+      "BULLISH";
+
+  }
+
+
+  else if(
+    lastLow &&
+    latest.close <
+    lastLow.price
+  ){
+
+    structure =
+      "BEARISH BOS";
+
+    trend =
+      "BEARISH";
+
+  }
+
+
+  else if(
+    swingHighs.length >= 2 &&
+    swingLows.length >= 2
+  ){
+
+    const previousHigh =
+      swingHighs[
+        swingHighs.length - 2
+      ].price;
+
+
+    const currentHigh =
+      swingHighs[
+        swingHighs.length - 1
+      ].price;
+
+
+    const previousLow =
+      swingLows[
+        swingLows.length - 2
+      ].price;
+
+
+    const currentLow =
+      swingLows[
+        swingLows.length - 1
+      ].price;
+
+
+    if(
+      currentHigh >
+      previousHigh &&
+      currentLow >
+      previousLow
+    ){
+
+      trend =
+        "BULLISH";
+
+    }
+
+
+    else if(
+      currentHigh <
+      previousHigh &&
+      currentLow <
+      previousLow
+    ){
+
+      trend =
+        "BEARISH";
+
+    }
+
+
+    else{
+
+      trend =
+        "RANGE";
+
+    }
+
+  }
+
+
+  return {
+
+    trend,
+
+    structure,
+
+    swingHighs,
+
+    swingLows,
+
+    lastHigh,
+
+    lastLow
+
+  };
+
+}
+
+
+// ============================================================
+// PD ZONE
+// ============================================================
+
+function calculatePD(
+  candles,
+  lookback = 50
+){
+
   const recent =
-    data.slice(-30);
+    candles.slice(
+      -lookback
+    );
 
 
-  const rangeHigh =
+  const high =
     Math.max(
       ...recent.map(
         c => c.high
@@ -937,7 +1649,7 @@ function analyze(candles){
     );
 
 
-  const rangeLow =
+  const low =
     Math.min(
       ...recent.map(
         c => c.low
@@ -946,494 +1658,962 @@ function analyze(candles){
 
 
   const equilibrium =
-    (
-      rangeHigh +
-      rangeLow
-    ) / 2;
-
-
-  const zone =
-    latest.close < equilibrium
-      ? "DISCOUNT"
-      : "PREMIUM";
-
-
-  const lastSwingHigh =
-    swingHighs.at(-1) ||
-    null;
-
-
-  const lastSwingLow =
-    swingLows.at(-1) ||
-    null;
-
-
-  let structure =
-    "RANGE";
-
-
-  if(
-    lastSwingHigh &&
-    latest.close >
-    lastSwingHigh.price
-  ){
-
-    structure =
-      "BULLISH BOS";
-
-  }
-
-  else if(
-    lastSwingLow &&
-    latest.close <
-    lastSwingLow.price
-  ){
-
-    structure =
-      "BEARISH BOS";
-
-  }
-
-
-  const ranges =
-    data.slice(-20).map(
-      c =>
-        c.high -
-        c.low
-    );
-
-
-  const avgRange =
-    ranges.reduce(
-      (a,b) => a + b,
-      0
-    ) /
-    ranges.length;
-
-
-  return {
-
-    latestPrice:
-      latest.close,
-
-    structure,
-
-    zone,
-
-    equilibrium,
-
-    lastSwingHigh,
-
-    lastSwingLow,
-
-    avgRange,
-
-    recentRange:
-      rangeHigh -
-      rangeLow,
-
-    rangeHigh,
-
-    rangeLow
-
-  };
-
-}
-
-
-// ============================================================
-// OPPORTUNITY SCORE
-// ============================================================
-
-function scoreOpportunity(
-  h4,
-  h1,
-  m5
-){
-
-  let buy = 0;
-
-  let sell = 0;
-
-  const confirm = [];
-
-
-  if(
-    h4.structure ===
-    "BULLISH BOS"
-  ){
-
-    buy += 25;
-
-    confirm.push(
-      "H4 bullish structure confirmed"
-    );
-
-  }
-
-  else if(
-    h4.structure ===
-    "BEARISH BOS"
-  ){
-
-    sell += 25;
-
-    confirm.push(
-      "H4 bearish structure confirmed"
-    );
-
-  }
-
-
-  if(
-    h1.structure ===
-    "BULLISH BOS"
-  ){
-
-    buy += 25;
-
-    confirm.push(
-      "H1 bullish structure confirmed"
-    );
-
-  }
-
-  else if(
-    h1.structure ===
-    "BEARISH BOS"
-  ){
-
-    sell += 25;
-
-    confirm.push(
-      "H1 bearish structure confirmed"
-    );
-
-  }
-
-
-  if(
-    m5.zone ===
-    "DISCOUNT"
-  ){
-
-    buy += 15;
-
-    confirm.push(
-      "Price is in discount"
-    );
-
-  }
-
-
-  if(
-    m5.zone ===
-    "PREMIUM"
-  ){
-
-    sell += 15;
-
-    confirm.push(
-      "Price is in premium"
-    );
-
-  }
-
-
-  if(
-    m5.structure ===
-    "BULLISH BOS"
-  ){
-
-    buy += 20;
-
-    confirm.push(
-      "M5 bullish BOS"
-    );
-
-  }
-
-  else if(
-    m5.structure ===
-    "BEARISH BOS"
-  ){
-
-    sell += 20;
-
-    confirm.push(
-      "M5 bearish BOS"
-    );
-
-  }
-
-
-  const ratio =
-    m5.recentRange /
-    Math.max(
-      m5.avgRange,
-      0.0001
-    );
-
-
-  if(
-    ratio >= 2
-  ){
-
-    if(buy > sell)
-      buy += 10;
-
-    else if(sell > buy)
-      sell += 10;
-
-
-    confirm.push(
-      "Strong recent range expansion"
-    );
-
-  }
-
-  else if(
-    ratio >= 1.3
-  ){
-
-    if(buy > sell)
-      buy += 5;
-
-    else if(sell > buy)
-      sell += 5;
-
-
-    confirm.push(
-      "Healthy market movement"
-    );
-
-  }
-
-
-  if(
-    buy >= sell &&
-    buy >= 70
-  ){
-
-    return {
-
-      direction:"BUY",
-
-      score:
-        Math.min(100,buy),
-
-      confirmations:
-        confirm
-
-    };
-
-  }
-
-
-  if(
-    sell > buy &&
-    sell >= 70
-  ){
-
-    return {
-
-      direction:"SELL",
-
-      score:
-        Math.min(100,sell),
-
-      confirmations:
-        confirm
-
-    };
-
-  }
-
-
-  return {
-
-    direction:"WAIT",
-
-    score:
-      Math.max(
-        buy,
-        sell
-      ),
-
-    confirmations:
-      confirm
-
-  };
-
-}
-
-
-// ============================================================
-// POTENTIAL
-// ============================================================
-
-function calculatePotential(
-  m5,
-  direction
-){
-
-  if(
-    direction ===
-    "WAIT"
-  ){
-
-    return {
-
-      minPips:0,
-
-      maxPips:0,
-
-      tp1:null,
-
-      tp2:null,
-
-      confidence:"LOW"
-
-    };
-
-  }
+    (high + low) / 2;
 
 
   const price =
-    m5.latestPrice;
+    candles[candles.length - 1]
+      .close;
 
 
-  const swingTarget =
-    direction === "BUY"
-      ? (
-          m5.lastSwingHigh?.price
-          ??
-          m5.rangeHigh
-        )
-      : (
-          m5.lastSwingLow?.price
-          ??
-          m5.rangeLow
-        );
+  let zone;
 
 
-  const structureDistance =
-    Math.abs(
-      swingTarget -
-      price
-    );
+  if(price < equilibrium){
 
-
-  const baseMove =
-    Math.max(
-      structureDistance,
-      m5.avgRange * 3
-    );
-
-
-  const minMove =
-    Math.max(
-      m5.avgRange * 2,
-      baseMove * 0.65
-    );
-
-
-  const maxMove =
-    Math.max(
-      m5.avgRange * 4,
-      baseMove * 1.15
-    );
-
-
-  // ========================================================
-  // CORRECT GOLD PIP CONVERSION
-  // 1 pip = 0.10
-  // ========================================================
-
-  const minPips =
-    Math.max(
-      1,
-      Math.round(
-        priceToPips(minMove)
-      )
-    );
-
-
-  const maxPips =
-    Math.max(
-      minPips + 1,
-      Math.round(
-        priceToPips(maxMove)
-      )
-    );
-
-
-  const tp1 =
-    direction === "BUY"
-
-      ? price +
-        pipsToPrice(
-          minPips
-        )
-
-      : price -
-        pipsToPrice(
-          minPips
-        );
-
-
-  const tp2 =
-    direction === "BUY"
-
-      ? price +
-        pipsToPrice(
-          maxPips
-        )
-
-      : price -
-        pipsToPrice(
-          maxPips
-        );
-
-
-  let confidence =
-    "LOW";
-
-
-  if(
-    structureDistance >=
-    m5.avgRange * 4
-  ){
-
-    confidence =
-      "HIGH";
+    zone =
+      "DISCOUNT";
 
   }
 
-  else if(
-    structureDistance >=
-    m5.avgRange * 2
-  ){
 
-    confidence =
-      "MEDIUM";
+  else if(price > equilibrium){
+
+    zone =
+      "PREMIUM";
+
+  }
+
+
+  else{
+
+    zone =
+      "EQUILIBRIUM";
 
   }
 
 
   return {
 
-    minPips,
+    high,
 
-    maxPips,
+    low,
 
-    tp1,
+    equilibrium,
 
-    tp2,
-
-    confidence
+    zone
 
   };
+
+}
+
+
+// ============================================================
+// M15 RANGE
+// ============================================================
+
+function calculateRange(
+  candles,
+  lookback = 30
+){
+
+  const recent =
+    candles.slice(
+      -lookback
+    );
+
+
+  const high =
+    Math.max(
+      ...recent.map(
+        c => c.high
+      )
+    );
+
+
+  const low =
+    Math.min(
+      ...recent.map(
+        c => c.low
+      )
+    );
+
+
+  const width =
+    high - low;
+
+
+  const price =
+    candles[candles.length - 1]
+      .close;
+
+
+  const ratio =
+    width > 0
+      ? (price - low) / width
+      : 0.5;
+
+
+  let position =
+    "MIDDLE";
+
+
+  if(ratio <= 0.25){
+
+    position =
+      "LOW EXTREME";
+
+  }
+
+
+  else if(ratio >= 0.75){
+
+    position =
+      "HIGH EXTREME";
+
+  }
+
+
+  return {
+
+    high,
+
+    low,
+
+    mid:(high + low) / 2,
+
+    width,
+
+    position
+
+  };
+
+}
+
+
+// ============================================================
+// LIQUIDITY SWEEP
+// ============================================================
+
+function detectLiquiditySweep(
+  candles,
+  lookback = 6
+){
+
+  if(
+    candles.length <
+    lookback + 3
+  ){
+
+    return "NONE";
+
+  }
+
+
+  const previous =
+    candles.slice(
+      -(lookback + 2),
+      -2
+    );
+
+
+  const previousHigh =
+    Math.max(
+      ...previous.map(
+        c => c.high
+      )
+    );
+
+
+  const previousLow =
+    Math.min(
+      ...previous.map(
+        c => c.low
+      )
+    );
+
+
+  const latest =
+    candles[candles.length - 1];
+
+
+  if(
+    latest.low <
+    previousLow &&
+    latest.close >
+    previousLow
+  ){
+
+    return "SELL-SIDE SWEEP";
+
+  }
+
+
+  if(
+    latest.high >
+    previousHigh &&
+    latest.close <
+    previousHigh
+  ){
+
+    return "BUY-SIDE SWEEP";
+
+  }
+
+
+  return "NONE";
+
+}
+
+
+// ============================================================
+// MOMENTUM
+// ============================================================
+
+function calculateMomentum(
+  candles
+){
+
+  const recent =
+    candles.slice(-5);
+
+
+  let bullish = 0;
+
+  let bearish = 0;
+
+
+  for(const candle of recent){
+
+    if(
+      candle.close >
+      candle.open
+    ){
+
+      bullish++;
+
+    }
+
+
+    else if(
+      candle.close <
+      candle.open
+    ){
+
+      bearish++;
+
+    }
+
+  }
+
+
+  if(bullish >= 4){
+
+    return "BULLISH";
+
+  }
+
+
+  if(bearish >= 4){
+
+    return "BEARISH";
+
+  }
+
+
+  return "NEUTRAL";
+
+}
+
+
+// ============================================================
+// CANDLE CONFIRMATION
+// ============================================================
+
+function candleConfirmation(
+  candles
+){
+
+  if(candles.length < 3){
+
+    return "NONE";
+
+  }
+
+
+  const previous =
+    candles[candles.length - 2];
+
+
+  const latest =
+    candles[candles.length - 1];
+
+
+  const body =
+    Math.abs(
+      latest.close -
+      latest.open
+    );
+
+
+  const range =
+    latest.high -
+    latest.low;
+
+
+  if(range <= 0){
+
+    return "NONE";
+
+  }
+
+
+  const bodyRatio =
+    body / range;
+
+
+  if(
+    latest.close >
+    latest.open &&
+    bodyRatio >= 0.55 &&
+    latest.close >
+    previous.high
+  ){
+
+    return "BULLISH";
+
+  }
+
+
+  if(
+    latest.close <
+    latest.open &&
+    bodyRatio >= 0.55 &&
+    latest.close <
+    previous.low
+  ){
+
+    return "BEARISH";
+
+  }
+
+
+  return "NONE";
+
+}
+
+
+// ============================================================
+// M5 BOS / CHOCH
+// ============================================================
+
+function detectM5BOS(
+  candles
+){
+
+  const structure =
+    analyzeStructure(
+      candles
+    );
+
+
+  if(
+    structure.structure ===
+    "BULLISH BOS"
+  ){
+
+    return "BULLISH BOS";
+
+  }
+
+
+  if(
+    structure.structure ===
+    "BEARISH BOS"
+  ){
+
+    return "BEARISH BOS";
+
+  }
+
+
+  return "NONE";
+
+}
+
+
+// ============================================================
+// M15 SETUP
+// ============================================================
+
+function detectM15Setup(
+  h1,
+  m15,
+  m15PD,
+  m15Range,
+  sweep
+){
+
+  let direction =
+    "NONE";
+
+
+  let setup =
+    "NO VALID SETUP";
+
+
+  // ========================================================
+  // H1 BULLISH
+  // ========================================================
+
+  if(h1.trend === "BULLISH"){
+
+    if(
+      m15PD.zone ===
+      "DISCOUNT"
+    ){
+
+      direction =
+        "BUY";
+
+      setup =
+        "BUY PULLBACK";
+
+    }
+
+
+    else if(
+      sweep ===
+      "SELL-SIDE SWEEP"
+    ){
+
+      direction =
+        "BUY";
+
+      setup =
+        "BUY LIQUIDITY SWEEP";
+
+    }
+
+
+    else if(
+      m15.structure ===
+      "BULLISH BOS"
+    ){
+
+      direction =
+        "BUY";
+
+      setup =
+        "BUY BREAKOUT RETEST";
+
+    }
+
+  }
+
+
+  // ========================================================
+  // H1 BEARISH
+  // ========================================================
+
+  else if(h1.trend === "BEARISH"){
+
+    if(
+      m15PD.zone ===
+      "PREMIUM"
+    ){
+
+      direction =
+        "SELL";
+
+      setup =
+        "SELL PULLBACK";
+
+    }
+
+
+    else if(
+      sweep ===
+      "BUY-SIDE SWEEP"
+    ){
+
+      direction =
+        "SELL";
+
+      setup =
+        "SELL LIQUIDITY SWEEP";
+
+    }
+
+
+    else if(
+      m15.structure ===
+      "BEARISH BOS"
+    ){
+
+      direction =
+        "SELL";
+
+      setup =
+        "SELL BREAKOUT RETEST";
+
+    }
+
+  }
+
+
+  // ========================================================
+  // H1 RANGE
+  // ========================================================
+
+  else{
+
+    if(
+      m15Range.position ===
+      "LOW EXTREME" &&
+      sweep ===
+      "SELL-SIDE SWEEP"
+    ){
+
+      direction =
+        "BUY";
+
+      setup =
+        "BUY RANGE REVERSAL";
+
+    }
+
+
+    else if(
+      m15Range.position ===
+      "HIGH EXTREME" &&
+      sweep ===
+      "BUY-SIDE SWEEP"
+    ){
+
+      direction =
+        "SELL";
+
+      setup =
+        "SELL RANGE REVERSAL";
+
+    }
+
+  }
+
+
+  return {
+
+    direction,
+
+    setup
+
+  };
+
+}
+
+
+// ============================================================
+// SCORE
+// ============================================================
+
+function calculateScore(
+  direction,
+  h1,
+  m15,
+  m5Bos,
+  pd,
+  sweep,
+  momentum,
+  confirmation,
+  setup,
+  session
+){
+
+  let score = 0;
+
+  const reasons = [];
+
+
+  // ========================================================
+  // H1
+  // ========================================================
+
+  if(
+    direction === "BUY" &&
+    h1.trend === "BULLISH"
+  ){
+
+    score += 15;
+
+    reasons.push(
+      "H1 bullish market bias"
+    );
+
+  }
+
+
+  else if(
+    direction === "SELL" &&
+    h1.trend === "BEARISH"
+  ){
+
+    score += 15;
+
+    reasons.push(
+      "H1 bearish market bias"
+    );
+
+  }
+
+
+  else if(
+    h1.trend === "RANGE"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "H1 range condition"
+    );
+
+  }
+
+
+  if(
+    direction === "BUY" &&
+    h1.structure ===
+    "BULLISH BOS"
+  ){
+
+    score += 5;
+
+    reasons.push(
+      "H1 bullish BOS"
+    );
+
+  }
+
+
+  else if(
+    direction === "SELL" &&
+    h1.structure ===
+    "BEARISH BOS"
+  ){
+
+    score += 5;
+
+    reasons.push(
+      "H1 bearish BOS"
+    );
+
+  }
+
+
+  // ========================================================
+  // M15 SETUP
+  // ========================================================
+
+  if(
+    setup !==
+    "NO VALID SETUP"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "Valid M15 setup"
+    );
+
+  }
+
+
+  if(
+    direction === "BUY" &&
+    sweep ===
+    "SELL-SIDE SWEEP"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "M15 sell-side liquidity sweep"
+    );
+
+  }
+
+
+  if(
+    direction === "SELL" &&
+    sweep ===
+    "BUY-SIDE SWEEP"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "M15 buy-side liquidity sweep"
+    );
+
+  }
+
+
+  if(
+    direction === "BUY" &&
+    m15.structure ===
+    "BULLISH BOS"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "M15 bullish structure"
+    );
+
+  }
+
+
+  if(
+    direction === "SELL" &&
+    m15.structure ===
+    "BEARISH BOS"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "M15 bearish structure"
+    );
+
+  }
+
+
+  // ========================================================
+  // M5
+  // ========================================================
+
+  if(
+    direction === "BUY" &&
+    m5Bos ===
+    "BULLISH BOS"
+  ){
+
+    score += 15;
+
+    reasons.push(
+      "M5 bullish BOS / CHOCH"
+    );
+
+  }
+
+
+  if(
+    direction === "SELL" &&
+    m5Bos ===
+    "BEARISH BOS"
+  ){
+
+    score += 15;
+
+    reasons.push(
+      "M5 bearish BOS / CHOCH"
+    );
+
+  }
+
+
+  if(
+    direction === "BUY" &&
+    confirmation ===
+    "BULLISH"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "Bullish M5 candle confirmation"
+    );
+
+  }
+
+
+  if(
+    direction === "SELL" &&
+    confirmation ===
+    "BEARISH"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "Bearish M5 candle confirmation"
+    );
+
+  }
+
+
+  if(
+    direction === "BUY" &&
+    momentum ===
+    "BULLISH"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "Bullish M5 momentum"
+    );
+
+  }
+
+
+  if(
+    direction === "SELL" &&
+    momentum ===
+    "BEARISH"
+  ){
+
+    score += 10;
+
+    reasons.push(
+      "Bearish M5 momentum"
+    );
+
+  }
+
+
+  // ========================================================
+  // LOCATION
+  // ========================================================
+
+  if(
+    direction === "BUY" &&
+    pd.zone ===
+    "DISCOUNT"
+  ){
+
+    score += 5;
+
+    reasons.push(
+      "Price in discount"
+    );
+
+  }
+
+
+  if(
+    direction === "SELL" &&
+    pd.zone ===
+    "PREMIUM"
+  ){
+
+    score += 5;
+
+    reasons.push(
+      "Price in premium"
+    );
+
+  }
+
+
+  if(
+    session !== "ASIAN"
+  ){
+
+    score += 5;
+
+    reasons.push(
+      "Active London / New York session"
+    );
+
+  }
+
+
+  return {
+
+    score:Math.min(
+      score,
+      100
+    ),
+
+    reasons
+
+  };
+
+}
+
+
+// ============================================================
+// ATR
+// ============================================================
+
+function calculateATR(
+  candles,
+  period = 14
+){
+
+  if(
+    candles.length <
+    period + 1
+  ){
+
+    return null;
+
+  }
+
+
+  const trs = [];
+
+
+  for(
+    let i = 1;
+    i < candles.length;
+    i++
+  ){
+
+    const current =
+      candles[i];
+
+
+    const previous =
+      candles[i - 1];
+
+
+    const tr =
+      Math.max(
+
+        current.high -
+        current.low,
+
+        Math.abs(
+          current.high -
+          previous.close
+        ),
+
+        Math.abs(
+          current.low -
+          previous.close
+        )
+
+      );
+
+
+    trs.push(tr);
+
+  }
+
+
+  const recent =
+    trs.slice(-period);
+
+
+  return (
+    recent.reduce(
+      (a,b) => a + b,
+      0
+    )
+    / recent.length
+  );
 
 }
 
@@ -1442,35 +2622,19 @@ function calculatePotential(
 // TRADE PLAN
 // ============================================================
 
-function buildTradePlan(
-  m5,
+function createTradePlan(
   direction,
-  p
+  m5,
+  m15,
+  h1
 ){
 
   if(
-    direction ===
-    "WAIT"
+    direction !== "BUY" &&
+    direction !== "SELL"
   ){
 
-    return {
-
-      entry:
-        m5.latestPrice,
-
-      sl:null,
-
-      tp1:null,
-
-      tp2:null,
-
-      riskPips:null,
-
-      rrMin:null,
-
-      rrMax:null
-
-    };
+    return null;
 
   }
 
@@ -1479,80 +2643,210 @@ function buildTradePlan(
     m5.latestPrice;
 
 
-  let sl;
+  const atr =
+    calculateATR(
+      window.__M5_CANDLES || [],
+      14
+    ) ||
+    m5.avgRange;
 
+
+  let sl = null;
+
+
+  if(direction === "BUY"){
+
+    if(m15.swingLows.length){
+
+      sl =
+        m15.swingLows[
+          m15.swingLows.length - 1
+        ].price;
+
+    }
+
+
+    else{
+
+      sl =
+        entry -
+        atr * 1.2;
+
+    }
+
+  }
+
+
+  else{
+
+    if(m15.swingHighs.length){
+
+      sl =
+        m15.swingHighs[
+          m15.swingHighs.length - 1
+        ].price;
+
+    }
+
+
+    else{
+
+      sl =
+        entry +
+        atr * 1.2;
+
+    }
+
+  }
+
+
+  let riskPips =
+    direction === "BUY"
+      ? priceToPips(
+          entry - sl
+        )
+      : priceToPips(
+          sl - entry
+        );
+
+
+  // --------------------------------------------------------
+  // ATR fallback if structural SL is outside range
+  // --------------------------------------------------------
 
   if(
-    direction ===
-    "BUY"
+    riskPips < MIN_RISK_PIPS ||
+    riskPips > MAX_RISK_PIPS
   ){
 
-    sl =
-      m5.lastSwingLow?.price
-      ??
-      entry -
-      Math.max(
-        m5.avgRange * 2,
-        0.50
-      );
+    if(direction === "BUY"){
+
+      sl =
+        entry -
+        pipsToPrice(
+          45
+        );
+
+    }
+
+    else{
+
+      sl =
+        entry +
+        pipsToPrice(
+          45
+        );
+
+    }
+
+
+    riskPips =
+      45;
 
   }
 
-  else {
 
-    sl =
-      m5.lastSwingHigh?.price
-      ??
-      entry +
-      Math.max(
-        m5.avgRange * 2,
-        0.50
-      );
+  // --------------------------------------------------------
+  // TARGETS
+  // --------------------------------------------------------
 
-  }
-
-
-  // ========================================================
-  // CORRECT GOLD PIP CONVERSION
-  // 1 pip = 0.10
-  // ========================================================
-
-  const riskPips =
+  const tp1Pips =
     Math.max(
-      1,
-      Math.round(
-        priceToPips(
-          Math.abs(
-            entry - sl
-          )
-        )
-      )
+      TP1_PIPS,
+      riskPips * 1.0
     );
 
 
+  const tp2Pips =
+    Math.max(
+      TP1_PIPS * 2,
+      riskPips * 2
+    );
+
+
+  const tp3Pips =
+    Math.max(
+      TP1_PIPS * 3,
+      riskPips * 3
+    );
+
+
+  let tp1;
+  let tp2;
+  let tp3;
+
+
+  if(direction === "BUY"){
+
+    tp1 =
+      entry +
+      pipsToPrice(
+        tp1Pips
+      );
+
+    tp2 =
+      entry +
+      pipsToPrice(
+        tp2Pips
+      );
+
+    tp3 =
+      entry +
+      pipsToPrice(
+        tp3Pips
+      );
+
+  }
+
+
+  else{
+
+    tp1 =
+      entry -
+      pipsToPrice(
+        tp1Pips
+      );
+
+    tp2 =
+      entry -
+      pipsToPrice(
+        tp2Pips
+      );
+
+    tp3 =
+      entry -
+      pipsToPrice(
+        tp3Pips
+      );
+
+  }
+
+
   return {
+
+    direction,
 
     entry,
 
     sl,
 
-    tp1:p.tp1,
+    tp1,
 
-    tp2:p.tp2,
+    tp2,
+
+    tp3,
 
     riskPips,
 
-    rrMin:
-      (
-        p.minPips /
-        riskPips
-      ).toFixed(1),
+    tp1Pips,
 
-    rrMax:
-      (
-        p.maxPips /
-        riskPips
-      ).toFixed(1)
+    tp2Pips,
+
+    tp3Pips,
+
+    rr:
+      tp2Pips /
+      riskPips
 
   };
 
@@ -1560,51 +2854,268 @@ function buildTradePlan(
 
 
 // ============================================================
-// DOM HELPERS
+// ROOM TO TARGET
 // ============================================================
 
-const setText =
-(
-  id,
-  text
-) => {
+function checkRoomToTarget(
+  direction,
+  entry,
+  tp1,
+  m15,
+  h1
+){
 
-  const e =
-    document.getElementById(
-      id
+  let levels = [];
+
+
+  if(direction === "BUY"){
+
+    levels = [
+
+      ...m15.swingHighs.map(
+        x => x.price
+      ),
+
+      ...h1.swingHighs.map(
+        x => x.price
+      )
+
+    ].filter(
+      x => x > entry
+    );
+
+  }
+
+
+  else{
+
+    levels = [
+
+      ...m15.swingLows.map(
+        x => x.price
+      ),
+
+      ...h1.swingLows.map(
+        x => x.price
+      )
+
+    ].filter(
+      x => x < entry
+    );
+
+  }
+
+
+  if(!levels.length){
+
+    return true;
+
+  }
+
+
+  const nearest =
+    direction === "BUY"
+      ? Math.min(...levels)
+      : Math.max(...levels);
+
+
+  const distance =
+    direction === "BUY"
+      ? priceToPips(
+          nearest - entry
+        )
+      : priceToPips(
+          entry - nearest
+        );
+
+
+  const tp1Distance =
+    direction === "BUY"
+      ? priceToPips(
+          tp1 - entry
+        )
+      : priceToPips(
+          entry - tp1
+        );
+
+
+  return (
+    distance >=
+    tp1Distance
+  );
+
+}
+
+
+// ============================================================
+// HARD GATES
+// ============================================================
+
+function validateGates(
+  opportunity,
+  m5Bos,
+  plan,
+  room
+){
+
+  const scorePass =
+    opportunity.score >=
+    MIN_SCORE;
+
+
+  const setupPass =
+    opportunity.setup !==
+    "NO VALID SETUP";
+
+
+  const m5Pass =
+    (
+      opportunity.direction === "BUY" &&
+      m5Bos === "BULLISH BOS"
+    )
+    ||
+    (
+      opportunity.direction === "SELL" &&
+      m5Bos === "BEARISH BOS"
     );
 
 
-  if(e)
-    e.innerText =
-      text;
+  const riskPass =
+    plan &&
+    plan.riskPips >=
+    MIN_RISK_PIPS &&
+    plan.riskPips <=
+    MAX_RISK_PIPS;
 
-};
+
+  const tp1Pass =
+    plan &&
+    plan.tp1Pips >=
+    TP1_PIPS;
 
 
-const fmt =
-v =>
-  v == null
-    ? "--"
-    : Number(v).toFixed(2);
+  const rrPass =
+    plan &&
+    plan.rr >=
+    MIN_RR;
+
+
+  return {
+
+    scorePass,
+
+    setupPass,
+
+    m5Pass,
+
+    riskPass,
+
+    tp1Pass,
+
+    rrPass,
+
+    roomPass:room,
+
+    all:
+      scorePass &&
+      setupPass &&
+      m5Pass &&
+      riskPass &&
+      tp1Pass &&
+      rrPass &&
+      room
+
+  };
+
+}
+
+
+// ============================================================
+// COLOR HELPERS
+// ============================================================
+
+function setSignalColor(
+  direction
+){
+
+  const signal =
+    document.getElementById(
+      "finalSignal"
+    );
+
+
+  signal.className =
+    "signal " +
+    (
+      direction === "BUY"
+        ? "buy"
+        : direction === "SELL"
+          ? "sell"
+          : "wait"
+    );
+
+}
+
+
+function gateText(
+  id,
+  pass
+){
+
+  const element =
+    document.getElementById(id);
+
+
+  if(!element){
+
+    return;
+
+  }
+
+
+  element.innerText =
+    pass
+      ? "PASS"
+      : "FAIL";
+
+
+  element.className =
+    pass
+      ? "gate-pass"
+      : "gate-fail";
+
+}
 
 
 // ============================================================
 // RENDER
 // ============================================================
 
-function render(r){
+function render(
+  result
+){
 
   const {
-    opportunity,
-    potential,
-    plan,
-    h4,
     h1,
+    m15,
     m5,
+    pd,
+    m15Range,
+    m15Sweep,
+    m5Bos,
+    m5Confirmation,
+    m5Momentum,
+    opportunity,
+    plan,
+    potential,
+    gates,
     session
-  } = r;
+  } = result;
 
+
+  // ----------------------------------------------------------
+  // MAIN
+  // ----------------------------------------------------------
 
   setText(
     "score",
@@ -1618,20 +3129,14 @@ function render(r){
   );
 
 
+  setSignalColor(
+    opportunity.direction
+  );
+
+
   setText(
     "opportunityType",
-
-    opportunity.direction ===
-    "BUY"
-
-      ? "Bullish valid opportunity"
-
-      : opportunity.direction ===
-        "SELL"
-
-          ? "Bearish valid opportunity"
-
-          : "No high-confidence setup yet"
+    opportunity.setup
   );
 
 
@@ -1643,13 +3148,10 @@ function render(r){
 
   setText(
     "marketMode",
-
-    h4.structure !== "RANGE" ||
-    h1.structure !== "RANGE"
-
-      ? "TREND"
-
-      : "RANGE"
+    h1.trend === "RANGE" ||
+    h1.trend === "NEUTRAL"
+      ? "RANGE"
+      : "TREND"
   );
 
 
@@ -1661,211 +3163,338 @@ function render(r){
 
   setText(
     "pdZone",
-    m5.zone
+    pd.zone
+  );
+
+
+  // ----------------------------------------------------------
+  // MTF
+  // ----------------------------------------------------------
+
+  setText(
+    "h1Bias",
+    h1.trend
   );
 
 
   setText(
-    "planDirection",
-    opportunity.direction
+    "h1Structure",
+    h1.structure
   );
 
 
   setText(
-    "entry",
-    fmt(plan.entry)
+    "m15Trend",
+    m15.trend
   );
 
 
   setText(
-    "sl",
-    fmt(plan.sl)
+    "m15Structure",
+    m15.structure
   );
 
 
   setText(
-
-    "tpRange",
-
-    opportunity.direction ===
-    "WAIT"
-
-      ? "--"
-
-      : `${fmt(plan.tp1)}
-         – ${fmt(plan.tp2)}`
+    "m15Range",
+    m15Range.position
   );
 
 
   setText(
-
-    "riskPips",
-
-    plan.riskPips == null
-
-      ? "--"
-
-      : `${plan.riskPips} pips`
+    "m15Liquidity",
+    m15Sweep
   );
 
 
   setText(
-
-    "rrRange",
-
-    plan.rrMin == null
-
-      ? "--"
-
-      : `1:${plan.rrMin}
-         – 1:${plan.rrMax}`
+    "m5Bos",
+    m5Bos
   );
 
 
   setText(
-
-    "potentialRange",
-
-    opportunity.direction ===
-    "WAIT"
-
-      ? "-- pips"
-
-      : `${potential.minPips}
-         – ${potential.maxPips}
-         pips`
+    "m5Confirmation",
+    m5Confirmation
   );
 
 
   setText(
-
-    "potentialConfidence",
-
-    opportunity.direction ===
-    "WAIT"
-
-      ? "SCANNING"
-
-      : `${potential.confidence}
-         CONFIDENCE`
+    "m5Momentum",
+    m5Momentum
   );
 
 
-  const sig =
+  // ----------------------------------------------------------
+  // PLAN
+  // ----------------------------------------------------------
+
+  if(plan){
+
+    setText(
+      "planDirection",
+      plan.direction
+    );
+
+
+    setText(
+      "entry",
+      fmt(plan.entry)
+    );
+
+
+    setText(
+      "sl",
+      fmt(plan.sl)
+    );
+
+
+    setText(
+      "tp1",
+      fmt(plan.tp1)
+    );
+
+
+    setText(
+      "tp2",
+      fmt(plan.tp2)
+    );
+
+
+    setText(
+      "tp3",
+      fmt(plan.tp3)
+    );
+
+
+    setText(
+      "riskPips",
+      `${plan.riskPips.toFixed(0)} pips`
+    );
+
+
+    setText(
+      "rrRange",
+      `1:${plan.rr.toFixed(2)}`
+    );
+
+  }
+
+  else{
+
+    setText(
+      "planDirection",
+      "WAIT"
+    );
+
+    setText(
+      "entry",
+      "--"
+    );
+
+    setText(
+      "sl",
+      "--"
+    );
+
+    setText(
+      "tp1",
+      "--"
+    );
+
+    setText(
+      "tp2",
+      "--"
+    );
+
+    setText(
+      "tp3",
+      "--"
+    );
+
+    setText(
+      "riskPips",
+      "--"
+    );
+
+    setText(
+      "rrRange",
+      "--"
+    );
+
+  }
+
+
+  // ----------------------------------------------------------
+  // POTENTIAL
+  // ----------------------------------------------------------
+
+  if(plan){
+
+    setText(
+      "potentialRange",
+      `${plan.tp1Pips.toFixed(0)}-${plan.tp3Pips.toFixed(0)} pips`
+    );
+
+
+    setText(
+      "potentialConfidence",
+      potential
+    );
+
+  }
+
+  else{
+
+    setText(
+      "potentialRange",
+      "-- pips"
+    );
+
+
+    setText(
+      "potentialConfidence",
+      "SCANNING"
+    );
+
+  }
+
+
+  // ----------------------------------------------------------
+  // GATES
+  // ----------------------------------------------------------
+
+  gateText(
+    "gateScore",
+    gates.scorePass
+  );
+
+
+  gateText(
+    "gateSetup",
+    gates.setupPass
+  );
+
+
+  gateText(
+    "gateM5",
+    gates.m5Pass
+  );
+
+
+  gateText(
+    "gateRisk",
+    gates.riskPass
+  );
+
+
+  gateText(
+    "gateTP1",
+    gates.tp1Pass
+  );
+
+
+  gateText(
+    "gateRR",
+    gates.rrPass
+  );
+
+
+  gateText(
+    "gateRoom",
+    gates.roomPass
+  );
+
+
+  // ----------------------------------------------------------
+  // CONFIRMATION
+  // ----------------------------------------------------------
+
+  const list =
     document.getElementById(
-      "finalSignal"
+      "confirmationList"
     );
 
 
-  const score =
-    document.getElementById(
-      "score"
+  const confirmations =
+    [...opportunity.reasons];
+
+
+  if(m5Bos !== "NONE"){
+
+    confirmations.push(
+      `M5 ${m5Bos}`
     );
 
+  }
 
-  const pc =
-    document.getElementById(
-      "potentialConfidence"
+
+  if(m5Confirmation !== "NONE"){
+
+    confirmations.push(
+      `M5 ${m5Confirmation} candle`
     );
 
+  }
 
-  sig.className =
-    "signal " +
 
-    (
-      opportunity.direction ===
-      "BUY"
+  if(
+    gates.all
+  ){
 
-        ? "buy"
-
-        : opportunity.direction ===
-          "SELL"
-
-            ? "sell"
-
-            : "wait"
+    confirmations.push(
+      "All hard gates passed"
     );
 
-
-  score.className =
-    "score " +
-
-    (
-      opportunity.score >= 70
-
-        ? (
-            opportunity.direction ===
-            "BUY"
-
-              ? "buy"
-
-              : "sell"
-          )
-
-        : "wait"
-    );
+  }
 
 
-  pc.className =
-    "confidence " +
+  if(confirmations.length){
 
-    (
-      potential.confidence ===
-      "HIGH"
+    list.innerHTML =
+      confirmations
+        .slice(-8)
+        .map(
+          x => `<li>${x}</li>`
+        )
+        .join("");
 
-        ? "high"
+  }
 
-        : potential.confidence ===
-          "MEDIUM"
+  else{
 
-            ? "medium"
+    list.innerHTML =
+      "<li>Waiting for stronger confirmation...</li>";
 
-            : "low"
-    );
+  }
 
 
-  document.getElementById(
-    "confirmationList"
-  ).innerHTML =
-
-    opportunity.confirmations.length
-
-      ? opportunity.confirmations
-          .slice(-7)
-          .map(
-            x =>
-              `<li>${x}</li>`
-          )
-          .join("")
-
-      : "<li>Waiting for stronger confirmation...</li>";
-
+  // ----------------------------------------------------------
+  // ENGINE STATUS
+  // ----------------------------------------------------------
 
   setText(
-
     "engineStatus",
-
-    opportunity.score >= 70
-
-      ? "OPPORTUNITY FOUND"
-
+    gates.all
+      ? "VALID OPPORTUNITY"
       : "SCANNING"
   );
 
 
   setText(
-
     "lastUpdate",
-
-    `Last update:
-     ${new Date().toLocaleTimeString("en-MY")}`
+    `Last update: ${
+      new Date().toLocaleTimeString(
+        "en-MY"
+      )
+    }`
   );
 
 }
 
 
 // ============================================================
-// NOTIFICATION PERMISSION
+// NOTIFICATION
 // ============================================================
 
 async function requestNotificationPermission(){
@@ -1929,22 +3558,16 @@ async function requestNotificationPermission(){
 
   try{
 
-    const p =
+    const permission =
       await Notification.requestPermission();
 
 
     setText(
-
       "notificationStatus",
-
-      p === "granted"
-
+      permission === "granted"
         ? "ENABLED"
-
-        : p === "denied"
-
+        : permission === "denied"
           ? "BLOCKED"
-
           : "NOT GRANTED"
     );
 
@@ -1963,32 +3586,23 @@ async function requestNotificationPermission(){
 
 
 // ============================================================
-// BROWSER NOTIFICATION
+// SEND NOTIFICATION
 // ============================================================
 
-function notifyOpportunity(r){
+function notifyOpportunity(
+  result
+){
 
   const {
     opportunity,
-    potential,
-    plan
-  } = r;
+    plan,
+    gates
+  } = result;
 
 
   if(
-
-    opportunity.score <
-    OPPORTUNITY_THRESHOLD
-
-    ||
-
-    !("Notification" in window)
-
-    ||
-
-    Notification.permission !==
-    "granted"
-
+    !gates.all ||
+    !plan
   ){
 
     return;
@@ -1996,15 +3610,23 @@ function notifyOpportunity(r){
   }
 
 
-  // Entry bucket uses pip convention:
-  // 1 pip = 0.10
+  if(
+    !("Notification" in window)
+  ){
 
-  const entryPipBucket =
-    Math.round(
-      priceToPips(
-        plan.entry
-      )
-    );
+    return;
+
+  }
+
+
+  if(
+    Notification.permission !==
+    "granted"
+  ){
+
+    return;
+
+  }
 
 
   const key =
@@ -2012,7 +3634,9 @@ function notifyOpportunity(r){
     `-${Math.floor(
       opportunity.score / 5
     )}` +
-    `-${entryPipBucket}`;
+    `-${Math.round(
+      plan.entry * 10
+    )}`;
 
 
   if(
@@ -2032,37 +3656,30 @@ function notifyOpportunity(r){
   try{
 
     new Notification(
-
-      `🚨 Bosque AI:
-       ${opportunity.direction}
-       Opportunity`,
-
+      `🚨 Bosque AI: ${opportunity.direction}`,
       {
 
         body:
-          `XAUUSD • Score ` +
-          `${opportunity.score}/100\n` +
-
-          `Entry ${fmt(plan.entry)} • ` +
-
-          `Potential ` +
-          `${potential.minPips}-` +
-          `${potential.maxPips} pips`,
+          `XAUUSD\n` +
+          `Setup: ${opportunity.setup}\n` +
+          `Score: ${opportunity.score}/100\n` +
+          `Entry: ${fmt(plan.entry)}\n` +
+          `TP1: ${fmt(plan.tp1)} ` +
+          `(${plan.tp1Pips.toFixed(0)} pips)`,
 
         tag:
           "bosque-forex-ai-opportunity"
 
       }
-
     );
 
   }
 
-  catch(e){
+  catch(error){
 
     console.warn(
-      "Notification failed",
-      e
+      "Notification failed:",
+      error
     );
 
   }
@@ -2084,96 +3701,302 @@ async function runAnalysis(){
     );
 
 
-    const [
-      h4c,
-      h1c,
-      m5c
-    ] = await Promise.all([
+    // --------------------------------------------------------
+    // ONE API REQUEST ONLY
+    // --------------------------------------------------------
 
-      getOHLC(
-        "4h",
+    const m5Candles =
+      await getM5Data();
+
+
+    window.__M5_CANDLES =
+      m5Candles;
+
+
+    if(
+      m5Candles.length <
+      100
+    ){
+
+      throw new Error(
+        "Not enough closed M5 candles"
+      );
+
+    }
+
+
+    // --------------------------------------------------------
+    // BUILD M15 / H1 LOCALLY
+    // --------------------------------------------------------
+
+    const m15Candles =
+      aggregateCandles(
+        m5Candles,
+        15
+      );
+
+
+    const h1Candles =
+      aggregateCandles(
+        m5Candles,
         60
-      ),
-
-      getOHLC(
-        "1h",
-        60
-      ),
-
-      getOHLC(
-        "5min",
-        80
-      )
-
-    ]);
+      );
 
 
-    const h4 =
-      analyze(h4c);
+    if(
+      m15Candles.length <
+      20
+    ){
 
+      throw new Error(
+        "Not enough M15 candles"
+      );
+
+    }
+
+
+    if(
+      h1Candles.length <
+      20
+    ){
+
+      throw new Error(
+        "Not enough H1 candles"
+      );
+
+    }
+
+
+    // --------------------------------------------------------
+    // ANALYSIS
+    // --------------------------------------------------------
 
     const h1 =
-      analyze(h1c);
+      analyzeStructure(
+        h1Candles
+      );
+
+
+    const m15 =
+      analyzeStructure(
+        m15Candles
+      );
 
 
     const m5 =
-      analyze(m5c);
+      analyzeStructure(
+        m5Candles
+      );
 
 
-    const opportunity =
-      scoreOpportunity(
-        h4,
+    const pd =
+      calculatePD(
+        m15Candles
+      );
+
+
+    const m15Range =
+      calculateRange(
+        m15Candles,
+        30
+      );
+
+
+    const m15Sweep =
+      detectLiquiditySweep(
+        m15Candles
+      );
+
+
+    const m5Bos =
+      detectM5BOS(
+        m5Candles
+      );
+
+
+    const m5Confirmation =
+      candleConfirmation(
+        m5Candles
+      );
+
+
+    const m5Momentum =
+      calculateMomentum(
+        m5Candles
+      );
+
+
+    const session =
+      getSession();
+
+
+    // --------------------------------------------------------
+    // SETUP
+    // --------------------------------------------------------
+
+    const setupResult =
+      detectM15Setup(
         h1,
-        m5
+        m15,
+        pd,
+        m15Range,
+        m15Sweep
       );
 
 
     const direction =
-
-      opportunity.direction ===
-      "BUY"
-
-        ||
-
-      opportunity.direction ===
-      "SELL"
-
-        ? opportunity.direction
-
-        : "WAIT";
+      setupResult.direction;
 
 
-    const potential =
-      calculatePotential(
-        m5,
-        direction
+    const setup =
+      setupResult.setup;
+
+
+    // --------------------------------------------------------
+    // SCORE
+    // --------------------------------------------------------
+
+    const scoring =
+      calculateScore(
+        direction,
+        h1,
+        m15,
+        m5Bos,
+        pd,
+        m15Sweep,
+        m5Momentum,
+        m5Confirmation,
+        setup,
+        session
       );
 
+
+    const opportunity = {
+
+      direction,
+
+      setup,
+
+      score:
+        scoring.score,
+
+      reasons:
+        scoring.reasons
+
+    };
+
+
+    // --------------------------------------------------------
+    // TRADE PLAN
+    // --------------------------------------------------------
 
     const plan =
-      buildTradePlan(
-        m5,
+      createTradePlan(
         direction,
-        potential
+        m5,
+        m15,
+        h1
       );
 
+
+    // --------------------------------------------------------
+    // ROOM
+    // --------------------------------------------------------
+
+    let room =
+      false;
+
+
+    if(plan){
+
+      room =
+        checkRoomToTarget(
+          direction,
+          plan.entry,
+          plan.tp1,
+          m15,
+          h1
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // GATES
+    // --------------------------------------------------------
+
+    const gates =
+      validateGates(
+        opportunity,
+        m5Bos,
+        plan,
+        room
+      );
+
+
+    // --------------------------------------------------------
+    // POTENTIAL
+    // --------------------------------------------------------
+
+    let potential =
+      "LOW CONFIDENCE";
+
+
+    if(
+      gates.all
+    ){
+
+      potential =
+        plan.tp3Pips >= 180
+          ? "HIGH CONFIDENCE"
+          : "MEDIUM CONFIDENCE";
+
+    }
+
+
+    else if(
+      opportunity.score >= 60
+    ){
+
+      potential =
+        "MEDIUM CONFIDENCE";
+
+    }
+
+
+    // --------------------------------------------------------
+    // RESULT
+    // --------------------------------------------------------
 
     const result = {
 
-      h4,
-
       h1,
+
+      m15,
 
       m5,
 
-      opportunity,
+      pd,
 
-      potential,
+      m15Range,
+
+      m15Sweep,
+
+      m5Bos,
+
+      m5Confirmation,
+
+      m5Momentum,
+
+      opportunity,
 
       plan,
 
-      session:
-        getSession()
+      potential,
+
+      gates,
+
+      session
 
     };
 
@@ -2187,8 +4010,8 @@ async function runAnalysis(){
       result
     );
 
-  }
 
+  }
 
   catch(error){
 
@@ -2200,6 +4023,12 @@ async function runAnalysis(){
     setText(
       "engineStatus",
       "ERROR"
+    );
+
+
+    setText(
+      "finalSignal",
+      "WAIT"
     );
 
 
@@ -2240,6 +4069,10 @@ window.addEventListener(
 );
 
 
+// ============================================================
+// AUTO REFRESH
+// ============================================================
+
 setInterval(
   runAnalysis,
   REFRESH_MS
@@ -2247,6 +4080,7 @@ setInterval(
 
 
 </script>
+
 
 </body>
 
