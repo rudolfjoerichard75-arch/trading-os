@@ -1,7 +1,6 @@
-name: Bosque Forex AI Engine
+name: BOSQUE FOREX AI
 
 on:
-
   workflow_dispatch:
 
   schedule:
@@ -10,52 +9,84 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: bosque-forex-ai-engine
-  cancel-in-progress: false
-
 jobs:
 
-  analyze:
+  run-engine:
 
     runs-on: ubuntu-latest
 
     steps:
 
-      - name: Checkout Bosque Forex AI
+      # ==========================================
+      # CHECKOUT
+      # ==========================================
+
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+
+      # ==========================================
+      # PYTHON
+      # ==========================================
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
+
+      # ==========================================
+      # INSTALL
+      # ==========================================
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r engine/requirements.txt
+          pip install requests
 
-      - name: Run Bosque Forex AI
+      # ==========================================
+      # RUN BOSQUE ENGINE
+      # ==========================================
+
+      - name: Run BOSQUE FOREX AI
         env:
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python engine/bosque_engine.py
+          python engine.py
 
-      - name: Save engine state
+      # ==========================================
+      # CHECK OUTPUT
+      # ==========================================
+
+      - name: Check dashboard data
+        run: |
+          echo "Checking dashboard_data.json..."
+
+          if [ -f dashboard_data.json ]; then
+            echo "✅ dashboard_data.json FOUND"
+            ls -lh dashboard_data.json
+            echo ""
+            echo "Preview:"
+            head -50 dashboard_data.json
+          else
+            echo "❌ dashboard_data.json NOT FOUND"
+            exit 1
+          fi
+
+      # ==========================================
+      # SAVE JSON TO REPOSITORY
+      # ==========================================
+
+      - name: Commit dashboard data
         run: |
 
-          git config user.name "Bosque Forex AI"
-          git config user.email "bosque-ai@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add engine/state.json
+          git add dashboard_data.json
 
           if git diff --cached --quiet; then
-            echo "No state changes."
+            echo "ℹ️ No dashboard data changes."
           else
-            git commit -m "Update Bosque AI engine state"
+            git commit -m "Update BOSQUE dashboard data"
             git push
           fi
