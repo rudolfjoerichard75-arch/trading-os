@@ -17,17 +17,33 @@ jobs:
 
     steps:
 
+      # ==========================================
+      # CHECKOUT
+      # ==========================================
+
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      # ==========================================
+      # PYTHON
+      # ==========================================
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # ==========================================
+      # INSTALL
+      # ==========================================
+
       - name: Install dependencies
         run: |
           pip install requests
+
+      # ==========================================
+      # RUN BOSQUE ENGINE
+      # ==========================================
 
       - name: Run BOSQUE FOREX AI
         env:
@@ -35,7 +51,11 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python Engine/bosque_engine.py
+          python engine.py
+
+      # ==========================================
+      # CHECK OUTPUT
+      # ==========================================
 
       - name: Check dashboard data
         run: |
@@ -51,6 +71,10 @@ jobs:
             echo "❌ dashboard_data.json NOT FOUND"
             exit 1
           fi
+
+      # ==========================================
+      # SAVE JSON TO REPOSITORY
+      # ==========================================
 
       - name: Commit dashboard data
         run: |
