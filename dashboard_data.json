@@ -12,24 +12,24 @@
     "pip_rule": "1 pip = 0.10 XAU/USD (10 points)",
     "min_score": 70
   },
-  "timestamp": "2026-09-22T19:25:25.753758+00:00",
-  "latest_price": 4357.97,
+  "timestamp": "2026-09-22T19:30:42.356976+00:00",
+  "latest_price": 4358.79,
   "session": "OFF SESSION",
-  "market_mode": "RANGE",
+  "market_mode": "TREND",
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4337.57,
-    "high": 4359.96,
+    "equilibrium": 4337.85,
+    "high": 4360.51,
     "low": 4315.18
   },
   "opportunity": {
     "type": "NO VALID SETUP",
-    "score": 25,
+    "score": 65,
     "valid": false
   },
   "plan": {
     "valid": false,
-    "direction": null,
+    "direction": "SELL",
     "entry": null,
     "sl": null,
     "tp1": null,
@@ -48,8 +48,8 @@
     "description": "No valid trade plan"
   },
   "h1": {
-    "bias": "RANGE",
-    "structure": "RANGE",
+    "bias": "BULLISH",
+    "structure": "BULLISH BOS",
     "bullish_bos": true,
     "bearish_bos": false,
     "last_swing_high": 4345.95,
@@ -64,20 +64,20 @@
     "last_swing_low": 4349.01,
     "range": {
       "is_range": false,
-      "high": 4359.96,
+      "high": 4360.51,
       "low": 4315.18,
       "position": "HIGH EXTREME",
-      "width": 44.78
+      "width": 45.33
     },
     "liquidity": {
-      "type": "NONE",
-      "detected": false,
-      "level": null
+      "type": "BUY-SIDE LIQUIDITY SWEEP",
+      "detected": true,
+      "level": 4359.96
     },
     "setup": {
-      "type": "NO VALID SETUP",
-      "valid": false,
-      "reason": "No valid M15 setup"
+      "type": "SELL RANGE REVERSAL",
+      "valid": true,
+      "reason": "M15 high extreme + buy-side liquidity sweep"
     }
   },
   "m5": {
@@ -89,16 +89,16 @@
   },
   "filters": {
     "score": "FAIL",
-    "m15_setup": "FAIL",
+    "m15_setup": "PASS",
     "m5_confirmation": "FAIL",
     "risk": "FAIL",
     "rr": "FAIL"
   },
   "confirmations": {
-    "h1_bias": "RANGE",
-    "h1_structure": "RANGE",
-    "m15_setup": "NO VALID SETUP",
-    "m15_liquidity": "NONE",
+    "h1_bias": "BULLISH",
+    "h1_structure": "BULLISH BOS",
+    "m15_setup": "SELL RANGE REVERSAL",
+    "m15_liquidity": "BUY-SIDE LIQUIDITY SWEEP",
     "m5_bos_choch": "HH / HL",
     "m5_candle": "NEUTRAL",
     "m5_momentum": "BULLISH"
