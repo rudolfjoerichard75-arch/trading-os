@@ -1,7 +1,7 @@
 {
   "engine": {
     "name": "BOSQUE FOREX AI",
-    "version": "SCALPING V3",
+    "version": "SCALPING V3.1",
     "symbol": "XAU/USD",
     "timeframes": {
       "bias": "H1",
@@ -9,11 +9,14 @@
       "confirmation": "M5"
     },
     "pip_size": 0.1,
-    "pip_rule": "1 pip = 0.10 XAU/USD (10 points)",
-    "min_score": 70
+    "pip_rule": "1 pip = 0.10 XAU/USD",
+    "min_score": 65,
+    "min_risk_pips": 30,
+    "max_risk_pips": 70,
+    "min_rr": 1.8
   },
-  "timestamp": "2026-09-22T23:35:22.254418+00:00",
-  "latest_price": 4363.72,
+  "timestamp": "2026-09-22T23:40:27.464577+00:00",
+  "latest_price": 4363.7,
   "session": "ASIAN",
   "market_mode": "TREND",
   "pd": {
@@ -24,7 +27,7 @@
   },
   "opportunity": {
     "type": "NO VALID SETUP",
-    "score": 30,
+    "score": 20,
     "valid": false
   },
   "plan": {
@@ -39,6 +42,9 @@
     "rr_tp1": null,
     "rr_tp2": null,
     "rr_tp3": null,
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null,
     "reason": "Hard gates not passed"
   },
   "potential": {
@@ -46,6 +52,22 @@
     "min_pips": null,
     "max_pips": null,
     "description": "No valid trade plan"
+  },
+  "alert": {
+    "valid": false,
+    "signal_id": null,
+    "type": "NO VALID SETUP",
+    "direction": null,
+    "score": 20,
+    "entry": null,
+    "sl": null,
+    "tp1": null,
+    "tp2": null,
+    "tp3": null,
+    "risk_pips": null,
+    "rr_tp2": null,
+    "potential": "No valid trade plan",
+    "message": "NO VALID SETUP | Score 20/100 | Entry None | SL None | TP1 None"
   },
   "h1": {
     "bias": "BULLISH",
@@ -84,7 +106,7 @@
     "confirmed": false,
     "direction": "NEUTRAL",
     "bos_choch": "RANGE",
-    "candle": "BULLISH",
+    "candle": "NEUTRAL",
     "momentum": "NEUTRAL"
   },
   "filters": {
@@ -100,7 +122,7 @@
     "m15_setup": "NO VALID SETUP",
     "m15_liquidity": "NONE",
     "m5_bos_choch": "RANGE",
-    "m5_candle": "BULLISH",
+    "m5_candle": "NEUTRAL",
     "m5_momentum": "NEUTRAL"
   }
 }
