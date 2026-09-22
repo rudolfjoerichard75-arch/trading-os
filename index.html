@@ -2,25 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Bosque Forex AI - XAUUSD Scalping Intelligence</title>
 
 <style>
-
-:root{
-    --bg:#080b10;
-    --card:#11161d;
-    --card2:#151b23;
-    --border:#252d38;
-    --text:#f3f5f7;
-    --muted:#8d98a7;
-    --green:#25d98a;
-    --red:#ff5364;
-    --yellow:#ffc857;
-    --blue:#55a8ff;
-    --purple:#9b7cff;
-}
 
 *{
     box-sizing:border-box;
@@ -28,445 +18,253 @@
 
 body{
     margin:0;
-    background:var(--bg);
-    color:var(--text);
     font-family:Arial,Helvetica,sans-serif;
+    background:#050816;
+    color:#ffffff;
 }
 
 .container{
     width:100%;
     max-width:1500px;
     margin:auto;
-    padding:18px;
+    padding:20px;
 }
-
-/* ================= HEADER ================= */
 
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:15px;
-    margin-bottom:18px;
-    flex-wrap:wrap;
+    margin-bottom:20px;
+    padding:18px 20px;
+    background:#111833;
+    border:1px solid #26345f;
+    border-radius:14px;
 }
 
-.brand h1{
-    margin:0;
-    font-size:25px;
-    letter-spacing:.5px;
+.logo{
+    font-size:22px;
+    font-weight:bold;
 }
 
-.brand p{
-    margin:5px 0 0;
-    color:var(--muted);
-    font-size:13px;
+.logo span{
+    color:#4da3ff;
 }
 
 .status{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:var(--card);
-    border:1px solid var(--border);
-    padding:9px 13px;
-    border-radius:10px;
-    font-size:13px;
+    padding:8px 14px;
+    border-radius:20px;
+    background:#182344;
+    border:1px solid #2f4278;
+    font-size:12px;
+    font-weight:bold;
 }
-
-.dot{
-    width:9px;
-    height:9px;
-    border-radius:50%;
-    background:var(--yellow);
-}
-
-.dot.green{
-    background:var(--green);
-}
-
-.dot.red{
-    background:var(--red);
-}
-
-/* ================= GRID ================= */
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(12,1fr);
-    gap:14px;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
 }
 
 .card{
-    background:var(--card);
-    border:1px solid var(--border);
+    background:#111833;
+    border:1px solid #26345f;
     border-radius:14px;
-    padding:16px;
+    padding:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.2);
+}
+
+.card h2{
+    margin:0 0 15px;
+    font-size:16px;
+    color:#8ebcff;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.chart{
+    height:520px;
+    padding:0;
     overflow:hidden;
 }
 
-.card-title{
-    font-size:12px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:1px;
-    margin-bottom:13px;
-}
-
-/* ================= MARKET ================= */
-
-.market-card{
-    grid-column:span 12;
-}
-
-.market-grid{
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:12px;
+.chart-inner{
+    width:100%;
+    height:100%;
 }
 
 .metric{
-    background:var(--card2);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px;
-    min-height:72px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.metric:last-child{
+    border-bottom:none;
 }
 
 .metric-label{
-    font-size:11px;
-    color:var(--muted);
-    margin-bottom:8px;
-}
-
-.metric-value{
-    font-size:17px;
-    font-weight:bold;
-    word-break:break-word;
-}
-
-.signal-buy{
-    color:var(--green);
-}
-
-.signal-sell{
-    color:var(--red);
-}
-
-.signal-wait{
-    color:var(--yellow);
-}
-
-/* ================= CHART ================= */
-
-.chart-card{
-    grid-column:span 8;
-    min-height:510px;
-}
-
-.chart-wrap{
-    width:100%;
-    height:450px;
-}
-
-.tradingview-widget-container,
-.tradingview-widget-container iframe{
-    width:100%!important;
-    height:100%!important;
-}
-
-/* ================= SIDE PANEL ================= */
-
-.side-card{
-    grid-column:span 4;
-}
-
-/* ================= MTF ================= */
-
-.mtf-card{
-    grid-column:span 12;
-}
-
-.mtf-grid{
-    display:grid;
-    grid-template-columns:repeat(9,1fr);
-    gap:10px;
-}
-
-.mtf-box{
-    background:var(--card2);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px;
-    min-height:82px;
-}
-
-.mtf-label{
-    font-size:10px;
-    color:var(--muted);
-    text-transform:uppercase;
-    margin-bottom:8px;
-}
-
-.mtf-value{
-    font-size:14px;
-    font-weight:bold;
-    line-height:1.25;
-}
-
-/* ================= TRADE PLAN ================= */
-
-.plan-card{
-    grid-column:span 8;
-}
-
-.plan-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-}
-
-.plan-box{
-    background:var(--card2);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:14px;
-}
-
-.plan-label{
-    font-size:11px;
-    color:var(--muted);
-    margin-bottom:7px;
-}
-
-.plan-value{
-    font-size:19px;
-    font-weight:bold;
-}
-
-.big-direction{
-    font-size:26px;
-}
-
-/* ================= POTENTIAL ================= */
-
-.potential-card{
-    grid-column:span 4;
-}
-
-.potential{
-    text-align:center;
-    padding:20px 10px;
-}
-
-.potential-value{
-    font-size:29px;
-    font-weight:bold;
-    margin:8px 0;
-}
-
-.confidence{
-    color:var(--muted);
+    color:#8e9bbd;
     font-size:13px;
 }
 
-/* ================= FILTERS ================= */
+.metric-value{
+    font-weight:bold;
+    text-align:right;
+    word-break:break-word;
+}
 
-.filters-card{
-    grid-column:span 12;
+.signal{
+    font-size:24px;
+    font-weight:bold;
+    text-align:center;
+    padding:18px;
+    border-radius:12px;
+    background:#0d142d;
+    border:1px solid #26345f;
+    margin-bottom:15px;
+}
+
+.buy{
+    color:#35d07f;
+}
+
+.sell{
+    color:#ff5c6c;
+}
+
+.wait{
+    color:#f2c94c;
+}
+
+.neutral{
+    color:#aeb9d8;
+}
+
+.score{
+    font-size:42px;
+    text-align:center;
+    font-weight:bold;
+    margin:10px 0;
+}
+
+.score-label{
+    text-align:center;
+    color:#8e9bbd;
+    font-size:12px;
 }
 
 .filters{
     display:grid;
-    grid-template-columns:repeat(7,1fr);
+    grid-template-columns:repeat(3,1fr);
     gap:10px;
 }
 
 .filter{
-    background:var(--card2);
-    border:1px solid var(--border);
+    background:#0d142d;
+    border:1px solid #26345f;
     border-radius:10px;
     padding:12px;
 }
 
-.filter-label{
-    font-size:10px;
-    color:var(--muted);
+.filter-title{
+    color:#8e9bbd;
+    font-size:11px;
     margin-bottom:7px;
-    text-transform:uppercase;
 }
 
 .filter-value{
-    font-size:13px;
     font-weight:bold;
+    font-size:14px;
 }
 
-.pass{
-    color:var(--green);
-}
-
-.fail{
-    color:var(--red);
-}
-
-.neutral{
-    color:var(--yellow);
-}
-
-/* ================= CONFIRMATION ================= */
-
-.confirm-card{
-    grid-column:span 8;
-}
-
-.confirm-list{
-    display:grid;
-    gap:8px;
-}
-
-.confirm-item{
+.checklist{
     display:flex;
-    align-items:center;
+    flex-direction:column;
     gap:9px;
-    background:var(--card2);
-    border:1px solid var(--border);
+}
+
+.check{
+    background:#0d142d;
+    border:1px solid #26345f;
     border-radius:9px;
     padding:10px 12px;
     font-size:13px;
 }
 
-.confirm-icon{
-    font-size:15px;
-    width:20px;
-    text-align:center;
+.check-pass{
+    border-color:#24794d;
 }
 
-/* ================= NOTIFICATION ================= */
-
-.notification-card{
-    grid-column:span 4;
+.check-fail{
+    border-color:#78343d;
 }
 
-.notification-box{
-    background:var(--card2);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:14px;
-    font-size:13px;
-    line-height:1.5;
-}
-
-button{
-    width:100%;
+.notice{
     margin-top:12px;
-    border:1px solid var(--border);
-    background:#1b222c;
-    color:var(--text);
-    padding:11px;
+    padding:11px 13px;
     border-radius:9px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-button:hover{
-    background:#242d39;
-}
-
-/* ================= ALERT ================= */
-
-.alert{
+    font-size:12px;
     display:none;
-    padding:12px 14px;
-    border-radius:10px;
-    margin-bottom:14px;
-    font-size:13px;
 }
 
-.alert.error{
-    background:rgba(255,83,100,.1);
-    border:1px solid rgba(255,83,100,.35);
-    color:#ff8793;
+.notice.error{
+    background:#2a1117;
+    border:1px solid #71333e;
+    color:#ff8d99;
 }
 
-.alert.success{
-    background:rgba(37,217,138,.1);
-    border:1px solid rgba(37,217,138,.3);
-    color:#62e7a8;
+.notice.success{
+    background:#10261b;
+    border:1px solid #28734c;
+    color:#72e4a2;
 }
 
-/* ================= FOOTER ================= */
-
-.footer{
-    margin-top:18px;
-    padding:14px;
-    text-align:center;
-    color:var(--muted);
+.small{
+    color:#8e9bbd;
     font-size:11px;
 }
 
-/* ================= RESPONSIVE ================= */
+@media(max-width:1000px){
 
-@media(max-width:1100px){
-
-    .market-grid{
-        grid-template-columns:repeat(3,1fr);
+    .grid{
+        grid-template-columns:1fr 1fr;
     }
 
-    .mtf-grid{
-        grid-template-columns:repeat(3,1fr);
-    }
-
-    .filters{
-        grid-template-columns:repeat(4,1fr);
-    }
-
-    .chart-card,
-    .side-card,
-    .plan-card,
-    .potential-card,
-    .confirm-card,
-    .notification-card{
-        grid-column:span 12;
+    .full{
+        grid-column:1/-1;
     }
 
 }
 
-@media(max-width:650px){
+@media(max-width:700px){
 
     .container{
         padding:10px;
     }
 
-    .brand h1{
-        font-size:20px;
+    .grid{
+        grid-template-columns:1fr;
     }
 
-    .market-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .mtf-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .plan-grid{
-        grid-template-columns:repeat(2,1fr);
+    .full{
+        grid-column:auto;
     }
 
     .filters{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:1fr 1fr;
     }
 
-    .chart-card{
-        min-height:430px;
+    .chart{
+        height:420px;
     }
 
-    .chart-wrap{
-        height:360px;
-    }
-
-    .metric-value{
-        font-size:14px;
+    .header{
+        padding:15px;
     }
 
 }
@@ -478,401 +276,205 @@ button:hover{
 
 <div class="container">
 
-    <!-- ================= HEADER ================= -->
+    <!-- HEADER -->
 
     <div class="header">
 
-        <div class="brand">
-            <h1>🌲 BOSQUE FOREX AI</h1>
-            <p>XAUUSD Scalping Intelligence • H1 → M15 → M5</p>
+        <div class="logo">
+            👑 Bosque <span>Forex AI</span>
         </div>
 
-        <div class="status">
-            <span class="dot" id="engineDot"></span>
-            <span id="engineStatus">ENGINE LOADING...</span>
+        <div
+            id="engineStatus"
+            class="status"
+        >
+            CONNECTING...
         </div>
 
     </div>
 
-    <!-- ================= ALERTS ================= -->
 
-    <div id="errorBox" class="alert error"></div>
-    <div id="successBox" class="alert success"></div>
-
-    <!-- ================= MARKET INTELLIGENCE ================= -->
+    <!-- MAIN GRID -->
 
     <div class="grid">
 
-        <div class="card market-card">
 
-            <div class="card-title">
-                Market Intelligence
-            </div>
+        <!-- MARKET INTELLIGENCE -->
 
-            <div class="market-grid">
+        <div class="card">
 
-                <div class="metric">
-                    <div class="metric-label">Score</div>
-                    <div class="metric-value" id="score">--</div>
-                </div>
+            <h2>📊 Market Intelligence</h2>
 
-                <div class="metric">
-                    <div class="metric-label">Final Signal</div>
-                    <div class="metric-value" id="finalSignal">--</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">Opportunity</div>
-                    <div class="metric-value" id="opportunityType">--</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">Market Mode</div>
-                    <div class="metric-value" id="marketMode">--</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">Session</div>
-                    <div class="metric-value" id="session">--</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">XAUUSD Price</div>
-                    <div class="metric-value" id="latestPrice">--</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">PD Zone</div>
-                    <div class="metric-value" id="pdZone">--</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">Engine Update</div>
-                    <div class="metric-value" id="lastUpdate">--</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">Data Source</div>
-                    <div class="metric-value">ENGINE JSON</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">Pip Convention</div>
-                    <div class="metric-value">1 Pip = 0.10</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">Execution</div>
-                    <div class="metric-value">M5</div>
-                </div>
-
-                <div class="metric">
-                    <div class="metric-label">Refresh</div>
-                    <div class="metric-value">5 MIN</div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= CHART ================= -->
-
-        <div class="card chart-card">
-
-            <div class="card-title">
-                XAUUSD • M5 Execution Chart
-            </div>
-
-            <div class="chart-wrap">
-
-                <div
-                    class="tradingview-widget-container"
-                    id="tradingview_chart">
-
-                    <div
-                        class="tradingview-widget-container__widget">
-                    </div>
-
-                    <script
-                        type="text/javascript"
-                        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
-                        async>
-
-                    {
-                        "autosize": true,
-                        "symbol": "OANDA:XAUUSD",
-                        "interval": "5",
-                        "timezone": "Asia/Kuala_Lumpur",
-                        "theme": "dark",
-                        "style": "1",
-                        "locale": "en",
-                        "enable_publishing": false,
-                        "allow_symbol_change": false,
-                        "hide_top_toolbar": false,
-                        "hide_legend": false,
-                        "save_image": false,
-                        "calendar": false,
-                        "support_host": "https://www.tradingview.com"
-                    }
-
-                    </script>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= SIDE INTELLIGENCE ================= -->
-
-        <div class="card side-card">
-
-            <div class="card-title">
-                Signal Intelligence
-            </div>
-
-            <div class="metric" style="margin-bottom:10px;">
+            <div class="metric">
                 <div class="metric-label">
-                    Direction
+                    Score
                 </div>
 
                 <div
-                    class="metric-value big-direction"
-                    id="sideDirection">
-                    --
-                </div>
-            </div>
-
-            <div class="metric" style="margin-bottom:10px;">
-                <div class="metric-label">
-                    Setup
-                </div>
-
-                <div
+                    id="score"
                     class="metric-value"
-                    id="sideSetup">
-                    --
-                </div>
-            </div>
-
-            <div class="metric" style="margin-bottom:10px;">
-                <div class="metric-label">
-                    Confirmation
-                </div>
-
-                <div
-                    class="metric-value"
-                    id="sideConfirmation">
+                >
                     --
                 </div>
             </div>
 
             <div class="metric">
                 <div class="metric-label">
-                    Risk Status
+                    Final Signal
                 </div>
 
                 <div
+                    id="finalSignal"
                     class="metric-value"
-                    id="sideRisk">
+                >
+                    WAIT
+                </div>
+            </div>
+
+            <div class="metric">
+                <div class="metric-label">
+                    Opportunity
+                </div>
+
+                <div
+                    id="opportunityType"
+                    class="metric-value"
+                >
                     --
                 </div>
             </div>
 
-        </div>
+            <div class="metric">
+                <div class="metric-label">
+                    Session
+                </div>
 
-        <!-- ================= MTF ================= -->
-
-        <div class="card mtf-card">
-
-            <div class="card-title">
-                Multi-Timeframe Analysis
+                <div
+                    id="session"
+                    class="metric-value"
+                >
+                    --
+                </div>
             </div>
 
-            <div class="mtf-grid">
-
-                <div class="mtf-box">
-                    <div class="mtf-label">H1 Bias</div>
-                    <div class="mtf-value" id="h1Bias">--</div>
+            <div class="metric">
+                <div class="metric-label">
+                    Market Mode
                 </div>
 
-                <div class="mtf-box">
-                    <div class="mtf-label">H1 Structure</div>
-                    <div class="mtf-value" id="h1Structure">--</div>
+                <div
+                    id="marketMode"
+                    class="metric-value"
+                >
+                    --
                 </div>
-
-                <div class="mtf-box">
-                    <div class="mtf-label">M15 Trend</div>
-                    <div class="mtf-value" id="m15Trend">--</div>
-                </div>
-
-                <div class="mtf-box">
-                    <div class="mtf-label">M15 Structure</div>
-                    <div class="mtf-value" id="m15Structure">--</div>
-                </div>
-
-                <div class="mtf-box">
-                    <div class="mtf-label">M15 Range</div>
-                    <div class="mtf-value" id="m15Range">--</div>
-                </div>
-
-                <div class="mtf-box">
-                    <div class="mtf-label">M15 Liquidity</div>
-                    <div class="mtf-value" id="m15Liquidity">--</div>
-                </div>
-
-                <div class="mtf-box">
-                    <div class="mtf-label">M5 Structure</div>
-                    <div class="mtf-value" id="m5Structure">--</div>
-                </div>
-
-                <div class="mtf-box">
-                    <div class="mtf-label">M5 Confirmation</div>
-                    <div class="mtf-value" id="m5Confirmation">--</div>
-                </div>
-
-                <div class="mtf-box">
-                    <div class="mtf-label">M5 Momentum</div>
-                    <div class="mtf-value" id="m5Momentum">--</div>
-                </div>
-
             </div>
 
-        </div>
+            <div class="metric">
+                <div class="metric-label">
+                    Latest Price
+                </div>
 
-        <!-- ================= TRADE PLAN ================= -->
-
-        <div class="card plan-card">
-
-            <div class="card-title">
-                Trade Plan
+                <div
+                    id="latestPrice"
+                    class="metric-value"
+                >
+                    --
+                </div>
             </div>
 
-            <div class="plan-grid">
-
-                <div class="plan-box">
-                    <div class="plan-label">
-                        Direction
-                    </div>
-
-                    <div
-                        class="plan-value big-direction"
-                        id="planDirection">
-                        --
-                    </div>
+            <div class="metric">
+                <div class="metric-label">
+                    PD Zone
                 </div>
 
-                <div class="plan-box">
-                    <div class="plan-label">
-                        Entry
-                    </div>
-
-                    <div
-                        class="plan-value"
-                        id="entry">
-                        --
-                    </div>
+                <div
+                    id="pdZone"
+                    class="metric-value"
+                >
+                    --
                 </div>
-
-                <div class="plan-box">
-                    <div class="plan-label">
-                        Stop Loss
-                    </div>
-
-                    <div
-                        class="plan-value"
-                        id="sl">
-                        --
-                    </div>
-                </div>
-
-                <div class="plan-box">
-                    <div class="plan-label">
-                        Risk
-                    </div>
-
-                    <div
-                        class="plan-value"
-                        id="riskPips">
-                        --
-                    </div>
-                </div>
-
-                <div class="plan-box">
-                    <div class="plan-label">
-                        TP1
-                    </div>
-
-                    <div
-                        class="plan-value"
-                        id="tp1">
-                        --
-                    </div>
-                </div>
-
-                <div class="plan-box">
-                    <div class="plan-label">
-                        TP2
-                    </div>
-
-                    <div
-                        class="plan-value"
-                        id="tp2">
-                        --
-                    </div>
-                </div>
-
-                <div class="plan-box">
-                    <div class="plan-label">
-                        TP3
-                    </div>
-
-                    <div
-                        class="plan-value"
-                        id="tp3">
-                        --
-                    </div>
-                </div>
-
-                <div class="plan-box">
-                    <div class="plan-label">
-                        R:R
-                    </div>
-
-                    <div
-                        class="plan-value"
-                        id="rrRange">
-                        --
-                    </div>
-                </div>
-
             </div>
+
+            <div class="metric">
+                <div class="metric-label">
+                    Last Engine Update
+                </div>
+
+                <div
+                    id="lastUpdate"
+                    class="metric-value"
+                >
+                    --
+                </div>
+            </div>
+
+            <div
+                id="errorBox"
+                class="notice error"
+            ></div>
+
+            <div
+                id="successBox"
+                class="notice success"
+            ></div>
 
         </div>
 
-        <!-- ================= POTENTIAL ================= -->
 
-        <div class="card potential-card">
+        <!-- SIGNAL INTELLIGENCE -->
 
-            <div class="card-title">
-                Price Potential
+        <div class="card">
+
+            <h2>🎯 Signal Intelligence</h2>
+
+            <div
+                id="signalBox"
+                class="signal wait"
+            >
+                WAIT
             </div>
 
-            <div class="potential">
+            <div class="metric">
 
                 <div class="metric-label">
-                    Estimated Movement
+                    Setup
                 </div>
 
                 <div
-                    class="potential-value"
-                    id="potentialRange">
+                    id="setup"
+                    class="metric-value"
+                >
                     --
                 </div>
 
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Direction
+                </div>
+
                 <div
-                    class="confidence"
-                    id="potentialConfidence">
+                    id="signalDirection"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Opportunity Score
+                </div>
+
+                <div
+                    id="signalScore"
+                    class="metric-value"
+                >
                     --
                 </div>
 
@@ -880,319 +482,833 @@ button:hover{
 
         </div>
 
-        <!-- ================= FILTERS ================= -->
 
-        <div class="card filters-card">
+        <!-- SCORE -->
 
-            <div class="card-title">
-                Entry Validation Gates
+        <div class="card">
+
+            <h2>🧠 AI Confidence</h2>
+
+            <div
+                id="bigScore"
+                class="score"
+            >
+                --
             </div>
+
+            <div class="score-label">
+                BOSQUE SCALPING SCORE
+            </div>
+
+            <div
+                id="scoreConfidence"
+                class="small"
+                style="text-align:center;margin-top:12px;"
+            >
+                Waiting for engine data...
+            </div>
+
+        </div>
+
+
+        <!-- TRADINGVIEW -->
+
+        <div class="card full chart">
+
+            <div
+                class="chart-inner"
+                id="tradingview_chart"
+            ></div>
+
+        </div>
+
+
+        <!-- MULTI TIMEFRAME -->
+
+        <div class="card">
+
+            <h2>🕐 Multi-Timeframe Analysis</h2>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    H1 Bias
+                </div>
+
+                <div
+                    id="h1Bias"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    H1 Structure
+                </div>
+
+                <div
+                    id="h1Structure"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    M15 Trend
+                </div>
+
+                <div
+                    id="m15Trend"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    M15 Structure
+                </div>
+
+                <div
+                    id="m15Structure"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    M15 Range
+                </div>
+
+                <div
+                    id="m15Range"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    M15 Liquidity
+                </div>
+
+                <div
+                    id="m15Liquidity"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    M5 Structure
+                </div>
+
+                <div
+                    id="m5Structure"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    M5 Confirmation
+                </div>
+
+                <div
+                    id="m5Confirmation"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    M5 Momentum
+                </div>
+
+                <div
+                    id="m5Momentum"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TRADE PLAN -->
+
+        <div class="card">
+
+            <h2>📋 Trade Plan</h2>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Direction
+                </div>
+
+                <div
+                    id="planDirection"
+                    class="metric-value"
+                >
+                    WAIT
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Entry
+                </div>
+
+                <div
+                    id="entry"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Stop Loss
+                </div>
+
+                <div
+                    id="sl"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    TP1
+                </div>
+
+                <div
+                    id="tp1"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    TP2
+                </div>
+
+                <div
+                    id="tp2"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    TP3
+                </div>
+
+                <div
+                    id="tp3"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Risk
+                </div>
+
+                <div
+                    id="riskPips"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    R:R
+                </div>
+
+                <div
+                    id="rrRange"
+                    class="metric-value"
+                >
+                    --
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRICE POTENTIAL -->
+
+        <div class="card">
+
+            <h2>📈 Price Potential</h2>
+
+            <div
+                id="potentialRange"
+                class="score"
+                style="font-size:28px;"
+            >
+                --
+            </div>
+
+            <div class="score-label">
+                ESTIMATED POTENTIAL
+            </div>
+
+            <div
+                id="potentialConfidence"
+                class="small"
+                style="text-align:center;margin-top:12px;"
+            >
+                --
+            </div>
+
+        </div>
+
+
+        <!-- ENTRY VALIDATION GATES -->
+
+        <div class="card full">
+
+            <h2>🛡️ Entry Validation Gates</h2>
 
             <div class="filters">
 
                 <div class="filter">
-                    <div class="filter-label">
-                        Score
+
+                    <div class="filter-title">
+                        SCORE
                     </div>
 
                     <div
+                        id="filterScore"
                         class="filter-value"
-                        id="filterScore">
+                    >
                         --
                     </div>
+
                 </div>
 
+
                 <div class="filter">
-                    <div class="filter-label">
-                        M15 Setup
+
+                    <div class="filter-title">
+                        M15 SETUP
                     </div>
 
                     <div
+                        id="filterSetup"
                         class="filter-value"
-                        id="filterSetup">
+                    >
                         --
                     </div>
+
                 </div>
 
+
                 <div class="filter">
-                    <div class="filter-label">
-                        M5 Confirmation
+
+                    <div class="filter-title">
+                        M5 CONFIRMATION
                     </div>
 
                     <div
+                        id="filterConfirmation"
                         class="filter-value"
-                        id="filterConfirmation">
+                    >
                         --
                     </div>
+
                 </div>
 
+
                 <div class="filter">
-                    <div class="filter-label">
-                        Risk
+
+                    <div class="filter-title">
+                        RISK
                     </div>
 
                     <div
+                        id="filterRisk"
                         class="filter-value"
-                        id="filterRisk">
+                    >
                         --
                     </div>
+
                 </div>
 
+
                 <div class="filter">
-                    <div class="filter-label">
+
+                    <div class="filter-title">
                         TP1
                     </div>
 
                     <div
+                        id="filterTP1"
                         class="filter-value"
-                        id="filterTP1">
+                    >
                         --
                     </div>
+
                 </div>
 
+
                 <div class="filter">
-                    <div class="filter-label">
-                        RR
+
+                    <div class="filter-title">
+                        TP2 RR
                     </div>
 
                     <div
+                        id="filterRR"
                         class="filter-value"
-                        id="filterRR">
+                    >
                         --
                     </div>
+
                 </div>
 
+
                 <div class="filter">
-                    <div class="filter-label">
-                        Room
+
+                    <div class="filter-title">
+                        ROOM
                     </div>
 
                     <div
+                        id="filterRoom"
                         class="filter-value"
-                        id="filterRoom">
+                    >
                         --
                     </div>
+
                 </div>
 
             </div>
 
         </div>
 
-        <!-- ================= CONFIRMATIONS ================= -->
 
-        <div class="card confirm-card">
+        <!-- CONFIRMATION CHECKLIST -->
 
-            <div class="card-title">
-                Confirmation Checklist
+        <div class="card">
+
+            <h2>✅ Confirmation Checklist</h2>
+
+            <div
+                id="confirmationList"
+                class="checklist"
+            >
+
+                <div class="check">
+                    Waiting for engine data...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NOTIFICATION -->
+
+        <div class="card">
+
+            <h2>🔔 Notification</h2>
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Browser Notification
+                </div>
+
+                <div
+                    id="notificationStatus"
+                    class="metric-value"
+                >
+                    Checking...
+                </div>
+
             </div>
 
             <div
-                class="confirm-list"
-                id="confirmationList">
-
-                <div class="confirm-item">
-                    <span class="confirm-icon">⏳</span>
-                    Loading engine data...
-                </div>
-
+                class="small"
+                style="margin-top:12px;line-height:1.6;"
+            >
+                Telegram notification is handled by the
+                BOSQUE Python engine.
+                Browser notification acts as a backup when
+                this dashboard is open.
             </div>
 
         </div>
 
-        <!-- ================= NOTIFICATIONS ================= -->
 
-        <div class="card notification-card">
-
-            <div class="card-title">
-                Browser Notification
-            </div>
-
-            <div class="notification-box">
-
-                <div id="notificationStatus">
-                    Notification permission not checked.
-                </div>
-
-                <button
-                    onclick="enableNotifications()">
-                    ENABLE NOTIFICATIONS
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="footer">
-        BOSQUE FOREX AI • XAUUSD SCALPING ENGINE • H1 → M15 → M5
     </div>
 
 </div>
+
+
+<!-- TRADINGVIEW -->
+
+<script
+    type="text/javascript"
+    src="https://s3.tradingview.com/tv.js">
+</script>
 
 
 <script>
 
 /* =========================================================
    BOSQUE FOREX AI
-   FRONTEND ENGINE
-   DATA SOURCE = dashboard_data.json
+   FRONTEND DATA ENGINE
    ========================================================= */
 
 const DATA_URL = "./dashboard_data.json";
 
-const REFRESH_INTERVAL = 300000;
-
-/*
-    XAUUSD PIP CONVENTION
-
-    1 point = 0.01 price movement
-    10 points = 1 pip
-    1 pip = 0.10 price movement
-*/
-
 const PIP_SIZE = 0.10;
 
-let lastSignalKey = null;
-let currentData = null;
+const MIN_SCORE = 70;
+
+const MIN_RISK_PIPS = 35;
+
+const MAX_RISK_PIPS = 60;
+
+const MIN_TP1_PIPS = 60;
+
+const MIN_TP2_RR = 2;
 
 
 /* =========================================================
    BASIC HELPERS
    ========================================================= */
 
-function safeValue(value, fallback="--"){
+function $(id){
 
-    if(
+    return document.getElementById(id);
+
+}
+
+
+function isObject(value){
+
+    return (
+        value !== null &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+    );
+
+}
+
+
+function isEmpty(value){
+
+    return (
         value === undefined ||
         value === null ||
-        value === "" ||
-        Number.isNaN(value)
-    ){
+        value === ""
+    );
+
+}
+
+
+/*
+    IMPORTANT:
+
+    This function prevents [object Object].
+
+    Engine may return:
+
+    {
+        status:"LOW EXTREME"
+    }
+
+    or:
+
+    {
+        type:"LIQUIDITY SWEEP"
+    }
+
+    or:
+
+    {
+        value:"BEARISH"
+    }
+
+    Instead of displaying the object itself,
+    we extract the useful human-readable value.
+*/
+
+function readable(value, fallback="--"){
+
+    if(isEmpty(value)){
         return fallback;
     }
 
-    return value;
-}
 
-
-function numberValue(value){
-
-    if(
-        value === undefined ||
-        value === null ||
-        value === "" ||
-        Number.isNaN(Number(value))
-    ){
-        return null;
+    if(typeof value === "string"){
+        return value;
     }
 
-    const n = Number(value);
 
-    return Number.isFinite(n) ? n : null;
-}
+    if(typeof value === "number"){
 
+        if(Number.isNaN(value)){
+            return fallback;
+        }
 
-function formatPrice(value){
-
-    const n = numberValue(value);
-
-    if(n === null){
-        return "--";
+        return String(value);
     }
 
-    return n.toFixed(2);
-}
 
-
-function formatPips(value){
-
-    const n = numberValue(value);
-
-    if(n === null){
-        return "--";
+    if(typeof value === "boolean"){
+        return value ? "YES" : "NO";
     }
 
-    return Math.round(n) + " pips";
-}
 
+    if(Array.isArray(value)){
 
-function priceToPips(distance){
+        if(value.length === 0){
+            return fallback;
+        }
 
-    const n = numberValue(distance);
-
-    if(n === null){
-        return null;
+        return value
+            .map(item => readable(item, ""))
+            .filter(Boolean)
+            .join(" • ");
     }
 
-    return Math.abs(n) / PIP_SIZE;
-}
+
+    if(isObject(value)){
+
+        const priorityKeys = [
+
+            "display",
+            "label",
+            "status",
+            "value",
+            "name",
+            "type",
+            "direction",
+            "signal",
+            "bias",
+            "trend",
+            "structure",
+            "confirmation",
+            "momentum",
+            "condition",
+            "message",
+            "reason"
+
+        ];
 
 
-function pipsToPrice(pips){
-
-    const n = numberValue(pips);
-
-    if(n === null){
-        return null;
-    }
-
-    return n * PIP_SIZE;
-}
-
-
-function upper(value){
-
-    return String(
-        safeValue(value,"--")
-    ).toUpperCase();
-}
-
-
-function get(obj, paths, fallback=null){
-
-    if(!obj){
-        return fallback;
-    }
-
-    for(const path of paths){
-
-        const parts = path.split(".");
-        let current = obj;
-        let valid = true;
-
-        for(const part of parts){
+        for(const key of priorityKeys){
 
             if(
-                current === undefined ||
-                current === null ||
-                !(part in Object(current))
+                Object.prototype.hasOwnProperty.call(
+                    value,
+                    key
+                )
             ){
-                valid = false;
-                break;
+
+                const result =
+                    readable(
+                        value[key],
+                        ""
+                    );
+
+                if(result !== ""){
+                    return result;
+                }
+
             }
 
-            current = current[part];
         }
 
-        if(valid && current !== undefined && current !== null){
-            return current;
+
+        const parts = [];
+
+
+        for(const [key,val] of Object.entries(value)){
+
+            if(
+                val === null ||
+                val === undefined
+            ){
+                continue;
+            }
+
+
+            if(
+                typeof val === "string" ||
+                typeof val === "number" ||
+                typeof val === "boolean"
+            ){
+
+                parts.push(
+                    key
+                        .replaceAll("_"," ")
+                        .replace(
+                            /\b\w/g,
+                            c => c.toUpperCase()
+                        )
+                    + ": "
+                    + readable(val,"")
+                );
+
+            }
+
         }
+
+
+        if(parts.length){
+            return parts.join(" • ");
+        }
+
+
+        return fallback;
     }
 
+
     return fallback;
+
 }
 
 
 /* =========================================================
-   JSON NORMALISATION
+   VALUE FINDER
+   ========================================================= */
+
+function getValue(source, keys, fallback=null){
+
+    if(!source){
+        return fallback;
+    }
+
+
+    if(!Array.isArray(keys)){
+        keys = [keys];
+    }
+
+
+    for(const key of keys){
+
+        const parts = key.split(".");
+
+        let current = source;
+
+        let found = true;
+
+
+        for(const part of parts){
+
+            if(
+                current === null ||
+                current === undefined ||
+                !Object.prototype.hasOwnProperty.call(
+                    current,
+                    part
+                )
+            ){
+
+                found = false;
+                break;
+
+            }
+
+            current = current[part];
+
+        }
+
+
+        if(
+            found &&
+            current !== undefined &&
+            current !== null
+        ){
+
+            return current;
+
+        }
+
+    }
+
+
+    return fallback;
+
+}
+
+
+/* =========================================================
+   NORMALISE ENGINE DATA
    ========================================================= */
 
 function normaliseData(raw){
 
-    if(!raw){
+    if(!raw || typeof raw !== "object"){
         return {};
     }
+
 
     /*
         Supports:
@@ -1201,196 +1317,143 @@ function normaliseData(raw){
             analysis:{...}
         }
 
-        OR
-
         {
             data:{...}
         }
 
-        OR
-
-        direct engine JSON
+        or direct engine output.
     */
 
-    let root = raw;
+    const base =
+        isObject(raw.analysis)
+            ? raw.analysis
+            : (
+                isObject(raw.data)
+                    ? raw.data
+                    : raw
+            );
 
-    if(raw.analysis && typeof raw.analysis === "object"){
-        root = raw.analysis;
-    }
-    else if(raw.data && typeof raw.data === "object"){
-        root = raw.data;
-    }
-
-    const h1 =
-        get(root,[
-            "h1",
-            "H1",
-            "timeframes.h1",
-            "analysis.h1"
-        ],{}) || {};
-
-    const m15 =
-        get(root,[
-            "m15",
-            "M15",
-            "timeframes.m15",
-            "analysis.m15"
-        ],{}) || {};
-
-    const m5 =
-        get(root,[
-            "m5",
-            "M5",
-            "timeframes.m5",
-            "analysis.m5"
-        ],{}) || {};
-
-    const plan =
-        get(root,[
-            "plan",
-            "trade_plan",
-            "tradePlan",
-            "analysis.plan"
-        ],{}) || {};
-
-    const pd =
-        get(root,[
-            "pd",
-            "pd_zone",
-            "pdZone",
-            "premium_discount"
-        ],{}) || {};
-
-    const potential =
-        get(root,[
-            "potential",
-            "price_potential",
-            "movement"
-        ],{}) || {};
 
     return {
-        raw,
-        root,
-        h1,
-        m15,
-        m5,
-        plan,
-        pd,
-        potential
+
+        raw: raw,
+
+        root: base,
+
+        timestamp: getValue(
+            base,
+            [
+                "timestamp",
+                "last_update",
+                "updated_at",
+                "time"
+            ]
+        ),
+
+        symbol: getValue(
+            base,
+            [
+                "symbol",
+                "pair"
+            ],
+            "XAU/USD"
+        ),
+
+        price: getValue(
+            base,
+            [
+                "price",
+                "latest_price",
+                "last_price",
+                "current_price"
+            ]
+        ),
+
+        session: getValue(
+            base,
+            [
+                "session",
+                "market_session"
+            ]
+        ),
+
+        marketMode: getValue(
+            base,
+            [
+                "market_mode",
+                "marketMode",
+                "mode",
+                "market.condition"
+            ]
+        ),
+
+        pd: getValue(
+            base,
+            [
+                "pd",
+                "pd_zone",
+                "premium_discount"
+            ]
+        ),
+
+        h1: getValue(
+            base,
+            [
+                "h1",
+                "H1"
+            ],
+            {}
+        ),
+
+        m15: getValue(
+            base,
+            [
+                "m15",
+                "M15"
+            ],
+            {}
+        ),
+
+        m5: getValue(
+            base,
+            [
+                "m5",
+                "M5"
+            ],
+            {}
+        ),
+
+        opportunity: getValue(
+            base,
+            [
+                "opportunity",
+                "signal",
+                "setup"
+            ],
+            {}
+        ),
+
+        plan: getValue(
+            base,
+            [
+                "plan",
+                "trade_plan",
+                "tradePlan"
+            ],
+            {}
+        ),
+
+        potential: getValue(
+            base,
+            [
+                "potential",
+                "price_potential"
+            ],
+            {}
+        )
+
     };
-}
 
-
-/* =========================================================
-   LOAD ENGINE DATA
-   ========================================================= */
-
-async function loadEngineData(){
-
-    try{
-
-        const response = await fetch(
-            DATA_URL + "?t=" + Date.now(),
-            {
-                cache:"no-store"
-            }
-        );
-
-        if(!response.ok){
-
-            throw new Error(
-                "dashboard_data.json HTTP " +
-                response.status
-            );
-        }
-
-        const data = await response.json();
-
-        console.log(
-            "✅ BOSQUE ENGINE DATA LOADED",
-            data
-        );
-
-        return data;
-
-    }
-    catch(error){
-
-        console.error(
-            "❌ Engine data unavailable:",
-            error
-        );
-
-        throw error;
-    }
-}
-
-
-/* =========================================================
-   SIGNAL CLASS
-   ========================================================= */
-
-function signalClass(value){
-
-    const v = upper(value);
-
-    if(v.includes("BUY") || v.includes("BULL")){
-        return "signal-buy";
-    }
-
-    if(v.includes("SELL") || v.includes("BEAR")){
-        return "signal-sell";
-    }
-
-    if(
-        v.includes("WAIT") ||
-        v.includes("NONE") ||
-        v.includes("NO VALID")
-    ){
-        return "signal-wait";
-    }
-
-    return "";
-}
-
-
-/* =========================================================
-   SET TEXT
-   ========================================================= */
-
-function setText(id,value){
-
-    const el = document.getElementById(id);
-
-    if(!el){
-        return;
-    }
-
-    el.textContent = safeValue(value);
-}
-
-
-function setSignalText(id,value){
-
-    const el = document.getElementById(id);
-
-    if(!el){
-        return;
-    }
-
-    el.textContent = safeValue(value);
-
-    el.classList.remove(
-        "signal-buy",
-        "signal-sell",
-        "signal-wait"
-    );
-
-    const cls = signalClass(value);
-
-    if(cls){
-        el.classList.add(cls);
-    }
 }
 
 
@@ -1400,15 +1463,27 @@ function setSignalText(id,value){
 
 function getScore(d){
 
-    return numberValue(
-        get(d.root,[
+    const value = getValue(
+        d.root,
+        [
             "score",
-            "final_score",
-            "finalScore",
-            "analysis_score",
-            "scoring.total"
-        ],null)
+            "opportunity.score",
+            "signal.score",
+            "analysis.score"
+        ]
     );
+
+
+    const number = Number(value);
+
+
+    if(Number.isFinite(number)){
+        return number;
+    }
+
+
+    return 0;
+
 }
 
 
@@ -1418,74 +1493,177 @@ function getScore(d){
 
 function getDirection(d){
 
-    return upper(
-        get(d.root,[
+    const value = getValue(
+        d.root,
+        [
             "direction",
-            "signal",
             "final_signal",
             "finalSignal",
-            "trade_direction",
-            "tradeDirection"
-        ],
-        get(d.plan,[
-            "direction",
-            "signal",
-            "side"
-        ],"WAIT"))
+            "signal_direction",
+            "opportunity.direction",
+            "opportunity.signal",
+            "plan.direction"
+        ]
     );
-}
 
 
-/* =========================================================
-   OPPORTUNITY
-   ========================================================= */
+    const text =
+        readable(value,"WAIT")
+            .toUpperCase();
 
-function getOpportunity(d){
-
-    return upper(
-        get(d.root,[
-            "opportunity",
-            "opportunity_type",
-            "opportunityType",
-            "setup_type",
-            "setupType"
-        ],
-        get(d.plan,[
-            "opportunity",
-            "type",
-            "setup"
-        ],"NO VALID SETUP"))
-    );
-}
-
-
-/* =========================================================
-   RR CALCULATION
-   ========================================================= */
-
-function calculateRR(entry,sl,tp){
-
-    const e = numberValue(entry);
-    const s = numberValue(sl);
-    const t = numberValue(tp);
 
     if(
-        e === null ||
-        s === null ||
-        t === null
+        text.includes("BUY") ||
+        text.includes("LONG")
     ){
-        return null;
+        return "BUY";
     }
 
-    const risk = Math.abs(e-s);
 
-    const reward = Math.abs(t-e);
-
-    if(risk <= 0){
-        return null;
+    if(
+        text.includes("SELL") ||
+        text.includes("SHORT")
+    ){
+        return "SELL";
     }
 
-    return reward / risk;
+
+    return "WAIT";
+
+}
+
+
+/* =========================================================
+   OPPORTUNITY TYPE
+   ========================================================= */
+
+function getOpportunityType(d){
+
+    const value = getValue(
+        d.root,
+        [
+            "opportunity.type",
+            "opportunity.name",
+            "opportunity.setup",
+            "opportunity.opportunity_type",
+            "opportunity_type",
+            "setup_type",
+            "setup"
+        ]
+    );
+
+
+    return readable(
+        value,
+        "NO VALID SETUP"
+    );
+
+}
+
+
+/* =========================================================
+   HARD GATES
+   ========================================================= */
+
+function getGates(d){
+
+    const gates = getValue(
+        d.root,
+        [
+            "opportunity.gates",
+            "gates",
+            "validation_gates",
+            "entry_validation_gates"
+        ],
+        {}
+    );
+
+
+    return isObject(gates)
+        ? gates
+        : {};
+
+}
+
+
+function gateValue(gates, names){
+
+    for(const name of names){
+
+        if(
+            Object.prototype.hasOwnProperty.call(
+                gates,
+                name
+            )
+        ){
+
+            return gates[name];
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+function toBool(value){
+
+    if(typeof value === "boolean"){
+        return value;
+    }
+
+
+    if(typeof value === "number"){
+        return value > 0;
+    }
+
+
+    if(typeof value === "string"){
+
+        const t =
+            value
+                .trim()
+                .toUpperCase();
+
+
+        if([
+            "TRUE",
+            "YES",
+            "PASS",
+            "PASSED",
+            "VALID",
+            "OK",
+            "CONFIRMED",
+            "READY"
+        ].includes(t)){
+
+            return true;
+
+        }
+
+
+        if([
+            "FALSE",
+            "NO",
+            "FAIL",
+            "FAILED",
+            "INVALID",
+            "WAIT",
+            "NONE"
+        ].includes(t)){
+
+            return false;
+
+        }
+
+    }
+
+
+    return null;
+
 }
 
 
@@ -1493,88 +1671,38 @@ function calculateRR(entry,sl,tp){
    TRADE PLAN VALUES
    ========================================================= */
 
-function getEntry(d){
+function getPrice(d, names){
 
-    return numberValue(
-        get(d.plan,[
-            "entry",
-            "entry_price",
-            "entryPrice"
-        ],
-        get(d.root,[
-            "entry",
-            "entry_price",
-            "entryPrice"
-        ],null))
+    const value = getValue(
+        d.plan,
+        names
     );
+
+
+    const n = Number(value);
+
+
+    return Number.isFinite(n)
+        ? n
+        : null;
+
 }
 
 
-function getSL(d){
+function priceToPips(distance){
 
-    return numberValue(
-        get(d.plan,[
-            "sl",
-            "stop_loss",
-            "stopLoss"
-        ],
-        get(d.root,[
-            "sl",
-            "stop_loss",
-            "stopLoss"
-        ],null))
-    );
-}
+    if(
+        !Number.isFinite(distance) ||
+        distance < 0
+    ){
+
+        return null;
+
+    }
 
 
-function getTP1(d){
+    return distance / PIP_SIZE;
 
-    return numberValue(
-        get(d.plan,[
-            "tp1",
-            "TP1",
-            "take_profit_1",
-            "takeProfit1"
-        ],
-        get(d.root,[
-            "tp1",
-            "TP1"
-        ],null))
-    );
-}
-
-
-function getTP2(d){
-
-    return numberValue(
-        get(d.plan,[
-            "tp2",
-            "TP2",
-            "take_profit_2",
-            "takeProfit2"
-        ],
-        get(d.root,[
-            "tp2",
-            "TP2"
-        ],null))
-    );
-}
-
-
-function getTP3(d){
-
-    return numberValue(
-        get(d.plan,[
-            "tp3",
-            "TP3",
-            "take_profit_3",
-            "takeProfit3"
-        ],
-        get(d.root,[
-            "tp3",
-            "TP3"
-        ],null))
-    );
 }
 
 
@@ -1582,257 +1710,1539 @@ function getTP3(d){
    RISK
    ========================================================= */
 
-function getRiskPips(d,entry,sl){
+function getRiskPips(d){
 
-    const engineRisk = numberValue(
-        get(d.plan,[
+    const direct = getValue(
+        d.plan,
+        [
             "risk_pips",
             "riskPips",
             "risk"
-        ],
-        get(d.root,[
-            "risk_pips",
-            "riskPips",
-            "risk"
-        ],null))
+        ]
     );
 
-    if(engineRisk !== null){
-        return Math.abs(engineRisk);
+
+    const directNumber =
+        Number(direct);
+
+
+    if(Number.isFinite(directNumber)){
+        return directNumber;
     }
+
+
+    const entry = getPrice(
+        d,
+        [
+            "entry",
+            "entry_price"
+        ]
+    );
+
+
+    const sl = getPrice(
+        d,
+        [
+            "sl",
+            "stop_loss",
+            "stopLoss"
+        ]
+    );
+
 
     if(
         entry !== null &&
         sl !== null
     ){
+
         return priceToPips(
             Math.abs(entry-sl)
         );
+
     }
 
+
     return null;
+
 }
 
 
 /* =========================================================
-   R:R
+   RR CALCULATION
    ========================================================= */
 
-function getRR(d,entry,sl,tp2,tp3){
-
-    const engineRR = numberValue(
-        get(d.plan,[
-            "rr",
-            "risk_reward",
-            "riskReward",
-            "rr_ratio",
-            "rrRatio"
-        ],
-        get(d.root,[
-            "rr",
-            "risk_reward",
-            "riskReward"
-        ],null))
-    );
-
-    if(engineRR !== null){
-        return engineRR;
-    }
-
-    const rr2 =
-        calculateRR(
-            entry,
-            sl,
-            tp2
-        );
-
-    const rr3 =
-        calculateRR(
-            entry,
-            sl,
-            tp3
-        );
-
-    if(rr2 !== null && rr3 !== null){
-        return {
-            tp2:rr2,
-            tp3:rr3
-        };
-    }
-
-    if(rr2 !== null){
-        return {
-            tp2:rr2
-        };
-    }
-
-    if(rr3 !== null){
-        return {
-            tp3:rr3
-        };
-    }
-
-    return null;
-}
-
-
-/* =========================================================
-   UPDATE ENGINE STATUS
-   ========================================================= */
-
-function renderEngineStatus(d){
-
-    const status =
-        upper(
-            get(d.root,[
-                "engine_status",
-                "engineStatus",
-                "status"
-            ],"ONLINE")
-        );
-
-    const statusEl =
-        document.getElementById("engineStatus");
-
-    const dot =
-        document.getElementById("engineDot");
-
-    statusEl.textContent =
-        status;
-
-    dot.classList.remove(
-        "green",
-        "red"
-    );
+function calculateRR(
+    direction,
+    entry,
+    target,
+    riskPips
+){
 
     if(
-        status.includes("ERROR") ||
-        status.includes("OFFLINE") ||
-        status.includes("FAIL")
+        entry === null ||
+        target === null ||
+        !Number.isFinite(riskPips) ||
+        riskPips <= 0
     ){
 
-        dot.classList.add("red");
+        return null;
 
     }
-    else{
 
-        dot.classList.add("green");
 
+    const rewardPips =
+        priceToPips(
+            Math.abs(target-entry)
+        );
+
+
+    if(!Number.isFinite(rewardPips)){
+        return null;
     }
+
+
+    return rewardPips / riskPips;
+
 }
 
 
 /* =========================================================
-   RENDER MARKET
+   VALIDATION
    ========================================================= */
 
-function renderMarket(d){
+function validateTrade(d){
 
-    const score = getScore(d);
+    const score =
+        getScore(d);
+
 
     const direction =
         getDirection(d);
 
-    const opportunity =
-        getOpportunity(d);
 
-    const mode =
-        upper(
-            get(d.root,[
-                "market_mode",
-                "marketMode",
-                "mode",
-                "condition"
-            ],"WAIT")
+    const risk =
+        getRiskPips(d);
+
+
+    const entry =
+        getPrice(
+            d,
+            [
+                "entry",
+                "entry_price"
+            ]
         );
 
-    const session =
-        upper(
-            get(d.root,[
-                "session",
-                "session_name",
-                "sessionName"
-            ],"--")
+
+    const tp1 =
+        getPrice(
+            d,
+            [
+                "tp1",
+                "TP1"
+            ]
         );
 
-    const price =
-        numberValue(
-            get(d.root,[
-                "latest_price",
-                "latestPrice",
-                "price",
-                "current_price",
-                "currentPrice"
-            ],null)
+
+    const tp2 =
+        getPrice(
+            d,
+            [
+                "tp2",
+                "TP2"
+            ]
         );
 
-    const pdZone =
-        upper(
-            get(d.pd,[
-                "zone",
-                "pd_zone",
-                "pdZone"
-            ],
-            get(d.root,[
-                "pd_zone",
-                "pdZone"
-            ],"--"))
+
+    const tp3 =
+        getPrice(
+            d,
+            [
+                "tp3",
+                "TP3"
+            ]
         );
 
-    const timestamp =
-        get(d.root,[
-            "timestamp",
-            "updated_at",
-            "updatedAt",
-            "last_update",
-            "lastUpdate",
-            "generated_at",
-            "generatedAt"
-        ],null);
 
-    setText(
-        "score",
-        score !== null
-            ? score + "/100"
+    const gates =
+        getGates(d);
+
+
+    let setupGate =
+        gateValue(
+            gates,
+            [
+                "m15_setup_valid",
+                "setup_valid",
+                "m15_setup",
+                "valid_setup"
+            ]
+        );
+
+
+    let confirmationGate =
+        gateValue(
+            gates,
+            [
+                "m5_confirmation_valid",
+                "confirmation_valid",
+                "m5_confirmation",
+                "entry_confirmation"
+            ]
+        );
+
+
+    let riskGate =
+        gateValue(
+            gates,
+            [
+                "risk_valid",
+                "valid_risk"
+            ]
+        );
+
+
+    let rrGate =
+        gateValue(
+            gates,
+            [
+                "rr_valid",
+                "valid_rr"
+            ]
+        );
+
+
+    let roomGate =
+        gateValue(
+            gates,
+            [
+                "room_valid",
+                "room_to_target",
+                "enough_room"
+            ]
+        );
+
+
+    /*
+        If explicit gates are unavailable,
+        calculate safely from actual data.
+    */
+
+    if(setupGate === null){
+
+        const setup =
+            getOpportunityType(d)
+                .toUpperCase();
+
+
+        setupGate =
+            setup !== "NO VALID SETUP" &&
+            setup !== "WAIT";
+
+    }
+
+
+    if(confirmationGate === null){
+
+        const confirmation =
+            readable(
+                getValue(
+                    d.m5,
+                    [
+                        "confirmation",
+                        "candle_confirmation",
+                        "entry_confirmation"
+                    ]
+                ),
+                ""
+            )
+            .toUpperCase();
+
+
+        confirmationGate =
+            confirmation !== "" &&
+            confirmation !== "NONE" &&
+            confirmation !== "WAIT";
+
+    }
+
+
+    if(riskGate === null){
+
+        riskGate =
+            Number.isFinite(risk) &&
+            risk >= MIN_RISK_PIPS &&
+            risk <= MAX_RISK_PIPS;
+
+    }
+
+
+    const rr2 =
+        calculateRR(
+            direction,
+            entry,
+            tp2,
+            risk
+        );
+
+
+    if(rrGate === null){
+
+        rrGate =
+            Number.isFinite(rr2) &&
+            rr2 >= MIN_TP2_RR;
+
+    }
+
+
+    if(roomGate === null){
+
+        roomGate =
+            tp2 !== null ||
+            tp3 !== null;
+
+    }
+
+
+    const explicitValid =
+        toBool(
+            getValue(
+                d.opportunity,
+                [
+                    "valid",
+                    "is_valid",
+                    "trade_valid",
+                    "entry_valid"
+                ]
+            )
+        );
+
+
+    const scoreGate =
+        score >= MIN_SCORE;
+
+
+    let valid =
+        scoreGate &&
+        toBool(setupGate) === true &&
+        toBool(confirmationGate) === true &&
+        toBool(riskGate) === true &&
+        toBool(rrGate) === true &&
+        toBool(roomGate) === true &&
+        (
+            direction === "BUY" ||
+            direction === "SELL"
+        );
+
+
+    /*
+        Explicit engine invalid result always wins.
+    */
+
+    if(explicitValid === false){
+        valid = false;
+    }
+
+
+    return {
+
+        score,
+        direction,
+
+        risk,
+
+        entry,
+        tp1,
+        tp2,
+        tp3,
+
+        rr2,
+
+        scoreGate,
+
+        setupGate:
+            toBool(setupGate),
+
+        confirmationGate:
+            toBool(confirmationGate),
+
+        riskGate:
+            toBool(riskGate),
+
+        rrGate:
+            toBool(rrGate),
+
+        roomGate:
+            toBool(roomGate),
+
+        valid
+
+    };
+
+}
+
+
+/* =========================================================
+   SAFE DISPLAY
+   ========================================================= */
+
+function setText(id, value){
+
+    const element =
+        $(id);
+
+
+    if(!element){
+        return;
+    }
+
+
+    element.textContent =
+        readable(
+            value,
+            "--"
+        );
+
+}
+
+
+/* =========================================================
+   COLOUR DIRECTION
+   ========================================================= */
+
+function applyDirectionClass(
+    element,
+    direction
+){
+
+    if(!element){
+        return;
+    }
+
+
+    element.classList.remove(
+        "buy",
+        "sell",
+        "wait",
+        "neutral"
+    );
+
+
+    if(direction === "BUY"){
+
+        element.classList.add("buy");
+
+    }
+    else if(direction === "SELL"){
+
+        element.classList.add("sell");
+
+    }
+    else{
+
+        element.classList.add("wait");
+
+    }
+
+}
+
+
+/* =========================================================
+   FILTER DISPLAY
+   ========================================================= */
+
+function showFilter(
+    id,
+    passed,
+    text
+){
+
+    const element =
+        $(id);
+
+
+    if(!element){
+        return;
+    }
+
+
+    if(passed === true){
+
+        element.textContent =
+            "✅ PASS" +
+            (
+                text
+                    ? " • " + text
+                    : ""
+            );
+
+        element.className =
+            "filter-value buy";
+
+    }
+    else if(passed === false){
+
+        element.textContent =
+            "❌ FAIL" +
+            (
+                text
+                    ? " • " + text
+                    : ""
+            );
+
+        element.className =
+            "filter-value sell";
+
+    }
+    else{
+
+        element.textContent =
+            "⚪ --";
+
+        element.className =
+            "filter-value neutral";
+
+    }
+
+}
+
+
+/* =========================================================
+   CHECKLIST
+   ========================================================= */
+
+function addChecklistItem(
+    container,
+    label,
+    passed,
+    detail
+){
+
+    const item =
+        document.createElement("div");
+
+
+    item.className =
+        "check " +
+        (
+            passed === true
+                ? "check-pass"
+                : (
+                    passed === false
+                        ? "check-fail"
+                        : ""
+                )
+        );
+
+
+    let icon =
+        passed === true
+            ? "✅"
+            : (
+                passed === false
+                    ? "❌"
+                    : "⚪"
+            );
+
+
+    const title =
+        document.createElement("strong");
+
+
+    title.textContent =
+        icon + " " + label;
+
+
+    item.appendChild(title);
+
+
+    if(detail){
+
+        const span =
+            document.createElement("span");
+
+
+        span.textContent =
+            " • " +
+            readable(
+                detail,
+                ""
+            );
+
+
+        item.appendChild(span);
+
+    }
+
+
+    container.appendChild(item);
+
+}
+
+
+/* =========================================================
+   ENGINE CONFIRMATIONS
+   ========================================================= */
+
+function getConfirmationItems(d){
+
+    const possible =
+        getValue(
+            d.opportunity,
+            [
+                "confirmations",
+                "confirmation",
+                "checklist"
+            ]
+        );
+
+
+    if(Array.isArray(possible)){
+
+        return possible;
+
+    }
+
+
+    if(isObject(possible)){
+
+        return Object.entries(
+            possible
+        ).map(
+            ([key,value]) => ({
+                label:key,
+                value:value
+            })
+        );
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =========================================================
+   RENDER CHECKLIST
+   ========================================================= */
+
+function renderChecklist(
+    d,
+    validation
+){
+
+    const container =
+        $("confirmationList");
+
+
+    if(!container){
+        return;
+    }
+
+
+    container.innerHTML =
+        "";
+
+
+    addChecklistItem(
+        container,
+        "Score",
+        validation.scoreGate,
+        validation.score + " / 100"
+    );
+
+
+    addChecklistItem(
+        container,
+        "M15 Setup",
+        validation.setupGate,
+        getOpportunityType(d)
+    );
+
+
+    const liquidity =
+        getValue(
+            d.m15,
+            [
+                "liquidity",
+                "liquidity_behaviour",
+                "liquidity_behavior",
+                "sweep"
+            ]
+        );
+
+
+    addChecklistItem(
+        container,
+        "M15 Liquidity Behaviour",
+        liquidity
+            ? (
+                readable(
+                    liquidity,
+                    ""
+                ).toUpperCase() !== "NONE"
+              )
+            : null,
+        readable(
+            liquidity,
+            "--"
+        )
+    );
+
+
+    const m5Confirmation =
+        getValue(
+            d.m5,
+            [
+                "confirmation",
+                "candle_confirmation",
+                "entry_confirmation"
+            ]
+        );
+
+
+    addChecklistItem(
+        container,
+        "M5 Confirmation",
+        validation.confirmationGate,
+        readable(
+            m5Confirmation,
+            "--"
+        )
+    );
+
+
+    addChecklistItem(
+        container,
+        "Risk",
+        validation.riskGate,
+        validation.risk !== null
+            ? validation.risk.toFixed(1) + " pips"
             : "--"
     );
 
-    setSignalText(
-        "finalSignal",
-        direction
+
+    addChecklistItem(
+        container,
+        "TP2 RR",
+        validation.rrGate,
+        validation.rr2 !== null
+            ? "1:" + validation.rr2.toFixed(2)
+            : "--"
     );
 
-    setSignalText(
+
+    addChecklistItem(
+        container,
+        "Room To Target",
+        validation.roomGate,
+        validation.roomGate
+            ? "Available"
+            : "--"
+    );
+
+
+    /*
+        Add engine-provided confirmations
+        without ever displaying [object Object].
+    */
+
+    const engineItems =
+        getConfirmationItems(d);
+
+
+    for(const item of engineItems){
+
+        if(isObject(item)){
+
+            const label =
+                readable(
+                    getValue(
+                        item,
+                        [
+                            "label",
+                            "name",
+                            "type"
+                        ]
+                    ),
+                    "Confirmation"
+                );
+
+
+            const value =
+                getValue(
+                    item,
+                    [
+                        "value",
+                        "status",
+                        "message",
+                        "detail",
+                        "reason"
+                    ]
+                );
+
+
+            const passed =
+                toBool(
+                    getValue(
+                        item,
+                        [
+                            "passed",
+                            "valid",
+                            "pass",
+                            "ok"
+                        ]
+                    )
+                );
+
+
+            addChecklistItem(
+                container,
+                label,
+                passed,
+                readable(
+                    value,
+                    ""
+                )
+            );
+
+        }
+        else{
+
+            addChecklistItem(
+                container,
+                "Engine Confirmation",
+                true,
+                readable(
+                    item,
+                    ""
+                )
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER DASHBOARD
+   ========================================================= */
+
+function renderDashboard(d){
+
+    const validation =
+        validateTrade(d);
+
+
+    const direction =
+        validation.direction;
+
+
+    const score =
+        validation.score;
+
+
+    const opportunity =
+        getOpportunityType(d);
+
+
+    /*
+        FINAL SIGNAL
+
+        Do NOT create BUY/SELL simply because
+        score is high.
+
+        All hard gates must pass.
+    */
+
+    const finalSignal =
+        validation.valid
+            ? direction
+            : "WAIT";
+
+
+    /* MARKET INTELLIGENCE */
+
+    setText(
+        "score",
+        score > 0
+            ? score + " / 100"
+            : "--"
+    );
+
+
+    setText(
+        "finalSignal",
+        finalSignal
+    );
+
+
+    applyDirectionClass(
+        $("finalSignal"),
+        finalSignal
+    );
+
+
+    setText(
         "opportunityType",
         opportunity
     );
 
-    setText(
-        "marketMode",
-        mode
-    );
 
     setText(
         "session",
-        session
+        d.session
     );
+
+
+    setText(
+        "marketMode",
+        d.marketMode
+    );
+
 
     setText(
         "latestPrice",
-        price !== null
-            ? formatPrice(price)
+        d.price !== null
+            ? Number(d.price).toFixed(2)
             : "--"
     );
 
-    setText(
-        "pdZone",
-        pdZone
-    );
 
     setText(
-        "lastUpdate",
-        formatTimestamp(timestamp)
+        "pdZone",
+        d.pd
     );
+
+
+    /* SIGNAL INTELLIGENCE */
+
+    const signalBox =
+        $("signalBox");
+
+
+    if(signalBox){
+
+        signalBox.textContent =
+            finalSignal;
+
+
+        applyDirectionClass(
+            signalBox,
+            finalSignal
+        );
+
+    }
+
+
+    setText(
+        "setup",
+        opportunity
+    );
+
+
+    setText(
+        "signalDirection",
+        finalSignal
+    );
+
+
+    applyDirectionClass(
+        $("signalDirection"),
+        finalSignal
+    );
+
+
+    setText(
+        "signalScore",
+        score + " / 100"
+    );
+
+
+    /* BIG SCORE */
+
+    setText(
+        "bigScore",
+        score > 0
+            ? score
+            : "--"
+    );
+
+
+    let confidence =
+        "Waiting for engine data...";
+
+
+    if(score >= 80 && validation.valid){
+
+        confidence =
+            "HIGH CONFIDENCE • HARD GATES PASSED";
+
+    }
+    else if(score >= 70){
+
+        confidence =
+            validation.valid
+                ? "VALID OPPORTUNITY"
+                : "SCORE PASSED • HARD GATE FAILED";
+
+    }
+    else if(score > 0){
+
+        confidence =
+            "LOW CONFIDENCE • WAIT";
+
+    }
+
+
+    setText(
+        "scoreConfidence",
+        confidence
+    );
+
+
+    /* MTF */
+
+    setText(
+        "h1Bias",
+        getValue(
+            d.h1,
+            [
+                "bias",
+                "direction",
+                "trend"
+            ]
+        )
+    );
+
+
+    setText(
+        "h1Structure",
+        getValue(
+            d.h1,
+            [
+                "structure",
+                "market_structure",
+                "bos"
+            ]
+        )
+    );
+
+
+    setText(
+        "m15Trend",
+        getValue(
+            d.m15,
+            [
+                "trend",
+                "direction",
+                "bias"
+            ]
+        )
+    );
+
+
+    setText(
+        "m15Structure",
+        getValue(
+            d.m15,
+            [
+                "structure",
+                "market_structure",
+                "bos"
+            ]
+        )
+    );
+
+
+    setText(
+        "m15Range",
+        getValue(
+            d.m15,
+            [
+                "range",
+                "range_status",
+                "extreme",
+                "range_extreme"
+            ]
+        )
+    );
+
+
+    setText(
+        "m15Liquidity",
+        getValue(
+            d.m15,
+            [
+                "liquidity",
+                "liquidity_behaviour",
+                "liquidity_behavior",
+                "sweep"
+            ]
+        )
+    );
+
+
+    setText(
+        "m5Structure",
+        getValue(
+            d.m5,
+            [
+                "structure",
+                "market_structure",
+                "bos",
+                "choch"
+            ]
+        )
+    );
+
+
+    setText(
+        "m5Confirmation",
+        getValue(
+            d.m5,
+            [
+                "confirmation",
+                "candle_confirmation",
+                "entry_confirmation"
+            ]
+        )
+    );
+
+
+    setText(
+        "m5Momentum",
+        getValue(
+            d.m5,
+            [
+                "momentum",
+                "momentum_status"
+            ]
+        )
+    );
+
+
+    /* TRADE PLAN */
+
+    setText(
+        "planDirection",
+        validation.valid
+            ? direction
+            : "WAIT"
+    );
+
+
+    applyDirectionClass(
+        $("planDirection"),
+        finalSignal
+    );
+
+
+    const entry =
+        validation.entry;
+
+
+    const sl =
+        getPrice(
+            d,
+            [
+                "sl",
+                "stop_loss",
+                "stopLoss"
+            ]
+        );
+
+
+    const tp1 =
+        validation.tp1;
+
+
+    const tp2 =
+        validation.tp2;
+
+
+    const tp3 =
+        validation.tp3;
+
+
+    setText(
+        "entry",
+        entry !== null
+            ? entry.toFixed(2)
+            : "--"
+    );
+
+
+    setText(
+        "sl",
+        sl !== null
+            ? sl.toFixed(2)
+            : "--"
+    );
+
+
+    setText(
+        "tp1",
+        tp1 !== null
+            ? tp1.toFixed(2)
+            : "--"
+    );
+
+
+    setText(
+        "tp2",
+        tp2 !== null
+            ? tp2.toFixed(2)
+            : "--"
+    );
+
+
+    setText(
+        "tp3",
+        tp3 !== null
+            ? tp3.toFixed(2)
+            : "--"
+    );
+
+
+    setText(
+        "riskPips",
+        validation.risk !== null
+            ? validation.risk.toFixed(1) + " pips"
+            : "--"
+    );
+
+
+    const rr1 =
+        calculateRR(
+            direction,
+            entry,
+            tp1,
+            validation.risk
+        );
+
+
+    const rr3 =
+        calculateRR(
+            direction,
+            entry,
+            tp3,
+            validation.risk
+        );
+
+
+    let rrText =
+        "--";
+
+
+    if(rr1 !== null && validation.rr2 !== null){
+
+        rrText =
+            "1:" +
+            rr1.toFixed(2) +
+            " → 1:" +
+            validation.rr2.toFixed(2);
+
+    }
+    else if(validation.rr2 !== null){
+
+        rrText =
+            "1:" +
+            validation.rr2.toFixed(2);
+
+    }
+    else if(rr1 !== null){
+
+        rrText =
+            "1:" +
+            rr1.toFixed(2);
+
+    }
+
+
+    setText(
+        "rrRange",
+        rrText
+    );
+
+
+    /* PRICE POTENTIAL */
+
+    let minPotential =
+        null;
+
+
+    let maxPotential =
+        null;
+
+
+    const engineMin =
+        Number(
+            getValue(
+                d.potential,
+                [
+                    "min_pips",
+                    "minimum_pips",
+                    "potential_min_pips",
+                    "min"
+                ]
+            )
+        );
+
+
+    const engineMax =
+        Number(
+            getValue(
+                d.potential,
+                [
+                    "max_pips",
+                    "maximum_pips",
+                    "potential_max_pips",
+                    "max"
+                ]
+            )
+        );
+
+
+    if(Number.isFinite(engineMin)){
+        minPotential = engineMin;
+    }
+
+
+    if(Number.isFinite(engineMax)){
+        maxPotential = engineMax;
+    }
+
+
+    if(
+        minPotential === null &&
+        entry !== null &&
+        tp1 !== null
+    ){
+
+        minPotential =
+            priceToPips(
+                Math.abs(tp1-entry)
+            );
+
+    }
+
+
+    if(
+        maxPotential === null &&
+        entry !== null &&
+        tp3 !== null
+    ){
+
+        maxPotential =
+            priceToPips(
+                Math.abs(tp3-entry)
+            );
+
+    }
+
+
+    let potentialText =
+        "--";
+
+
+    if(
+        minPotential !== null &&
+        maxPotential !== null
+    ){
+
+        potentialText =
+            Math.round(minPotential) +
+            " – " +
+            Math.round(maxPotential) +
+            " pips";
+
+    }
+    else if(minPotential !== null){
+
+        potentialText =
+            Math.round(minPotential) +
+            " pips";
+
+    }
+
+
+    setText(
+        "potentialRange",
+        potentialText
+    );
+
+
+    let potentialConfidence =
+        readable(
+            getValue(
+                d.potential,
+                [
+                    "confidence",
+                    "level"
+                ]
+            ),
+            ""
+        );
+
+
+    if(!potentialConfidence){
+
+        if(
+            validation.valid &&
+            score >= 80
+        ){
+
+            potentialConfidence =
+                "HIGH";
+
+        }
+        else if(
+            validation.valid &&
+            score >= 70
+        ){
+
+            potentialConfidence =
+                "MEDIUM";
+
+        }
+        else{
+
+            potentialConfidence =
+                "WAIT";
+
+        }
+
+    }
+
+
+    setText(
+        "potentialConfidence",
+        potentialConfidence
+    );
+
+
+    /* ENTRY VALIDATION GATES */
+
+    showFilter(
+        "filterScore",
+        validation.scoreGate,
+        score + " / 100"
+    );
+
+
+    showFilter(
+        "filterSetup",
+        validation.setupGate,
+        opportunity
+    );
+
+
+    showFilter(
+        "filterConfirmation",
+        validation.confirmationGate,
+        readable(
+            getValue(
+                d.m5,
+                [
+                    "confirmation",
+                    "candle_confirmation"
+                ]
+            ),
+            "--"
+        )
+    );
+
+
+    showFilter(
+        "filterRisk",
+        validation.riskGate,
+        validation.risk !== null
+            ? validation.risk.toFixed(1) + " pips"
+            : "--"
+    );
+
+
+    const tp1Pips =
+        (
+            entry !== null &&
+            tp1 !== null
+        )
+            ? priceToPips(
+                Math.abs(tp1-entry)
+              )
+            : null;
+
+
+    showFilter(
+        "filterTP1",
+        tp1Pips !== null
+            ? tp1Pips >= MIN_TP1_PIPS
+            : null,
+        tp1Pips !== null
+            ? Math.round(tp1Pips) + " pips"
+            : "--"
+    );
+
+
+    showFilter(
+        "filterRR",
+        validation.rrGate,
+        validation.rr2 !== null
+            ? "1:" + validation.rr2.toFixed(2)
+            : "--"
+    );
+
+
+    showFilter(
+        "filterRoom",
+        validation.roomGate,
+        validation.roomGate
+            ? "Available"
+            : "--"
+    );
+
+
+    /* CHECKLIST */
+
+    renderChecklist(
+        d,
+        validation
+    );
+
+
+    /* ENGINE STATUS */
+
+    if(validation.valid){
+
+        setText(
+            "engineStatus",
+            "OPPORTUNITY FOUND"
+        );
+
+    }
+    else{
+
+        setText(
+            "engineStatus",
+            "SCANNING"
+        );
+
+    }
+
+
+    /* UPDATE TIME */
+
+    renderTimestamp(
+        d.timestamp
+    );
+
+
+    return validation;
+
 }
 
 
@@ -1840,1312 +3250,370 @@ function renderMarket(d){
    TIMESTAMP
    ========================================================= */
 
-function formatTimestamp(value){
+function renderTimestamp(timestamp){
 
-    if(!value){
-        return "--";
+    const element =
+        $("lastUpdate");
+
+
+    if(!element){
+        return;
     }
 
-    try{
 
-        const date =
-            new Date(value);
+    if(!timestamp){
 
-        if(
-            Number.isNaN(
-                date.getTime()
-            )
-        ){
-            return String(value);
-        }
+        element.textContent =
+            "--";
 
-        return date.toLocaleString(
-            "en-MY",
-            {
-                timeZone:"Asia/Kuala_Lumpur",
-                hour12:false
-            }
-        );
-
-    }
-    catch{
-
-        return String(value);
-
-    }
-}
-
-
-/* =========================================================
-   RENDER MTF
-   ========================================================= */
-
-function renderMTF(d){
-
-    setSignalText(
-        "h1Bias",
-        upper(
-            get(d.h1,[
-                "bias",
-                "direction",
-                "trend"
-            ],"--")
-        )
-    );
-
-    setSignalText(
-        "h1Structure",
-        upper(
-            get(d.h1,[
-                "structure",
-                "bos",
-                "structure_signal"
-            ],"--")
-        )
-    );
-
-    setSignalText(
-        "m15Trend",
-        upper(
-            get(d.m15,[
-                "trend",
-                "direction",
-                "bias"
-            ],"--")
-        )
-    );
-
-    setSignalText(
-        "m15Structure",
-        upper(
-            get(d.m15,[
-                "structure",
-                "bos",
-                "structure_signal"
-            ],"--")
-        )
-    );
-
-    setText(
-        "m15Range",
-        upper(
-            get(d.m15,[
-                "range",
-                "range_status",
-                "rangeStatus",
-                "location"
-            ],"--")
-        )
-    );
-
-    setText(
-        "m15Liquidity",
-        upper(
-            get(d.m15,[
-                "liquidity",
-                "liquidity_sweep",
-                "liquiditySweep"
-            ],"--")
-        )
-    );
-
-    setSignalText(
-        "m5Structure",
-        upper(
-            get(d.m5,[
-                "structure",
-                "bos",
-                "choch",
-                "structure_signal"
-            ],"--")
-        )
-    );
-
-    setSignalText(
-        "m5Confirmation",
-        upper(
-            get(d.m5,[
-                "confirmation",
-                "candle_confirmation",
-                "candleConfirmation",
-                "entry_confirmation"
-            ],"--")
-        )
-    );
-
-    setText(
-        "m5Momentum",
-        upper(
-            get(d.m5,[
-                "momentum",
-                "momentum_status"
-            ],"--")
-        )
-    );
-}
-
-
-/* =========================================================
-   RENDER TRADE PLAN
-   ========================================================= */
-
-function renderTradePlan(d){
-
-    const direction =
-        getDirection(d);
-
-    const entry =
-        getEntry(d);
-
-    const sl =
-        getSL(d);
-
-    const tp1 =
-        getTP1(d);
-
-    const tp2 =
-        getTP2(d);
-
-    const tp3 =
-        getTP3(d);
-
-    const riskPips =
-        getRiskPips(
-            d,
-            entry,
-            sl
-        );
-
-    const rr =
-        getRR(
-            d,
-            entry,
-            sl,
-            tp2,
-            tp3
-        );
-
-    setSignalText(
-        "planDirection",
-        direction
-    );
-
-    setText(
-        "entry",
-        formatPrice(entry)
-    );
-
-    setText(
-        "sl",
-        formatPrice(sl)
-    );
-
-    setText(
-        "tp1",
-        formatPrice(tp1)
-    );
-
-    setText(
-        "tp2",
-        formatPrice(tp2)
-    );
-
-    setText(
-        "tp3",
-        formatPrice(tp3)
-    );
-
-    setText(
-        "riskPips",
-        riskPips !== null
-            ? Math.round(riskPips) + " pips"
-            : "--"
-    );
-
-    let rrText = "--";
-
-    if(
-        typeof rr === "object" &&
-        rr !== null
-    ){
-
-        const parts = [];
-
-        if(rr.tp2 !== undefined){
-            parts.push(
-                "TP2 1:" +
-                rr.tp2.toFixed(2)
-            );
-        }
-
-        if(rr.tp3 !== undefined){
-            parts.push(
-                "TP3 1:" +
-                rr.tp3.toFixed(2)
-            );
-        }
-
-        rrText =
-            parts.length
-                ? parts.join(" • ")
-                : "--";
-
-    }
-    else if(rr !== null){
-
-        rrText =
-            "1:" +
-            rr.toFixed(2);
+        return;
 
     }
 
-    setText(
-        "rrRange",
-        rrText
-    );
 
-    setSignalText(
-        "sideDirection",
-        direction
-    );
-
-    setText(
-        "sideSetup",
-        getOpportunity(d)
-    );
-
-    setText(
-        "sideConfirmation",
-        upper(
-            get(d.m5,[
-                "confirmation",
-                "candle_confirmation",
-                "candleConfirmation"
-            ],"--")
-        )
-    );
-
-    const riskValid =
-        get(d.root,[
-            "risk_valid",
-            "riskValid",
-            "gates.risk_valid",
-            "gates.riskValid"
-        ],null);
-
-    if(riskValid === true){
-
-        setText(
-            "sideRisk",
-            "VALID"
-        );
-
-        document
-            .getElementById("sideRisk")
-            .className =
-            "metric-value pass";
-
-    }
-    else if(riskValid === false){
-
-        setText(
-            "sideRisk",
-            "INVALID"
-        );
-
-        document
-            .getElementById("sideRisk")
-            .className =
-            "metric-value fail";
-
-    }
-    else{
-
-        setText(
-            "sideRisk",
-            riskPips !== null
-                ? "VALID • " +
-                  Math.round(riskPips) +
-                  " pips"
-                : "--"
-        );
-
-    }
-}
+    const date =
+        new Date(timestamp);
 
 
-/* =========================================================
-   PRICE POTENTIAL
-   ========================================================= */
+    if(Number.isNaN(date.getTime())){
 
-function renderPotential(d){
-
-    const enginePotential =
-        get(d.potential,[
-            "range",
-            "text",
-            "potential",
-            "pips"
-        ],null);
-
-    if(
-        enginePotential !== null &&
-        enginePotential !== undefined
-    ){
-
-        if(
-            typeof enginePotential === "number"
-        ){
-
-            setText(
-                "potentialRange",
-                Math.round(
-                    enginePotential
-                ) + " pips"
-            );
-
-        }
-        else{
-
-            setText(
-                "potentialRange",
-                enginePotential
-            );
-
-        }
-
-    }
-    else{
-
-        const tp1 =
-            getTP1(d);
-
-        const tp3 =
-            getTP3(d);
-
-        const entry =
-            getEntry(d);
-
-        if(
-            entry !== null &&
-            tp1 !== null
-        ){
-
-            const p1 =
-                priceToPips(
-                    Math.abs(tp1-entry)
-                );
-
-            let p3 = null;
-
-            if(tp3 !== null){
-
-                p3 =
-                    priceToPips(
-                        Math.abs(tp3-entry)
-                    );
-
-            }
-
-            let text =
-                Math.round(p1) +
-                " pips";
-
-            if(p3 !== null){
-
-                text +=
-                    " – " +
-                    Math.round(p3) +
-                    " pips";
-
-            }
-
-            setText(
-                "potentialRange",
-                text
-            );
-
-        }
-        else{
-
-            setText(
-                "potentialRange",
+        element.textContent =
+            readable(
+                timestamp,
                 "--"
             );
 
-        }
-
-    }
-
-    const confidence =
-        get(d.potential,[
-            "confidence",
-            "confidence_score",
-            "confidenceScore"
-        ],
-        get(d.root,[
-            "potential_confidence",
-            "potentialConfidence"
-        ],null));
-
-    setText(
-        "potentialConfidence",
-        confidence !== null
-            ? "Confidence: " +
-              confidence
-            : "Based on engine trade plan"
-    );
-}
-
-
-/* =========================================================
-   BOOLEAN NORMALISER
-   ========================================================= */
-
-function boolValue(value){
-
-    if(value === true){
-        return true;
-    }
-
-    if(value === false){
-        return false;
-    }
-
-    if(
-        typeof value === "string"
-    ){
-
-        const v =
-            value.toLowerCase();
-
-        if(
-            v === "true" ||
-            v === "pass" ||
-            v === "valid" ||
-            v === "yes" ||
-            v === "ok"
-        ){
-            return true;
-        }
-
-        if(
-            v === "false" ||
-            v === "fail" ||
-            v === "invalid" ||
-            v === "no"
-        ){
-            return false;
-        }
-
-    }
-
-    return null;
-}
-
-
-/* =========================================================
-   FILTER HELPER
-   ========================================================= */
-
-function setFilter(id,value){
-
-    const el =
-        document.getElementById(id);
-
-    if(!el){
         return;
+
     }
 
-    el.textContent =
-        value.text;
 
-    el.classList.remove(
-        "pass",
-        "fail",
-        "neutral"
-    );
+    element.textContent =
+        date.toLocaleString(
+            "en-MY",
+            {
+                dateStyle:"medium",
+                timeStyle:"medium"
+            }
+        );
 
-    el.classList.add(
-        value.className
-    );
 }
 
 
 /* =========================================================
-   RENDER FILTERS
+   ERROR / SUCCESS
    ========================================================= */
-
-function renderFilters(d){
-
-    const score =
-        getScore(d);
-
-    const opportunity =
-        getOpportunity(d);
-
-    const confirmation =
-        upper(
-            get(d.m5,[
-                "confirmation",
-                "candle_confirmation",
-                "candleConfirmation"
-            ],"--")
-        );
-
-    const entry =
-        getEntry(d);
-
-    const sl =
-        getSL(d);
-
-    const tp1 =
-        getTP1(d);
-
-    const tp2 =
-        getTP2(d);
-
-    const risk =
-        getRiskPips(
-            d,
-            entry,
-            sl
-        );
-
-    const rr =
-        calculateRR(
-            entry,
-            sl,
-            tp2
-        );
-
-    const scorePass =
-        score !== null &&
-        score >= 70;
-
-    const setupValid =
-        get(
-            d.root,
-            [
-                "setup_valid",
-                "setupValid",
-                "gates.setup_valid",
-                "gates.setupValid"
-            ],
-            null
-        );
-
-    const confirmationValid =
-        get(
-            d.root,
-            [
-                "confirmation_valid",
-                "confirmationValid",
-                "gates.confirmation_valid",
-                "gates.confirmationValid"
-            ],
-            null
-        );
-
-    const riskValid =
-        get(
-            d.root,
-            [
-                "risk_valid",
-                "riskValid",
-                "gates.risk_valid",
-                "gates.riskValid"
-            ],
-            null
-        );
-
-    const tp1Valid =
-        tp1 !== null;
-
-    const rrValid =
-        get(
-            d.root,
-            [
-                "rr_valid",
-                "rrValid",
-                "gates.rr_valid",
-                "gates.rrValid"
-            ],
-            rr !== null && rr >= 2
-        );
-
-    const roomValid =
-        get(
-            d.root,
-            [
-                "room_valid",
-                "roomValid",
-                "gates.room_valid",
-                "gates.roomValid"
-            ],
-            tp1 !== null
-        );
-
-    setFilter(
-        "filterScore",
-        {
-            text:
-                score !== null
-                    ? score + "/100 " +
-                      (scorePass ? "PASS" : "FAIL")
-                    : "--",
-            className:
-                score === null
-                    ? "neutral"
-                    : scorePass
-                        ? "pass"
-                        : "fail"
-        }
-    );
-
-    const setupBool =
-        boolValue(setupValid);
-
-    setFilter(
-        "filterSetup",
-        {
-            text:
-                setupBool === null
-                    ? opportunity
-                    : setupBool
-                        ? "VALID"
-                        : "INVALID",
-
-            className:
-                setupBool === null
-                    ? (
-                        opportunity !==
-                        "NO VALID SETUP"
-                            ? "pass"
-                            : "neutral"
-                    )
-                    : setupBool
-                        ? "pass"
-                        : "fail"
-        }
-    );
-
-    const confirmationBool =
-        boolValue(confirmationValid);
-
-    setFilter(
-        "filterConfirmation",
-        {
-            text:
-                confirmationBool === null
-                    ? confirmation
-                    : confirmationBool
-                        ? "VALID"
-                        : "INVALID",
-
-            className:
-                confirmationBool === null
-                    ? (
-                        confirmation.includes("BOS") ||
-                        confirmation.includes("CONFIRM")
-                            ? "pass"
-                            : "neutral"
-                    )
-                    : confirmationBool
-                        ? "pass"
-                        : "fail"
-        }
-    );
-
-    const riskBool =
-        boolValue(riskValid);
-
-    setFilter(
-        "filterRisk",
-        {
-            text:
-                riskBool === null
-                    ? risk !== null
-                        ? Math.round(risk) +
-                          " pips"
-                        : "--"
-                    : riskBool
-                        ? "VALID"
-                        : "INVALID",
-
-            className:
-                riskBool === null
-                    ? risk !== null
-                        ? "pass"
-                        : "neutral"
-                    : riskBool
-                        ? "pass"
-                        : "fail"
-        }
-    );
-
-    setFilter(
-        "filterTP1",
-        {
-            text:
-                tp1Valid
-                    ? "VALID"
-                    : "NO TARGET",
-
-            className:
-                tp1Valid
-                    ? "pass"
-                    : "fail"
-        }
-    );
-
-    const rrBool =
-        boolValue(rrValid);
-
-    setFilter(
-        "filterRR",
-        {
-            text:
-                rrBool === null
-                    ? rr !== null
-                        ? "1:" +
-                          rr.toFixed(2)
-                        : "--"
-                    : rrBool
-                        ? "≥ 1:2 PASS"
-                        : "FAIL",
-
-            className:
-                rrBool === null
-                    ? rr !== null
-                        ? rr >= 2
-                            ? "pass"
-                            : "fail"
-                        : "neutral"
-                    : rrBool
-                        ? "pass"
-                        : "fail"
-        }
-    );
-
-    const roomBool =
-        boolValue(roomValid);
-
-    setFilter(
-        "filterRoom",
-        {
-            text:
-                roomBool === null
-                    ? tp1 !== null
-                        ? "AVAILABLE"
-                        : "--"
-                    : roomBool
-                        ? "AVAILABLE"
-                        : "BLOCKED",
-
-            className:
-                roomBool === null
-                    ? tp1 !== null
-                        ? "pass"
-                        : "neutral"
-                    : roomBool
-                        ? "pass"
-                        : "fail"
-        }
-    );
-}
-
-
-/* =========================================================
-   CONFIRMATION CHECKLIST
-   ========================================================= */
-
-function addConfirmation(
-    container,
-    passed,
-    title,
-    detail
-){
-
-    const item =
-        document.createElement("div");
-
-    item.className =
-        "confirm-item";
-
-    const icon =
-        document.createElement("span");
-
-    icon.className =
-        "confirm-icon";
-
-    icon.textContent =
-        passed
-            ? "✅"
-            : "❌";
-
-    const text =
-        document.createElement("span");
-
-    text.textContent =
-        title +
-        (
-            detail
-                ? " • " + detail
-                : ""
-        );
-
-    item.appendChild(icon);
-    item.appendChild(text);
-
-    container.appendChild(item);
-}
-
-
-function renderConfirmationList(d){
-
-    const container =
-        document.getElementById(
-            "confirmationList"
-        );
-
-    container.innerHTML = "";
-
-    const score =
-        getScore(d);
-
-    const opportunity =
-        getOpportunity(d);
-
-    const direction =
-        getDirection(d);
-
-    const m5Structure =
-        upper(
-            get(d.m5,[
-                "structure",
-                "bos",
-                "choch"
-            ],"")
-        );
-
-    const confirmation =
-        upper(
-            get(d.m5,[
-                "confirmation",
-                "candle_confirmation",
-                "candleConfirmation"
-            ],"")
-        );
-
-    const liquidity =
-        upper(
-            get(d.m15,[
-                "liquidity",
-                "liquidity_sweep",
-                "liquiditySweep"
-            ],"")
-        );
-
-    const entry =
-        getEntry(d);
-
-    const sl =
-        getSL(d);
-
-    const tp2 =
-        getTP2(d);
-
-    const risk =
-        getRiskPips(
-            d,
-            entry,
-            sl
-        );
-
-    const rr =
-        calculateRR(
-            entry,
-            sl,
-            tp2
-        );
-
-    const setupValid =
-        boolValue(
-            get(d.root,[
-                "setup_valid",
-                "setupValid",
-                "gates.setup_valid",
-                "gates.setupValid"
-            ],null)
-        );
-
-    const confirmationValid =
-        boolValue(
-            get(d.root,[
-                "confirmation_valid",
-                "confirmationValid",
-                "gates.confirmation_valid",
-                "gates.confirmationValid"
-            ],null)
-        );
-
-    const riskValid =
-        boolValue(
-            get(d.root,[
-                "risk_valid",
-                "riskValid",
-                "gates.risk_valid",
-                "gates.riskValid"
-            ],null)
-        );
-
-    const rrValid =
-        boolValue(
-            get(d.root,[
-                "rr_valid",
-                "rrValid",
-                "gates.rr_valid",
-                "gates.rrValid"
-            ],null)
-        );
-
-    addConfirmation(
-        container,
-        score !== null && score >= 70,
-        "Minimum Score ≥ 70",
-        score !== null
-            ? score + "/100"
-            : "No score"
-    );
-
-    addConfirmation(
-        container,
-        setupValid !== null
-            ? setupValid
-            : opportunity !== "NO VALID SETUP",
-        "M15 Setup",
-        opportunity
-    );
-
-    addConfirmation(
-        container,
-        confirmationValid !== null
-            ? confirmationValid
-            : (
-                m5Structure.includes("BOS") ||
-                m5Structure.includes("CHOCH")
-            ),
-        "M5 Structure Confirmation",
-        m5Structure || "--"
-    );
-
-    addConfirmation(
-        container,
-        confirmationValid !== null
-            ? confirmationValid
-            : confirmation.includes("CONFIRM"),
-        "M5 Candle Confirmation",
-        confirmation || "--"
-    );
-
-    addConfirmation(
-        container,
-        liquidity !== "" &&
-        liquidity !== "NONE",
-        "M15 Liquidity Behaviour",
-        liquidity || "NONE"
-    );
-
-    addConfirmation(
-        container,
-        riskValid !== null
-            ? riskValid
-            : (
-                risk !== null &&
-                risk >= 35 &&
-                risk <= 60
-            ),
-        "Risk Validation",
-        risk !== null
-            ? Math.round(risk) + " pips"
-            : "--"
-    );
-
-    addConfirmation(
-        container,
-        rrValid !== null
-            ? rrValid
-            : (
-                rr !== null &&
-                rr >= 2
-            ),
-        "Primary RR Validation",
-        rr !== null
-            ? "1:" + rr.toFixed(2)
-            : "--"
-    );
-
-    addConfirmation(
-        container,
-        direction === "BUY" ||
-        direction === "SELL",
-        "Final Direction",
-        direction
-    );
-}
-
-
-/* =========================================================
-   SUCCESS / ERROR
-   ========================================================= */
-
-function showSuccess(message){
-
-    const el =
-        document.getElementById(
-            "successBox"
-        );
-
-    el.textContent =
-        message;
-
-    el.style.display =
-        "block";
-
-    setTimeout(
-        ()=>{
-            el.style.display =
-                "none";
-        },
-        5000
-    );
-}
-
 
 function showError(message){
 
-    const el =
-        document.getElementById(
-            "errorBox"
-        );
+    const error =
+        $("errorBox");
 
-    el.textContent =
-        message;
 
-    el.style.display =
-        "block";
+    const success =
+        $("successBox");
+
+
+    if(success){
+        success.style.display =
+            "none";
+    }
+
+
+    if(error){
+
+        error.textContent =
+            message;
+
+        error.style.display =
+            "block";
+
+    }
+
+}
+
+
+function showSuccess(message){
+
+    const error =
+        $("errorBox");
+
+
+    const success =
+        $("successBox");
+
+
+    if(error){
+        error.style.display =
+            "none";
+    }
+
+
+    if(success){
+
+        success.textContent =
+            message;
+
+        success.style.display =
+            "block";
+
+    }
+
 }
 
 
 /* =========================================================
-   NOTIFICATIONS
+   LOAD ENGINE JSON
    ========================================================= */
 
-async function enableNotifications(){
+async function loadEngineData(){
 
-    const status =
-        document.getElementById(
-            "notificationStatus"
+    const response =
+        await fetch(
+            DATA_URL +
+            "?t=" +
+            Date.now(),
+            {
+                cache:"no-store"
+            }
         );
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "dashboard_data.json HTTP " +
+            response.status
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    console.log(
+        "✅ BOSQUE ENGINE DATA LOADED",
+        data
+    );
+
+
+    return data;
+
+}
+
+
+/* =========================================================
+   BROWSER NOTIFICATION
+   ========================================================= */
+
+let lastBrowserAlertKey =
+    localStorage.getItem(
+        "bosque_last_browser_alert"
+    ) || "";
+
+
+async function prepareBrowserNotification(){
+
+    const element =
+        $("notificationStatus");
+
 
     if(!("Notification" in window)){
 
-        status.textContent =
-            "❌ Browser notification is not supported.";
+        if(element){
+
+            element.textContent =
+                "NOT SUPPORTED";
+
+        }
 
         return;
+
     }
+
+
+    if(Notification.permission === "granted"){
+
+        if(element){
+
+            element.textContent =
+                "ENABLED";
+
+        }
+
+        return;
+
+    }
+
+
+    if(Notification.permission === "denied"){
+
+        if(element){
+
+            element.textContent =
+                "BLOCKED";
+
+        }
+
+        return;
+
+    }
+
 
     try{
 
         const permission =
             await Notification.requestPermission();
 
-        if(permission === "granted"){
 
-            status.textContent =
-                "✅ Browser notifications enabled.";
+        if(element){
 
-            new Notification(
-                "BOSQUE FOREX AI",
-                {
-                    body:
-                        "Scalping alert system is ready."
-                }
-            );
-
-        }
-        else{
-
-            status.textContent =
-                "⚠️ Notification permission was not granted.";
+            element.textContent =
+                permission === "granted"
+                    ? "ENABLED"
+                    : (
+                        permission === "denied"
+                            ? "BLOCKED"
+                            : "NOT ENABLED"
+                    );
 
         }
 
     }
     catch(error){
 
-        console.error(error);
+        if(element){
 
-        status.textContent =
-            "❌ Unable to enable notifications.";
+            element.textContent =
+                "NOT ENABLED";
+
+        }
 
     }
+
 }
 
 
-function updateNotificationStatus(){
-
-    const status =
-        document.getElementById(
-            "notificationStatus"
-        );
-
-    if(!("Notification" in window)){
-
-        status.textContent =
-            "❌ Browser notification not supported.";
-
-        return;
-    }
+function sendBrowserNotification(
+    d,
+    validation
+){
 
     if(
-        Notification.permission ===
-        "granted"
-    ){
-
-        status.textContent =
-            "✅ Browser notifications enabled.";
-
-    }
-    else if(
-        Notification.permission ===
-        "denied"
-    ){
-
-        status.textContent =
-            "⚠️ Browser notifications blocked.";
-
-    }
-    else{
-
-        status.textContent =
-            "Notification permission not granted yet.";
-
-    }
-}
-
-
-/* =========================================================
-   SEND SIGNAL NOTIFICATION
-   ========================================================= */
-
-function notifySignal(d){
-
-    const score =
-        getScore(d);
-
-    const direction =
-        getDirection(d);
-
-    const opportunity =
-        getOpportunity(d);
-
-    const entry =
-        getEntry(d);
-
-    const sl =
-        getSL(d);
-
-    const tp2 =
-        getTP2(d);
-
-    if(
-        score === null ||
-        score < 70 ||
+        !validation.valid ||
+        validation.score < MIN_SCORE ||
         (
-            direction !== "BUY" &&
-            direction !== "SELL"
+            validation.direction !== "BUY" &&
+            validation.direction !== "SELL"
         )
     ){
+
         return;
+
     }
+
+
+    if(
+        !("Notification" in window) ||
+        Notification.permission !== "granted"
+    ){
+
+        return;
+
+    }
+
+
+    const entry =
+        validation.entry !== null
+            ? validation.entry.toFixed(2)
+            : "--";
+
+
+    const sl =
+        getPrice(
+            d,
+            [
+                "sl",
+                "stop_loss"
+            ]
+        );
+
+
+    const tp2 =
+        validation.tp2 !== null
+            ? validation.tp2.toFixed(2)
+            : "--";
+
 
     const key =
         [
-            direction,
-            opportunity,
+            d.timestamp || "",
+            validation.direction,
+            validation.score,
             entry,
-            sl,
-            tp2,
-            score
+            sl !== null
+                ? sl.toFixed(2)
+                : "",
+            tp2
         ].join("|");
 
-    if(
-        key === lastSignalKey
-    ){
+
+    if(key === lastBrowserAlertKey){
+
         return;
+
     }
 
-    lastSignalKey =
+
+    lastBrowserAlertKey =
         key;
 
-    if(
-        !("Notification" in window)
-    ){
-        return;
-    }
 
-    if(
-        Notification.permission !==
-        "granted"
-    ){
-        return;
-    }
+    localStorage.setItem(
+        "bosque_last_browser_alert",
+        key
+    );
 
-    const message =
-        [
-            direction +
-            " • " +
-            opportunity,
-
-            "Score: " +
-            score + "/100",
-
-            "Entry: " +
-            formatPrice(entry),
-
-            "SL: " +
-            formatPrice(sl),
-
-            "TP2: " +
-            formatPrice(tp2)
-        ].join("\n");
 
     try{
 
         new Notification(
-            "🌲 BOSQUE FOREX AI",
+            "👑 BOSQUE FOREX AI",
             {
-                body:message
+                body:
+                    validation.direction +
+                    " " +
+                    getOpportunityType(d) +
+                    "\n" +
+                    "Score: " +
+                    validation.score +
+                    "/100\n" +
+                    "Entry: " +
+                    entry +
+                    "\n" +
+                    "TP2: " +
+                    tp2,
+                tag:"bosque-forex-ai"
             }
         );
 
     }
     catch(error){
 
-        console.error(
-            "Notification error:",
+        console.warn(
+            "Browser notification failed:",
             error
         );
 
     }
+
 }
 
 
 /* =========================================================
-   MAIN RENDER
+   MAIN REFRESH
    ========================================================= */
 
 async function refreshDashboard(){
@@ -3155,77 +3623,125 @@ async function refreshDashboard(){
         const raw =
             await loadEngineData();
 
-        currentData =
+
+        const data =
             normaliseData(raw);
 
-        const d =
-            currentData;
 
-        renderEngineStatus(d);
+        const validation =
+            renderDashboard(data);
 
-        renderMarket(d);
 
-        renderMTF(d);
-
-        renderTradePlan(d);
-
-        renderPotential(d);
-
-        renderFilters(d);
-
-        renderConfirmationList(d);
-
-        notifySignal(d);
-
-        document
-            .getElementById(
-                "errorBox"
-            )
-            .style.display =
-            "none";
-
-        showSuccess(
-            "✅ BOSQUE ENGINE DATA UPDATED"
+        sendBrowserNotification(
+            data,
+            validation
         );
 
+
+        showSuccess(
+            validation.valid
+                ? "Live engine data loaded • Valid opportunity detected."
+                : "Live engine data loaded • No valid setup right now."
+        );
+
+
         console.log(
-            "🌲 BOSQUE dashboard refreshed"
+            "BOSQUE validation:",
+            validation
         );
 
     }
     catch(error){
 
         console.error(
+            "❌ BOSQUE dashboard error:",
             error
         );
 
-        const dot =
-            document.getElementById(
-                "engineDot"
-            );
 
-        const status =
-            document.getElementById(
-                "engineStatus"
-            );
-
-        dot.classList.remove(
-            "green"
+        setText(
+            "engineStatus",
+            "DATA ERROR"
         );
 
-        dot.classList.add(
-            "red"
+
+        setText(
+            "finalSignal",
+            "WAIT"
         );
 
-        status.textContent =
-            "DATA ERROR";
+
+        setText(
+            "signalDirection",
+            "WAIT"
+        );
+
+
+        setText(
+            "planDirection",
+            "WAIT"
+        );
+
 
         showError(
-            "❌ Unable to load dashboard_data.json. " +
-            "Check GitHub Actions and repository root."
+            "Engine data unavailable: " +
+            error.message
         );
 
     }
+
+}
+
+
+/* =========================================================
+   TRADINGVIEW
+   ========================================================= */
+
+function loadTradingView(){
+
+    if(
+        typeof TradingView ===
+        "undefined"
+    ){
+
+        console.warn(
+            "TradingView script not loaded yet."
+        );
+
+        return;
+
+    }
+
+
+    new TradingView.widget({
+
+        autosize:true,
+
+        symbol:"OANDA:XAUUSD",
+
+        interval:"5",
+
+        timezone:"Asia/Kuala_Lumpur",
+
+        theme:"dark",
+
+        style:"1",
+
+        locale:"en",
+
+        enable_publishing:false,
+
+        hide_top_toolbar:false,
+
+        hide_legend:false,
+
+        allow_symbol_change:true,
+
+        container_id:
+            "tradingview_chart"
+
+    });
+
 }
 
 
@@ -3233,35 +3749,35 @@ async function refreshDashboard(){
    START
    ========================================================= */
 
-updateNotificationStatus();
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
 
-refreshDashboard();
+        loadTradingView();
+
+        await prepareBrowserNotification();
+
+        await refreshDashboard();
+
+    }
+);
 
 
 /* =========================================================
    AUTO REFRESH
    ========================================================= */
 
+/*
+    GitHub Actions:
+    Engine runs every 5 minutes.
+
+    Dashboard:
+    Reloads every 5 minutes + cache bust.
+*/
+
 setInterval(
     refreshDashboard,
-    REFRESH_INTERVAL
-);
-
-
-/* =========================================================
-   VISIBILITY REFRESH
-   ========================================================= */
-
-document.addEventListener(
-    "visibilitychange",
-    ()=>{
-        if(
-            document.visibilityState ===
-            "visible"
-        ){
-            refreshDashboard();
-        }
-    }
+    5 * 60 * 1000
 );
 
 </script>
