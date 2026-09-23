@@ -15,24 +15,24 @@
     "max_risk_pips": 70,
     "min_rr": 1.8
   },
-  "timestamp": "2026-09-23T00:00:49.493737+00:00",
-  "latest_price": 4364.26,
+  "timestamp": "2026-09-23T00:05:26.515982+00:00",
+  "latest_price": 4369.2,
   "session": "ASIAN",
   "market_mode": "TREND",
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4361.53,
+    "equilibrium": 4362.35,
     "high": 4370.44,
-    "low": 4352.61
+    "low": 4354.26
   },
   "opportunity": {
     "type": "NO VALID SETUP",
-    "score": 30,
+    "score": 80,
     "valid": false
   },
   "plan": {
     "valid": false,
-    "direction": null,
+    "direction": "BUY",
     "entry": null,
     "sl": null,
     "tp1": null,
@@ -45,7 +45,7 @@
     "tp1_pips": null,
     "tp2_pips": null,
     "tp3_pips": null,
-    "reason": "Hard gates not passed"
+    "reason": "Risk outside 30-70 pips"
   },
   "potential": {
     "status": "LOW",
@@ -57,8 +57,8 @@
     "valid": false,
     "signal_id": null,
     "type": "NO VALID SETUP",
-    "direction": null,
-    "score": 30,
+    "direction": "BUY",
+    "score": 80,
     "entry": null,
     "sl": null,
     "tp1": null,
@@ -67,7 +67,7 @@
     "risk_pips": null,
     "rr_tp2": null,
     "potential": "No valid trade plan",
-    "message": "NO VALID SETUP | Score 30/100 | Entry None | SL None | TP1 None"
+    "message": "NO VALID SETUP | Score 80/100 | Entry None | SL None | TP1 None"
   },
   "h1": {
     "bias": "BULLISH",
@@ -78,18 +78,18 @@
     "last_swing_low": 4315.18
   },
   "m15": {
-    "bias": "RANGE",
-    "structure": "RANGE",
-    "bullish_bos": false,
+    "bias": "BULLISH",
+    "structure": "BULLISH BOS",
+    "bullish_bos": true,
     "bearish_bos": false,
     "last_swing_high": 4364.91,
     "last_swing_low": 4354.26,
     "range": {
       "is_range": true,
       "high": 4370.44,
-      "low": 4352.61,
-      "position": "MID RANGE",
-      "width": 17.83
+      "low": 4354.26,
+      "position": "HIGH EXTREME",
+      "width": 16.18
     },
     "liquidity": {
       "type": "NONE",
@@ -97,32 +97,32 @@
       "level": null
     },
     "setup": {
-      "type": "NO VALID SETUP",
-      "valid": false,
-      "reason": "No valid M15 setup"
+      "type": "BUY BREAKOUT RETEST",
+      "valid": true,
+      "reason": "M15 bullish BOS"
     }
   },
   "m5": {
-    "confirmed": false,
-    "direction": "NEUTRAL",
-    "bos_choch": "RANGE",
+    "confirmed": true,
+    "direction": "BULLISH",
+    "bos_choch": "BULLISH BOS",
     "candle": "BULLISH",
-    "momentum": "NEUTRAL"
+    "momentum": "BULLISH"
   },
   "filters": {
-    "score": "FAIL",
-    "m15_setup": "FAIL",
-    "m5_confirmation": "FAIL",
+    "score": "PASS",
+    "m15_setup": "PASS",
+    "m5_confirmation": "PASS",
     "risk": "FAIL",
     "rr": "FAIL"
   },
   "confirmations": {
     "h1_bias": "BULLISH",
     "h1_structure": "HH / HL",
-    "m15_setup": "NO VALID SETUP",
+    "m15_setup": "BUY BREAKOUT RETEST",
     "m15_liquidity": "NONE",
-    "m5_bos_choch": "RANGE",
+    "m5_bos_choch": "BULLISH BOS",
     "m5_candle": "BULLISH",
-    "m5_momentum": "NEUTRAL"
+    "m5_momentum": "BULLISH"
   }
 }
