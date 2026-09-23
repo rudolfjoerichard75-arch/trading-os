@@ -4,9 +4,9 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-24T07:35:28.069817+08:00"
+    "timestamp": "2026-09-24T07:40:35.308555+08:00"
   },
-  "latest_price": 4289.27,
+  "latest_price": 4286.14,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,16 +17,16 @@
       "high": 4347.63706,
       "low": 4270.72669,
       "width": 76.9103699999996,
-      "location": 0.24104577835212673
+      "location": 0.20035958740023588
     }
   },
   "volatility": {
-    "atr": 2.4,
-    "atr_pips": 24.0,
+    "atr": 2.36,
+    "atr_pips": 23.6,
     "condition": "LOW"
   },
   "pd": {
-    "zone": "PREMIUM",
+    "zone": "DISCOUNT",
     "equilibrium": 4287.81,
     "high": 4294.24,
     "low": 4281.37
@@ -50,40 +50,26 @@
     "filter": "NOT CONNECTED"
   },
   "opportunity": {
-    "type": "SELL PULLBACK",
-    "direction": "SELL",
-    "valid": true,
-    "score": 55
+    "type": "NO VALID SETUP",
+    "direction": null,
+    "valid": false,
+    "score": 25
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": "SELL",
-    "opportunity": "SELL PULLBACK",
-    "score": 55,
-    "timestamp": "2026-09-24T07:35:28.069817+08:00"
+    "direction": null,
+    "opportunity": "NO VALID SETUP",
+    "score": 25,
+    "timestamp": "2026-09-24T07:40:35.308555+08:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "SELL",
-    "entry": 4289.27,
-    "sl": 4293.43,
-    "risk_pips": 41.7,
-    "tp1": 4283.27,
-    "tp2": 4277.27,
-    "tp3": 4271.27,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 1.44,
-    "rr_tp2": 2.88,
-    "rr_tp3": 4.32,
-    "risk_level": "MEDIUM"
+    "valid": false
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BEARISH",
@@ -98,14 +84,12 @@
     "swing_high": 4294.24142,
     "swing_low": 4284.58277,
     "setup": {
-      "direction": "SELL",
-      "opportunity": "SELL PULLBACK",
-      "valid": true,
-      "reason": [
-        "H1 bearish + M15 premium"
-      ],
+      "direction": null,
+      "opportunity": "NO VALID SETUP",
+      "valid": false,
+      "reason": [],
       "pd": {
-        "zone": "PREMIUM",
+        "zone": "DISCOUNT",
         "equilibrium": 4287.81,
         "high": 4294.24,
         "low": 4281.37
@@ -127,43 +111,43 @@
         "high": 4294.24142,
         "low": 4281.37175,
         "width": 12.869670000000042,
-        "location": 0.6133692627705377
+        "location": 0.37022472215678826
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BEARISH BOS",
     "swing_high": 4292.95097,
     "swing_low": 4287.62679,
     "confirmation": {
-      "confirmed": true,
-      "bos": null,
-      "candle": true,
+      "confirmed": false,
+      "bos": "BEARISH BOS",
+      "candle": false,
       "momentum": "BEARISH",
-      "reason": "M5 bearish candle + momentum"
+      "reason": "NO DIRECTION"
     }
   },
   "filters": {
     "score": false,
-    "setup": true,
-    "m5_confirmation": true,
-    "risk": true,
-    "rr": true,
+    "setup": false,
+    "m5_confirmation": false,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": false
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL PULLBACK",
-    "m5_confirmation": "M5 bearish candle + momentum",
+    "m15_setup": "NO VALID SETUP",
+    "m5_confirmation": "NO DIRECTION",
     "liquidity": "NONE",
-    "pd_zone": "PREMIUM"
+    "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 41.7,
-    "risk_level": "MEDIUM",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -181,10 +165,10 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "BLOCK",
-    "risk": "MEDIUM",
-    "fresh_zone": "YES",
-    "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "risk": "UNKNOWN",
+    "fresh_zone": "NO",
+    "m15_setup": "NO",
+    "m5_confirmation": "NO"
   },
   "expectancy": {
     "status": "NOT TRACKED",
