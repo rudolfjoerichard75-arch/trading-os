@@ -15,24 +15,24 @@
     "max_risk_pips": 70,
     "min_rr": 1.8
   },
-  "timestamp": "2026-09-23T11:20:34.891931+00:00",
-  "latest_price": 4314.3,
+  "timestamp": "2026-09-23T11:25:22.769248+00:00",
+  "latest_price": 4305.88,
   "session": "LONDON",
   "market_mode": "TREND",
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4322.97,
+    "equilibrium": 4321.51,
     "high": 4337.45,
-    "low": 4308.49
+    "low": 4305.56
   },
   "opportunity": {
     "type": "NO VALID SETUP",
-    "score": 30,
+    "score": 75,
     "valid": false
   },
   "plan": {
     "valid": false,
-    "direction": null,
+    "direction": "SELL",
     "entry": null,
     "sl": null,
     "tp1": null,
@@ -45,7 +45,7 @@
     "tp1_pips": null,
     "tp2_pips": null,
     "tp3_pips": null,
-    "reason": "Hard gates not passed"
+    "reason": "Risk outside 30-70 pips"
   },
   "potential": {
     "status": "LOW",
@@ -57,8 +57,8 @@
     "valid": false,
     "signal_id": null,
     "type": "NO VALID SETUP",
-    "direction": null,
-    "score": 30,
+    "direction": "SELL",
+    "score": 75,
     "entry": null,
     "sl": null,
     "tp1": null,
@@ -67,29 +67,29 @@
     "risk_pips": null,
     "rr_tp2": null,
     "potential": "No valid trade plan",
-    "message": "NO VALID SETUP | Score 30/100 | Entry None | SL None | TP1 None"
+    "message": "NO VALID SETUP | Score 75/100 | Entry None | SL None | TP1 None"
   },
   "h1": {
     "bias": "BEARISH",
-    "structure": "LH / LL",
+    "structure": "BEARISH BOS",
     "bullish_bos": false,
-    "bearish_bos": false,
+    "bearish_bos": true,
     "last_swing_high": 4347.64,
-    "last_swing_low": 4308.49
+    "last_swing_low": 4333.51
   },
   "m15": {
-    "bias": "RANGE",
-    "structure": "RANGE",
+    "bias": "BEARISH",
+    "structure": "BEARISH BOS",
     "bullish_bos": false,
-    "bearish_bos": false,
+    "bearish_bos": true,
     "last_swing_high": 4319.47,
-    "last_swing_low": 4312.76,
+    "last_swing_low": 4308.49,
     "range": {
       "is_range": true,
       "high": 4337.45,
-      "low": 4308.49,
+      "low": 4305.56,
       "position": "LOW EXTREME",
-      "width": 28.97
+      "width": 31.89
     },
     "liquidity": {
       "type": "NONE",
@@ -97,31 +97,31 @@
       "level": null
     },
     "setup": {
-      "type": "NO VALID SETUP",
-      "valid": false,
-      "reason": "No valid M15 setup"
+      "type": "SELL BREAKOUT RETEST",
+      "valid": true,
+      "reason": "M15 bearish BOS"
     }
   },
   "m5": {
-    "confirmed": false,
-    "direction": "NEUTRAL",
-    "bos_choch": "LH / LL",
+    "confirmed": true,
+    "direction": "BEARISH",
+    "bos_choch": "BEARISH BOS",
     "candle": "BEARISH",
     "momentum": "NEUTRAL"
   },
   "filters": {
-    "score": "FAIL",
-    "m15_setup": "FAIL",
-    "m5_confirmation": "FAIL",
+    "score": "PASS",
+    "m15_setup": "PASS",
+    "m5_confirmation": "PASS",
     "risk": "FAIL",
     "rr": "FAIL"
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "h1_structure": "LH / LL",
-    "m15_setup": "NO VALID SETUP",
+    "h1_structure": "BEARISH BOS",
+    "m15_setup": "SELL BREAKOUT RETEST",
     "m15_liquidity": "NONE",
-    "m5_bos_choch": "LH / LL",
+    "m5_bos_choch": "BEARISH BOS",
     "m5_candle": "BEARISH",
     "m5_momentum": "NEUTRAL"
   }
