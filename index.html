@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bosque Forex AI - XAUUSD Scalping Intelligence</title>
+<title>Bosque Forex AI</title>
 
 <style>
 
@@ -14,333 +14,276 @@
 
 body{
     margin:0;
-    font-family:Arial,Helvetica,sans-serif;
     background:#050816;
-    color:#fff;
+    color:#f4f7ff;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 .container{
-    width:100%;
     max-width:1500px;
     margin:auto;
-    padding:18px;
+    padding:20px;
 }
 
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:16px;
-    padding:16px 18px;
-    background:#111833;
-    border:1px solid #26345f;
-    border-radius:14px;
+    gap:15px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
 }
 
 .logo{
-    font-size:21px;
-    font-weight:bold;
+    font-size:25px;
+    font-weight:800;
 }
 
-.logo span{
-    color:#4da3ff;
+.sub{
+    color:#8d99b8;
+    font-size:13px;
+    margin-top:4px;
 }
 
 .status{
-    padding:7px 12px;
-    border-radius:20px;
-    background:#182344;
-    border:1px solid #2f4278;
-    font-size:11px;
-    font-weight:bold;
+    padding:8px 12px;
+    border:1px solid #274b9f;
+    border-radius:10px;
+    background:#0b122b;
+    color:#8db5ff;
+    font-size:12px;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
     gap:14px;
 }
 
 .card{
     background:#111833;
-    border:1px solid #26345f;
+    border:1px solid #202d58;
     border-radius:14px;
     padding:16px;
-    box-shadow:0 8px 25px rgba(0,0,0,.18);
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.15);
 }
 
-.card h2{
+.card h3{
     margin:0 0 13px;
-    font-size:15px;
-    color:#8ebcff;
+    font-size:14px;
+    color:#a9b8df;
+}
+
+.big{
+    font-size:26px;
+    font-weight:800;
+}
+
+.muted{
+    color:#8490ad;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:8px 0;
+    border-bottom:1px solid #1b2545;
+}
+
+.row:last-child{
+    border-bottom:none;
+}
+
+.label{
+    color:#8794b5;
+    font-size:12px;
+}
+
+.value{
+    font-size:13px;
+    font-weight:700;
+    text-align:right;
+}
+
+.pill{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:8px;
+    background:#192347;
+    font-size:11px;
+    font-weight:800;
+}
+
+.pass{
+    color:#66e3a1;
+    border:1px solid #286f52;
+}
+
+.fail{
+    color:#ff7e8a;
+    border:1px solid #77303b;
+}
+
+.warn{
+    color:#ffd36a;
+    border:1px solid #755d20;
+}
+
+.blue{
+    color:#8db5ff;
+}
+
+.signal{
+    border:1px solid #315dc5;
+    background:#0d1735;
+}
+
+.signalTitle{
+    font-size:21px;
+    font-weight:900;
+    margin-bottom:5px;
+}
+
+.signalScore{
+    font-size:36px;
+    font-weight:900;
+}
+
+.trade{
+    display:grid;
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+    gap:8px;
+}
+
+.tradeBox{
+    background:#0b1229;
+    border:1px solid #1f2c52;
+    border-radius:10px;
+    padding:11px;
+}
+
+.tradeBox small{
+    display:block;
+    color:#7582a2;
+    margin-bottom:5px;
+}
+
+.tradeBox strong{
+    font-size:16px;
 }
 
 .full{
     grid-column:1/-1;
 }
 
-.chart{
+.half{
+    grid-column:span 2;
+}
+
+.tv{
     height:500px;
-    padding:0;
+    border-radius:12px;
     overflow:hidden;
 }
 
-.chart-inner{
+iframe{
     width:100%;
     height:100%;
+    border:0;
 }
 
-.metric{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    padding:9px 0;
-    border-bottom:1px solid rgba(255,255,255,.055);
-}
-
-.metric:last-child{
-    border-bottom:none;
-}
-
-.metric-label{
-    color:#8e9bbd;
-    font-size:12px;
-}
-
-.metric-value{
-    font-weight:bold;
-    text-align:right;
-    word-break:break-word;
-}
-
-.signal{
-    font-size:24px;
-    font-weight:bold;
-    text-align:center;
-    padding:17px;
-    border-radius:12px;
-    background:#0d142d;
-    border:1px solid #26345f;
-    margin-bottom:13px;
-}
-
-.buy{
-    color:#35d07f;
-}
-
-.sell{
-    color:#ff5c6c;
-}
-
-.wait{
-    color:#f2c94c;
-}
-
-.neutral{
-    color:#aeb9d8;
-}
-
-.score{
-    font-size:40px;
-    text-align:center;
-    font-weight:bold;
-    margin:10px 0;
-}
-
-.score-label{
-    text-align:center;
-    color:#8e9bbd;
-    font-size:11px;
-}
-
-.filters{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:9px;
-}
-
-.filter{
-    background:#0d142d;
-    border:1px solid #26345f;
-    border-radius:10px;
-    padding:11px;
-}
-
-.filter-title{
-    color:#8e9bbd;
-    font-size:10px;
-    margin-bottom:6px;
-}
-
-.filter-value{
-    font-weight:bold;
-    font-size:13px;
-}
-
-.checklist{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-}
-
-.check{
-    background:#0d142d;
-    border:1px solid #26345f;
-    border-radius:9px;
-    padding:9px 11px;
-    font-size:12px;
-}
-
-.check-pass{
-    border-color:#24794d;
-}
-
-.check-fail{
-    border-color:#78343d;
-}
-
-.notice{
-    margin-top:10px;
-    padding:10px 12px;
-    border-radius:9px;
-    font-size:11px;
-    display:none;
-}
-
-.notice.error{
-    background:#2a1117;
-    border:1px solid #71333e;
-    color:#ff8d99;
-}
-
-.notice.success{
-    background:#10261b;
-    border:1px solid #28734c;
-    color:#72e4a2;
-}
-
-.small{
-    color:#8e9bbd;
-    font-size:10px;
-    line-height:1.5;
-}
-
-/* ================================
-   PD ZONE
-================================ */
-
-.pd-box{
-    margin-top:4px;
-    background:#0d142d;
-    border:1px solid #26345f;
-    border-radius:10px;
-    padding:11px;
-}
-
-.pd-zone{
-    font-size:16px;
-    font-weight:bold;
-    margin-bottom:9px;
-}
-
-.pd-row{
-    display:flex;
-    justify-content:space-between;
-    padding:5px 0;
-    border-bottom:1px solid rgba(255,255,255,.05);
-}
-
-.pd-row:last-child{
-    border-bottom:none;
-}
-
-.pd-label{
-    color:#8e9bbd;
-    font-size:11px;
-}
-
-.pd-value{
-    font-size:12px;
-    font-weight:bold;
-}
-
-/* ================================
-   NOTIFICATION BUTTON
-================================ */
-
-.notification-btn{
-    width:100%;
-    border:none;
-    border-radius:9px;
-    padding:10px;
-    margin-top:10px;
-    background:#182b55;
-    border:1px solid #31518e;
+button{
+    border:1px solid #315dc5;
+    background:#111f45;
     color:#fff;
-    font-weight:bold;
+    border-radius:9px;
+    padding:9px 13px;
+    font-weight:700;
     cursor:pointer;
 }
 
-.notification-btn:hover{
-    background:#213968;
+button:hover{
+    background:#183064;
 }
 
-.notification-btn:disabled{
-    opacity:.55;
-    cursor:not-allowed;
+.notice{
+    color:#8592b0;
+    font-size:11px;
+    line-height:1.5;
 }
 
-/* ================================
-   RESPONSIVE
-================================ */
+.sop{
+    display:grid;
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+    gap:8px;
+}
 
-@media(max-width:1000px){
+.sopItem{
+    background:#0b1229;
+    border:1px solid #202c50;
+    border-radius:10px;
+    padding:10px;
+}
+
+.sopItem .top{
+    font-size:11px;
+    color:#7986a7;
+    margin-bottom:4px;
+}
+
+.sopItem .bottom{
+    font-weight:800;
+    font-size:13px;
+}
+
+@media(max-width:1100px){
 
     .grid{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
     }
 
     .full{
         grid-column:1/-1;
     }
 
-    .filters{
-        grid-template-columns:repeat(2,1fr);
+    .half{
+        grid-column:span 2;
     }
-
 }
 
-@media(max-width:700px){
+@media(max-width:650px){
 
     .container{
-        padding:9px;
+        padding:12px;
     }
 
     .grid{
         grid-template-columns:1fr;
     }
 
+    .half,
     .full{
-        grid-column:auto;
+        grid-column:1;
     }
 
-    .chart{
+    .trade{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .tv{
         height:420px;
     }
 
-    .header{
-        padding:14px;
+    .big{
+        font-size:22px;
     }
-
-    .logo{
-        font-size:18px;
-    }
-
-    .status{
-        font-size:10px;
-    }
-
 }
 
 </style>
@@ -350,17 +293,19 @@ body{
 
 <div class="container">
 
-<!-- HEADER -->
-
 <div class="header">
 
-    <div class="logo">
-        👑 Bosque <span>Forex AI</span>
-    </div>
+<div>
+<div class="logo">👑 Bosque Forex AI</div>
 
-    <div id="engineStatus" class="status">
-        CONNECTING...
-    </div>
+<div class="sub">
+XAUUSD Scalping Engine • H1 → M15 → M5
+</div>
+</div>
+
+<div class="status" id="engineStatus">
+Connecting...
+</div>
 
 </div>
 
@@ -368,2768 +313,1401 @@ body{
 <div class="grid">
 
 
-<!-- MARKET INTELLIGENCE -->
+<!-- MARKET REGIME -->
 
 <div class="card">
 
-    <h2>📊 Market Intelligence</h2>
+<h3>Market Regime</h3>
 
-    <div class="metric">
-        <div class="metric-label">Score</div>
-        <div id="score" class="metric-value">--</div>
-    </div>
+<div class="big" id="regime">
+--
+</div>
 
-    <div class="metric">
-        <div class="metric-label">Final Signal</div>
-        <div id="finalSignal" class="metric-value">WAIT</div>
-    </div>
+<div class="row">
+<span class="label">H1 Direction</span>
+<span class="value" id="h1Direction">--</span>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">Opportunity</div>
-        <div id="opportunityType" class="metric-value">--</div>
-    </div>
+<div class="row">
+<span class="label">Condition</span>
+<span class="value" id="marketCondition">--</span>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">Session</div>
-        <div id="session" class="metric-value">--</div>
-    </div>
-
-    <div class="metric">
-        <div class="metric-label">Market Mode</div>
-        <div id="marketMode" class="metric-value">--</div>
-    </div>
-
-    <div class="metric">
-        <div class="metric-label">Latest Price</div>
-        <div id="latestPrice" class="metric-value">--</div>
-    </div>
-
-    <div class="metric" style="display:block;">
-
-        <div class="metric-label" style="margin-bottom:8px;">
-            PD Zone
-        </div>
-
-        <div class="pd-box">
-
-            <div id="pdZone" class="pd-zone neutral">
-                --
-            </div>
-
-            <div class="pd-row">
-                <span class="pd-label">High</span>
-                <span id="pdHigh" class="pd-value">--</span>
-            </div>
-
-            <div class="pd-row">
-                <span class="pd-label">Equilibrium</span>
-                <span id="pdEquilibrium" class="pd-value">--</span>
-            </div>
-
-            <div class="pd-row">
-                <span class="pd-label">Low</span>
-                <span id="pdLow" class="pd-value">--</span>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="metric">
-        <div class="metric-label">Last Engine Update</div>
-        <div id="lastUpdate" class="metric-value">--</div>
-    </div>
-
-    <div id="errorBox" class="notice error"></div>
-    <div id="successBox" class="notice success"></div>
+<div class="row">
+<span class="label">Session</span>
+<span class="value" id="session">--</span>
+</div>
 
 </div>
 
 
-<!-- SIGNAL INTELLIGENCE -->
+<!-- VOLATILITY -->
 
 <div class="card">
 
-    <h2>🎯 Signal Intelligence</h2>
+<h3>Volatility Engine</h3>
 
-    <div id="signalBox" class="signal wait">
-        WAIT
-    </div>
+<div class="big" id="volatility">
+--
+</div>
 
-    <div class="metric">
-        <div class="metric-label">Setup</div>
-        <div id="setup" class="metric-value">--</div>
-    </div>
+<div class="row">
+<span class="label">ATR</span>
+<span class="value" id="atr">--</span>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">Direction</div>
-        <div id="signalDirection" class="metric-value">--</div>
-    </div>
-
-    <div class="metric">
-        <div class="metric-label">Opportunity Score</div>
-        <div id="signalScore" class="metric-value">--</div>
-    </div>
-
-    <div class="metric">
-        <div class="metric-label">Potential</div>
-        <div id="signalPotential" class="metric-value">--</div>
-    </div>
+<div class="row">
+<span class="label">ATR Pips</span>
+<span class="value" id="atrPips">--</span>
+</div>
 
 </div>
 
 
-<!-- AI CONFIDENCE -->
+<!-- PRICE -->
 
 <div class="card">
 
-    <h2>🧠 AI Confidence</h2>
+<h3>Market Price</h3>
 
-    <div id="bigScore" class="score">
-        --
-    </div>
+<div class="big" id="price">
+--
+</div>
 
-    <div class="score-label">
-        BOSQUE SCALPING SCORE
-    </div>
+<div class="row">
+<span class="label">Updated</span>
+<span class="value" id="updated">
+--
+</span>
+</div>
 
-    <div
-        id="scoreConfidence"
-        class="small"
-        style="text-align:center;margin-top:12px;"
-    >
-        Waiting for engine data...
-    </div>
+<div class="row">
+<span class="label">Symbol</span>
+<span class="value">XAU/USD</span>
+</div>
 
 </div>
 
 
-<!-- TRADINGVIEW -->
+<!-- BROWSER ALERT -->
 
-<div class="card full chart">
+<div class="card">
 
-    <div
-        class="chart-inner"
-        id="tradingview_chart"
-    ></div>
+<h3>Browser Alerts</h3>
+
+<div class="big" id="notificationStatus">
+--
+</div>
+
+<br>
+
+<button onclick="enableNotifications()">
+Enable Browser Alerts
+</button>
+
+<p class="notice">
+Browser alerts are backup notifications.
+Telegram remains the main alert channel.
+</p>
 
 </div>
 
 
-<!-- MULTI TIMEFRAME -->
+<!-- SIGNAL -->
+
+<div class="card signal full">
+
+<h3>Signal Intelligence</h3>
+
+<div class="signalTitle" id="signalTitle">
+NO VALID SETUP
+</div>
+
+<div class="muted">
+Opportunity
+</div>
+
+<div id="opportunity">
+--
+</div>
+
+<br>
+
+<div class="signalScore">
+<span id="score">0</span>/100
+</div>
+
+<div class="muted">
+AI Confidence Score
+</div>
+
+</div>
+
+
+<!-- PD -->
 
 <div class="card">
 
-    <h2>🕐 Multi-Timeframe</h2>
+<h3>Premium / Discount</h3>
 
-    <div class="metric">
-        <div class="metric-label">H1 Bias</div>
-        <div id="h1Bias" class="metric-value">--</div>
-    </div>
+<div class="row">
+<span class="label">Zone</span>
+<span class="value" id="pdZone">--</span>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">H1 Structure</div>
-        <div id="h1Structure" class="metric-value">--</div>
-    </div>
+<div class="row">
+<span class="label">Equilibrium</span>
+<span class="value" id="pdEq">--</span>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">M15 Trend</div>
-        <div id="m15Trend" class="metric-value">--</div>
-    </div>
+<div class="row">
+<span class="label">High</span>
+<span class="value" id="pdHigh">--</span>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">M15 Structure</div>
-        <div id="m15Structure" class="metric-value">--</div>
-    </div>
+<div class="row">
+<span class="label">Low</span>
+<span class="value" id="pdLow">--</span>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">M15 Range</div>
-        <div id="m15Range" class="metric-value">--</div>
-    </div>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">M15 Liquidity</div>
-        <div id="m15Liquidity" class="metric-value">--</div>
-    </div>
 
-    <div class="metric">
-        <div class="metric-label">M5 Structure</div>
-        <div id="m5Structure" class="metric-value">--</div>
-    </div>
+<!-- LIQUIDITY -->
 
-    <div class="metric">
-        <div class="metric-label">M5 Confirmation</div>
-        <div id="m5Confirmation" class="metric-value">--</div>
-    </div>
+<div class="card">
 
-    <div class="metric">
-        <div class="metric-label">M5 Momentum</div>
-        <div id="m5Momentum" class="metric-value">--</div>
-    </div>
+<h3>Liquidity Map</h3>
+
+<div class="row">
+<span class="label">Buy-side Sweep</span>
+<span class="value" id="buySweep">--</span>
+</div>
+
+<div class="row">
+<span class="label">Sell-side Sweep</span>
+<span class="value" id="sellSweep">--</span>
+</div>
+
+<div class="row">
+<span class="label">Level</span>
+<span class="value" id="sweepLevel">--</span>
+</div>
+
+<div class="row">
+<span class="label">Status</span>
+<span class="value" id="liquidityStatus">--</span>
+</div>
+
+</div>
+
+
+<!-- NEWS -->
+
+<div class="card">
+
+<h3>News Filter</h3>
+
+<div class="big" id="newsStatus">
+--
+</div>
+
+<div class="row">
+<span class="label">High Impact</span>
+<span class="value" id="highImpact">--</span>
+</div>
+
+<div class="row">
+<span class="label">Minutes</span>
+<span class="value" id="newsMinutes">--</span>
+</div>
+
+<div class="row">
+<span class="label">Filter</span>
+<span class="value" id="newsFilter">--</span>
+</div>
+
+</div>
+
+
+<!-- SESSION -->
+
+<div class="card">
+
+<h3>Session Filter</h3>
+
+<div class="big" id="sessionFilter">
+--
+</div>
+
+<div class="row">
+<span class="label">Current</span>
+<span class="value" id="session2">--</span>
+</div>
+
+<div class="row">
+<span class="label">Preferred</span>
+<span class="value">
+London / New York
+</span>
+</div>
+
+</div>
+
+
+<!-- MTF -->
+
+<div class="card half">
+
+<h3>Multi-Timeframe Analysis</h3>
+
+<div class="row">
+<span class="label">H1</span>
+<span class="value" id="mtfH1">--</span>
+</div>
+
+<div class="row">
+<span class="label">M15</span>
+<span class="value" id="mtfM15">--</span>
+</div>
+
+<div class="row">
+<span class="label">M5</span>
+<span class="value" id="mtfM5">--</span>
+</div>
 
 </div>
 
 
 <!-- TRADE PLAN -->
 
-<div class="card">
+<div class="card half">
 
-    <h2>📋 Trade Plan</h2>
+<h3>Trade Plan</h3>
 
-    <div class="metric">
-        <div class="metric-label">Direction</div>
-        <div id="planDirection" class="metric-value">WAIT</div>
-    </div>
+<div class="trade">
 
-    <div class="metric">
-        <div class="metric-label">Entry</div>
-        <div id="entry" class="metric-value">--</div>
-    </div>
+<div class="tradeBox">
+<small>ENTRY</small>
+<strong id="entry">--</strong>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">Stop Loss</div>
-        <div id="sl" class="metric-value">--</div>
-    </div>
+<div class="tradeBox">
+<small>STOP LOSS</small>
+<strong id="sl">--</strong>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">TP1</div>
-        <div id="tp1" class="metric-value">--</div>
-    </div>
+<div class="tradeBox">
+<small>TP1</small>
+<strong id="tp1">--</strong>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">TP2</div>
-        <div id="tp2" class="metric-value">--</div>
-    </div>
+<div class="tradeBox">
+<small>TP2</small>
+<strong id="tp2">--</strong>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">TP3</div>
-        <div id="tp3" class="metric-value">--</div>
-    </div>
+<div class="tradeBox">
+<small>TP3</small>
+<strong id="tp3">--</strong>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">Risk</div>
-        <div id="riskPips" class="metric-value">--</div>
-    </div>
+<div class="tradeBox">
+<small>RR TP2</small>
+<strong id="rr">--</strong>
+</div>
 
-    <div class="metric">
-        <div class="metric-label">R:R</div>
-        <div id="rrRange" class="metric-value">--</div>
-    </div>
+</div>
 
 </div>
 
 
-<!-- PRICE POTENTIAL -->
+<!-- RISK -->
 
 <div class="card">
 
-    <h2>📈 Price Potential</h2>
+<h3>Risk Engine</h3>
 
-    <div
-        id="potentialRange"
-        class="score"
-        style="font-size:28px;"
-    >
-        --
-    </div>
+<div class="big" id="riskStatus">
+--
+</div>
 
-    <div class="score-label">
-        ESTIMATED POTENTIAL
-    </div>
+<div class="row">
+<span class="label">Risk</span>
+<span class="value" id="riskPips">--</span>
+</div>
 
-    <div
-        id="potentialConfidence"
-        class="small"
-        style="text-align:center;margin-top:12px;"
-    >
-        --
-    </div>
+<div class="row">
+<span class="label">Risk Level</span>
+<span class="value" id="riskLevel">--</span>
+</div>
+
+<div class="row">
+<span class="label">Allowed</span>
+<span class="value">
+25–80 pips
+</span>
+</div>
 
 </div>
 
 
-<!-- ENTRY VALIDATION -->
+<!-- INVALIDATION -->
+
+<div class="card">
+
+<h3>Trade Invalidation</h3>
+
+<div class="big" id="invalidation">
+--
+</div>
+
+<div id="invalidationList"
+class="notice">
+--
+</div>
+
+</div>
+
+
+<!-- SOP -->
 
 <div class="card full">
 
-    <h2>🛡️ Entry Validation</h2>
+<h3>Mandatory SOP</h3>
 
-    <div class="filters">
+<div class="sop">
 
-        <div class="filter">
-            <div class="filter-title">SCORE</div>
-            <div id="filterScore" class="filter-value">--</div>
-        </div>
+<div class="sopItem">
+<div class="top">HIGH IMPACT NEWS</div>
+<div class="bottom" id="sopNews">
+--
+</div>
+</div>
 
-        <div class="filter">
-            <div class="filter-title">M15 SETUP</div>
-            <div id="filterSetup" class="filter-value">--</div>
-        </div>
+<div class="sopItem">
+<div class="top">SESSION</div>
+<div class="bottom" id="sopSession">
+--
+</div>
+</div>
 
-        <div class="filter">
-            <div class="filter-title">M5 CONFIRMATION</div>
-            <div id="filterConfirmation" class="filter-value">--</div>
-        </div>
+<div class="sopItem">
+<div class="top">RISK</div>
+<div class="bottom" id="sopRisk">
+--
+</div>
+</div>
 
-        <div class="filter">
-            <div class="filter-title">RISK</div>
-            <div id="filterRisk" class="filter-value">--</div>
-        </div>
+<div class="sopItem">
+<div class="top">FRESH ZONE</div>
+<div class="bottom" id="sopZone">
+--
+</div>
+</div>
 
-        <div class="filter">
-            <div class="filter-title">TP1</div>
-            <div id="filterTP1" class="filter-value">--</div>
-        </div>
+<div class="sopItem">
+<div class="top">M15 SETUP</div>
+<div class="bottom" id="sopM15">
+--
+</div>
+</div>
 
-        <div class="filter">
-            <div class="filter-title">TP2 RR</div>
-            <div id="filterRR" class="filter-value">--</div>
-        </div>
+<div class="sopItem">
+<div class="top">M5 CONFIRMATION</div>
+<div class="bottom" id="sopM5">
+--
+</div>
+</div>
 
-        <div class="filter">
-            <div class="filter-title">ROOM</div>
-            <div id="filterRoom" class="filter-value">--</div>
-        </div>
-
-    </div>
+</div>
 
 </div>
 
 
-<!-- CONFIRMATION -->
+<!-- FILTERS -->
 
-<div class="card">
+<div class="card full">
 
-    <h2>✅ Confirmation Checklist</h2>
+<h3>Entry Validation Gates</h3>
 
-    <div id="confirmationList" class="checklist">
+<div class="sop">
 
-        <div class="check">
-            Waiting for engine data...
-        </div>
+<div class="sopItem">
+<div class="top">SCORE ≥ 70</div>
+<div class="bottom" id="gateScore">--</div>
+</div>
 
-    </div>
+<div class="sopItem">
+<div class="top">M15 SETUP</div>
+<div class="bottom" id="gateSetup">--</div>
+</div>
+
+<div class="sopItem">
+<div class="top">M5 CONFIRMATION</div>
+<div class="bottom" id="gateM5">--</div>
+</div>
+
+<div class="sopItem">
+<div class="top">RISK</div>
+<div class="bottom" id="gateRisk">--</div>
+</div>
+
+<div class="sopItem">
+<div class="top">RR ≥ 1:2</div>
+<div class="bottom" id="gateRR">--</div>
+</div>
+
+<div class="sopItem">
+<div class="top">NEWS</div>
+<div class="bottom" id="gateNews">--</div>
+</div>
+
+</div>
 
 </div>
 
 
-<!-- NOTIFICATION -->
+<!-- EXPECTANCY -->
 
-<div class="card">
+<div class="card half">
 
-    <h2>🔔 Notifications</h2>
+<h3>Expectancy Tracking</h3>
 
-    <div class="metric">
+<div class="row">
+<span class="label">Status</span>
+<span class="value" id="expectStatus">--</span>
+</div>
 
-        <div class="metric-label">
-            Browser Alerts
-        </div>
+<div class="row">
+<span class="label">Trades</span>
+<span class="value" id="expectTrades">--</span>
+</div>
 
-        <div
-            id="notificationStatus"
-            class="metric-value"
-        >
-            Checking...
-        </div>
+<div class="row">
+<span class="label">Win Rate</span>
+<span class="value" id="winRate">--</span>
+</div>
 
-    </div>
+<div class="row">
+<span class="label">Average R</span>
+<span class="value" id="avgR">--</span>
+</div>
 
-    <button
-        id="notificationButton"
-        class="notification-btn"
-        onclick="enableBrowserNotifications()"
-    >
-        🔔 Enable Browser Alerts
-    </button>
+<div class="row">
+<span class="label">Profit Factor</span>
+<span class="value" id="profitFactor">--</span>
+</div>
 
-    <div
-        class="small"
-        style="margin-top:10px;"
-    >
-        Telegram remains the main server-side alert.
-        Browser alerts are a backup while this dashboard
-        is open.
-    </div>
+</div>
+
+
+<!-- BACKTEST -->
+
+<div class="card half">
+
+<h3>Backtest / Validation</h3>
+
+<div class="row">
+<span class="label">Status</span>
+<span class="value" id="backtestStatus">--</span>
+</div>
+
+<div class="row">
+<span class="label">Development</span>
+<span class="value" id="devPeriod">--</span>
+</div>
+
+<div class="row">
+<span class="label">Out of Sample</span>
+<span class="value" id="oosPeriod">--</span>
+</div>
+
+<div class="row">
+<span class="label">Forward</span>
+<span class="value" id="forwardPeriod">--</span>
+</div>
+
+</div>
+
+
+<!-- TRADINGVIEW -->
+
+<div class="card full">
+
+<h3>TradingView — XAUUSD</h3>
+
+<div class="tv">
+
+<iframe
+src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_xauusd&symbol=OANDA%3AXAUUSD&interval=5&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=0&toolbarbg=f1f3f6&theme=dark&style=1&timezone=Asia%2FKuala_Lumpur&withdateranges=1&hideideas=1&studies=[]"
+allowtransparency="true"
+scrolling="no">
+</iframe>
+
+</div>
+
+</div>
+
+
+<div class="card full">
+
+<p class="notice">
+BOSQUE FOREX AI is a manual decision-support engine.
+Signal confirmation remains the trader's responsibility.
+Telegram is the primary alert channel.
+Browser notification is a secondary backup.
+No trade should be taken solely from the score.
+</p>
 
 </div>
 
 
 </div>
+
 </div>
-
-
-<script
-    type="text/javascript"
-    src="https://s3.tradingview.com/tv.js">
-</script>
 
 
 <script>
 
-/* =========================================================
-   BOSQUE FOREX AI
-   XAUUSD SCALPING DASHBOARD
-   ========================================================= */
+const DATA_URL = "./dashboard_data.json";
+
+const MIN_SCORE = 70;
+
+let previousSignalKey =
+localStorage.getItem(
+    "bosque_last_browser_signal"
+);
 
 
-/* ================================
-   SETTINGS
-================================ */
+function text(value){
 
-const DATA_URL =
-    "./dashboard_data.json";
-
-const PIP_SIZE =
-    0.10;
-
-/*
-   IMPORTANT
-
-   Engine V4:
-   Score threshold = 60
-   Risk = 25 - 80 pips
-
-   Keep frontend aligned with engine.
-*/
-
-const MIN_SCORE =
-    60;
-
-const MIN_RISK_PIPS =
-    25;
-
-const MAX_RISK_PIPS =
-    80;
-
-const MIN_TP1_PIPS =
-    60;
-
-const MIN_TP2_RR =
-    2;
-
-
-/* ================================
-   HELPERS
-================================ */
-
-function $(id){
-    return document.getElementById(id);
-}
-
-
-function isObject(value){
-
-    return (
-        value !== null &&
-        typeof value === "object" &&
-        !Array.isArray(value)
-    );
-
-}
-
-
-function isEmpty(value){
-
-    return (
-        value === undefined ||
+    if(
         value === null ||
+        value === undefined ||
         value === ""
-    );
+    ){
+        return "--";
+    }
 
+    if(
+        typeof value === "object"
+    ){
+        return "--";
+    }
+
+    return String(value);
 }
 
 
-function readable(value,fallback="--"){
+function set(id,value){
 
-    if(isEmpty(value)){
-        return fallback;
+    const el =
+        document.getElementById(id);
+
+    if(el){
+        el.textContent =
+            text(value);
+    }
+}
+
+
+function status(value){
+
+    const s =
+        String(value || "")
+        .toUpperCase();
+
+    if(
+        s === "YES" ||
+        s === "PASS" ||
+        s === "VALID" ||
+        s === "TRUE" ||
+        s === "BULLISH"
+    ){
+        return "PASS";
     }
 
-
-    if(typeof value === "string"){
-        return value;
+    if(
+        s === "NO" ||
+        s === "FAIL" ||
+        s === "INVALID" ||
+        s === "FALSE" ||
+        s === "BLOCK"
+    ){
+        return "BLOCK";
     }
 
+    return text(value);
+}
 
-    if(typeof value === "number"){
 
-        return Number.isFinite(value)
-            ? String(value)
-            : fallback;
+function setStatus(id,value){
 
+    const el =
+        document.getElementById(id);
+
+    if(!el){
+        return;
     }
 
+    const s =
+        status(value);
 
-    if(typeof value === "boolean"){
-        return value ? "YES" : "NO";
+    el.textContent = s;
+
+    el.className =
+        "bottom " +
+        (
+            s === "PASS"
+                ? "pass"
+                : s === "BLOCK"
+                ? "fail"
+                : "warn"
+        );
+}
+
+
+function formatNumber(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+        return "--";
     }
 
+    const n =
+        Number(value);
 
-    if(Array.isArray(value)){
-
-        if(!value.length){
-            return fallback;
-        }
-
-        return value
-            .map(x => readable(x,""))
-            .filter(Boolean)
-            .join(" • ");
-
+    if(
+        Number.isNaN(n)
+    ){
+        return text(value);
     }
 
-
-    if(isObject(value)){
-
-        const keys = [
-            "display",
-            "label",
-            "status",
-            "value",
-            "name",
-            "type",
-            "direction",
-            "signal",
-            "bias",
-            "trend",
-            "structure",
-            "confirmation",
-            "momentum",
-            "condition",
-            "message",
-            "reason"
-        ];
+    return n.toFixed(2);
+}
 
 
-        for(const key of keys){
+function formatDate(value){
 
-            if(
-                Object.prototype.hasOwnProperty.call(
-                    value,
-                    key
-                )
-            ){
+    if(!value){
+        return "--";
+    }
 
-                const result =
-                    readable(
-                        value[key],
-                        ""
-                    );
+    try{
 
-                if(result){
-                    return result;
+        return new Date(value)
+            .toLocaleString(
+                "en-MY",
+                {
+                    timeZone:
+                        "Asia/Kuala_Lumpur",
+                    hour12:false
                 }
-
-            }
-
-        }
-
-
-        const parts = [];
-
-
-        for(
-            const [key,val]
-            of Object.entries(value)
-        ){
-
-            if(isEmpty(val)){
-                continue;
-            }
-
-
-            if(
-                typeof val === "string" ||
-                typeof val === "number" ||
-                typeof val === "boolean"
-            ){
-
-                parts.push(
-                    key
-                        .replaceAll("_"," ")
-                        .replace(
-                            /\b\w/g,
-                            c => c.toUpperCase()
-                        )
-                    + ": " +
-                    readable(val,"")
-                );
-
-            }
-
-        }
-
-
-        return parts.length
-            ? parts.join(" • ")
-            : fallback;
-
-    }
-
-
-    return fallback;
-
-}
-
-
-function getValue(
-    source,
-    keys,
-    fallback=null
-){
-
-    if(!source){
-        return fallback;
-    }
-
-
-    if(!Array.isArray(keys)){
-        keys = [keys];
-    }
-
-
-    for(const key of keys){
-
-        const parts =
-            key.split(".");
-
-
-        let current =
-            source;
-
-
-        let found =
-            true;
-
-
-        for(const part of parts){
-
-            if(
-                current === null ||
-                current === undefined ||
-                !Object.prototype.hasOwnProperty.call(
-                    current,
-                    part
-                )
-            ){
-
-                found = false;
-                break;
-
-            }
-
-
-            current =
-                current[part];
-
-        }
-
-
-        if(
-            found &&
-            current !== undefined &&
-            current !== null
-        ){
-
-            return current;
-
-        }
-
-    }
-
-
-    return fallback;
-
-}
-
-
-/* ================================
-   NORMALISE DATA
-================================ */
-
-function normaliseData(raw){
-
-    if(!raw || typeof raw !== "object"){
-        return {};
-    }
-
-
-    const base =
-        isObject(raw.analysis)
-            ? raw.analysis
-            : (
-                isObject(raw.data)
-                    ? raw.data
-                    : raw
             );
 
+    }catch(e){
 
-    return {
-
-        raw:raw,
-
-        root:base,
-
-        timestamp:getValue(
-            base,
-            [
-                "timestamp",
-                "last_update",
-                "updated_at",
-                "time"
-            ]
-        ),
-
-        price:getValue(
-            base,
-            [
-                "price",
-                "latest_price",
-                "last_price",
-                "current_price"
-            ]
-        ),
-
-        session:getValue(
-            base,
-            [
-                "session",
-                "market_session"
-            ]
-        ),
-
-        marketMode:getValue(
-            base,
-            [
-                "market_mode",
-                "marketMode",
-                "mode",
-                "market.condition"
-            ]
-        ),
-
-        pd:getValue(
-            base,
-            [
-                "pd",
-                "pd_zone",
-                "premium_discount"
-            ],
-            {}
-        ),
-
-        h1:getValue(
-            base,
-            [
-                "h1",
-                "H1"
-            ],
-            {}
-        ),
-
-        m15:getValue(
-            base,
-            [
-                "m15",
-                "M15"
-            ],
-            {}
-        ),
-
-        m5:getValue(
-            base,
-            [
-                "m5",
-                "M5"
-            ],
-            {}
-        ),
-
-        opportunity:getValue(
-            base,
-            [
-                "opportunity",
-                "signal",
-                "setup"
-            ],
-            {}
-        ),
-
-        plan:getValue(
-            base,
-            [
-                "plan",
-                "trade_plan",
-                "tradePlan"
-            ],
-            {}
-        ),
-
-        potential:getValue(
-            base,
-            [
-                "potential",
-                "price_potential"
-            ],
-            {}
-
-        )
-
-    };
-
-}
-
-
-/* ================================
-   SCORE
-================================ */
-
-function getScore(d){
-
-    const value =
-        getValue(
-            d.root,
-            [
-                "score",
-                "opportunity.score",
-                "signal.score"
-            ]
-        );
-
-
-    const number =
-        Number(value);
-
-
-    return Number.isFinite(number)
-        ? number
-        : 0;
-
-}
-
-
-/* ================================
-   DIRECTION
-================================ */
-
-function getDirection(d){
-
-    const value =
-        getValue(
-            d.root,
-            [
-                "direction",
-                "final_signal",
-                "finalSignal",
-                "signal_direction",
-                "opportunity.direction",
-                "opportunity.signal",
-                "plan.direction"
-            ]
-        );
-
-
-    const text =
-        readable(
-            value,
-            "WAIT"
-        ).toUpperCase();
-
-
-    if(
-        text.includes("BUY") ||
-        text.includes("LONG")
-    ){
-
-        return "BUY";
-
-    }
-
-
-    if(
-        text.includes("SELL") ||
-        text.includes("SHORT")
-    ){
-
-        return "SELL";
-
-    }
-
-
-    return "WAIT";
-
-}
-
-
-/* ================================
-   OPPORTUNITY
-================================ */
-
-function getOpportunityType(d){
-
-    return readable(
-        getValue(
-            d.root,
-            [
-                "opportunity.type",
-                "opportunity.name",
-                "opportunity.setup",
-                "opportunity.opportunity_type",
-                "opportunity_type",
-                "setup_type",
-                "setup"
-            ]
-        ),
-        "NO VALID SETUP"
-    );
-
-}
-
-
-/* ================================
-   BOOLEAN
-================================ */
-
-function toBool(value){
-
-    if(typeof value === "boolean"){
         return value;
-    }
-
-
-    if(typeof value === "number"){
-        return value > 0;
-    }
-
-
-    if(typeof value === "string"){
-
-        const text =
-            value
-                .trim()
-                .toUpperCase();
-
-
-        if([
-            "TRUE",
-            "YES",
-            "PASS",
-            "PASSED",
-            "VALID",
-            "OK",
-            "CONFIRMED",
-            "READY"
-        ].includes(text)){
-
-            return true;
-
-        }
-
-
-        if([
-            "FALSE",
-            "NO",
-            "FAIL",
-            "FAILED",
-            "INVALID",
-            "WAIT",
-            "NONE"
-        ].includes(text)){
-
-            return false;
-
-        }
 
     }
-
-
-    return null;
-
 }
 
 
-/* ================================
-   PRICE / PIPS
-================================ */
+function normalise(d){
 
-function getPrice(d,keys){
-
-    const value =
-        getValue(
-            d.plan,
-            keys
-        );
-
-
-    const number =
-        Number(value);
-
-
-    return Number.isFinite(number)
-        ? number
-        : null;
-
-}
-
-
-function priceToPips(distance){
-
-    if(
-        !Number.isFinite(distance) ||
-        distance < 0
-    ){
-
-        return null;
-
-    }
-
-
-    return distance / PIP_SIZE;
-
-}
-
-
-/* ================================
-   RISK
-================================ */
-
-function getRiskPips(d){
-
-    const direct =
-        Number(
-            getValue(
-                d.plan,
-                [
-                    "risk_pips",
-                    "riskPips",
-                    "risk"
-                ]
-            )
-        );
-
-
-    if(Number.isFinite(direct)){
-        return direct;
-    }
-
-
-    const entry =
-        getPrice(
-            d,
-            [
-                "entry",
-                "entry_price"
-            ]
-        );
-
-
-    const sl =
-        getPrice(
-            d,
-            [
-                "sl",
-                "stop_loss",
-                "stopLoss"
-            ]
-        );
-
-
-    if(
-        entry !== null &&
-        sl !== null
-    ){
-
-        return priceToPips(
-            Math.abs(entry-sl)
-        );
-
-    }
-
-
-    return null;
-
-}
-
-
-/* ================================
-   RR
-================================ */
-
-function calculateRR(
-    entry,
-    target,
-    riskPips
-){
-
-    if(
-        entry === null ||
-        target === null ||
-        !Number.isFinite(riskPips) ||
-        riskPips <= 0
-    ){
-
-        return null;
-
-    }
-
-
-    const reward =
-        priceToPips(
-            Math.abs(target-entry)
-        );
-
-
-    return Number.isFinite(reward)
-        ? reward / riskPips
-        : null;
-
-}
-
-
-/* ================================
-   VALIDATION
-================================ */
-
-function validateTrade(d){
-
-    const score =
-        getScore(d);
-
-
-    const direction =
-        getDirection(d);
-
-
-    const risk =
-        getRiskPips(d);
-
-
-    const entry =
-        getPrice(
-            d,
-            [
-                "entry",
-                "entry_price"
-            ]
-        );
-
-
-    const tp1 =
-        getPrice(
-            d,
-            [
-                "tp1",
-                "TP1"
-            ]
-        );
-
-
-    const tp2 =
-        getPrice(
-            d,
-            [
-                "tp2",
-                "TP2"
-            ]
-        );
-
-
-    const tp3 =
-        getPrice(
-            d,
-            [
-                "tp3",
-                "TP3"
-            ]
-        );
-
-
-    const gates =
-        getValue(
-            d.root,
-            [
-                "opportunity.gates",
-                "gates",
-                "validation_gates",
-                "entry_validation_gates"
-            ],
-            {}
-        );
-
-
-    let setupGate =
-        getValue(
-            gates,
-            [
-                "m15_setup_valid",
-                "setup_valid",
-                "m15_setup",
-                "valid_setup"
-            ]
-        );
-
-
-    let confirmationGate =
-        getValue(
-            gates,
-            [
-                "m5_confirmation_valid",
-                "confirmation_valid",
-                "m5_confirmation",
-                "entry_confirmation"
-            ]
-        );
-
-
-    let riskGate =
-        getValue(
-            gates,
-            [
-                "risk_valid",
-                "valid_risk"
-            ]
-        );
-
-
-    let rrGate =
-        getValue(
-            gates,
-            [
-                "rr_valid",
-                "valid_rr"
-            ]
-        );
-
-
-    let roomGate =
-        getValue(
-            gates,
-            [
-                "room_valid",
-                "room_to_target",
-                "enough_room"
-            ]
-        );
-
-
-    if(setupGate === null){
-
-        const setup =
-            getOpportunityType(d)
-                .toUpperCase();
-
-
-        setupGate =
-            setup !== "NO VALID SETUP" &&
-            setup !== "WAIT";
-
-    }
-
-
-    if(confirmationGate === null){
-
-        const confirmation =
-            readable(
-                getValue(
-                    d.m5,
-                    [
-                        "confirmation",
-                        "candle_confirmation",
-                        "entry_confirmation"
-                    ]
-                ),
-                ""
-            )
-            .toUpperCase();
-
-
-        confirmationGate =
-            confirmation !== "" &&
-            confirmation !== "NONE" &&
-            confirmation !== "WAIT";
-
-    }
-
-
-    if(riskGate === null){
-
-        riskGate =
-            Number.isFinite(risk) &&
-            risk >= MIN_RISK_PIPS &&
-            risk <= MAX_RISK_PIPS;
-
-    }
-
-
-    const rr2 =
-        calculateRR(
-            entry,
-            tp2,
-            risk
-        );
-
-
-    if(rrGate === null){
-
-        rrGate =
-            Number.isFinite(rr2) &&
-            rr2 >= MIN_TP2_RR;
-
-    }
-
-
-    if(roomGate === null){
-
-        roomGate =
-            tp2 !== null ||
-            tp3 !== null;
-
-    }
-
-
-    const explicitValid =
-        toBool(
-            getValue(
-                d.opportunity,
-                [
-                    "valid",
-                    "is_valid",
-                    "trade_valid",
-                    "entry_valid"
-                ]
-            )
-        );
-
-
-    const scoreGate =
-        score >= MIN_SCORE;
-
-
-    let valid =
-        scoreGate &&
-        toBool(setupGate) === true &&
-        toBool(confirmationGate) === true &&
-        toBool(riskGate) === true &&
-        toBool(rrGate) === true &&
-        toBool(roomGate) === true &&
-        (
-            direction === "BUY" ||
-            direction === "SELL"
-        );
-
-
-    if(explicitValid === false){
-        valid = false;
-    }
-
+    d = d || {};
 
     return {
 
-        score,
-        direction,
-        risk,
-        entry,
-        tp1,
-        tp2,
-        tp3,
-        rr2,
+        regime:
+            d.regime ||
+            {},
 
-        scoreGate,
+        volatility:
+            d.volatility ||
+            {},
 
-        setupGate:
-            toBool(setupGate),
+        pd:
+            d.pd ||
+            {},
 
-        confirmationGate:
-            toBool(confirmationGate),
+        liquidity:
+            d.liquidity ||
+            {},
 
-        riskGate:
-            toBool(riskGate),
+        news:
+            d.news ||
+            {},
 
-        rrGate:
-            toBool(rrGate),
+        opportunity:
+            d.opportunity ||
+            {},
 
-        roomGate:
-            toBool(roomGate),
+        signal:
+            d.signal ||
+            {},
 
-        valid
+        plan:
+            d.plan ||
+            {},
+
+        h1:
+            d.h1 ||
+            {},
+
+        m15:
+            d.m15 ||
+            {},
+
+        m5:
+            d.m5 ||
+            {},
+
+        filters:
+            d.filters ||
+            {},
+
+        risk:
+            d.risk_engine ||
+            {},
+
+        invalidation:
+            d.invalidation ||
+            {},
+
+        sop:
+            d.sop ||
+            {},
+
+        expectancy:
+            d.expectancy ||
+            {},
+
+        backtest:
+            d.backtest ||
+            {},
+
+        timestamp:
+            d.engine?.timestamp ||
+            d.timestamp ||
+            null,
+
+        price:
+            d.latest_price
 
     };
 
 }
 
 
-/* ================================
-   DISPLAY
-================================ */
+function render(d){
 
-function setText(id,value){
-
-    const element =
-        $(id);
+    d =
+        normalise(d);
 
 
-    if(!element){
-        return;
-    }
+    // =====================================================
+    // HEADER
+    // =====================================================
+
+    set(
+        "engineStatus",
+        "ENGINE ONLINE"
+    );
 
 
-    element.textContent =
-        readable(
-            value,
+    set(
+        "price",
+        formatNumber(d.price)
+    );
+
+
+    set(
+        "updated",
+        formatDate(d.timestamp)
+    );
+
+
+    // =====================================================
+    // REGIME
+    // =====================================================
+
+    set(
+        "regime",
+        d.regime.type
+    );
+
+    set(
+        "h1Direction",
+        d.regime.h1_direction ||
+        d.h1.direction
+    );
+
+    set(
+        "marketCondition",
+        d.regime.type
+    );
+
+    set(
+        "session",
+        window.currentSession =
+            d.session ||
             "--"
-        );
+    );
 
-}
-
-
-function applyDirectionClass(
-    element,
-    direction
-){
-
-    if(!element){
-        return;
-    }
-
-
-    element.classList.remove(
-        "buy",
-        "sell",
-        "wait",
-        "neutral"
+    set(
+        "session2",
+        d.session ||
+        "--"
     );
 
 
-    if(direction === "BUY"){
+    // =====================================================
+    // VOLATILITY
+    // =====================================================
 
-        element.classList.add("buy");
-
-    }
-    else if(direction === "SELL"){
-
-        element.classList.add("sell");
-
-    }
-    else{
-
-        element.classList.add("wait");
-
-    }
-
-}
-
-
-/* ================================
-   FILTER
-================================ */
-
-function showFilter(
-    id,
-    passed,
-    text
-){
-
-    const element =
-        $(id);
-
-
-    if(!element){
-        return;
-    }
-
-
-    if(passed === true){
-
-        element.textContent =
-            "✅ PASS" +
-            (
-                text
-                    ? " • " + text
-                    : ""
-            );
-
-        element.className =
-            "filter-value buy";
-
-    }
-    else if(passed === false){
-
-        element.textContent =
-            "❌ FAIL" +
-            (
-                text
-                    ? " • " + text
-                    : ""
-            );
-
-        element.className =
-            "filter-value sell";
-
-    }
-    else{
-
-        element.textContent =
-            "⚪ --";
-
-        element.className =
-            "filter-value neutral";
-
-    }
-
-}
-
-
-/* ================================
-   CHECKLIST
-================================ */
-
-function addChecklistItem(
-    container,
-    label,
-    passed,
-    detail
-){
-
-    const item =
-        document.createElement("div");
-
-
-    item.className =
-        "check " +
-        (
-            passed === true
-                ? "check-pass"
-                : (
-                    passed === false
-                        ? "check-fail"
-                        : ""
-                )
-        );
-
-
-    const icon =
-        passed === true
-            ? "✅"
-            : (
-                passed === false
-                    ? "❌"
-                    : "⚪"
-            );
-
-
-    const title =
-        document.createElement("strong");
-
-
-    title.textContent =
-        icon + " " + label;
-
-
-    item.appendChild(title);
-
-
-    if(detail){
-
-        const span =
-            document.createElement("span");
-
-
-        span.textContent =
-            " • " +
-            readable(
-                detail,
-                ""
-            );
-
-
-        item.appendChild(span);
-
-    }
-
-
-    container.appendChild(item);
-
-}
-
-
-/* ================================
-   CHECKLIST RENDER
-================================ */
-
-function renderChecklist(
-    d,
-    validation
-){
-
-    const container =
-        $("confirmationList");
-
-
-    if(!container){
-        return;
-    }
-
-
-    container.innerHTML =
-        "";
-
-
-    addChecklistItem(
-        container,
-        "Score",
-        validation.scoreGate,
-        validation.score + " / 100"
+    set(
+        "volatility",
+        d.volatility.condition
     );
 
-
-    addChecklistItem(
-        container,
-        "M15 Setup",
-        validation.setupGate,
-        getOpportunityType(d)
-    );
-
-
-    const liquidity =
-        getValue(
-            d.m15,
-            [
-                "liquidity",
-                "liquidity_behaviour",
-                "liquidity_behavior",
-                "sweep"
-            ]
-        );
-
-
-    addChecklistItem(
-        container,
-        "M15 Liquidity",
-        liquidity
-            ? readable(
-                liquidity,
-                ""
-              ).toUpperCase() !== "NONE"
-            : null,
-        readable(
-            liquidity,
-            "--"
+    set(
+        "atr",
+        formatNumber(
+            d.volatility.atr
         )
     );
 
-
-    const m5Confirmation =
-        getValue(
-            d.m5,
-            [
-                "confirmation",
-                "candle_confirmation",
-                "entry_confirmation"
-            ]
-        );
-
-
-    addChecklistItem(
-        container,
-        "M5 Confirmation",
-        validation.confirmationGate,
-        readable(
-            m5Confirmation,
-            "--"
-        )
-    );
-
-
-    addChecklistItem(
-        container,
-        "Risk",
-        validation.riskGate,
-        validation.risk !== null
-            ? validation.risk.toFixed(1) + " pips"
+    set(
+        "atrPips",
+        d.volatility.atr_pips !== undefined
+            ? d.volatility.atr_pips +
+              " pips"
             : "--"
     );
 
 
-    addChecklistItem(
-        container,
-        "TP2 RR",
-        validation.rrGate,
-        validation.rr2 !== null
-            ? "1:" + validation.rr2.toFixed(2)
-            : "--"
-    );
-
-
-    addChecklistItem(
-        container,
-        "Room",
-        validation.roomGate,
-        validation.roomGate
-            ? "Available"
-            : "--"
-    );
-
-}
-
-
-/* ================================
-   PD ZONE
-================================ */
-
-function renderPD(pd){
-
-    const zone =
-        readable(
-            getValue(
-                pd,
-                [
-                    "zone",
-                    "status",
-                    "value"
-                ]
-            ),
-            "--"
-        ).toUpperCase();
-
-
-    const high =
-        Number(
-            getValue(
-                pd,
-                [
-                    "high",
-                    "range_high"
-                ]
-            )
-        );
-
-
-    const equilibrium =
-        Number(
-            getValue(
-                pd,
-                [
-                    "equilibrium",
-                    "eq",
-                    "mid"
-                ]
-            )
-        );
-
-
-    const low =
-        Number(
-            getValue(
-                pd,
-                [
-                    "low",
-                    "range_low"
-                ]
-            )
-        );
-
-
-    const zoneElement =
-        $("pdZone");
-
-
-    if(zoneElement){
-
-        zoneElement.textContent =
-            zone;
-
-        zoneElement.classList.remove(
-            "buy",
-            "sell",
-            "wait",
-            "neutral"
-        );
-
-
-        if(zone.includes("DISCOUNT")){
-
-            zoneElement.classList.add("buy");
-
-        }
-        else if(zone.includes("PREMIUM")){
-
-            zoneElement.classList.add("sell");
-
-        }
-        else{
-
-            zoneElement.classList.add("neutral");
-
-        }
-
-    }
-
-
-    setText(
-        "pdHigh",
-        Number.isFinite(high)
-            ? high.toFixed(2)
-            : "--"
-    );
-
-
-    setText(
-        "pdEquilibrium",
-        Number.isFinite(equilibrium)
-            ? equilibrium.toFixed(2)
-            : "--"
-    );
-
-
-    setText(
-        "pdLow",
-        Number.isFinite(low)
-            ? low.toFixed(2)
-            : "--"
-    );
-
-}
-
-
-/* ================================
-   DASHBOARD
-================================ */
-
-function renderDashboard(d){
-
-    const validation =
-        validateTrade(d);
-
-
-    const direction =
-        validation.direction;
-
-
-    const score =
-        validation.score;
-
+    // =====================================================
+    // SIGNAL
+    // =====================================================
 
     const opportunity =
-        getOpportunityType(d);
+        d.opportunity.type ||
+        d.signal.opportunity ||
+        "NO VALID SETUP";
 
+    const score =
+        d.opportunity.score ??
+        d.signal.score ??
+        0;
 
-    const finalSignal =
-        validation.valid
-            ? direction
-            : "WAIT";
+    set(
+        "signalTitle",
+        d.signal.active
+            ? (
+                d.signal.direction +
+                " " +
+                opportunity
+            )
+            : opportunity
+    );
 
+    set(
+        "opportunity",
+        opportunity
+    );
 
-    /* MARKET */
-
-    setText(
+    set(
         "score",
-        score > 0
-            ? score + " / 100"
-            : "--"
+        score
     );
 
 
-    setText(
-        "finalSignal",
-        finalSignal
+    // =====================================================
+    // PD
+    // =====================================================
+
+    set(
+        "pdZone",
+        d.pd.zone
     );
 
-
-    applyDirectionClass(
-        $("finalSignal"),
-        finalSignal
+    set(
+        "pdEq",
+        formatNumber(
+            d.pd.equilibrium
+        )
     );
 
-
-    setText(
-        "opportunityType",
-        opportunity
+    set(
+        "pdHigh",
+        formatNumber(
+            d.pd.high
+        )
     );
 
-
-    setText(
-        "session",
-        d.session
-    );
-
-
-    setText(
-        "marketMode",
-        d.marketMode
-    );
-
-
-    setText(
-        "latestPrice",
-        d.price !== null
-            ? Number(d.price).toFixed(2)
-            : "--"
-    );
-
-
-    renderPD(d.pd);
-
-
-    /* SIGNAL */
-
-    const signalBox =
-        $("signalBox");
-
-
-    if(signalBox){
-
-        signalBox.textContent =
-            finalSignal;
-
-        applyDirectionClass(
-            signalBox,
-            finalSignal
-        );
-
-    }
-
-
-    setText(
-        "setup",
-        opportunity
-    );
-
-
-    setText(
-        "signalDirection",
-        finalSignal
-    );
-
-
-    applyDirectionClass(
-        $("signalDirection"),
-        finalSignal
-    );
-
-
-    setText(
-        "signalScore",
-        score + " / 100"
-    );
-
-
-    /* SCORE */
-
-    setText(
-        "bigScore",
-        score > 0
-            ? score
-            : "--"
-    );
-
-
-    let confidence =
-        "WAITING FOR SETUP";
-
-
-    if(
-        validation.valid &&
-        score >= 80
-    ){
-
-        confidence =
-            "HIGH CONFIDENCE • HARD GATES PASSED";
-
-    }
-    else if(
-        validation.valid
-    ){
-
-        confidence =
-            "VALID SCALPING OPPORTUNITY";
-
-    }
-    else if(score >= MIN_SCORE){
-
-        confidence =
-            "SCORE PASSED • WAITING FOR VALIDATION";
-
-    }
-    else if(score > 0){
-
-        confidence =
-            "SCANNING MARKET CONDITIONS";
-
-    }
-
-
-    setText(
-        "scoreConfidence",
-        confidence
-    );
-
-
-    /* MTF */
-
-    setText(
-        "h1Bias",
-        getValue(
-            d.h1,
-            [
-                "bias",
-                "direction",
-                "trend"
-            ]
+    set(
+        "pdLow",
+        formatNumber(
+            d.pd.low
         )
     );
 
 
-    setText(
-        "h1Structure",
-        getValue(
-            d.h1,
-            [
-                "structure",
-                "market_structure",
-                "bos"
-            ]
+    // =====================================================
+    // LIQUIDITY
+    // =====================================================
+
+    setStatus(
+        "buySweep",
+        d.liquidity.buy_side_sweep
+            ? "YES"
+            : "NO"
+    );
+
+    setStatus(
+        "sellSweep",
+        d.liquidity.sell_side_sweep
+            ? "YES"
+            : "NO"
+    );
+
+    set(
+        "sweepLevel",
+        formatNumber(
+            d.liquidity.swept_level
         )
     );
 
-
-    setText(
-        "m15Trend",
-        getValue(
-            d.m15,
-            [
-                "trend",
-                "direction",
-                "bias"
-            ]
-        )
+    set(
+        "liquidityStatus",
+        d.liquidity.description
     );
 
 
-    setText(
-        "m15Structure",
-        getValue(
-            d.m15,
-            [
-                "structure",
-                "market_structure",
-                "bos"
-            ]
-        )
+    // =====================================================
+    // NEWS
+    // =====================================================
+
+    set(
+        "newsStatus",
+        d.news.status
+    );
+
+    set(
+        "highImpact",
+        d.news.high_impact === null
+            ? "NOT PROVIDED"
+            : d.news.high_impact
+    );
+
+    set(
+        "newsMinutes",
+        d.news.minutes_to_news === null
+            ? "NOT PROVIDED"
+            : d.news.minutes_to_news
+    );
+
+    set(
+        "newsFilter",
+        d.news.filter
     );
 
 
-    setText(
-        "m15Range",
-        getValue(
-            d.m15,
-            [
-                "range",
-                "range_status",
-                "extreme",
-                "range_extreme"
-            ]
-        )
+    // =====================================================
+    // SESSION
+    // =====================================================
+
+    const sessionPass =
+        d.filters.session;
+
+    setStatus(
+        "sessionFilter",
+        sessionPass
+            ? "PASS"
+            : "BLOCK"
     );
 
 
-    setText(
-        "m15Liquidity",
-        getValue(
-            d.m15,
-            [
-                "liquidity",
-                "liquidity_behaviour",
-                "liquidity_behavior",
-                "sweep"
-            ]
-        )
+    // =====================================================
+    // MTF
+    // =====================================================
+
+    set(
+        "mtfH1",
+        d.h1.direction
+    );
+
+    set(
+        "mtfM15",
+        d.m15.setup?.opportunity ||
+        d.m15.bos ||
+        "--"
+    );
+
+    set(
+        "mtfM5",
+        d.m5.confirmation?.reason ||
+        d.m5.bos ||
+        "--"
     );
 
 
-    setText(
-        "m5Structure",
-        getValue(
-            d.m5,
-            [
-                "structure",
-                "market_structure",
-                "bos",
-                "choch"
-            ]
-        )
-    );
+    // =====================================================
+    // TRADE PLAN
+    // =====================================================
 
-
-    setText(
-        "m5Confirmation",
-        getValue(
-            d.m5,
-            [
-                "confirmation",
-                "candle_confirmation",
-                "entry_confirmation"
-            ]
-        )
-    );
-
-
-    setText(
-        "m5Momentum",
-        getValue(
-            d.m5,
-            [
-                "momentum",
-                "momentum_status"
-            ]
-        )
-    );
-
-
-    /* TRADE PLAN */
-
-    setText(
-        "planDirection",
-        validation.valid
-            ? direction
-            : "WAIT"
-    );
-
-
-    applyDirectionClass(
-        $("planDirection"),
-        finalSignal
-    );
-
-
-    const entry =
-        validation.entry;
-
-
-    const sl =
-        getPrice(
-            d,
-            [
-                "sl",
-                "stop_loss",
-                "stopLoss"
-            ]
-        );
-
-
-    const tp1 =
-        validation.tp1;
-
-
-    const tp2 =
-        validation.tp2;
-
-
-    const tp3 =
-        validation.tp3;
-
-
-    setText(
+    set(
         "entry",
-        entry !== null
-            ? entry.toFixed(2)
-            : "--"
+        formatNumber(
+            d.plan.entry
+        )
     );
 
-
-    setText(
+    set(
         "sl",
-        sl !== null
-            ? sl.toFixed(2)
-            : "--"
+        formatNumber(
+            d.plan.sl
+        )
     );
 
-
-    setText(
+    set(
         "tp1",
-        tp1 !== null
-            ? tp1.toFixed(2)
-            : "--"
+        formatNumber(
+            d.plan.tp1
+        )
     );
 
-
-    setText(
+    set(
         "tp2",
-        tp2 !== null
-            ? tp2.toFixed(2)
-            : "--"
+        formatNumber(
+            d.plan.tp2
+        )
     );
 
-
-    setText(
+    set(
         "tp3",
-        tp3 !== null
-            ? tp3.toFixed(2)
+        formatNumber(
+            d.plan.tp3
+        )
+    );
+
+    set(
+        "rr",
+        d.plan.rr_tp2 !== undefined
+            ? "1:" +
+              d.plan.rr_tp2
             : "--"
     );
 
 
-    setText(
+    // =====================================================
+    // RISK
+    // =====================================================
+
+    set(
+        "riskStatus",
+        d.risk.status
+    );
+
+    set(
         "riskPips",
-        validation.risk !== null
-            ? validation.risk.toFixed(1) + " pips"
+        d.risk.risk_pips !== null &&
+        d.risk.risk_pips !== undefined
+            ? d.risk.risk_pips +
+              " pips"
             : "--"
     );
 
-
-    const rr1 =
-        calculateRR(
-            entry,
-            tp1,
-            validation.risk
-        );
-
-
-    let rrText =
-        "--";
-
-
-    if(
-        rr1 !== null &&
-        validation.rr2 !== null
-    ){
-
-        rrText =
-            "1:" +
-            rr1.toFixed(2) +
-            " → 1:" +
-            validation.rr2.toFixed(2);
-
-    }
-    else if(validation.rr2 !== null){
-
-        rrText =
-            "1:" +
-            validation.rr2.toFixed(2);
-
-    }
-    else if(rr1 !== null){
-
-        rrText =
-            "1:" +
-            rr1.toFixed(2);
-
-    }
-
-
-    setText(
-        "rrRange",
-        rrText
+    set(
+        "riskLevel",
+        d.risk.risk_level
     );
 
 
-    /* POTENTIAL */
+    // =====================================================
+    // INVALIDATION
+    // =====================================================
 
-    let minPotential =
-        Number(
-            getValue(
-                d.potential,
-                [
-                    "min_pips",
-                    "minimum_pips",
-                    "potential_min_pips",
-                    "min"
-                ]
-            )
+    set(
+        "invalidation",
+        d.invalidation.status
+    );
+
+    const invalidationList =
+        document.getElementById(
+            "invalidationList"
         );
 
+    if(invalidationList){
 
-    let maxPotential =
-        Number(
-            getValue(
-                d.potential,
-                [
-                    "max_pips",
-                    "maximum_pips",
-                    "potential_max_pips",
-                    "max"
-                ]
-            )
-        );
+        const conditions =
+            d.invalidation.conditions ||
+            [];
 
+        invalidationList.innerHTML =
+            conditions.length
+                ? conditions
+                    .map(x =>
+                        "• " + x
+                    )
+                    .join("<br>")
+                : "--";
+    }
+
+
+    // =====================================================
+    // SOP
+    // =====================================================
+
+    setStatus(
+        "sopNews",
+        d.sop.news_filter
+    );
+
+    setStatus(
+        "sopSession",
+        d.sop.session_filter
+    );
+
+    setStatus(
+        "sopRisk",
+        d.sop.risk
+    );
+
+    setStatus(
+        "sopZone",
+        d.sop.fresh_zone
+    );
+
+    setStatus(
+        "sopM15",
+        d.sop.m15_setup
+    );
+
+    setStatus(
+        "sopM5",
+        d.sop.m5_confirmation
+    );
+
+
+    // =====================================================
+    // GATES
+    // =====================================================
+
+    setStatus(
+        "gateScore",
+        d.filters.score
+            ? "PASS"
+            : "BLOCK"
+    );
+
+    setStatus(
+        "gateSetup",
+        d.filters.setup
+            ? "PASS"
+            : "BLOCK"
+    );
+
+    setStatus(
+        "gateM5",
+        d.filters.m5_confirmation
+            ? "PASS"
+            : "BLOCK"
+    );
+
+    setStatus(
+        "gateRisk",
+        d.filters.risk
+            ? "PASS"
+            : "BLOCK"
+    );
+
+    setStatus(
+        "gateRR",
+        d.filters.rr
+            ? "PASS"
+            : "BLOCK"
+    );
+
+    setStatus(
+        "gateNews",
+        d.filters.news
+            ? "PASS"
+            : "BLOCK"
+    );
+
+
+    // =====================================================
+    // EXPECTANCY
+    // =====================================================
+
+    set(
+        "expectStatus",
+        d.expectancy.status
+    );
+
+    set(
+        "expectTrades",
+        d.expectancy.trades
+    );
+
+    set(
+        "winRate",
+        d.expectancy.win_rate !== null &&
+        d.expectancy.win_rate !== undefined
+            ? d.expectancy.win_rate + "%"
+            : "--"
+    );
+
+    set(
+        "avgR",
+        d.expectancy.average_r
+    );
+
+    set(
+        "profitFactor",
+        d.expectancy.profit_factor
+    );
+
+
+    // =====================================================
+    // BACKTEST
+    // =====================================================
+
+    set(
+        "backtestStatus",
+        d.backtest.status
+    );
+
+    set(
+        "devPeriod",
+        d.backtest.development_period
+    );
+
+    set(
+        "oosPeriod",
+        d.backtest.out_of_sample
+    );
+
+    set(
+        "forwardPeriod",
+        d.backtest.forward
+    );
+
+
+    // =====================================================
+    // BROWSER ALERT
+    // =====================================================
 
     if(
-        !Number.isFinite(minPotential) &&
-        entry !== null &&
-        tp1 !== null
+        d.signal.active &&
+        d.signal.id
     ){
 
-        minPotential =
-            priceToPips(
-                Math.abs(tp1-entry)
+        const signalKey =
+            d.signal.id;
+
+        if(
+            signalKey !==
+            previousSignalKey
+        ){
+
+            sendBrowserNotification(
+                d
             );
 
-    }
+            previousSignalKey =
+                signalKey;
 
-
-    if(
-        !Number.isFinite(maxPotential) &&
-        entry !== null &&
-        tp3 !== null
-    ){
-
-        maxPotential =
-            priceToPips(
-                Math.abs(tp3-entry)
+            localStorage.setItem(
+                "bosque_last_browser_signal",
+                signalKey
             );
-
+        }
     }
-
-
-    let potentialText =
-        "--";
-
-
-    if(
-        Number.isFinite(minPotential) &&
-        Number.isFinite(maxPotential)
-    ){
-
-        potentialText =
-            Math.round(minPotential) +
-            " – " +
-            Math.round(maxPotential) +
-            " pips";
-
-    }
-    else if(Number.isFinite(minPotential)){
-
-        potentialText =
-            Math.round(minPotential) +
-            " pips";
-
-    }
-
-
-    setText(
-        "potentialRange",
-        potentialText
-    );
-
-
-    setText(
-        "signalPotential",
-        potentialText
-    );
-
-
-    let potentialConfidence =
-        readable(
-            getValue(
-                d.potential,
-                [
-                    "confidence",
-                    "level"
-                ]
-            ),
-            ""
-        );
-
-
-    if(!potentialConfidence){
-
-        potentialConfidence =
-            validation.valid
-                ? (
-                    score >= 80
-                        ? "HIGH"
-                        : "MEDIUM"
-                  )
-                : "WAIT";
-
-    }
-
-
-    setText(
-        "potentialConfidence",
-        potentialConfidence
-    );
-
-
-    /* FILTERS */
-
-    showFilter(
-        "filterScore",
-        validation.scoreGate,
-        score + " / 100"
-    );
-
-
-    showFilter(
-        "filterSetup",
-        validation.setupGate,
-        opportunity
-    );
-
-
-    showFilter(
-        "filterConfirmation",
-        validation.confirmationGate,
-        readable(
-            getValue(
-                d.m5,
-                [
-                    "confirmation",
-                    "candle_confirmation"
-                ]
-            ),
-            "--"
-        )
-    );
-
-
-    showFilter(
-        "filterRisk",
-        validation.riskGate,
-        validation.risk !== null
-            ? validation.risk.toFixed(1) + " pips"
-            : "--"
-    );
-
-
-    const tp1Pips =
-        (
-            entry !== null &&
-            tp1 !== null
-        )
-            ? priceToPips(
-                Math.abs(tp1-entry)
-              )
-            : null;
-
-
-    showFilter(
-        "filterTP1",
-        tp1Pips !== null
-            ? tp1Pips >= MIN_TP1_PIPS
-            : null,
-        tp1Pips !== null
-            ? Math.round(tp1Pips) + " pips"
-            : "--"
-    );
-
-
-    showFilter(
-        "filterRR",
-        validation.rrGate,
-        validation.rr2 !== null
-            ? "1:" + validation.rr2.toFixed(2)
-            : "--"
-    );
-
-
-    showFilter(
-        "filterRoom",
-        validation.roomGate,
-        validation.roomGate
-            ? "Available"
-            : "--"
-    );
-
-
-    renderChecklist(
-        d,
-        validation
-    );
-
-
-    /* STATUS */
-
-    setText(
-        "engineStatus",
-        validation.valid
-            ? "🟢 OPPORTUNITY FOUND"
-            : "🟢 LIVE • SCANNING"
-    );
-
-
-    renderTimestamp(
-        d.timestamp
-    );
-
-
-    return validation;
 
 }
 
 
-/* ================================
-   TIMESTAMP
-================================ */
+function sendBrowserNotification(d){
 
-function renderTimestamp(timestamp){
-
-    const element =
-        $("lastUpdate");
-
-
-    if(!element){
+    if(
+        !("Notification" in window)
+    ){
         return;
     }
 
-
-    if(!timestamp){
-
-        element.textContent =
-            "--";
-
+    if(
+        Notification.permission !==
+        "granted"
+    ){
         return;
-
     }
 
+    const title =
+        "👑 BOSQUE FOREX AI";
 
-    const date =
-        new Date(timestamp);
+    const body =
+        `${d.signal.direction} ${d.signal.opportunity}
+Score: ${d.signal.score}/100
+Entry: ${d.signal.entry}
+SL: ${d.signal.sl}
+TP2: ${d.signal.tp2}`;
 
-
-    if(Number.isNaN(date.getTime())){
-
-        element.textContent =
-            readable(
-                timestamp,
-                "--"
-            );
-
-        return;
-
-    }
-
-
-    element.textContent =
-        date.toLocaleString(
-            "en-MY",
+    const n =
+        new Notification(
+            title,
             {
-                dateStyle:"medium",
-                timeStyle:"medium"
+                body:body
             }
         );
 
-}
+    n.onclick = () => {
 
+        window.focus();
 
-/* ================================
-   NOTICES
-================================ */
+        n.close();
 
-function showError(message){
-
-    const error =
-        $("errorBox");
-
-
-    const success =
-        $("successBox");
-
-
-    if(success){
-        success.style.display =
-            "none";
-    }
-
-
-    if(error){
-
-        error.textContent =
-            message;
-
-        error.style.display =
-            "block";
-
-    }
+    };
 
 }
 
 
-function showSuccess(message){
+async function enableNotifications(){
 
-    const error =
-        $("errorBox");
+    if(
+        !("Notification" in window)
+    ){
 
-
-    const success =
-        $("successBox");
-
-
-    if(error){
-        error.style.display =
-            "none";
-    }
-
-
-    if(success){
-
-        success.textContent =
-            message;
-
-        success.style.display =
-            "block";
-
-    }
-
-}
-
-
-/* ================================
-   LOAD JSON
-================================ */
-
-async function loadEngineData(){
-
-    const response =
-        await fetch(
-            DATA_URL +
-            "?t=" +
-            Date.now(),
-            {
-                cache:"no-store"
-            }
+        set(
+            "notificationStatus",
+            "NOT SUPPORTED"
         );
 
-
-    if(!response.ok){
-
-        throw new Error(
-            "dashboard_data.json HTTP " +
-            response.status
-        );
-
-    }
-
-
-    return await response.json();
-
-}
-
-
-/* =========================================================
-   BROWSER NOTIFICATIONS
-   ========================================================= */
-
-let lastBrowserAlertKey =
-    localStorage.getItem(
-        "bosque_last_browser_alert"
-    ) || "";
-
-
-function updateNotificationStatus(){
-
-    const element =
-        $("notificationStatus");
-
-
-    const button =
-        $("notificationButton");
-
-
-    if(!("Notification" in window)){
-
-        if(element){
-            element.textContent =
-                "NOT SUPPORTED";
-        }
-
-        if(button){
-            button.disabled =
-                true;
-        }
-
-        return;
-
-    }
-
-
-    if(Notification.permission === "granted"){
-
-        if(element){
-            element.textContent =
-                "🟢 ENABLED";
-        }
-
-        if(button){
-
-            button.textContent =
-                "🔔 Browser Alerts Enabled";
-
-            button.disabled =
-                true;
-
-        }
-
-        return;
-
-    }
-
-
-    if(Notification.permission === "denied"){
-
-        if(element){
-            element.textContent =
-                "🔴 BLOCKED";
-        }
-
-        if(button){
-
-            button.textContent =
-                "Browser Alerts Blocked";
-
-            button.disabled =
-                true;
-
-        }
-
-        return;
-
-    }
-
-
-    if(element){
-        element.textContent =
-            "⚪ NOT ENABLED";
-    }
-
-}
-
-
-async function enableBrowserNotifications(){
-
-    if(!("Notification" in window)){
         return;
     }
-
 
     try{
 
         const permission =
-            await Notification.requestPermission();
+            await Notification
+                .requestPermission();
 
+        set(
+            "notificationStatus",
+            permission
+        );
 
-        updateNotificationStatus();
+    }catch(e){
 
-
-        if(permission === "granted"){
-
-            new Notification(
-                "👑 BOSQUE FOREX AI",
-                {
-                    body:
-                        "Browser alerts are now enabled.\nTelegram remains active.",
-                    tag:
-                        "bosque-browser-enabled"
-                }
-            );
-
-        }
-
-    }
-    catch(error){
-
-        console.warn(
-            "Notification permission error:",
-            error
+        set(
+            "notificationStatus",
+            "BLOCKED"
         );
 
     }
@@ -3137,316 +1715,75 @@ async function enableBrowserNotifications(){
 }
 
 
-function sendBrowserNotification(
-    d,
-    validation
-){
+function updateNotificationStatus(){
 
     if(
-        !validation.valid ||
-        validation.direction === "WAIT"
+        !("Notification" in window)
     ){
 
-        return;
-
-    }
-
-
-    if(
-        !("Notification" in window) ||
-        Notification.permission !== "granted"
-    ){
-
-        return;
-
-    }
-
-
-    const entry =
-        validation.entry !== null
-            ? validation.entry.toFixed(2)
-            : "--";
-
-
-    const sl =
-        getPrice(
-            d,
-            [
-                "sl",
-                "stop_loss",
-                "stopLoss"
-            ]
+        set(
+            "notificationStatus",
+            "NOT SUPPORTED"
         );
 
-
-    const tp1 =
-        validation.tp1 !== null
-            ? validation.tp1.toFixed(2)
-            : "--";
-
-
-    const tp2 =
-        validation.tp2 !== null
-            ? validation.tp2.toFixed(2)
-            : "--";
-
-
-    /*
-        Prefer engine signal ID if available.
-        Otherwise create our own stable key.
-    */
-
-    const engineSignalId =
-        getValue(
-            d.root,
-            [
-                "signal.id",
-                "opportunity.signal_id",
-                "opportunity.id",
-                "signal_id"
-            ]
-        );
-
-
-    const key =
-        engineSignalId
-            ? String(engineSignalId)
-            : [
-                d.timestamp || "",
-                validation.direction,
-                getOpportunityType(d),
-                validation.score,
-                entry,
-                sl !== null
-                    ? sl.toFixed(2)
-                    : "",
-                tp2
-              ].join("|");
-
-
-    if(key === lastBrowserAlertKey){
         return;
     }
 
-
-    lastBrowserAlertKey =
-        key;
-
-
-    localStorage.setItem(
-        "bosque_last_browser_alert",
-        key
+    set(
+        "notificationStatus",
+        Notification.permission
     );
 
+}
+
+
+async function load(){
 
     try{
 
-        const notification =
-            new Notification(
-                "👑 BOSQUE FOREX AI",
+        const response =
+            await fetch(
+                DATA_URL +
+                "?t=" +
+                Date.now(),
                 {
-                    body:
-                        validation.direction +
-                        " • " +
-                        getOpportunityType(d) +
-                        "\n" +
-                        "Score: " +
-                        validation.score +
-                        "/100" +
-                        "\nEntry: " +
-                        entry +
-                        "\nSL: " +
-                        (
-                            sl !== null
-                                ? sl.toFixed(2)
-                                : "--"
-                        ) +
-                        "\nTP1: " +
-                        tp1 +
-                        "\nTP2: " +
-                        tp2,
-                    tag:
-                        "bosque-" + key
+                    cache:"no-store"
                 }
             );
 
-
-        notification.onclick =
-            function(){
-
-                window.focus();
-
-                notification.close();
-
-            };
-
-    }
-    catch(error){
-
-        console.warn(
-            "Browser notification failed:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ================================
-   REFRESH
-================================ */
-
-async function refreshDashboard(){
-
-    try{
-
-        const raw =
-            await loadEngineData();
-
+        if(!response.ok){
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+        }
 
         const data =
-            normaliseData(raw);
+            await response.json();
 
+        render(data);
 
-        const validation =
-            renderDashboard(data);
+    }catch(error){
 
-
-        sendBrowserNotification(
-            data,
-            validation
-        );
-
-
-        showSuccess(
-            validation.valid
-                ? "Live engine data loaded • Valid opportunity detected."
-                : "Live engine data loaded • Scanning for setup."
-        );
-
-
-        console.log(
-            "BOSQUE validation:",
-            validation
-        );
-
-    }
-    catch(error){
-
-        console.error(
-            "BOSQUE dashboard error:",
-            error
-        );
-
-
-        setText(
+        set(
             "engineStatus",
-            "🔴 DATA ERROR"
+            "DATA ERROR"
         );
 
-
-        setText(
-            "finalSignal",
-            "WAIT"
-        );
-
-
-        setText(
-            "signalDirection",
-            "WAIT"
-        );
-
-
-        setText(
-            "planDirection",
-            "WAIT"
-        );
-
-
-        showError(
-            "Engine data unavailable: " +
-            error.message
-        );
+        console.error(error);
 
     }
 
 }
 
 
-/* ================================
-   TRADINGVIEW
-================================ */
+updateNotificationStatus();
 
-function loadTradingView(){
-
-    if(
-        typeof TradingView ===
-        "undefined"
-    ){
-
-        return;
-
-    }
-
-
-    new TradingView.widget({
-
-        autosize:true,
-
-        symbol:"OANDA:XAUUSD",
-
-        interval:"5",
-
-        timezone:"Asia/Kuala_Lumpur",
-
-        theme:"dark",
-
-        style:"1",
-
-        locale:"en",
-
-        enable_publishing:false,
-
-        hide_top_toolbar:false,
-
-        hide_legend:false,
-
-        allow_symbol_change:true,
-
-        container_id:
-            "tradingview_chart"
-
-    });
-
-}
-
-
-/* ================================
-   START
-================================ */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async function(){
-
-        loadTradingView();
-
-        updateNotificationStatus();
-
-        await refreshDashboard();
-
-    }
-);
-
-
-/* ================================
-   AUTO REFRESH
-================================ */
+load();
 
 setInterval(
-    refreshDashboard,
-    5 * 60 * 1000
+    load,
+    300000
 );
 
 </script>
