@@ -4,29 +4,29 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-24T07:50:33.601828+08:00"
+    "timestamp": "2026-09-24T07:55:29.447191+08:00"
   },
-  "latest_price": 4285.26,
+  "latest_price": 4289.21,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
     "type": "TRENDING",
     "h1_direction": "BEARISH",
     "range": {
-      "is_range": false,
+      "is_range": true,
       "high": 4347.63706,
       "low": 4270.72669,
       "width": 76.9103699999996,
-      "location": 0.18899883071684587
+      "location": 0.24030023519584892
     }
   },
   "volatility": {
-    "atr": 2.31,
-    "atr_pips": 23.1,
+    "atr": 2.37,
+    "atr_pips": 23.7,
     "condition": "LOW"
   },
   "pd": {
-    "zone": "DISCOUNT",
+    "zone": "PREMIUM",
     "equilibrium": 4287.81,
     "high": 4294.24,
     "low": 4281.37
@@ -50,26 +50,40 @@
     "filter": "NOT CONNECTED"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 25
+    "type": "SELL PULLBACK",
+    "direction": "SELL",
+    "valid": true,
+    "score": 30
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 25,
-    "timestamp": "2026-09-24T07:50:33.601828+08:00"
+    "direction": "SELL",
+    "opportunity": "SELL PULLBACK",
+    "score": 30,
+    "timestamp": "2026-09-24T07:55:29.447191+08:00"
   },
   "plan": {
-    "valid": false
+    "valid": true,
+    "direction": "SELL",
+    "entry": 4289.21,
+    "sl": 4293.42,
+    "risk_pips": 42.2,
+    "tp1": 4283.21,
+    "tp2": 4277.21,
+    "tp3": 4271.21,
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180,
+    "rr_tp1": 1.42,
+    "rr_tp2": 2.85,
+    "rr_tp3": 4.27,
+    "risk_level": "MEDIUM"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180
   },
   "h1": {
     "direction": "BEARISH",
@@ -79,17 +93,19 @@
     "condition": "TRENDING"
   },
   "m15": {
-    "direction": "BULLISH",
+    "direction": "RANGE",
     "bos": null,
-    "swing_high": 4294.24142,
+    "swing_high": 4292.95097,
     "swing_low": 4284.58277,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "SELL",
+      "opportunity": "SELL PULLBACK",
+      "valid": true,
+      "reason": [
+        "H1 bearish + M15 premium"
+      ],
       "pd": {
-        "zone": "DISCOUNT",
+        "zone": "PREMIUM",
         "equilibrium": 4287.81,
         "high": 4294.24,
         "low": 4281.37
@@ -101,9 +117,9 @@
         "description": "NONE"
       },
       "structure": {
-        "direction": "BULLISH",
+        "direction": "RANGE",
         "bos": null,
-        "swing_high": 4294.24142,
+        "swing_high": 4292.95097,
         "swing_low": 4284.58277
       },
       "range": {
@@ -111,43 +127,43 @@
         "high": 4294.24142,
         "low": 4281.37175,
         "width": 12.869670000000042,
-        "location": 0.3023317614204609
+        "location": 0.6089138260732258
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4292.95097,
     "swing_low": 4287.62679,
     "confirmation": {
       "confirmed": false,
-      "bos": "BEARISH BOS",
+      "bos": null,
       "candle": false,
-      "momentum": "BEARISH",
-      "reason": "NO DIRECTION"
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": false
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
+    "m15_setup": "SELL PULLBACK",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
-    "pd_zone": "DISCOUNT"
+    "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 42.2,
+    "risk_level": "MEDIUM",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -165,9 +181,9 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "BLOCK",
-    "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
+    "risk": "MEDIUM",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
     "m5_confirmation": "NO"
   },
   "expectancy": {
