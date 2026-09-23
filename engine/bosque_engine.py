@@ -1,30 +1,19 @@
 import os
 import json
 import math
-from datetime import datetime, timezone
+import hashlib
 from pathlib import Path
+from datetime import datetime, timedelta, timezone
 
 import requests
+import pandas as pd
 
 
-# ============================================================
+# =========================================================
 # BOSQUE FOREX AI
-# XAU/USD SCALPING ENGINE V3.1
-#
-# H1  = Bias / Market Condition
-# M15 = Setup / Location / Liquidity
-# M5  = Confirmation / Entry
-#
-# XAU/USD PIP RULE
-# 1 point = 0.01 price
-# 10 points = 1 pip
-# 1 pip = 0.10 price
-# ============================================================
-
-
-# ============================================================
-# PATHS
-# ============================================================
+# SCALPING ENGINE
+# H1 -> M15 -> M5
+# =========================================================
 
 ENGINE_DIR = Path(__file__).resolve().parent
 REPO_DIR = ENGINE_DIR.parent
@@ -32,2581 +21,1637 @@ REPO_DIR = ENGINE_DIR.parent
 DASHBOARD_FILE = REPO_DIR / "dashboard_data.json"
 STATE_FILE = ENGINE_DIR / "state.json"
 
+TWELVEDATA_URL = "https://api.twelvedata.com/time_series"
 
-# ============================================================
-# ENVIRONMENT
-# ============================================================
-
-TWELVEDATA_API_KEY = os.getenv(
-    "TWELVEDATA_API_KEY",
-    ""
-).strip()
-
-TELEGRAM_BOT_TOKEN = os.getenv(
-    "TELEGRAM_BOT_TOKEN",
-    ""
-).strip()
-
-TELEGRAM_CHAT_ID = os.getenv(
-    "TELEGRAM_CHAT_ID",
-    ""
-).strip()
-
-
-# ============================================================
-# TWELVE DATA
-# ============================================================
-
-TWELVEDATA_URL = (
-    "https://api.twelvedata.com/time_series"
-)
+API_KEY = os.getenv("TWELVEDATA_API_KEY", "")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
 SYMBOL = "XAU/USD"
-M5_INTERVAL = "5min"
-
-# 500 M5 candles ≈ 41 hours
+INTERVAL = "5min"
 OUTPUT_SIZE = 500
 
+# =========================================================
+# RISK / SCORING
+# =========================================================
 
-# ============================================================
-# V3.1 SCALPING SETTINGS
-# ============================================================
+MIN_SCORE = 70
 
-# Previous:
-# MIN_SCORE = 70
-#
-# New:
-# 65 = easier to catch valid scalping opportunities
-MIN_SCORE = 65
+# XAUUSD:
+# 1 point = 0.01 price
+# 10 points = 1 pip
+# 100 points = 10 pips
+# Therefore:
+# 1 pip = 0.10 price
 
-
-# Previous:
-# 35 - 60 pips
-#
-# New:
-# 30 - 70 pips
-MIN_RISK_PIPS = 30
-MAX_RISK_PIPS = 70
-
-
-# First partial target
-TP1_PIPS = 60
-
-
-# Main target
-MIN_TP2_PIPS = 120
-
-
-# Extended target
-TP3_PIPS = 180
-
-
-# V3.1:
-# TP2 must provide at least 1.8R
-MIN_RR = 1.8
-
-
-# 1 pip = 0.10 XAU/USD
 PIP_SIZE = 0.10
 
+MIN_RISK_PIPS = 25
+MAX_RISK_PIPS = 80
 
-# ============================================================
-# MALAYSIA TIME
-# ============================================================
+TP1_PIPS = 60
+MIN_TP2_PIPS = 120
+TP3_PIPS = 180
 
-MY_TZ_OFFSET_HOURS = 8
+MIN_RR = 2.0
 
+# =========================================================
+# SESSION
+# Malaysia UTC+8
+# =========================================================
 
-# ============================================================
-# HTTP
-# ============================================================
+MY_TZ = timezone(timedelta(hours=8))
 
-REQUEST_TIMEOUT = 30
-
-
-# ============================================================
-# HELPERS
-# ============================================================
-
-def now_utc():
-    return datetime.now(timezone.utc)
-
-
-def now_iso():
-    return now_utc().isoformat()
+SESSIONS = [
+    ("ASIAN", 7, 15),
+    ("LONDON", 15, 20),
+    ("NEW YORK", 20, 23),
+    ("NEW YORK", 0, 1),
+]
 
 
-def safe_float(value, default=None):
-    try:
-        if value is None:
-            return default
+# =========================================================
+# BASIC HELPERS
+# =========================================================
 
-        number = float(value)
-
-        if not math.isfinite(number):
-            return default
-
-        return number
-
-    except Exception:
-        return default
-
-
-def round_price(value):
-    value = safe_float(value)
-
-    if value is None:
-        return None
-
-    return round(value, 2)
-
-
-def price_to_pips(distance):
-    distance = safe_float(distance)
-
-    if distance is None:
-        return None
-
-    return round(
-        abs(distance) / PIP_SIZE,
-        1
-    )
-
-
-def pips_to_price(pips):
-    pips = safe_float(pips)
-
-    if pips is None:
-        return None
-
-    return pips * PIP_SIZE
-
-
-def clamp(value, minimum, maximum):
-    return max(
-        minimum,
-        min(maximum, value)
-    )
+def now_my():
+    return datetime.now(timezone.utc).astimezone(MY_TZ)
 
 
 def clean_for_json(value):
-
-    if isinstance(value, float):
-
-        if not math.isfinite(value):
-            return None
-
     if isinstance(value, dict):
-
-        return {
-            key: clean_for_json(val)
-            for key, val in value.items()
-        }
+        return {str(k): clean_for_json(v) for k, v in value.items()}
 
     if isinstance(value, list):
+        return [clean_for_json(v) for v in value]
 
-        return [
-            clean_for_json(item)
-            for item in value
-        ]
+    if isinstance(value, pd.Timestamp):
+        return value.isoformat()
+
+    if isinstance(value, datetime):
+        return value.isoformat()
+
+    if isinstance(value, float):
+        if math.isnan(value) or math.isinf(value):
+            return None
 
     return value
 
 
-# ============================================================
+def save_json_atomic(path, data):
+    tmp = path.with_suffix(".tmp")
+
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(
+            clean_for_json(data),
+            f,
+            ensure_ascii=False,
+            indent=2
+        )
+
+    tmp.replace(path)
+
+
+def load_state():
+    if not STATE_FILE.exists():
+        return {}
+
+    try:
+        with open(STATE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def save_state(state):
+    save_json_atomic(STATE_FILE, state)
+
+
+def price_to_pips(distance):
+    return abs(distance) / PIP_SIZE
+
+
+def pips_to_price(pips):
+    return pips * PIP_SIZE
+
+
+def round_price(price):
+    return round(float(price), 2)
+
+
+# =========================================================
 # SESSION
-# ============================================================
+# =========================================================
 
-def malaysia_hour():
+def get_session(dt=None):
+    dt = dt or now_my()
+    hour = dt.hour
 
-    utc_hour = now_utc().hour
-
-    return (
-        utc_hour +
-        MY_TZ_OFFSET_HOURS
-    ) % 24
-
-
-def session_name():
-
-    hour = malaysia_hour()
-
-    if 7 <= hour < 15:
-        return "ASIAN"
-
-    if 15 <= hour < 20:
-        return "LONDON"
-
-    if 20 <= hour <= 23:
-        return "NEW YORK"
-
-    if 0 <= hour < 1:
-        return "NEW YORK"
+    for name, start, end in SESSIONS:
+        if start <= hour < end:
+            return name
 
     return "OFF SESSION"
 
 
-# ============================================================
+# =========================================================
 # TWELVE DATA
-# ============================================================
+# =========================================================
 
-def fetch_m5_data():
-
-    if not TWELVEDATA_API_KEY:
-
-        raise RuntimeError(
-            "TWELVEDATA_API_KEY is missing."
-        )
+def fetch_m5():
+    if not API_KEY:
+        raise RuntimeError("TWELVEDATA_API_KEY missing")
 
     params = {
         "symbol": SYMBOL,
-        "interval": M5_INTERVAL,
+        "interval": INTERVAL,
         "outputsize": OUTPUT_SIZE,
-        "apikey": TWELVEDATA_API_KEY,
-        "format": "JSON",
+        "apikey": API_KEY,
+        "format": "JSON"
     }
 
-    response = requests.get(
+    r = requests.get(
         TWELVEDATA_URL,
         params=params,
-        timeout=REQUEST_TIMEOUT,
+        timeout=30
     )
 
-    if response.status_code != 200:
+    r.raise_for_status()
 
+    data = r.json()
+
+    if "values" not in data:
         raise RuntimeError(
-            f"Twelve Data HTTP "
-            f"{response.status_code}: "
-            f"{response.text[:500]}"
+            f"Twelve Data error: {data}"
         )
 
-    data = response.json()
+    df = pd.DataFrame(data["values"])
 
-    if data.get("status") == "error":
+    if df.empty:
+        raise RuntimeError("No market data returned")
 
-        raise RuntimeError(
-            "Twelve Data error: "
-            f"{data.get('message', 'Unknown error')}"
+    df["datetime"] = pd.to_datetime(df["datetime"])
+
+    for col in ["open", "high", "low", "close"]:
+        df[col] = pd.to_numeric(
+            df[col],
+            errors="coerce"
         )
 
-    values = data.get("values")
-
-    if not values:
-
-        raise RuntimeError(
-            "Twelve Data returned no OHLC data."
-        )
-
-    candles = []
-
-    for item in values:
-
-        try:
-
-            candles.append({
-                "datetime": item["datetime"],
-                "open": float(item["open"]),
-                "high": float(item["high"]),
-                "low": float(item["low"]),
-                "close": float(item["close"]),
-            })
-
-        except Exception:
-            continue
-
-    if len(candles) < 50:
-
-        raise RuntimeError(
-            f"Not enough M5 candles: "
-            f"{len(candles)}"
-        )
-
-    candles.sort(
-        key=lambda x: x["datetime"]
+    df = df.dropna(
+        subset=[
+            "datetime",
+            "open",
+            "high",
+            "low",
+            "close"
+        ]
     )
 
-    return candles
+    df = df.sort_values("datetime")
+    df = df.drop_duplicates("datetime")
+    df = df.reset_index(drop=True)
+
+    return df
 
 
-# ============================================================
-# REMOVE INCOMPLETE CANDLE
-# ============================================================
+# =========================================================
+# REMOVE INCOMPLETE M5
+# =========================================================
 
-def remove_incomplete_candle(candles):
+def remove_incomplete_candle(df):
+    if df.empty:
+        return df
 
-    if len(candles) < 2:
-        return candles
+    last_time = df.iloc[-1]["datetime"]
 
-    try:
+    if last_time.tzinfo is None:
+        last_time = last_time.replace(tzinfo=timezone.utc)
 
-        last_dt = datetime.fromisoformat(
-            candles[-1]["datetime"]
-            .replace("Z", "+00:00")
-        )
+    now_utc = datetime.now(timezone.utc)
 
-        elapsed = (
-            now_utc() - last_dt
-        ).total_seconds()
+    elapsed = (
+        now_utc - last_time
+    ).total_seconds()
 
-        if elapsed < 300:
+    # 5 minute candle
+    if elapsed < 300:
+        return df.iloc[:-1].copy()
 
-            return candles[:-1]
-
-    except Exception:
-        pass
-
-    return candles
+    return df
 
 
-# ============================================================
+# =========================================================
 # AGGREGATION
-# ============================================================
+# =========================================================
 
-def aggregate_candles(
-    candles,
-    minutes
-):
+def aggregate(df, minutes):
+    x = df.copy()
 
-    if minutes not in (15, 60):
+    x["datetime"] = pd.to_datetime(
+        x["datetime"]
+    )
 
-        raise ValueError(
-            "Only 15 and 60 minutes supported."
-        )
+    x = x.set_index("datetime")
 
-    result = []
+    rule = f"{minutes}min"
 
-    current_bucket = None
-    bucket = []
+    out = x.resample(rule).agg({
+        "open": "first",
+        "high": "max",
+        "low": "min",
+        "close": "last"
+    })
 
-    for candle in candles:
+    out = out.dropna().reset_index()
 
-        try:
-
-            dt = datetime.fromisoformat(
-                candle["datetime"]
-                .replace("Z", "+00:00")
-            )
-
-        except Exception:
-            continue
-
-        total_minutes = (
-            dt.hour * 60 +
-            dt.minute
-        )
-
-        bucket_minute = (
-            total_minutes // minutes
-        ) * minutes
-
-        bucket_key = (
-            dt.date(),
-            bucket_minute
-        )
-
-        if current_bucket is None:
-
-            current_bucket = bucket_key
-
-        if bucket_key != current_bucket:
-
-            if bucket:
-
-                result.append(
-                    build_aggregated_candle(
-                        bucket
-                    )
-                )
-
-            bucket = []
-            current_bucket = bucket_key
-
-        bucket.append(candle)
-
-    if bucket:
-
-        result.append(
-            build_aggregated_candle(
-                bucket
-            )
-        )
-
-    return result
+    return out
 
 
-def build_aggregated_candle(bucket):
+# =========================================================
+# SWING DETECTION
+# =========================================================
 
-    return {
-        "datetime": bucket[0]["datetime"],
-        "open": bucket[0]["open"],
-        "high": max(
-            x["high"] for x in bucket
-        ),
-        "low": min(
-            x["low"] for x in bucket
-        ),
-        "close": bucket[-1]["close"],
-    }
+def find_swing_highs(df, left=2, right=2):
+    highs = []
 
-
-# ============================================================
-# SWINGS
-# ============================================================
-
-def find_swing_highs(
-    candles,
-    left=2,
-    right=2
-):
-
-    swings = []
-
-    if len(candles) < (
-        left + right + 1
-    ):
-        return swings
+    if len(df) < left + right + 1:
+        return highs
 
     for i in range(
         left,
-        len(candles) - right
+        len(df) - right
     ):
+        value = df.iloc[i]["high"]
 
-        high = candles[i]["high"]
+        left_values = df.iloc[
+            i-left:i
+        ]["high"]
 
-        valid = True
+        right_values = df.iloc[
+            i+1:i+right+1
+        ]["high"]
 
-        for j in range(
-            i - left,
-            i + right + 1
+        if (
+            value > left_values.max()
+            and value >= right_values.max()
         ):
-
-            if j == i:
-                continue
-
-            if candles[j]["high"] >= high:
-
-                valid = False
-                break
-
-        if valid:
-
-            swings.append({
+            highs.append({
                 "index": i,
-                "price": high,
-                "datetime":
-                    candles[i]["datetime"],
+                "price": float(value)
             })
 
-    return swings
+    return highs
 
 
-def find_swing_lows(
-    candles,
-    left=2,
-    right=2
-):
+def find_swing_lows(df, left=2, right=2):
+    lows = []
 
-    swings = []
-
-    if len(candles) < (
-        left + right + 1
-    ):
-        return swings
+    if len(df) < left + right + 1:
+        return lows
 
     for i in range(
         left,
-        len(candles) - right
+        len(df) - right
     ):
+        value = df.iloc[i]["low"]
 
-        low = candles[i]["low"]
+        left_values = df.iloc[
+            i-left:i
+        ]["low"]
 
-        valid = True
+        right_values = df.iloc[
+            i+1:i+right+1
+        ]["low"]
 
-        for j in range(
-            i - left,
-            i + right + 1
+        if (
+            value < left_values.min()
+            and value <= right_values.min()
         ):
-
-            if j == i:
-                continue
-
-            if candles[j]["low"] <= low:
-
-                valid = False
-                break
-
-        if valid:
-
-            swings.append({
+            lows.append({
                 "index": i,
-                "price": low,
-                "datetime":
-                    candles[i]["datetime"],
+                "price": float(value)
             })
 
-    return swings
+    return lows
 
 
-# ============================================================
+# =========================================================
 # STRUCTURE
-# ============================================================
+# =========================================================
 
-def analyze_structure(candles):
+def analyze_structure(df):
+    highs = find_swing_highs(df)
+    lows = find_swing_lows(df)
 
-    if len(candles) < 10:
+    direction = "RANGE"
+    bos = None
 
-        return {
-            "bias": "NEUTRAL",
-            "structure": "INSUFFICIENT DATA",
-            "bullish_bos": False,
-            "bearish_bos": False,
-        }
+    if len(highs) >= 2 and len(lows) >= 2:
+        h1 = highs[-2]["price"]
+        h2 = highs[-1]["price"]
 
-    highs = find_swing_highs(candles)
-    lows = find_swing_lows(candles)
+        l1 = lows[-2]["price"]
+        l2 = lows[-1]["price"]
 
-    if len(highs) < 2 or len(lows) < 2:
+        if h2 > h1 and l2 > l1:
+            direction = "BULLISH"
 
-        return {
-            "bias": "NEUTRAL",
-            "structure": "NO CLEAR STRUCTURE",
-            "bullish_bos": False,
-            "bearish_bos": False,
-        }
+        elif h2 < h1 and l2 < l1:
+            direction = "BEARISH"
 
-    last_high = highs[-1]["price"]
-    prev_high = highs[-2]["price"]
+    if len(highs) > 0:
+        latest_high = highs[-1]["price"]
 
-    last_low = lows[-1]["price"]
-    prev_low = lows[-2]["price"]
+        if float(df.iloc[-1]["close"]) > latest_high:
+            bos = "BULLISH BOS"
 
-    close = candles[-1]["close"]
+    if len(lows) > 0:
+        latest_low = lows[-1]["price"]
 
-    bullish_bos = close > last_high
-    bearish_bos = close < last_low
-
-    higher_high = last_high > prev_high
-    higher_low = last_low > prev_low
-
-    lower_high = last_high < prev_high
-    lower_low = last_low < prev_low
-
-    if bullish_bos:
-
-        bias = "BULLISH"
-        structure = "BULLISH BOS"
-
-    elif bearish_bos:
-
-        bias = "BEARISH"
-        structure = "BEARISH BOS"
-
-    elif higher_high and higher_low:
-
-        bias = "BULLISH"
-        structure = "HH / HL"
-
-    elif lower_high and lower_low:
-
-        bias = "BEARISH"
-        structure = "LH / LL"
-
-    else:
-
-        bias = "RANGE"
-        structure = "RANGE"
+        if float(df.iloc[-1]["close"]) < latest_low:
+            bos = "BEARISH BOS"
 
     return {
-        "bias": bias,
-        "structure": structure,
-        "bullish_bos": bullish_bos,
-        "bearish_bos": bearish_bos,
-        "last_swing_high":
-            round_price(last_high),
-        "last_swing_low":
-            round_price(last_low),
+        "direction": direction,
+        "bos": bos,
+        "swing_high": (
+            highs[-1]["price"]
+            if highs else None
+        ),
+        "swing_low": (
+            lows[-1]["price"]
+            if lows else None
+        )
     }
 
 
-# ============================================================
-# RANGE
-# ============================================================
+# =========================================================
+# RANGE / REGIME
+# =========================================================
 
-def detect_range(
-    candles,
-    lookback=20
-):
-
-    if len(candles) < lookback:
-
+def analyze_range(df, lookback=20):
+    if len(df) < lookback:
         return {
             "is_range": False,
             "high": None,
             "low": None,
-            "position": "UNKNOWN",
+            "width": None,
+            "location": None
         }
 
-    recent = candles[-lookback:]
+    x = df.tail(lookback)
 
-    high = max(
-        x["high"] for x in recent
-    )
-
-    low = min(
-        x["low"] for x in recent
-    )
-
-    current = candles[-1]["close"]
+    high = float(x["high"].max())
+    low = float(x["low"].min())
+    close = float(x.iloc[-1]["close"])
 
     width = high - low
 
-    if width <= 0:
-
-        return {
-            "is_range": False,
-            "high": round_price(high),
-            "low": round_price(low),
-            "position": "UNKNOWN",
-        }
-
     location = (
-        current - low
-    ) / width
+        (close - low) / width
+        if width > 0
+        else 0.5
+    )
 
-    if location >= 0.75:
-
-        position = "HIGH EXTREME"
-
-    elif location <= 0.25:
-
-        position = "LOW EXTREME"
-
-    else:
-
-        position = "MID RANGE"
-
-    # V3.1:
-    # More useful range detection.
     is_range = (
-        0.15 <= location <= 0.85
-        or width < current * 0.012
+        0.20 <= location <= 0.80
+        or width < close * 0.01
     )
 
     return {
-        "is_range": is_range,
-        "high": round_price(high),
-        "low": round_price(low),
-        "position": position,
-        "width": round_price(width),
+        "is_range": bool(is_range),
+        "high": high,
+        "low": low,
+        "width": width,
+        "location": location
     }
 
 
-# ============================================================
-# PREMIUM / DISCOUNT
-# ============================================================
+def determine_regime(h1, m15, m5):
+    h1_direction = h1["direction"]
 
-def calculate_pd_zone(candles):
-
-    if len(candles) < 20:
-
-        return {
-            "zone": "UNKNOWN",
-            "equilibrium": None,
-            "high": None,
-            "low": None,
-        }
-
-    recent = candles[-20:]
-
-    high = max(
-        x["high"] for x in recent
+    h1_range = analyze_range(
+        M1 if False else CURRENT_H1
     )
 
-    low = min(
-        x["low"] for x in recent
-    )
+    if h1_direction in ["BULLISH", "BEARISH"]:
+        return "TRENDING"
+
+    if h1_range["is_range"]:
+        return "RANGING"
+
+    return "NEUTRAL"
+
+
+# =========================================================
+# PD ZONE
+# =========================================================
+
+def pd_zone(df, lookback=20):
+    x = df.tail(lookback)
+
+    high = float(x["high"].max())
+    low = float(x["low"].min())
 
     equilibrium = (
         high + low
     ) / 2
 
-    current = candles[-1]["close"]
+    close = float(x.iloc[-1]["close"])
 
-    if current > equilibrium:
-
+    if close > equilibrium:
         zone = "PREMIUM"
 
-    elif current < equilibrium:
-
+    elif close < equilibrium:
         zone = "DISCOUNT"
 
     else:
-
         zone = "EQUILIBRIUM"
 
     return {
         "zone": zone,
-        "equilibrium":
-            round_price(equilibrium),
+        "equilibrium": round_price(equilibrium),
         "high": round_price(high),
-        "low": round_price(low),
+        "low": round_price(low)
     }
 
 
-# ============================================================
+# =========================================================
 # LIQUIDITY
-# ============================================================
+# =========================================================
 
-def detect_liquidity_sweep(candles):
+def liquidity_analysis(df):
+    highs = find_swing_highs(df)
+    lows = find_swing_lows(df)
 
-    if len(candles) < 10:
+    result = {
+        "buy_side_sweep": False,
+        "sell_side_sweep": False,
+        "swept_level": None,
+        "description": "NONE"
+    }
 
+    if len(highs) >= 1:
+        swing_high = highs[-1]["price"]
+
+        current_high = float(
+            df.iloc[-1]["high"]
+        )
+
+        current_close = float(
+            df.iloc[-1]["close"]
+        )
+
+        if (
+            current_high > swing_high
+            and current_close < swing_high
+        ):
+            result["buy_side_sweep"] = True
+            result["swept_level"] = swing_high
+            result["description"] = (
+                "BUY-SIDE LIQUIDITY SWEPT"
+            )
+
+    if len(lows) >= 1:
+        swing_low = lows[-1]["price"]
+
+        current_low = float(
+            df.iloc[-1]["low"]
+        )
+
+        current_close = float(
+            df.iloc[-1]["close"]
+        )
+
+        if (
+            current_low < swing_low
+            and current_close > swing_low
+        ):
+            result["sell_side_sweep"] = True
+            result["swept_level"] = swing_low
+            result["description"] = (
+                "SELL-SIDE LIQUIDITY SWEPT"
+            )
+
+    return result
+
+
+# =========================================================
+# MOMENTUM
+# =========================================================
+
+def momentum(df, lookback=6):
+    if len(df) < lookback + 1:
         return {
-            "type": "NONE",
-            "detected": False,
-            "level": None,
+            "direction": "NEUTRAL",
+            "strength": 0
         }
 
-    highs = find_swing_highs(candles)
-    lows = find_swing_lows(candles)
+    closes = df["close"].tail(
+        lookback + 1
+    ).tolist()
 
-    current = candles[-1]
+    up = 0
+    down = 0
 
-    previous_high = (
-        highs[-1]["price"]
-        if highs
-        else None
-    )
+    for i in range(1, len(closes)):
+        if closes[i] > closes[i-1]:
+            up += 1
 
-    previous_low = (
-        lows[-1]["price"]
-        if lows
-        else None
-    )
+        elif closes[i] < closes[i-1]:
+            down += 1
 
-    if (
-        previous_high is not None
-        and current["high"] > previous_high
-        and current["close"] < previous_high
-    ):
-
+    if up >= 4:
         return {
-            "type":
-                "BUY-SIDE LIQUIDITY SWEEP",
-            "detected": True,
-            "level":
-                round_price(previous_high),
+            "direction": "BULLISH",
+            "strength": up
         }
 
-    if (
-        previous_low is not None
-        and current["low"] < previous_low
-        and current["close"] > previous_low
-    ):
-
+    if down >= 4:
         return {
-            "type":
-                "SELL-SIDE LIQUIDITY SWEEP",
-            "detected": True,
-            "level":
-                round_price(previous_low),
+            "direction": "BEARISH",
+            "strength": down
         }
 
     return {
-        "type": "NONE",
-        "detected": False,
-        "level": None,
+        "direction": "NEUTRAL",
+        "strength": max(up, down)
     }
 
 
-# ============================================================
-# MOMENTUM
-# ============================================================
+# =========================================================
+# CANDLE CONFIRMATION
+# =========================================================
 
-def calculate_momentum(candles):
-
-    if len(candles) < 6:
-        return "NEUTRAL"
-
-    closes = [
-        x["close"]
-        for x in candles[-6:]
-    ]
-
-    moves = [
-        closes[i] - closes[i - 1]
-        for i in range(1, 6)
-    ]
-
-    positive = sum(
-        1 for x in moves if x > 0
-    )
-
-    negative = sum(
-        1 for x in moves if x < 0
-    )
-
-    if positive >= 4:
-        return "BULLISH"
-
-    if negative >= 4:
-        return "BEARISH"
-
-    return "NEUTRAL"
-
-
-# ============================================================
-# CANDLE
-# ============================================================
-
-def candle_confirmation(candles):
-
-    if len(candles) < 2:
-        return "NEUTRAL"
-
-    current = candles[-1]
-
-    candle_range = (
-        current["high"] -
-        current["low"]
-    )
-
-    if candle_range <= 0:
-        return "NEUTRAL"
+def candle_confirmation(df):
+    c = df.iloc[-1]
 
     body = abs(
-        current["close"] -
-        current["open"]
+        float(c["close"]) -
+        float(c["open"])
     )
 
-    ratio = body / candle_range
+    full_range = (
+        float(c["high"]) -
+        float(c["low"])
+    )
 
-    if (
-        current["close"] >
-        current["open"]
-        and ratio >= 0.50
-    ):
-
-        return "BULLISH"
-
-    if (
-        current["close"] <
-        current["open"]
-        and ratio >= 0.50
-    ):
-
-        return "BEARISH"
-
-    return "NEUTRAL"
-
-
-# ============================================================
-# M15 SETUP
-# ============================================================
-
-def setup_direction(setup_type):
-
-    if setup_type.startswith("BUY"):
-        return "BUY"
-
-    if setup_type.startswith("SELL"):
-        return "SELL"
-
-    return None
-
-
-def determine_m15_setup(
-    candles,
-    h1_analysis
-):
-
-    if len(candles) < 20:
-
+    if full_range <= 0:
         return {
-            "type": "NO VALID SETUP",
-            "valid": False,
-            "reason":
-                "Insufficient M15 data",
+            "bullish": False,
+            "bearish": False
         }
 
-    structure = analyze_structure(candles)
-    range_info = detect_range(candles)
-    sweep = detect_liquidity_sweep(candles)
-    pd = calculate_pd_zone(candles)
-
-    # ========================================================
-    # RANGE REVERSAL
-    # ========================================================
-
-    if range_info["position"] == "LOW EXTREME":
-
-        if sweep["type"] == (
-            "SELL-SIDE LIQUIDITY SWEEP"
-        ):
-
-            return {
-                "type":
-                    "BUY RANGE REVERSAL",
-                "valid": True,
-                "reason":
-                    "M15 low extreme + "
-                    "sell-side sweep",
-            }
-
-    if range_info["position"] == "HIGH EXTREME":
-
-        if sweep["type"] == (
-            "BUY-SIDE LIQUIDITY SWEEP"
-        ):
-
-            return {
-                "type":
-                    "SELL RANGE REVERSAL",
-                "valid": True,
-                "reason":
-                    "M15 high extreme + "
-                    "buy-side sweep",
-            }
-
-    # ========================================================
-    # LIQUIDITY SWEEP
-    # ========================================================
-
-    if sweep["detected"]:
-
-        if sweep["type"] == (
-            "SELL-SIDE LIQUIDITY SWEEP"
-        ):
-
-            return {
-                "type":
-                    "BUY LIQUIDITY SWEEP",
-                "valid": True,
-                "reason":
-                    "Sell-side liquidity "
-                    "taken and reclaimed",
-            }
-
-        if sweep["type"] == (
-            "BUY-SIDE LIQUIDITY SWEEP"
-        ):
-
-            return {
-                "type":
-                    "SELL LIQUIDITY SWEEP",
-                "valid": True,
-                "reason":
-                    "Buy-side liquidity "
-                    "taken and rejected",
-            }
-
-    # ========================================================
-    # TREND PULLBACK
-    # ========================================================
-
-    if h1_analysis["bias"] == "BULLISH":
-
-        if pd["zone"] in (
-            "DISCOUNT",
-            "EQUILIBRIUM",
-        ):
-
-            return {
-                "type": "BUY PULLBACK",
-                "valid": True,
-                "reason":
-                    "H1 bullish + "
-                    "M15 discount/equilibrium",
-            }
-
-    if h1_analysis["bias"] == "BEARISH":
-
-        if pd["zone"] in (
-            "PREMIUM",
-            "EQUILIBRIUM",
-        ):
-
-            return {
-                "type": "SELL PULLBACK",
-                "valid": True,
-                "reason":
-                    "H1 bearish + "
-                    "M15 premium/equilibrium",
-            }
-
-    # ========================================================
-    # BREAKOUT
-    # ========================================================
-
-    if structure["bullish_bos"]:
-
-        return {
-            "type":
-                "BUY BREAKOUT RETEST",
-            "valid": True,
-            "reason":
-                "M15 bullish BOS",
-        }
-
-    if structure["bearish_bos"]:
-
-        return {
-            "type":
-                "SELL BREAKOUT RETEST",
-            "valid": True,
-            "reason":
-                "M15 bearish BOS",
-        }
-
-    return {
-        "type": "NO VALID SETUP",
-        "valid": False,
-        "reason":
-            "No valid M15 setup",
-    }
-
-
-# ============================================================
-# M5 CONFIRMATION
-# ============================================================
-
-def m5_confirmation(
-    candles,
-    expected_direction=None
-):
-
-    structure = analyze_structure(candles)
-
-    candle = candle_confirmation(candles)
-
-    momentum = calculate_momentum(candles)
+    ratio = body / full_range
 
     bullish = (
-        structure["bullish_bos"]
-        or (
-            candle == "BULLISH"
-            and momentum == "BULLISH"
-        )
+        c["close"] > c["open"]
+        and ratio >= 0.55
     )
 
     bearish = (
-        structure["bearish_bos"]
-        or (
-            candle == "BEARISH"
-            and momentum == "BEARISH"
-        )
+        c["close"] < c["open"]
+        and ratio >= 0.55
     )
+
+    return {
+        "bullish": bool(bullish),
+        "bearish": bool(bearish)
+    }
+
+
+# =========================================================
+# BOS / CHOCH
+# =========================================================
+
+def confirmation_bos(df):
+    structure = analyze_structure(df)
+
+    return structure.get("bos")
+
+
+# =========================================================
+# ATR / VOLATILITY
+# =========================================================
+
+def calculate_atr(df, period=14):
+    if len(df) < period + 1:
+        return None
+
+    x = df.copy()
+
+    prev_close = x["close"].shift(1)
+
+    tr1 = x["high"] - x["low"]
+    tr2 = abs(x["high"] - prev_close)
+    tr3 = abs(x["low"] - prev_close)
+
+    tr = pd.concat(
+        [tr1, tr2, tr3],
+        axis=1
+    ).max(axis=1)
+
+    atr = tr.rolling(period).mean().iloc[-1]
+
+    if pd.isna(atr):
+        return None
+
+    return float(atr)
+
+
+def volatility_analysis(df):
+    atr = calculate_atr(df)
+
+    if atr is None:
+        return {
+            "atr": None,
+            "atr_pips": None,
+            "condition": "UNKNOWN"
+        }
+
+    atr_pips = price_to_pips(atr)
+
+    if atr_pips < 25:
+        condition = "LOW"
+
+    elif atr_pips <= 70:
+        condition = "NORMAL"
+
+    else:
+        condition = "HIGH"
+
+    return {
+        "atr": round_price(atr),
+        "atr_pips": round(atr_pips, 1),
+        "condition": condition
+    }
+
+
+# =========================================================
+# M15 SETUP
+# =========================================================
+
+def detect_m15_setup(
+    h1,
+    m15,
+    m5
+):
+    h1_direction = h1["direction"]
+
+    m15_structure = analyze_structure(m15)
+    m15_pd = pd_zone(m15)
+    m15_liquidity = liquidity_analysis(m15)
+
+    direction = None
+    opportunity = "NO VALID SETUP"
+    reason = []
+
+    # -----------------------------------------------------
+    # RANGE REVERSAL
+    # -----------------------------------------------------
+
+    range_info = analyze_range(m15)
+
+    if range_info["is_range"]:
+
+        if (
+            m15_liquidity["sell_side_sweep"]
+            and range_info["location"] <= 0.25
+        ):
+            direction = "BUY"
+            opportunity = "BUY RANGE REVERSAL"
+
+            reason.append(
+                "M15 range low + sell-side sweep"
+            )
+
+        elif (
+            m15_liquidity["buy_side_sweep"]
+            and range_info["location"] >= 0.75
+        ):
+            direction = "SELL"
+            opportunity = "SELL RANGE REVERSAL"
+
+            reason.append(
+                "M15 range high + buy-side sweep"
+            )
+
+    # -----------------------------------------------------
+    # LIQUIDITY SWEEP
+    # -----------------------------------------------------
+
+    if direction is None:
+
+        if m15_liquidity["sell_side_sweep"]:
+            direction = "BUY"
+            opportunity = "BUY LIQUIDITY SWEEP"
+
+            reason.append(
+                "M15 sell-side liquidity sweep"
+            )
+
+        elif m15_liquidity["buy_side_sweep"]:
+            direction = "SELL"
+            opportunity = "SELL LIQUIDITY SWEEP"
+
+            reason.append(
+                "M15 buy-side liquidity sweep"
+            )
+
+    # -----------------------------------------------------
+    # TREND PULLBACK
+    # -----------------------------------------------------
+
+    if direction is None:
+
+        if (
+            h1_direction == "BULLISH"
+            and m15_pd["zone"] == "DISCOUNT"
+        ):
+            direction = "BUY"
+            opportunity = "BUY PULLBACK"
+
+            reason.append(
+                "H1 bullish + M15 discount"
+            )
+
+        elif (
+            h1_direction == "BEARISH"
+            and m15_pd["zone"] == "PREMIUM"
+        ):
+            direction = "SELL"
+            opportunity = "SELL PULLBACK"
+
+            reason.append(
+                "H1 bearish + M15 premium"
+            )
+
+    # -----------------------------------------------------
+    # BREAKOUT
+    # -----------------------------------------------------
+
+    if direction is None:
+
+        if (
+            m15_structure["bos"]
+            == "BULLISH BOS"
+        ):
+            direction = "BUY"
+            opportunity = "BUY BREAKOUT RETEST"
+
+            reason.append(
+                "M15 bullish BOS"
+            )
+
+        elif (
+            m15_structure["bos"]
+            == "BEARISH BOS"
+        ):
+            direction = "SELL"
+            opportunity = "SELL BREAKOUT RETEST"
+
+            reason.append(
+                "M15 bearish BOS"
+            )
+
+    return {
+        "direction": direction,
+        "opportunity": opportunity,
+        "valid": direction is not None,
+        "reason": reason,
+        "pd": m15_pd,
+        "liquidity": m15_liquidity,
+        "structure": m15_structure,
+        "range": range_info
+    }
+
+
+# =========================================================
+# M5 CONFIRMATION
+# =========================================================
+
+def m5_confirmation(df, expected_direction):
+    structure = analyze_structure(df)
+    momentum_data = momentum(df)
+    candle = candle_confirmation(df)
+
+    bos = structure["bos"]
 
     if expected_direction == "BUY":
 
-        confirmed = bullish
+        bos_ok = bos == "BULLISH BOS"
 
-    elif expected_direction == "SELL":
-
-        confirmed = bearish
-
-    else:
-
-        confirmed = (
-            bullish or bearish
+        candle_ok = (
+            candle["bullish"]
+            and momentum_data["direction"]
+            == "BULLISH"
         )
 
-    if bullish and not bearish:
+        confirmed = bos_ok or candle_ok
 
-        direction = "BULLISH"
+        return {
+            "confirmed": bool(confirmed),
+            "bos": bos,
+            "candle": candle_ok,
+            "momentum": momentum_data["direction"],
+            "reason": (
+                "M5 bullish BOS"
+                if bos_ok
+                else "M5 bullish candle + momentum"
+                if candle_ok
+                else "NO CONFIRMATION"
+            )
+        }
 
-    elif bearish and not bullish:
+    if expected_direction == "SELL":
 
-        direction = "BEARISH"
+        bos_ok = bos == "BEARISH BOS"
 
-    else:
+        candle_ok = (
+            candle["bearish"]
+            and momentum_data["direction"]
+            == "BEARISH"
+        )
 
-        direction = "NEUTRAL"
+        confirmed = bos_ok or candle_ok
+
+        return {
+            "confirmed": bool(confirmed),
+            "bos": bos,
+            "candle": candle_ok,
+            "momentum": momentum_data["direction"],
+            "reason": (
+                "M5 bearish BOS"
+                if bos_ok
+                else "M5 bearish candle + momentum"
+                if candle_ok
+                else "NO CONFIRMATION"
+            )
+        }
 
     return {
-        "confirmed": confirmed,
-        "direction": direction,
-        "bos_choch":
-            structure["structure"],
-        "candle": candle,
-        "momentum": momentum,
+        "confirmed": False,
+        "bos": bos,
+        "candle": False,
+        "momentum": momentum_data["direction"],
+        "reason": "NO DIRECTION"
     }
 
 
-# ============================================================
+# =========================================================
 # SCORE
-# ============================================================
+# =========================================================
 
 def calculate_score(
     h1,
-    m15,
-    m5,
-    pd,
-    setup,
-    liquidity
+    m15_setup,
+    m5_confirm,
+    session,
+    volatility
 ):
-
     score = 0
 
-    # --------------------------------------------------------
-    # H1 CONTEXT
-    # --------------------------------------------------------
-
-    if h1["bias"] in (
+    # H1 Context
+    if h1["direction"] in [
         "BULLISH",
-        "BEARISH",
-    ):
-
+        "BEARISH"
+    ]:
         score += 15
 
-    if (
-        h1["bullish_bos"]
-        or h1["bearish_bos"]
-    ):
-
+    if h1["bos"]:
         score += 5
 
-    # --------------------------------------------------------
-    # M15 SETUP
-    # --------------------------------------------------------
-
-    if setup["valid"]:
+    # M15 Setup
+    if m15_setup["valid"]:
         score += 10
 
-    if liquidity["detected"]:
-        score += 10
-
-    if m15["structure"] in (
-        "BULLISH BOS",
-        "BEARISH BOS",
-        "HH / HL",
-        "LH / LL",
+    if (
+        m15_setup["liquidity"]
+        .get("buy_side_sweep")
+        or
+        m15_setup["liquidity"]
+        .get("sell_side_sweep")
     ):
-
         score += 10
 
-    # --------------------------------------------------------
+    if (
+        m15_setup["structure"]
+        .get("bos")
+    ):
+        score += 10
+
     # M5
-    # --------------------------------------------------------
-
-    if m5["confirmed"]:
+    if m5_confirm["confirmed"]:
         score += 15
 
-    if m5["candle"] in (
-        "BULLISH",
-        "BEARISH",
-    ):
-
+    if m5_confirm["bos"]:
         score += 10
 
-    if m5["momentum"] in (
-        "BULLISH",
-        "BEARISH",
-    ):
-
+    if m5_confirm["candle"]:
         score += 10
 
-    # --------------------------------------------------------
-    # LOCATION
-    # --------------------------------------------------------
+    # Location
+    zone = m15_setup["pd"]["zone"]
 
-    direction = setup_direction(
-        setup["type"]
-    )
+    direction = m15_setup["direction"]
 
     if (
         direction == "BUY"
-        and pd["zone"] == "DISCOUNT"
+        and zone == "DISCOUNT"
     ):
-
         score += 5
 
     elif (
         direction == "SELL"
-        and pd["zone"] == "PREMIUM"
+        and zone == "PREMIUM"
     ):
-
-        score += 5
-
-    # Directional alignment
-    if (
-        direction == "BUY"
-        and h1["bias"] == "BULLISH"
-    ):
-
-        score += 5
-
-    elif (
-        direction == "SELL"
-        and h1["bias"] == "BEARISH"
-    ):
-
         score += 5
 
     # Session
-    if session_name() != "OFF SESSION":
-
+    if session in [
+        "LONDON",
+        "NEW YORK"
+    ]:
         score += 5
 
-    return int(
-        clamp(score, 0, 100)
-    )
+    # Volatility
+    if volatility["condition"] == "NORMAL":
+        score += 5
+
+    return min(score, 100)
 
 
-# ============================================================
+# =========================================================
 # TRADE PLAN
-# ============================================================
-
-def invalid_trade_plan(
-    direction,
-    reason="Unable to build trade plan"
-):
-
-    return {
-        "valid": False,
-        "direction": direction,
-        "entry": None,
-        "sl": None,
-        "tp1": None,
-        "tp2": None,
-        "tp3": None,
-        "risk_pips": None,
-        "rr_tp1": None,
-        "rr_tp2": None,
-        "rr_tp3": None,
-        "tp1_pips": None,
-        "tp2_pips": None,
-        "tp3_pips": None,
-        "reason": reason,
-    }
-
+# =========================================================
 
 def create_trade_plan(
-    candles,
     direction,
-    current_price
+    m5,
+    score,
+    volatility
 ):
+    if not direction:
+        return {
+            "valid": False
+        }
 
-    if direction not in (
-        "BUY",
-        "SELL",
-    ):
+    entry = float(
+        m5.iloc[-1]["close"]
+    )
 
-        return invalid_trade_plan(
-            direction
+    structure = analyze_structure(m5)
+
+    swing_low = structure["swing_low"]
+    swing_high = structure["swing_high"]
+
+    # ATR based buffer
+    atr = volatility.get("atr")
+
+    buffer = 0.20
+
+    if atr:
+        buffer = max(
+            0.20,
+            atr * 0.20
         )
-
-    highs = find_swing_highs(candles)
-    lows = find_swing_lows(candles)
-
-    entry = current_price
 
     if direction == "BUY":
 
-        if not lows:
+        if swing_low is None:
+            return {
+                "valid": False
+            }
 
-            return invalid_trade_plan(
-                direction,
-                "No swing low"
-            )
-
-        swing_low = lows[-1]["price"]
-
-        sl = swing_low - 0.20
-
-        risk_price = (
-            entry - sl
-        )
+        sl = float(swing_low) - buffer
 
     else:
 
-        if not highs:
+        if swing_high is None:
+            return {
+                "valid": False
+            }
 
-            return invalid_trade_plan(
-                direction,
-                "No swing high"
-            )
+        sl = float(swing_high) + buffer
 
-        swing_high = highs[-1]["price"]
-
-        sl = swing_high + 0.20
-
-        risk_price = (
-            sl - entry
-        )
+    risk_price = abs(
+        entry - sl
+    )
 
     risk_pips = price_to_pips(
         risk_price
     )
 
-    if risk_pips is None:
-
-        return invalid_trade_plan(
-            direction,
-            "Invalid risk"
-        )
-
     if (
         risk_pips < MIN_RISK_PIPS
-        or risk_pips > MAX_RISK_PIPS
+        or
+        risk_pips > MAX_RISK_PIPS
     ):
+        return {
+            "valid": False,
+            "reason": (
+                f"Risk {risk_pips:.1f} pips "
+                f"outside "
+                f"{MIN_RISK_PIPS}-{MAX_RISK_PIPS}"
+            )
+        }
 
-        return invalid_trade_plan(
-            direction,
-            "Risk outside "
-            f"{MIN_RISK_PIPS}-"
-            f"{MAX_RISK_PIPS} pips"
-        )
-
-    # --------------------------------------------------------
-    # TP1
-    # --------------------------------------------------------
-
-    tp1_distance = pips_to_price(
-        TP1_PIPS
+    tp1_price = (
+        entry + pips_to_price(TP1_PIPS)
+        if direction == "BUY"
+        else entry - pips_to_price(TP1_PIPS)
     )
-
-    if direction == "BUY":
-
-        tp1 = entry + tp1_distance
-
-    else:
-
-        tp1 = entry - tp1_distance
-
-    # --------------------------------------------------------
-    # TP2
-    # --------------------------------------------------------
 
     tp2_pips = max(
         MIN_TP2_PIPS,
-        risk_pips * MIN_RR
+        risk_pips * 2
     )
-
-    tp2_distance = pips_to_price(
-        tp2_pips
-    )
-
-    if direction == "BUY":
-
-        tp2 = entry + tp2_distance
-
-    else:
-
-        tp2 = entry - tp2_distance
-
-    # --------------------------------------------------------
-    # TP3
-    # --------------------------------------------------------
 
     tp3_pips = max(
         TP3_PIPS,
         risk_pips * 3
     )
 
-    tp3_distance = pips_to_price(
-        tp3_pips
+    tp2_price = (
+        entry + pips_to_price(tp2_pips)
+        if direction == "BUY"
+        else entry - pips_to_price(tp2_pips)
     )
 
-    if direction == "BUY":
+    tp3_price = (
+        entry + pips_to_price(tp3_pips)
+        if direction == "BUY"
+        else entry - pips_to_price(tp3_pips)
+    )
 
-        tp3 = entry + tp3_distance
+    rr_tp1 = (
+        TP1_PIPS / risk_pips
+    )
 
-    else:
+    rr_tp2 = (
+        tp2_pips / risk_pips
+    )
 
-        tp3 = entry - tp3_distance
+    rr_tp3 = (
+        tp3_pips / risk_pips
+    )
+
+    if rr_tp2 < MIN_RR:
+        return {
+            "valid": False,
+            "reason": "TP2 RR below minimum"
+        }
 
     return {
         "valid": True,
         "direction": direction,
         "entry": round_price(entry),
         "sl": round_price(sl),
-        "tp1": round_price(tp1),
-        "tp2": round_price(tp2),
-        "tp3": round_price(tp3),
-        "risk_pips":
-            round(risk_pips, 1),
-        "rr_tp1":
-            round(
-                TP1_PIPS / risk_pips,
-                2
-            ),
-        "rr_tp2":
-            round(
-                tp2_pips / risk_pips,
-                2
-            ),
-        "rr_tp3":
-            round(
-                tp3_pips / risk_pips,
-                2
-            ),
-        "tp1_pips": TP1_PIPS,
-        "tp2_pips":
-            round(tp2_pips, 1),
-        "tp3_pips":
-            round(tp3_pips, 1),
-        "reason":
-            "V3.1 scalping plan",
-    }
 
+        "risk_pips": round(risk_pips, 1),
 
-# ============================================================
-# POTENTIAL
-# ============================================================
+        "tp1": round_price(tp1_price),
+        "tp2": round_price(tp2_price),
+        "tp3": round_price(tp3_price),
 
-def calculate_potential(plan):
+        "tp1_pips": round(TP1_PIPS, 1),
+        "tp2_pips": round(tp2_pips, 1),
+        "tp3_pips": round(tp3_pips, 1),
 
-    if not plan.get("valid"):
+        "rr_tp1": round(rr_tp1, 2),
+        "rr_tp2": round(rr_tp2, 2),
+        "rr_tp3": round(rr_tp3, 2),
 
-        return {
-            "status": "LOW",
-            "min_pips": None,
-            "max_pips": None,
-            "description":
-                "No valid trade plan",
-        }
-
-    tp1 = plan.get("tp1_pips")
-    tp3 = plan.get("tp3_pips")
-
-    return {
-        "status": "HIGH",
-        "min_pips": tp1,
-        "max_pips": tp3,
-        "description":
-            f"Potential move "
-            f"{round(tp1)}-"
-            f"{round(tp3)} pips",
-    }
-
-
-# ============================================================
-# STATE
-# ============================================================
-
-def load_state():
-
-    if not STATE_FILE.exists():
-        return {}
-
-    try:
-
-        with open(
-            STATE_FILE,
-            "r",
-            encoding="utf-8"
-        ) as file:
-
-            return json.load(file)
-
-    except Exception:
-
-        return {}
-
-
-def save_state(state):
-
-    STATE_FILE.parent.mkdir(
-        parents=True,
-        exist_ok=True
-    )
-
-    temp = STATE_FILE.with_suffix(
-        ".tmp"
-    )
-
-    with open(
-        temp,
-        "w",
-        encoding="utf-8"
-    ) as file:
-
-        json.dump(
-            clean_for_json(state),
-            file,
-            indent=2,
-            ensure_ascii=False
+        "risk_level": (
+            "LOW"
+            if risk_pips <= 40
+            else "MEDIUM"
         )
+    }
 
-    os.replace(
-        temp,
-        STATE_FILE
+
+# =========================================================
+# SIGNAL ID
+# =========================================================
+
+def make_signal_id(
+    direction,
+    opportunity,
+    entry,
+    sl,
+    tp2
+):
+    raw = (
+        f"{direction}|"
+        f"{opportunity}|"
+        f"{round(entry,2)}|"
+        f"{round(sl,2)}|"
+        f"{round(tp2,2)}"
     )
 
-
-# ============================================================
-# SIGNAL ID
-# ============================================================
-
-def build_signal_id(
-    opportunity,
-    plan,
-    score
-):
-
-    if not plan.get("valid"):
-        return None
-
-    return "|".join([
-        str(opportunity),
-        str(plan.get("direction")),
-        str(plan.get("entry")),
-        str(plan.get("sl")),
-        str(plan.get("tp2")),
-        str(score),
-    ])
+    return hashlib.sha256(
+        raw.encode()
+    ).hexdigest()[:16]
 
 
-# ============================================================
+# =========================================================
 # TELEGRAM
-# ============================================================
+# =========================================================
 
 def send_telegram(message):
-
     if not TELEGRAM_BOT_TOKEN:
-        print(
-            "Telegram disabled: "
-            "BOT TOKEN missing."
-        )
         return False
 
     if not TELEGRAM_CHAT_ID:
-        print(
-            "Telegram disabled: "
-            "CHAT ID missing."
-        )
         return False
 
     url = (
-        "https://api.telegram.org/bot"
-        f"{TELEGRAM_BOT_TOKEN}/sendMessage"
+        f"https://api.telegram.org/"
+        f"bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     )
 
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": message
+    }
+
     try:
-
-        response = requests.post(
+        r = requests.post(
             url,
-            json={
-                "chat_id":
-                    TELEGRAM_CHAT_ID,
-                "text": message,
-            },
-            timeout=REQUEST_TIMEOUT,
+            json=payload,
+            timeout=20
         )
 
-        if response.status_code != 200:
+        return r.ok
 
-            print(
-                "Telegram error:",
-                response.text[:500]
-            )
-
-            return False
-
-        return True
-
-    except Exception as error:
-
-        print(
-            "Telegram exception:",
-            error
-        )
-
+    except Exception:
         return False
 
 
-def build_telegram_message(
-    price,
-    session,
-    h1,
-    m15,
-    m5,
+def format_telegram(
+    direction,
     opportunity,
     score,
     plan,
-    potential
+    session,
+    pd_data,
+    volatility
 ):
-
     return (
-        "🔥 BOSQUE FOREX AI\n"
-        "\n"
-        "XAU/USD SCALPING\n"
-        f"Direction: {plan.get('direction')}\n"
-        f"Opportunity: {opportunity}\n"
-        f"Score: {score}/100\n"
-        "\n"
-        f"Entry: {plan.get('entry')}\n"
-        f"SL: {plan.get('sl')}\n"
-        f"TP1: {plan.get('tp1')} "
-        f"({plan.get('tp1_pips')} pips)\n"
-        f"TP2: {plan.get('tp2')} "
-        f"({plan.get('tp2_pips')} pips)\n"
-        f"TP3: {plan.get('tp3')} "
-        f"({plan.get('tp3_pips')} pips)\n"
-        f"Risk: {plan.get('risk_pips')} pips\n"
-        f"RR TP2: 1:{plan.get('rr_tp2')}\n"
-        "\n"
-        f"Potential: "
-        f"{potential.get('min_pips')}-"
-        f"{potential.get('max_pips')} pips\n"
-        "\n"
-        f"Session: {session}\n"
-        f"H1: {h1.get('bias')} | "
-        f"{h1.get('structure')}\n"
-        f"M15: {m15.get('bias')} | "
-        f"{m15.get('structure')}\n"
-        f"M5: {m5.get('direction')} | "
-        f"{m5.get('bos_choch')}\n"
-        "\n"
-        f"Price: {price}\n"
-        "\n"
+        "👑 BOSQUE FOREX AI\n\n"
+        f"🚨 {direction} {opportunity}\n"
+        f"⭐ Score: {score}/100\n\n"
+
+        f"📍 Entry: {plan['entry']}\n"
+        f"🛑 SL: {plan['sl']}\n"
+        f"🎯 TP1: {plan['tp1']} "
+        f"({plan['tp1_pips']} pips)\n"
+        f"🎯 TP2: {plan['tp2']} "
+        f"({plan['tp2_pips']} pips)\n"
+        f"🎯 TP3: {plan['tp3']} "
+        f"({plan['tp3_pips']} pips)\n\n"
+
+        f"💰 Risk: {plan['risk_pips']} pips\n"
+        f"📊 RR TP2: 1:{plan['rr_tp2']}\n"
+        f"🌍 Session: {session}\n"
+        f"📐 PD: {pd_data['zone']}\n"
+        f"🌡 ATR: {volatility.get('atr_pips')} pips\n\n"
+
         "⚠️ Manual confirmation required."
     )
 
 
-# ============================================================
-# DASHBOARD
-# ============================================================
-
-def build_dashboard_data(
-    price,
-    session,
-    h1,
-    m15,
-    m15_range,
-    m15_liquidity,
-    m15_setup,
-    m5,
-    pd,
-    opportunity,
-    score,
-    plan,
-    potential,
-    signal_id
-):
-
-    valid = (
-        opportunity !=
-        "NO VALID SETUP"
-        and score >= MIN_SCORE
-        and plan.get("valid", False)
-    )
-
-    return {
-
-        "engine": {
-            "name":
-                "BOSQUE FOREX AI",
-            "version":
-                "SCALPING V3.1",
-            "symbol":
-                SYMBOL,
-            "timeframes": {
-                "bias": "H1",
-                "setup": "M15",
-                "confirmation": "M5",
-            },
-            "pip_size":
-                PIP_SIZE,
-            "pip_rule":
-                "1 pip = 0.10 XAU/USD",
-            "min_score":
-                MIN_SCORE,
-            "min_risk_pips":
-                MIN_RISK_PIPS,
-            "max_risk_pips":
-                MAX_RISK_PIPS,
-            "min_rr":
-                MIN_RR,
-        },
-
-        "timestamp":
-            now_iso(),
-
-        "latest_price":
-            round_price(price),
-
-        "session":
-            session,
-
-        "market_mode":
-            (
-                "RANGE"
-                if h1["bias"] == "RANGE"
-                else "TREND"
-            ),
-
-        "pd": pd,
-
-        "opportunity": {
-            "type":
-                opportunity,
-            "score":
-                score,
-            "valid":
-                valid,
-        },
-
-        "plan":
-            plan,
-
-        "potential":
-            potential,
-
-        # ====================================================
-        # BROWSER ALERT PAYLOAD
-        # ====================================================
-
-        "alert": {
-
-            "valid":
-                valid,
-
-            "signal_id":
-                signal_id,
-
-            "type":
-                opportunity,
-
-            "direction":
-                plan.get("direction"),
-
-            "score":
-                score,
-
-            "entry":
-                plan.get("entry"),
-
-            "sl":
-                plan.get("sl"),
-
-            "tp1":
-                plan.get("tp1"),
-
-            "tp2":
-                plan.get("tp2"),
-
-            "tp3":
-                plan.get("tp3"),
-
-            "risk_pips":
-                plan.get("risk_pips"),
-
-            "rr_tp2":
-                plan.get("rr_tp2"),
-
-            "potential":
-                potential.get("description"),
-
-            "message":
-                (
-                    f"{opportunity} | "
-                    f"Score {score}/100 | "
-                    f"Entry {plan.get('entry')} | "
-                    f"SL {plan.get('sl')} | "
-                    f"TP1 {plan.get('tp1')}"
-                ),
-        },
-
-        "h1": {
-            **h1
-        },
-
-        "m15": {
-
-            **m15,
-
-            "range":
-                m15_range,
-
-            "liquidity":
-                m15_liquidity,
-
-            "setup":
-                m15_setup,
-        },
-
-        "m5": {
-            **m5
-        },
-
-        "filters": {
-
-            "score":
-                (
-                    "PASS"
-                    if score >= MIN_SCORE
-                    else "FAIL"
-                ),
-
-            "m15_setup":
-                (
-                    "PASS"
-                    if m15_setup["valid"]
-                    else "FAIL"
-                ),
-
-            "m5_confirmation":
-                (
-                    "PASS"
-                    if m5["confirmed"]
-                    else "FAIL"
-                ),
-
-            "risk":
-                (
-                    "PASS"
-                    if plan.get("valid")
-                    else "FAIL"
-                ),
-
-            "rr":
-                (
-                    "PASS"
-                    if (
-                        plan.get("valid")
-                        and safe_float(
-                            plan.get("rr_tp2"),
-                            0
-                        ) >= MIN_RR
-                    )
-                    else "FAIL"
-                ),
-        },
-
-        "confirmations": {
-
-            "h1_bias":
-                h1["bias"],
-
-            "h1_structure":
-                h1["structure"],
-
-            "m15_setup":
-                m15_setup["type"],
-
-            "m15_liquidity":
-                m15_liquidity["type"],
-
-            "m5_bos_choch":
-                m5["bos_choch"],
-
-            "m5_candle":
-                m5["candle"],
-
-            "m5_momentum":
-                m5["momentum"],
-        },
-    }
-
-
-# ============================================================
-# SAVE DASHBOARD
-# ============================================================
-
-def save_dashboard(data):
-
-    DASHBOARD_FILE.parent.mkdir(
-        parents=True,
-        exist_ok=True
-    )
-
-    temp = DASHBOARD_FILE.with_suffix(
-        ".tmp"
-    )
-
-    with open(
-        temp,
-        "w",
-        encoding="utf-8"
-    ) as file:
-
-        json.dump(
-            clean_for_json(data),
-            file,
-            indent=2,
-            ensure_ascii=False
-        )
-
-    os.replace(
-        temp,
-        DASHBOARD_FILE
-    )
-
-    print(
-        "✅ Dashboard data saved:",
-        DASHBOARD_FILE
-    )
-
-
-# ============================================================
-# ERROR DASHBOARD
-# ============================================================
-
-def save_error_dashboard(error):
-
-    data = {
-
-        "engine": {
-            "name":
-                "BOSQUE FOREX AI",
-            "version":
-                "SCALPING V3.1",
-            "symbol":
-                SYMBOL,
-        },
-
-        "timestamp":
-            now_iso(),
-
-        "latest_price":
-            None,
-
-        "session":
-            session_name(),
-
-        "market_mode":
-            "UNKNOWN",
-
-        "pd": {
-            "zone":
-                "UNKNOWN",
-            "equilibrium":
-                None,
-            "high":
-                None,
-            "low":
-                None,
-        },
-
-        "opportunity": {
-            "type":
-                "NO VALID SETUP",
-            "score":
-                0,
-            "valid":
-                False,
-        },
-
-        "plan":
-            invalid_trade_plan(
-                None,
-                "Engine error"
-            ),
-
-        "potential": {
-            "status":
-                "LOW",
-            "min_pips":
-                None,
-            "max_pips":
-                None,
-            "description":
-                "Engine error",
-        },
-
-        "alert": {
-            "valid":
-                False,
-            "signal_id":
-                None,
-        },
-
-        "h1": {
-            "bias":
-                "UNKNOWN",
-            "structure":
-                "ENGINE ERROR",
-        },
-
-        "m15": {
-            "bias":
-                "UNKNOWN",
-            "structure":
-                "ENGINE ERROR",
-            "range": {},
-            "liquidity": {},
-            "setup": {},
-        },
-
-        "m5": {
-            "confirmed":
-                False,
-            "direction":
-                "UNKNOWN",
-            "bos_choch":
-                "ENGINE ERROR",
-            "candle":
-                "UNKNOWN",
-            "momentum":
-                "UNKNOWN",
-        },
-
-        "filters": {
-            "score":
-                "FAIL",
-            "m15_setup":
-                "FAIL",
-            "m5_confirmation":
-                "FAIL",
-            "risk":
-                "FAIL",
-            "rr":
-                "FAIL",
-        },
-
-        "confirmations": {},
-
-        "error":
-            str(error),
-    }
-
-    try:
-        save_dashboard(data)
-
-    except Exception as save_error:
-
-        print(
-            "❌ Failed to save "
-            "error dashboard:",
-            save_error
-        )
-
-
-# ============================================================
+# =========================================================
 # MAIN ENGINE
-# ============================================================
+# =========================================================
 
-def run_engine():
+def main():
+    global CURRENT_H1
 
-    print("=" * 60)
-    print(
-        "BOSQUE FOREX AI "
-        "- SCALPING V3.1"
-    )
-    print("=" * 60)
+    timestamp = now_my()
 
-    print(
-        "Repository:",
-        REPO_DIR
-    )
-
-    print(
-        "Dashboard:",
-        DASHBOARD_FILE
-    )
-
-    print(
-        "State:",
-        STATE_FILE
-    )
-
-    print(
-        "Symbol:",
-        SYMBOL
-    )
-
-    print(
-        "Minimum Score:",
-        MIN_SCORE
-    )
-
-    print(
-        "Risk Range:",
-        f"{MIN_RISK_PIPS}-"
-        f"{MAX_RISK_PIPS} pips"
-    )
-
-    print(
-        "Minimum RR:",
-        f"1:{MIN_RR}"
-    )
-
-    print(
-        "Session:",
-        session_name()
-    )
-
-    # ========================================================
+    # -----------------------------------------------------
     # FETCH
-    # ========================================================
+    # -----------------------------------------------------
 
-    print(
-        "\n📡 Fetching Twelve Data..."
-    )
+    m5 = fetch_m5()
+    m5 = remove_incomplete_candle(m5)
 
-    m5_raw = fetch_m5_data()
-
-    print(
-        f"✅ Received "
-        f"{len(m5_raw)} M5 candles"
-    )
-
-    m5_raw = remove_incomplete_candle(
-        m5_raw
-    )
-
-    if len(m5_raw) < 50:
-
+    if len(m5) < 100:
         raise RuntimeError(
-            "Not enough completed M5 candles."
+            "Not enough M5 candles"
         )
 
-    # ========================================================
-    # AGGREGATE
-    # ========================================================
-
-    h1_candles = aggregate_candles(
-        m5_raw,
-        60
-    )
-
-    m15_candles = aggregate_candles(
-        m5_raw,
+    m15 = aggregate(
+        m5,
         15
     )
 
-    print(
-        f"H1 candles: "
-        f"{len(h1_candles)}"
+    h1 = aggregate(
+        m5,
+        60
     )
 
-    print(
-        f"M15 candles: "
-        f"{len(m15_candles)}"
-    )
+    CURRENT_H1 = h1
 
-    print(
-        f"M5 candles: "
-        f"{len(m5_raw)}"
-    )
-
-    # ========================================================
-    # PRICE
-    # ========================================================
-
-    current_price = m5_raw[-1]["close"]
-
-    # ========================================================
-    # H1
-    # ========================================================
-
-    h1 = analyze_structure(
-        h1_candles
-    )
-
-    h1_range = detect_range(
-        h1_candles
-    )
-
-    if h1_range["is_range"]:
-
-        h1["bias"] = "RANGE"
-        h1["structure"] = "RANGE"
-
-    # ========================================================
-    # M15
-    # ========================================================
-
-    m15 = analyze_structure(
-        m15_candles
-    )
-
-    m15_range = detect_range(
-        m15_candles
-    )
-
-    m15_liquidity = (
-        detect_liquidity_sweep(
-            m15_candles
+    if len(m15) < 50 or len(h1) < 30:
+        raise RuntimeError(
+            "Not enough MTF data"
         )
+
+    # -----------------------------------------------------
+    # ANALYSIS
+    # -----------------------------------------------------
+
+    h1_structure = analyze_structure(h1)
+    m15_structure = analyze_structure(m15)
+    m5_structure = analyze_structure(m5)
+
+    regime_range = analyze_range(h1)
+
+    if h1_structure["direction"] in [
+        "BULLISH",
+        "BEARISH"
+    ]:
+        market_mode = "TRENDING"
+
+    elif regime_range["is_range"]:
+        market_mode = "RANGING"
+
+    else:
+        market_mode = "NEUTRAL"
+
+    pd_data = pd_zone(m15)
+
+    liquidity = liquidity_analysis(m15)
+
+    volatility = volatility_analysis(m5)
+
+    session = get_session(timestamp)
+
+    # -----------------------------------------------------
+    # M15 SETUP
+    # -----------------------------------------------------
+
+    setup = detect_m15_setup(
+        h1_structure,
+        m15,
+        m5
     )
 
-    pd = calculate_pd_zone(
-        m15_candles
+    # -----------------------------------------------------
+    # M5 CONFIRMATION
+    # -----------------------------------------------------
+
+    m5_confirm = m5_confirmation(
+        m5,
+        setup["direction"]
     )
 
-    # ========================================================
-    # SETUP
-    # ========================================================
-
-    m15_setup = determine_m15_setup(
-        m15_candles,
-        h1
-    )
-
-    direction = setup_direction(
-        m15_setup["type"]
-    )
-
-    # ========================================================
-    # M5
-    # ========================================================
-
-    m5 = m5_confirmation(
-        m5_raw,
-        direction
-    )
-
-    # ========================================================
+    # -----------------------------------------------------
     # SCORE
-    # ========================================================
+    # -----------------------------------------------------
 
     score = calculate_score(
-        h1=h1,
-        m15=m15,
-        m5=m5,
-        pd=pd,
-        setup=m15_setup,
-        liquidity=m15_liquidity,
+        h1_structure,
+        setup,
+        m5_confirm,
+        session,
+        volatility
     )
 
-    # ========================================================
-    # HARD GATES
-    # ========================================================
-
-    hard_gate_pass = (
-        m15_setup["valid"]
-        and m5["confirmed"]
-        and score >= MIN_SCORE
-        and direction in (
-            "BUY",
-            "SELL",
-        )
-    )
-
-    # ========================================================
+    # -----------------------------------------------------
     # TRADE PLAN
-    # ========================================================
+    # -----------------------------------------------------
 
-    if hard_gate_pass:
+    plan = create_trade_plan(
+        setup["direction"],
+        m5,
+        score,
+        volatility
+    )
 
-        plan = create_trade_plan(
-            m5_raw,
-            direction,
-            current_price,
+    # -----------------------------------------------------
+    # HARD GATES
+    # -----------------------------------------------------
+
+    news_ok = True
+    session_ok = session in [
+        "LONDON",
+        "NEW YORK"
+    ]
+
+    fresh_zone = (
+        setup["valid"]
+    )
+
+    risk_ok = (
+        plan.get("valid", False)
+    )
+
+    score_ok = (
+        score >= MIN_SCORE
+    )
+
+    m5_ok = (
+        m5_confirm["confirmed"]
+    )
+
+    setup_ok = (
+        setup["valid"]
+    )
+
+    rr_ok = (
+        plan.get("rr_tp2", 0)
+        >= MIN_RR
+    )
+
+    # Asia is not preferred.
+    # We do not force rejection inside the engine
+    # unless all other gates fail.
+
+    valid_signal = all([
+        score_ok,
+        setup_ok,
+        m5_ok,
+        risk_ok,
+        rr_ok,
+        news_ok
+    ])
+
+    # -----------------------------------------------------
+    # SIGNAL
+    # -----------------------------------------------------
+
+    signal = {
+        "active": False,
+        "id": None,
+        "direction": setup["direction"],
+        "opportunity": setup["opportunity"],
+        "score": score,
+        "timestamp": timestamp.isoformat()
+    }
+
+    state = load_state()
+
+    if valid_signal:
+
+        signal_id = make_signal_id(
+            setup["direction"],
+            setup["opportunity"],
+            plan["entry"],
+            plan["sl"],
+            plan["tp2"]
         )
 
-    else:
+        signal.update({
+            "active": True,
+            "id": signal_id,
+            "entry": plan["entry"],
+            "sl": plan["sl"],
+            "tp1": plan["tp1"],
+            "tp2": plan["tp2"],
+            "tp3": plan["tp3"]
+        })
 
-        plan = invalid_trade_plan(
-            direction,
-            "Hard gates not passed"
+        last_signal = state.get(
+            "last_signal_id"
         )
 
-    # ========================================================
-    # RR GATE
-    # ========================================================
+        if signal_id != last_signal:
 
-    if plan.get("valid"):
-
-        rr_tp2 = safe_float(
-            plan.get("rr_tp2")
-        )
-
-        if (
-            rr_tp2 is None
-            or rr_tp2 < MIN_RR
-        ):
-
-            plan["valid"] = False
-
-            plan["reason"] = (
-                f"RR below "
-                f"minimum 1:{MIN_RR}"
+            message = format_telegram(
+                setup["direction"],
+                setup["opportunity"],
+                score,
+                plan,
+                session,
+                pd_data,
+                volatility
             )
 
-    # ========================================================
-    # FINAL OPPORTUNITY
-    # ========================================================
-
-    if (
-        hard_gate_pass
-        and plan.get("valid")
-    ):
-
-        opportunity = (
-            m15_setup["type"]
-        )
-
-    else:
-
-        opportunity = (
-            "NO VALID SETUP"
-        )
-
-    # ========================================================
-    # POTENTIAL
-    # ========================================================
-
-    potential = calculate_potential(
-        plan
-    )
-
-    # ========================================================
-    # SIGNAL ID
-    # ========================================================
-
-    signal_id = build_signal_id(
-        opportunity,
-        plan,
-        score
-    )
-
-    # ========================================================
-    # DASHBOARD
-    # ========================================================
-
-    dashboard = build_dashboard_data(
-
-        price=current_price,
-
-        session=session_name(),
-
-        h1=h1,
-
-        m15=m15,
-
-        m15_range=m15_range,
-
-        m15_liquidity=m15_liquidity,
-
-        m15_setup=m15_setup,
-
-        m5=m5,
-
-        pd=pd,
-
-        opportunity=opportunity,
-
-        score=score,
-
-        plan=plan,
-
-        potential=potential,
-
-        signal_id=signal_id,
-    )
-
-    save_dashboard(
-        dashboard
-    )
-
-    # ========================================================
-    # SUMMARY
-    # ========================================================
-
-    print("\n" + "=" * 60)
-    print("BOSQUE ENGINE RESULT")
-    print("=" * 60)
-
-    print(
-        f"Price        : "
-        f"{current_price:.2f}"
-    )
-
-    print(
-        f"Session      : "
-        f"{session_name()}"
-    )
-
-    print(
-        f"H1 Bias      : "
-        f"{h1['bias']}"
-    )
-
-    print(
-        f"H1 Structure : "
-        f"{h1['structure']}"
-    )
-
-    print(
-        f"M15 Setup    : "
-        f"{m15_setup['type']}"
-    )
-
-    print(
-        f"M15 Liquidity: "
-        f"{m15_liquidity['type']}"
-    )
-
-    print(
-        f"M5 Confirm   : "
-        f"{m5['confirmed']}"
-    )
-
-    print(
-        f"M5 Direction : "
-        f"{m5['direction']}"
-    )
-
-    print(
-        f"M5 Candle    : "
-        f"{m5['candle']}"
-    )
-
-    print(
-        f"M5 Momentum  : "
-        f"{m5['momentum']}"
-    )
-
-    print(
-        f"Score        : "
-        f"{score}/100"
-    )
-
-    print(
-        f"Opportunity  : "
-        f"{opportunity}"
-    )
-
-    print(
-        f"Plan Valid   : "
-        f"{plan.get('valid')}"
-    )
-
-    print(
-        f"Entry        : "
-        f"{plan.get('entry')}"
-    )
-
-    print(
-        f"SL           : "
-        f"{plan.get('sl')}"
-    )
-
-    print(
-        f"TP1          : "
-        f"{plan.get('tp1')}"
-    )
-
-    print(
-        f"TP2          : "
-        f"{plan.get('tp2')}"
-    )
-
-    print(
-        f"TP3          : "
-        f"{plan.get('tp3')}"
-    )
-
-    print(
-        f"Risk         : "
-        f"{plan.get('risk_pips')} pips"
-    )
-
-    print(
-        f"RR TP2       : "
-        f"1:{plan.get('rr_tp2')}"
-    )
-
-    print(
-        f"Signal ID    : "
-        f"{signal_id}"
-    )
-
-    # ========================================================
-    # TELEGRAM
-    # ========================================================
-
-    if (
-        signal_id
-        and plan.get("valid")
-    ):
-
-        state = load_state()
-
-        previous_signal = (
-            state.get(
-                "last_signal_id"
-            )
-        )
-
-        if (
-            signal_id !=
-            previous_signal
-        ):
-
-            message = (
-                build_telegram_message(
-                    price=current_price,
-                    session=session_name(),
-                    h1=h1,
-                    m15=m15,
-                    m5=m5,
-                    opportunity=opportunity,
-                    score=score,
-                    plan=plan,
-                    potential=potential,
-                )
-            )
-
-            if send_telegram(
+            sent = send_telegram(
                 message
-            ):
+            )
 
+            if sent:
                 state[
                     "last_signal_id"
                 ] = signal_id
 
                 state[
-                    "last_signal_time"
-                ] = now_iso()
-
-                state[
-                    "last_signal_score"
-                ] = score
-
-                state[
-                    "last_signal_opportunity"
-                ] = opportunity
+                    "last_signal_sent"
+                ] = timestamp.isoformat()
 
                 save_state(state)
 
-                print(
-                    "📲 Telegram alert sent."
+    # -----------------------------------------------------
+    # DASHBOARD
+    # -----------------------------------------------------
+
+    dashboard = {
+        "engine": {
+            "name": "BOSQUE FOREX AI",
+            "version": "SCALPING V2",
+            "symbol": SYMBOL,
+            "timeframe": "H1 → M15 → M5",
+            "timestamp": timestamp.isoformat()
+        },
+
+        "latest_price": round_price(
+            float(m5.iloc[-1]["close"])
+        ),
+
+        "session": session,
+
+        "market_mode": market_mode,
+
+        "regime": {
+            "type": market_mode,
+            "h1_direction":
+                h1_structure["direction"],
+            "range": regime_range
+        },
+
+        "volatility": volatility,
+
+        "pd": pd_data,
+
+        "liquidity": {
+            **liquidity,
+            "pdh": None,
+            "pdl": None,
+            "asia_high": None,
+            "asia_low": None,
+            "session_high": None,
+            "session_low": None
+        },
+
+        "news": {
+            "status": "NOT PROVIDED",
+            "high_impact": None,
+            "minutes_to_news": None,
+            "filter": "NOT CONNECTED"
+        },
+
+        "opportunity": {
+            "type": setup["opportunity"],
+            "direction": setup["direction"],
+            "valid": setup["valid"],
+            "score": score
+        },
+
+        "signal": signal,
+
+        "plan": plan,
+
+        "potential": {
+            "tp1_pips":
+                plan.get("tp1_pips"),
+            "tp2_pips":
+                plan.get("tp2_pips"),
+            "tp3_pips":
+                plan.get("tp3_pips")
+        },
+
+        "h1": {
+            **h1_structure,
+            "condition": market_mode
+        },
+
+        "m15": {
+            **m15_structure,
+            "setup": setup
+        },
+
+        "m5": {
+            **m5_structure,
+            "confirmation": m5_confirm
+        },
+
+        "filters": {
+            "score": score_ok,
+            "setup": setup_ok,
+            "m5_confirmation": m5_ok,
+            "risk": risk_ok,
+            "rr": rr_ok,
+            "news": news_ok,
+            "session": session_ok
+        },
+
+        "confirmations": {
+            "h1_bias":
+                h1_structure["direction"],
+            "m15_setup":
+                setup["opportunity"],
+            "m5_confirmation":
+                m5_confirm["reason"],
+            "liquidity":
+                liquidity["description"],
+            "pd_zone":
+                pd_data["zone"]
+        },
+
+        "risk_engine": {
+            "status": (
+                "VALID"
+                if risk_ok
+                else "INVALID"
+            ),
+            "risk_pips":
+                plan.get("risk_pips"),
+            "risk_level":
+                plan.get("risk_level"),
+            "min_risk_pips":
+                MIN_RISK_PIPS,
+            "max_risk_pips":
+                MAX_RISK_PIPS,
+            "daily_loss_limit":
+                "NOT CONFIGURED",
+            "consecutive_loss_limit":
+                "NOT CONFIGURED"
+        },
+
+        "invalidation": {
+            "status": (
+                "VALID"
+                if valid_signal
+                else "WAIT"
+            ),
+            "conditions": [
+                "M5 confirmation required",
+                "Risk must remain valid",
+                "RR TP2 must remain >= 1:2",
+                "Avoid invalidation after structure failure"
+            ]
+        },
+
+        "sop": {
+            "news_filter": (
+                "PASS"
+                if news_ok
+                else "BLOCK"
+            ),
+            "session_filter": (
+                "PASS"
+                if session_ok
+                else "BLOCK"
+            ),
+            "risk": (
+                plan.get(
+                    "risk_level",
+                    "UNKNOWN"
                 )
-
-        else:
-
-            print(
-                "ℹ️ Same signal already sent."
+            ),
+            "fresh_zone": (
+                "YES"
+                if fresh_zone
+                else "NO"
+            ),
+            "m15_setup": (
+                "YES"
+                if setup_ok
+                else "NO"
+            ),
+            "m5_confirmation": (
+                "YES"
+                if m5_ok
+                else "NO"
             )
+        },
 
-    else:
+        "expectancy": {
+            "status": "NOT TRACKED",
+            "trades": None,
+            "win_rate": None,
+            "average_r": None,
+            "profit_factor": None,
+            "expectancy_r": None,
+            "max_drawdown": None,
+            "max_consecutive_losses": None
+        },
 
-        print(
-            "ℹ️ No Telegram signal."
+        "backtest": {
+            "status": "NOT RUN",
+            "development_period": "2022-2024",
+            "out_of_sample": "2025",
+            "forward": "2026"
+        }
+    }
+
+    save_json_atomic(
+        DASHBOARD_FILE,
+        dashboard
+    )
+
+    print(
+        json.dumps(
+            clean_for_json(dashboard),
+            indent=2
         )
+    )
 
-    print("=" * 60)
-    print("✅ ENGINE COMPLETE")
-    print("=" * 60)
-
-
-# ============================================================
-# ENTRY POINT
-# ============================================================
 
 if __name__ == "__main__":
-
-    try:
-
-        run_engine()
-
-    except Exception as error:
-
-        print(
-            "\n❌ BOSQUE ENGINE ERROR"
-        )
-
-        print(
-            str(error)
-        )
-
-        save_error_dashboard(
-            error
-        )
-
-        raise
+    main()
