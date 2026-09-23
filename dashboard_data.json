@@ -15,63 +15,63 @@
     "max_risk_pips": 70,
     "min_rr": 1.8
   },
-  "timestamp": "2026-09-23T10:00:42.723004+00:00",
-  "latest_price": 4314.35,
+  "timestamp": "2026-09-23T10:05:21.762412+00:00",
+  "latest_price": 4318.34,
   "session": "LONDON",
-  "market_mode": "TREND",
+  "market_mode": "RANGE",
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4327.4,
-    "high": 4346.31,
+    "equilibrium": 4326.08,
+    "high": 4343.67,
     "low": 4308.49
   },
   "opportunity": {
-    "type": "SELL BREAKOUT RETEST",
-    "score": 85,
-    "valid": true
+    "type": "NO VALID SETUP",
+    "score": 80,
+    "valid": false
   },
   "plan": {
-    "valid": true,
-    "direction": "SELL",
-    "entry": 4314.35,
-    "sl": 4317.99,
-    "tp1": 4308.35,
-    "tp2": 4302.35,
-    "tp3": 4296.35,
-    "risk_pips": 36.4,
-    "rr_tp1": 1.65,
-    "rr_tp2": 3.3,
-    "rr_tp3": 4.95,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "reason": "V3.1 scalping plan"
+    "valid": false,
+    "direction": "BUY",
+    "entry": null,
+    "sl": null,
+    "tp1": null,
+    "tp2": null,
+    "tp3": null,
+    "risk_pips": null,
+    "rr_tp1": null,
+    "rr_tp2": null,
+    "rr_tp3": null,
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null,
+    "reason": "Risk outside 30-70 pips"
   },
   "potential": {
-    "status": "HIGH",
-    "min_pips": 60,
-    "max_pips": 180,
-    "description": "Potential move 60-180 pips"
+    "status": "LOW",
+    "min_pips": null,
+    "max_pips": null,
+    "description": "No valid trade plan"
   },
   "alert": {
-    "valid": true,
-    "signal_id": "SELL BREAKOUT RETEST|SELL|4314.35|4317.99|4302.35|85",
-    "type": "SELL BREAKOUT RETEST",
-    "direction": "SELL",
-    "score": 85,
-    "entry": 4314.35,
-    "sl": 4317.99,
-    "tp1": 4308.35,
-    "tp2": 4302.35,
-    "tp3": 4296.35,
-    "risk_pips": 36.4,
-    "rr_tp2": 3.3,
-    "potential": "Potential move 60-180 pips",
-    "message": "SELL BREAKOUT RETEST | Score 85/100 | Entry 4314.35 | SL 4317.99 | TP1 4308.35"
+    "valid": false,
+    "signal_id": null,
+    "type": "NO VALID SETUP",
+    "direction": "BUY",
+    "score": 80,
+    "entry": null,
+    "sl": null,
+    "tp1": null,
+    "tp2": null,
+    "tp3": null,
+    "risk_pips": null,
+    "rr_tp2": null,
+    "potential": "No valid trade plan",
+    "message": "NO VALID SETUP | Score 80/100 | Entry None | SL None | TP1 None"
   },
   "h1": {
-    "bias": "BEARISH",
-    "structure": "BEARISH BOS",
+    "bias": "RANGE",
+    "structure": "RANGE",
     "bullish_bos": false,
     "bearish_bos": true,
     "last_swing_high": 4347.64,
@@ -79,33 +79,33 @@
   },
   "m15": {
     "bias": "BEARISH",
-    "structure": "BEARISH BOS",
+    "structure": "LH / LL",
     "bullish_bos": false,
-    "bearish_bos": true,
+    "bearish_bos": false,
     "last_swing_high": 4321.31,
     "last_swing_low": 4316.06,
     "range": {
       "is_range": true,
-      "high": 4346.31,
+      "high": 4343.67,
       "low": 4308.49,
-      "position": "LOW EXTREME",
-      "width": 37.83
+      "position": "MID RANGE",
+      "width": 35.18
     },
     "liquidity": {
-      "type": "NONE",
-      "detected": false,
-      "level": null
+      "type": "SELL-SIDE LIQUIDITY SWEEP",
+      "detected": true,
+      "level": 4316.06
     },
     "setup": {
-      "type": "SELL BREAKOUT RETEST",
+      "type": "BUY LIQUIDITY SWEEP",
       "valid": true,
-      "reason": "M15 bearish BOS"
+      "reason": "Sell-side liquidity taken and reclaimed"
     }
   },
   "m5": {
     "confirmed": true,
-    "direction": "NEUTRAL",
-    "bos_choch": "BEARISH BOS",
+    "direction": "BULLISH",
+    "bos_choch": "BULLISH BOS",
     "candle": "BULLISH",
     "momentum": "BULLISH"
   },
@@ -113,15 +113,15 @@
     "score": "PASS",
     "m15_setup": "PASS",
     "m5_confirmation": "PASS",
-    "risk": "PASS",
-    "rr": "PASS"
+    "risk": "FAIL",
+    "rr": "FAIL"
   },
   "confirmations": {
-    "h1_bias": "BEARISH",
-    "h1_structure": "BEARISH BOS",
-    "m15_setup": "SELL BREAKOUT RETEST",
-    "m15_liquidity": "NONE",
-    "m5_bos_choch": "BEARISH BOS",
+    "h1_bias": "RANGE",
+    "h1_structure": "RANGE",
+    "m15_setup": "BUY LIQUIDITY SWEEP",
+    "m15_liquidity": "SELL-SIDE LIQUIDITY SWEEP",
+    "m5_bos_choch": "BULLISH BOS",
     "m5_candle": "BULLISH",
     "m5_momentum": "BULLISH"
   }
