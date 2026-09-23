@@ -1,19 +1,18 @@
-name: BOSQUE FOREX AI
+name: Run BOSQUE FOREX AI
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
 
 jobs:
-
   run-engine:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -23,44 +22,23 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-  run: |
-    python -m pip install --upgrade pip
-    pip install -r engine/requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r engine/requirements.txt
 
       - name: Run BOSQUE FOREX AI
-        env:
-          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python engine/bosque_engine.py
 
       - name: Check dashboard data
         run: |
-          echo "Checking dashboard_data.json..."
-
-          if [ -f dashboard_data.json ]; then
-            echo "✅ dashboard_data.json FOUND"
-            ls -lh dashboard_data.json
-            echo ""
-            echo "Preview:"
-            head -50 dashboard_data.json
-          else
-            echo "❌ dashboard_data.json NOT FOUND"
-            exit 1
-          fi
+          test -f dashboard_data.json
+          echo "dashboard_data.json OK"
 
       - name: Commit dashboard data
         run: |
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add dashboard_data.json
-
-          if git diff --cached --quiet; then
-            echo "ℹ️ No dashboard data changes."
-          else
-            git commit -m "Update BOSQUE dashboard data"
-            git push
-          fi
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dashboard_data.json Engine/state.json
+          git diff --cached --quiet || git commit -m "Update BOSQUE FOREX AI data"
+          git push
