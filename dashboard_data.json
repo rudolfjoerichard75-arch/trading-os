@@ -15,8 +15,8 @@
     "max_risk_pips": 70,
     "min_rr": 1.8
   },
-  "timestamp": "2026-09-23T00:10:31.219631+00:00",
-  "latest_price": 4362.93,
+  "timestamp": "2026-09-23T00:15:27.232257+00:00",
+  "latest_price": 4365.67,
   "session": "ASIAN",
   "market_mode": "TREND",
   "pd": {
@@ -27,12 +27,12 @@
   },
   "opportunity": {
     "type": "NO VALID SETUP",
-    "score": 55,
+    "score": 80,
     "valid": false
   },
   "plan": {
     "valid": false,
-    "direction": "SELL",
+    "direction": "BUY",
     "entry": null,
     "sl": null,
     "tp1": null,
@@ -45,7 +45,7 @@
     "tp1_pips": null,
     "tp2_pips": null,
     "tp3_pips": null,
-    "reason": "Hard gates not passed"
+    "reason": "Risk outside 30-70 pips"
   },
   "potential": {
     "status": "LOW",
@@ -57,8 +57,8 @@
     "valid": false,
     "signal_id": null,
     "type": "NO VALID SETUP",
-    "direction": "SELL",
-    "score": 55,
+    "direction": "BUY",
+    "score": 80,
     "entry": null,
     "sl": null,
     "tp1": null,
@@ -67,7 +67,7 @@
     "risk_pips": null,
     "rr_tp2": null,
     "potential": "No valid trade plan",
-    "message": "NO VALID SETUP | Score 55/100 | Entry None | SL None | TP1 None"
+    "message": "NO VALID SETUP | Score 80/100 | Entry None | SL None | TP1 None"
   },
   "h1": {
     "bias": "BULLISH",
@@ -78,9 +78,9 @@
     "last_swing_low": 4315.18
   },
   "m15": {
-    "bias": "RANGE",
-    "structure": "RANGE",
-    "bullish_bos": false,
+    "bias": "BULLISH",
+    "structure": "BULLISH BOS",
+    "bullish_bos": true,
     "bearish_bos": false,
     "last_swing_high": 4364.91,
     "last_swing_low": 4354.26,
@@ -92,37 +92,37 @@
       "width": 16.18
     },
     "liquidity": {
-      "type": "BUY-SIDE LIQUIDITY SWEEP",
-      "detected": true,
-      "level": 4364.91
+      "type": "NONE",
+      "detected": false,
+      "level": null
     },
     "setup": {
-      "type": "SELL LIQUIDITY SWEEP",
+      "type": "BUY BREAKOUT RETEST",
       "valid": true,
-      "reason": "Buy-side liquidity taken and rejected"
+      "reason": "M15 bullish BOS"
     }
   },
   "m5": {
-    "confirmed": false,
-    "direction": "NEUTRAL",
-    "bos_choch": "RANGE",
-    "candle": "BEARISH",
-    "momentum": "NEUTRAL"
+    "confirmed": true,
+    "direction": "BULLISH",
+    "bos_choch": "BULLISH BOS",
+    "candle": "BULLISH",
+    "momentum": "BULLISH"
   },
   "filters": {
-    "score": "FAIL",
+    "score": "PASS",
     "m15_setup": "PASS",
-    "m5_confirmation": "FAIL",
+    "m5_confirmation": "PASS",
     "risk": "FAIL",
     "rr": "FAIL"
   },
   "confirmations": {
     "h1_bias": "BULLISH",
     "h1_structure": "HH / HL",
-    "m15_setup": "SELL LIQUIDITY SWEEP",
-    "m15_liquidity": "BUY-SIDE LIQUIDITY SWEEP",
-    "m5_bos_choch": "RANGE",
-    "m5_candle": "BEARISH",
-    "m5_momentum": "NEUTRAL"
+    "m15_setup": "BUY BREAKOUT RETEST",
+    "m15_liquidity": "NONE",
+    "m5_bos_choch": "BULLISH BOS",
+    "m5_candle": "BULLISH",
+    "m5_momentum": "BULLISH"
   }
 }
