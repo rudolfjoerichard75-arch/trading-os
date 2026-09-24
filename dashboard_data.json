@@ -4,25 +4,25 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-24T14:40:37.880452+08:00"
+    "timestamp": "2026-09-24T14:45:32.939463+08:00"
   },
-  "latest_price": 4281.41,
+  "latest_price": 4279.77,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
     "type": "TRENDING",
     "h1_direction": "BULLISH",
     "range": {
-      "is_range": true,
+      "is_range": false,
       "high": 4318.53515,
       "low": 4270.72669,
       "width": 47.808459999999286,
-      "location": 0.22341819836907417
+      "location": 0.18908159769211333
     }
   },
   "volatility": {
-    "atr": 4.45,
-    "atr_pips": 44.5,
+    "atr": 4.83,
+    "atr_pips": 48.3,
     "condition": "NORMAL"
   },
   "pd": {
@@ -33,9 +33,9 @@
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "sell_side_sweep": true,
+    "swept_level": 4278.25789,
+    "description": "SELL-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -50,40 +50,27 @@
     "filter": "NOT CONNECTED"
   },
   "opportunity": {
-    "type": "BUY PULLBACK",
+    "type": "BUY RANGE REVERSAL",
     "direction": "BUY",
     "valid": true,
-    "score": 35
+    "score": 45
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
-    "opportunity": "BUY PULLBACK",
-    "score": 35,
-    "timestamp": "2026-09-24T14:40:37.880452+08:00"
+    "opportunity": "BUY RANGE REVERSAL",
+    "score": 45,
+    "timestamp": "2026-09-24T14:45:32.939463+08:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "BUY",
-    "entry": 4281.41,
-    "sl": 4277.37,
-    "risk_pips": 40.4,
-    "tp1": 4287.41,
-    "tp2": 4293.41,
-    "tp3": 4299.41,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 1.49,
-    "rr_tp2": 2.97,
-    "rr_tp3": 4.46,
-    "risk_level": "MEDIUM"
+    "valid": false,
+    "reason": "Risk 24.7 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BULLISH",
@@ -99,10 +86,10 @@
     "swing_low": 4278.25789,
     "setup": {
       "direction": "BUY",
-      "opportunity": "BUY PULLBACK",
+      "opportunity": "BUY RANGE REVERSAL",
       "valid": true,
       "reason": [
-        "H1 bullish + M15 discount"
+        "M15 range low + sell-side sweep"
       ],
       "pd": {
         "zone": "DISCOUNT",
@@ -112,9 +99,9 @@
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "sell_side_sweep": true,
+        "swept_level": 4278.25789,
+        "description": "SELL-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "RANGE",
@@ -127,7 +114,7 @@
         "high": 4297.03483,
         "low": 4274.05223,
         "width": 22.982599999999366,
-        "location": 0.3200569126208598
+        "location": 0.2486298330040855
       }
     }
   },
@@ -148,22 +135,22 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": false
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "BUY PULLBACK",
+    "m15_setup": "BUY RANGE REVERSAL",
     "m5_confirmation": "NO CONFIRMATION",
-    "liquidity": "NONE",
+    "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 40.4,
-    "risk_level": "MEDIUM",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -181,7 +168,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "BLOCK",
-    "risk": "MEDIUM",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
