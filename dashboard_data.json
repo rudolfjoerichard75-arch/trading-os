@@ -4,9 +4,9 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-24T09:55:29.210088+08:00"
+    "timestamp": "2026-09-24T10:00:57.587841+08:00"
   },
-  "latest_price": 4288.3,
+  "latest_price": 4288.7,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,25 +17,25 @@
       "high": 4337.45391,
       "low": 4270.72669,
       "width": 66.72721999999976,
-      "location": 0.26342473131654043
+      "location": 0.2694149404096165
     }
   },
   "volatility": {
-    "atr": 5.03,
-    "atr_pips": 50.3,
+    "atr": 5.37,
+    "atr_pips": 53.7,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4293.96,
+    "equilibrium": 4293.29,
     "high": 4304.11,
-    "low": 4283.82
+    "low": 4282.47
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "sell_side_sweep": true,
+    "swept_level": 4283.81821,
+    "description": "SELL-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -50,21 +50,22 @@
     "filter": "NOT CONNECTED"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 30
+    "type": "BUY LIQUIDITY SWEEP",
+    "direction": "BUY",
+    "valid": true,
+    "score": 55
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 30,
-    "timestamp": "2026-09-24T09:55:29.210088+08:00"
+    "direction": "BUY",
+    "opportunity": "BUY LIQUIDITY SWEEP",
+    "score": 55,
+    "timestamp": "2026-09-24T10:00:57.587841+08:00"
   },
   "plan": {
-    "valid": false
+    "valid": false,
+    "reason": "Risk 6.1 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -84,21 +85,23 @@
     "swing_high": 4304.10576,
     "swing_low": 4283.81821,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "BUY",
+      "opportunity": "BUY LIQUIDITY SWEEP",
+      "valid": true,
+      "reason": [
+        "M15 sell-side liquidity sweep"
+      ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 4293.96,
+        "equilibrium": 4293.29,
         "high": 4304.11,
-        "low": 4283.82
+        "low": 4282.47
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "sell_side_sweep": true,
+        "swept_level": 4283.81821,
+        "description": "SELL-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "RANGE",
@@ -109,9 +112,9 @@
       "range": {
         "is_range": true,
         "high": 4304.10576,
-        "low": 4283.81821,
-        "width": 20.28755000000001,
-        "location": 0.22112477849714096
+        "low": 4282.47184,
+        "width": 21.633920000000217,
+        "location": 0.2880735437682817
       }
     }
   },
@@ -124,13 +127,13 @@
       "confirmed": false,
       "bos": "BEARISH BOS",
       "candle": false,
-      "momentum": "BEARISH",
-      "reason": "NO DIRECTION"
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
@@ -139,9 +142,9 @@
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
-    "liquidity": "NONE",
+    "m15_setup": "BUY LIQUIDITY SWEEP",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
@@ -166,8 +169,8 @@
     "news_filter": "PASS",
     "session_filter": "BLOCK",
     "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
     "m5_confirmation": "NO"
   },
   "expectancy": {
