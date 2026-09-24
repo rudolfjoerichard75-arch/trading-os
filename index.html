@@ -7,7 +7,6 @@
 <title>Bosque Forex AI</title>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
@@ -56,8 +55,7 @@ body{
 
 .grid{
     display:grid;
-    grid-template-columns:
-        repeat(4,minmax(0,1fr));
+    grid-template-columns:repeat(4,minmax(0,1fr));
     gap:14px;
 }
 
@@ -66,8 +64,7 @@ body{
     border:1px solid #202d58;
     border-radius:14px;
     padding:16px;
-    box-shadow:
-        0 10px 30px rgba(0,0,0,.15);
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
 
 .card h3{
@@ -155,8 +152,7 @@ body{
 
 .trade{
     display:grid;
-    grid-template-columns:
-        repeat(3,minmax(0,1fr));
+    grid-template-columns:repeat(3,minmax(0,1fr));
     gap:8px;
 }
 
@@ -219,8 +215,7 @@ button:hover{
 
 .sop{
     display:grid;
-    grid-template-columns:
-        repeat(2,minmax(0,1fr));
+    grid-template-columns:repeat(2,minmax(0,1fr));
     gap:8px;
 }
 
@@ -243,10 +238,8 @@ button:hover{
 }
 
 @media(max-width:1100px){
-
     .grid{
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
+        grid-template-columns:repeat(2,minmax(0,1fr));
     }
 
     .full{
@@ -259,7 +252,6 @@ button:hover{
 }
 
 @media(max-width:650px){
-
     .container{
         padding:12px;
     }
@@ -285,7 +277,6 @@ button:hover{
         font-size:22px;
     }
 }
-
 </style>
 </head>
 
@@ -293,6 +284,7 @@ button:hover{
 
 <div class="container">
 
+<!-- HEADER -->
 <div class="header">
 
 <div>
@@ -305,6 +297,28 @@ XAUUSD Scalping Engine • H1 → M15 → M5
 
 <div class="status" id="engineStatus">
 Connecting...
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     TRADINGVIEW
+     MOVED TO TOP
+===================================================== -->
+
+<div class="card full" style="margin-bottom:14px;">
+
+<h3>TradingView — XAUUSD</h3>
+
+<div class="tv">
+
+<iframe
+src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_xauusd&symbol=OANDA%3AXAUUSD&interval=5&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=0&toolbarbg=f1f3f6&theme=dark&style=1&timezone=Asia%2FKuala_Lumpur&withdateranges=1&hideideas=1&studies=[]"
+allowtransparency="true"
+scrolling="no">
+</iframe>
+
 </div>
 
 </div>
@@ -376,9 +390,7 @@ Connecting...
 
 <div class="row">
 <span class="label">Updated</span>
-<span class="value" id="updated">
---
-</span>
+<span class="value" id="updated">--</span>
 </div>
 
 <div class="row">
@@ -662,8 +674,7 @@ London / New York
 --
 </div>
 
-<div id="invalidationList"
-class="notice">
+<div id="invalidationList" class="notice">
 --
 </div>
 
@@ -680,44 +691,32 @@ class="notice">
 
 <div class="sopItem">
 <div class="top">HIGH IMPACT NEWS</div>
-<div class="bottom" id="sopNews">
---
-</div>
+<div class="bottom" id="sopNews">--</div>
 </div>
 
 <div class="sopItem">
 <div class="top">SESSION</div>
-<div class="bottom" id="sopSession">
---
-</div>
+<div class="bottom" id="sopSession">--</div>
 </div>
 
 <div class="sopItem">
 <div class="top">RISK</div>
-<div class="bottom" id="sopRisk">
---
-</div>
+<div class="bottom" id="sopRisk">--</div>
 </div>
 
 <div class="sopItem">
 <div class="top">FRESH ZONE</div>
-<div class="bottom" id="sopZone">
---
-</div>
+<div class="bottom" id="sopZone">--</div>
 </div>
 
 <div class="sopItem">
 <div class="top">M15 SETUP</div>
-<div class="bottom" id="sopM15">
---
-</div>
+<div class="bottom" id="sopM15">--</div>
 </div>
 
 <div class="sopItem">
 <div class="top">M5 CONFIRMATION</div>
-<div class="bottom" id="sopM5">
---
-</div>
+<div class="bottom" id="sopM5">--</div>
 </div>
 
 </div>
@@ -831,24 +830,7 @@ class="notice">
 </div>
 
 
-<!-- TRADINGVIEW -->
-
-<div class="card full">
-
-<h3>TradingView — XAUUSD</h3>
-
-<div class="tv">
-
-<iframe
-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_xauusd&symbol=OANDA%3AXAUUSD&interval=5&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=0&toolbarbg=f1f3f6&theme=dark&style=1&timezone=Asia%2FKuala_Lumpur&withdateranges=1&hideideas=1&studies=[]"
-allowtransparency="true"
-scrolling="no">
-</iframe>
-
-</div>
-
-</div>
-
+<!-- FOOTER -->
 
 <div class="card full">
 
@@ -864,7 +846,6 @@ No trade should be taken solely from the score.
 
 
 </div>
-
 </div>
 
 
@@ -1014,6 +995,7 @@ function formatDate(value){
         return value;
 
     }
+
 }
 
 
@@ -1097,34 +1079,34 @@ function normalise(d){
             null,
 
         price:
-            d.latest_price
+            d.latest_price,
+
+        session:
+            d.session ||
+            "--"
 
     };
 
 }
 
 
-function render(d){
+function render(data){
 
-    d =
-        normalise(d);
+    const d =
+        normalise(data);
 
 
-    // =====================================================
     // HEADER
-    // =====================================================
 
     set(
         "engineStatus",
         "ENGINE ONLINE"
     );
 
-
     set(
         "price",
         formatNumber(d.price)
     );
-
 
     set(
         "updated",
@@ -1132,9 +1114,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // REGIME
-    // =====================================================
 
     set(
         "regime",
@@ -1154,21 +1134,16 @@ function render(d){
 
     set(
         "session",
-        window.currentSession =
-            d.session ||
-            "--"
+        d.session
     );
 
     set(
         "session2",
-        d.session ||
-        "--"
+        d.session
     );
 
 
-    // =====================================================
     // VOLATILITY
-    // =====================================================
 
     set(
         "volatility",
@@ -1185,15 +1160,12 @@ function render(d){
     set(
         "atrPips",
         d.volatility.atr_pips !== undefined
-            ? d.volatility.atr_pips +
-              " pips"
+            ? d.volatility.atr_pips + " pips"
             : "--"
     );
 
 
-    // =====================================================
     // SIGNAL
-    // =====================================================
 
     const opportunity =
         d.opportunity.type ||
@@ -1227,9 +1199,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // PD
-    // =====================================================
 
     set(
         "pdZone",
@@ -1258,9 +1228,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // LIQUIDITY
-    // =====================================================
 
     setStatus(
         "buySweep",
@@ -1289,9 +1257,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // NEWS
-    // =====================================================
 
     set(
         "newsStatus",
@@ -1318,24 +1284,17 @@ function render(d){
     );
 
 
-    // =====================================================
     // SESSION
-    // =====================================================
-
-    const sessionPass =
-        d.filters.session;
 
     setStatus(
         "sessionFilter",
-        sessionPass
+        d.filters.session
             ? "PASS"
             : "BLOCK"
     );
 
 
-    // =====================================================
     // MTF
-    // =====================================================
 
     set(
         "mtfH1",
@@ -1357,9 +1316,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // TRADE PLAN
-    // =====================================================
 
     set(
         "entry",
@@ -1399,15 +1356,12 @@ function render(d){
     set(
         "rr",
         d.plan.rr_tp2 !== undefined
-            ? "1:" +
-              d.plan.rr_tp2
+            ? "1:" + d.plan.rr_tp2
             : "--"
     );
 
 
-    // =====================================================
     // RISK
-    // =====================================================
 
     set(
         "riskStatus",
@@ -1418,8 +1372,7 @@ function render(d){
         "riskPips",
         d.risk.risk_pips !== null &&
         d.risk.risk_pips !== undefined
-            ? d.risk.risk_pips +
-              " pips"
+            ? d.risk.risk_pips + " pips"
             : "--"
     );
 
@@ -1429,9 +1382,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // INVALIDATION
-    // =====================================================
 
     set(
         "invalidation",
@@ -1452,17 +1403,13 @@ function render(d){
         invalidationList.innerHTML =
             conditions.length
                 ? conditions
-                    .map(x =>
-                        "• " + x
-                    )
+                    .map(x => "• " + x)
                     .join("<br>")
                 : "--";
     }
 
 
-    // =====================================================
     // SOP
-    // =====================================================
 
     setStatus(
         "sopNews",
@@ -1495,9 +1442,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // GATES
-    // =====================================================
 
     setStatus(
         "gateScore",
@@ -1542,9 +1487,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // EXPECTANCY
-    // =====================================================
 
     set(
         "expectStatus",
@@ -1575,9 +1518,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // BACKTEST
-    // =====================================================
 
     set(
         "backtestStatus",
@@ -1600,9 +1541,7 @@ function render(d){
     );
 
 
-    // =====================================================
     // BROWSER ALERT
-    // =====================================================
 
     if(
         d.signal.active &&
@@ -1617,9 +1556,7 @@ function render(d){
             previousSignalKey
         ){
 
-            sendBrowserNotification(
-                d
-            );
+            sendBrowserNotification(d);
 
             previousSignalKey =
                 signalKey;
@@ -1659,7 +1596,7 @@ Entry: ${d.signal.entry}
 SL: ${d.signal.sl}
 TP2: ${d.signal.tp2}`;
 
-    const n =
+    const notification =
         new Notification(
             title,
             {
@@ -1667,11 +1604,11 @@ TP2: ${d.signal.tp2}`;
             }
         );
 
-    n.onclick = () => {
+    notification.onclick = () => {
 
         window.focus();
 
-        n.close();
+        notification.close();
 
     };
 
@@ -1695,8 +1632,7 @@ async function enableNotifications(){
     try{
 
         const permission =
-            await Notification
-                .requestPermission();
+            await Notification.requestPermission();
 
         set(
             "notificationStatus",
@@ -1752,10 +1688,12 @@ async function load(){
             );
 
         if(!response.ok){
+
             throw new Error(
                 "HTTP " +
                 response.status
             );
+
         }
 
         const data =
