@@ -4,9 +4,9 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-24T20:45:42.596790+08:00"
+    "timestamp": "2026-09-24T20:50:36.558249+08:00"
   },
-  "latest_price": 4266.36,
+  "latest_price": 4270.9,
   "session": "NEW YORK",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4304.10576,
       "low": 4245.20292,
       "width": 58.90284000000065,
-      "location": 0.3592706226049598
+      "location": 0.43625808195326804
     }
   },
   "volatility": {
-    "atr": 3.63,
-    "atr_pips": 36.3,
+    "atr": 3.84,
+    "atr_pips": 38.4,
     "condition": "NORMAL"
   },
   "pd": {
@@ -53,24 +53,37 @@
     "type": "SELL PULLBACK",
     "direction": "SELL",
     "valid": true,
-    "score": 40
+    "score": 50
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "SELL",
     "opportunity": "SELL PULLBACK",
-    "score": 40,
-    "timestamp": "2026-09-24T20:45:42.596790+08:00"
+    "score": 50,
+    "timestamp": "2026-09-24T20:50:36.558249+08:00"
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 16.2 pips outside 25-80"
+    "valid": true,
+    "direction": "SELL",
+    "entry": 4270.9,
+    "sl": 4268.02,
+    "risk_pips": 28.8,
+    "tp1": 4264.9,
+    "tp2": 4258.9,
+    "tp3": 4252.9,
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180,
+    "rr_tp1": 2.09,
+    "rr_tp2": 4.17,
+    "rr_tp3": 6.26,
+    "risk_level": "LOW"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180
   },
   "h1": {
     "direction": "BEARISH",
@@ -114,18 +127,18 @@
         "high": 4286.3192,
         "low": 4245.20292,
         "width": 41.11628000000019,
-        "location": 0.5146880992152127
+        "location": 0.6249796917425507
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4267.25411,
     "swing_low": 4257.61173,
     "confirmation": {
       "confirmed": false,
-      "bos": null,
+      "bos": "BULLISH BOS",
       "candle": false,
       "momentum": "NEUTRAL",
       "reason": "NO CONFIRMATION"
@@ -135,8 +148,8 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": true
   },
@@ -148,9 +161,9 @@
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 28.8,
+    "risk_level": "LOW",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -168,7 +181,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "PASS",
-    "risk": "UNKNOWN",
+    "risk": "LOW",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
