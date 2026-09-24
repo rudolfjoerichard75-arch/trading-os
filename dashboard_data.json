@@ -4,9 +4,9 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-24T18:35:31.450832+08:00"
+    "timestamp": "2026-09-24T18:40:37.321285+08:00"
   },
-  "latest_price": 4248.58,
+  "latest_price": 4253.49,
   "session": "LONDON",
   "market_mode": "NEUTRAL",
   "regime": {
@@ -15,21 +15,21 @@
     "range": {
       "is_range": false,
       "high": 4304.10576,
-      "low": 4247.72747,
-      "width": 56.37829000000056,
-      "location": 0.015202128336989522
+      "low": 4245.20292,
+      "width": 58.90284000000065,
+      "location": 0.1406068026601122
     }
   },
   "volatility": {
-    "atr": 4.65,
-    "atr_pips": 46.5,
+    "atr": 5.06,
+    "atr_pips": 50.6,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4269.15,
-    "high": 4290.56,
-    "low": 4247.73
+    "equilibrium": 4266.6,
+    "high": 4288.0,
+    "low": 4245.2
   },
   "liquidity": {
     "buy_side_sweep": false,
@@ -53,24 +53,37 @@
     "type": "SELL BREAKOUT RETEST",
     "direction": "SELL",
     "valid": true,
-    "score": 60
+    "score": 35
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "SELL",
     "opportunity": "SELL BREAKOUT RETEST",
-    "score": 60,
-    "timestamp": "2026-09-24T18:35:31.450832+08:00"
+    "score": 35,
+    "timestamp": "2026-09-24T18:40:37.321285+08:00"
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 118.3 pips outside 25-80"
+    "valid": true,
+    "direction": "SELL",
+    "entry": 4253.49,
+    "sl": 4260.5,
+    "risk_pips": 70.1,
+    "tp1": 4247.49,
+    "tp2": 4239.46,
+    "tp3": 4232.44,
+    "tp1_pips": 60,
+    "tp2_pips": 140.3,
+    "tp3_pips": 210.4,
+    "rr_tp1": 0.86,
+    "rr_tp2": 2.0,
+    "rr_tp3": 3.0,
+    "risk_level": "MEDIUM"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 140.3,
+    "tp3_pips": 210.4
   },
   "h1": {
     "direction": "RANGE",
@@ -93,9 +106,9 @@
       ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 4269.15,
-        "high": 4290.56,
-        "low": 4247.73
+        "equilibrium": 4266.6,
+        "high": 4288.0,
+        "low": 4245.2
       },
       "liquidity": {
         "buy_side_sweep": false,
@@ -111,46 +124,46 @@
       },
       "range": {
         "is_range": false,
-        "high": 4290.56422,
-        "low": 4247.72747,
-        "width": 42.83675000000039,
-        "location": 0.020007820387868212
+        "high": 4287.99899,
+        "low": 4245.20292,
+        "width": 42.79607000000033,
+        "location": 0.19352571392654022
       }
     }
   },
   "m5": {
     "direction": "BEARISH",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4259.48801,
     "swing_low": 4251.33917,
     "confirmation": {
-      "confirmed": true,
-      "bos": "BEARISH BOS",
+      "confirmed": false,
+      "bos": null,
       "candle": false,
       "momentum": "NEUTRAL",
-      "reason": "M5 bearish BOS"
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": true,
-    "risk": false,
-    "rr": false,
+    "m5_confirmation": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": true
   },
   "confirmations": {
     "h1_bias": "RANGE",
     "m15_setup": "SELL BREAKOUT RETEST",
-    "m5_confirmation": "M5 bearish BOS",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 70.1,
+    "risk_level": "MEDIUM",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -168,10 +181,10 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "PASS",
-    "risk": "UNKNOWN",
+    "risk": "MEDIUM",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "m5_confirmation": "NO"
   },
   "expectancy": {
     "status": "NOT TRACKED",
