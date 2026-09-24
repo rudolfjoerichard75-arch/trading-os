@@ -4,9 +4,9 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-24T23:25:31.091202+08:00"
+    "timestamp": "2026-09-24T23:30:48.867233+08:00"
   },
-  "latest_price": 4249.44,
+  "latest_price": 4255.36,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4304.10576,
       "low": 4243.31612,
       "width": 60.78963999999996,
-      "location": 0.10071831318625753
+      "location": 0.19805611614083696
     }
   },
   "volatility": {
-    "atr": 6.25,
-    "atr_pips": 62.5,
+    "atr": 6.38,
+    "atr_pips": 63.8,
     "condition": "NORMAL"
   },
   "pd": {
@@ -50,40 +50,27 @@
     "filter": "NOT CONNECTED"
   },
   "opportunity": {
-    "type": "BUY RANGE REVERSAL",
+    "type": "BUY LIQUIDITY SWEEP",
     "direction": "BUY",
     "valid": true,
-    "score": 55
+    "score": 45
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
-    "opportunity": "BUY RANGE REVERSAL",
-    "score": 55,
-    "timestamp": "2026-09-24T23:25:31.091202+08:00"
+    "opportunity": "BUY LIQUIDITY SWEEP",
+    "score": 45,
+    "timestamp": "2026-09-24T23:30:48.867233+08:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "BUY",
-    "entry": 4249.44,
-    "sl": 4253.53,
-    "risk_pips": 40.9,
-    "tp1": 4255.44,
-    "tp2": 4261.44,
-    "tp3": 4267.44,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 1.47,
-    "rr_tp2": 2.94,
-    "rr_tp3": 4.4,
-    "risk_level": "MEDIUM"
+    "valid": false,
+    "reason": "Risk 18.6 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BEARISH",
@@ -99,10 +86,10 @@
     "swing_low": 4245.20292,
     "setup": {
       "direction": "BUY",
-      "opportunity": "BUY RANGE REVERSAL",
+      "opportunity": "BUY LIQUIDITY SWEEP",
       "valid": true,
       "reason": [
-        "M15 range low + sell-side sweep"
+        "M15 sell-side liquidity sweep"
       ],
       "pd": {
         "zone": "DISCOUNT",
@@ -127,18 +114,18 @@
         "high": 4285.31806,
         "low": 4243.31612,
         "width": 42.001939999999195,
-        "location": 0.14577017156826474
+        "location": 0.2866477119866342
       }
     }
   },
   "m5": {
     "direction": "BEARISH",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4262.91991,
     "swing_low": 4254.77599,
     "confirmation": {
       "confirmed": false,
-      "bos": "BEARISH BOS",
+      "bos": null,
       "candle": false,
       "momentum": "BEARISH",
       "reason": "NO CONFIRMATION"
@@ -148,22 +135,22 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": false
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "BUY RANGE REVERSAL",
+    "m15_setup": "BUY LIQUIDITY SWEEP",
     "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 40.9,
-    "risk_level": "MEDIUM",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -181,7 +168,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "BLOCK",
-    "risk": "MEDIUM",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
