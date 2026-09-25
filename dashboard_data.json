@@ -1,10 +1,10 @@
 {
   "engine": {
     "name": "BOSQUE FOREX AI",
-    "version": "SCALPING V3",
+    "version": "PRODUCTION V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-25T20:30:43.896235+08:00",
+    "timestamp": "2026-09-25T20:35:12.420312+08:00",
     "status": "ONLINE"
   },
   "latest_price": 4308.97,
@@ -15,10 +15,10 @@
     "h1_direction": "RANGE",
     "range": {
       "is_range": false,
-      "high": 4315.6,
-      "low": 4257.01,
-      "width": 58.58,
-      "location": 0.887
+      "high": 4315.59598,
+      "low": 4257.01489,
+      "width": 58.581089999999676,
+      "location": 0.8868624670520735
     }
   },
   "volatility": {
@@ -45,16 +45,18 @@
     "session_low": null
   },
   "news": {
-    "status": "NOT PROVIDED",
+    "status": "UNKNOWN",
     "high_impact": null,
     "minutes_to_news": null,
-    "filter": "NOT CONNECTED"
+    "filter": "BLOCK - NEWS SOURCE NOT CONNECTED",
+    "allowed": false
   },
   "opportunity": {
     "type": "NO VALID SETUP",
     "direction": null,
     "valid": false,
-    "score": 25
+    "score": 25,
+    "reason": []
   },
   "signal": {
     "active": false,
@@ -62,11 +64,11 @@
     "direction": null,
     "opportunity": "NO VALID SETUP",
     "score": 25,
-    "timestamp": "2026-09-25T20:30:43.896235+08:00"
+    "timestamp": "2026-09-25T20:35:12.420312+08:00"
   },
   "plan": {
     "valid": false,
-    "reason": "No direction"
+    "reason": "NO DIRECTION"
   },
   "potential": {
     "tp1_pips": null,
@@ -110,10 +112,10 @@
       },
       "range": {
         "is_range": false,
-        "high": 4315.6,
-        "low": 4272.34,
-        "width": 43.25,
-        "location": 0.847
+        "high": 4315.59598,
+        "low": 4272.34274,
+        "width": 43.253240000000005,
+        "location": 0.8467693980843884
       }
     }
   },
@@ -136,8 +138,9 @@
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
-    "news": true,
-    "session": true
+    "news": false,
+    "session": true,
+    "risk_protection": true
   },
   "confirmations": {
     "h1_bias": "RANGE",
@@ -152,8 +155,11 @@
     "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
-    "daily_loss_limit": "NOT CONFIGURED",
-    "consecutive_loss_limit": "NOT CONFIGURED"
+    "daily_loss_limit": -3.0,
+    "daily_r": 0.0,
+    "consecutive_loss_limit": 3,
+    "consecutive_losses": 0,
+    "protection": "PASS"
   },
   "invalidation": {
     "status": "WAIT",
@@ -161,16 +167,19 @@
       "M5 confirmation required",
       "Risk must remain valid",
       "RR TP2 must remain >= 1:2",
-      "Avoid invalidation after structure failure"
+      "News filter must PASS",
+      "Risk protection must PASS",
+      "Structure failure invalidates setup"
     ]
   },
   "sop": {
-    "news_filter": "PASS",
+    "news_filter": "BLOCK",
     "session_filter": "PASS",
     "risk": "UNKNOWN",
     "fresh_zone": "NO",
     "m15_setup": "NO",
-    "m5_confirmation": "NO"
+    "m5_confirmation": "NO",
+    "risk_protection": "PASS"
   },
   "expectancy": {
     "status": "NOT TRACKED",
@@ -180,12 +189,18 @@
     "profit_factor": null,
     "expectancy_r": null,
     "max_drawdown": null,
-    "max_consecutive_losses": null
+    "max_consecutive_losses": 0
   },
   "backtest": {
     "status": "NOT RUN",
     "development_period": "2022-2024",
     "out_of_sample": "2025",
     "forward": "2026"
+  },
+  "quota": {
+    "provider": "Twelve Data",
+    "requests_per_scan": 1,
+    "source": "M5 → local H1/M15 aggregation",
+    "status": "QUOTA SAFE"
   }
 }
