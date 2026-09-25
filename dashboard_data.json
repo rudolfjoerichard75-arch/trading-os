@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-26T03:30:43.072841+08:00"
+    "timestamp": "2026-09-26T03:35:33.854473+08:00"
   },
-  "latest_price": 4289.96,
+  "latest_price": 4288.52,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4315.59598,
       "low": 4254.77599,
       "width": 60.81998999999996,
-      "location": 0.5784576748532787
+      "location": 0.554830081359757
     }
   },
   "volatility": {
-    "atr": 4.12,
-    "atr_pips": 41.2,
+    "atr": 4.06,
+    "atr_pips": 40.6,
     "condition": "NORMAL"
   },
   "pd": {
@@ -51,44 +51,33 @@
     "required": true
   },
   "opportunity": {
-    "type": "SELL RANGE REVERSAL",
+    "type": "SELL LIQUIDITY SWEEP",
     "direction": "SELL",
     "valid": true,
-    "score": 70
+    "score": 80
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "SELL",
-    "opportunity": "SELL RANGE REVERSAL",
-    "score": 70,
-    "timestamp": "2026-09-26T03:30:43.072841+08:00",
+    "opportunity": "SELL LIQUIDITY SWEEP",
+    "score": 80,
+    "timestamp": "2026-09-26T03:35:33.854473+08:00",
     "blocked": true,
     "block_reason": [
+      "RISK",
+      "RR",
       "NEWS"
     ]
   },
   "plan": {
-    "valid": true,
-    "direction": "SELL",
-    "entry": 4289.96,
-    "sl": 4297.09,
-    "risk_pips": 71.4,
-    "tp1": 4283.96,
-    "tp2": 4275.68,
-    "tp3": 4268.55,
-    "tp1_pips": 60,
-    "tp2_pips": 142.7,
-    "tp3_pips": 214.1,
-    "rr_tp1": 0.84,
-    "rr_tp2": 2.0,
-    "rr_tp3": 3.0,
-    "risk_level": "MEDIUM"
+    "valid": false,
+    "reason": "Risk 93.0 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 142.7,
-    "tp3_pips": 214.1
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BEARISH",
@@ -104,10 +93,10 @@
     "swing_low": 4280.63867,
     "setup": {
       "direction": "SELL",
-      "opportunity": "SELL RANGE REVERSAL",
+      "opportunity": "SELL LIQUIDITY SWEEP",
       "valid": true,
       "reason": [
-        "M15 range high + buy-side sweep"
+        "M15 buy-side liquidity sweep"
       ],
       "pd": {
         "zone": "PREMIUM",
@@ -132,29 +121,29 @@
         "high": 4298.30217,
         "low": 4263.3015,
         "width": 35.000670000000355,
-        "location": 0.7615934209259388
+        "location": 0.7205362068783211
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": null,
-    "swing_high": 4296.27084,
+    "bos": "BEARISH BOS",
+    "swing_high": 4297.0096,
     "swing_low": 4288.67969,
     "confirmation": {
       "confirmed": true,
-      "bos": null,
+      "bos": "BEARISH BOS",
       "candle": true,
       "momentum": "BEARISH",
-      "reason": "M5 bearish candle + momentum"
+      "reason": "M5 bearish BOS"
     }
   },
   "filters": {
     "score": true,
     "setup": true,
     "m5_confirmation": true,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": false,
     "session": false,
     "risk_protection": true
@@ -171,8 +160,8 @@
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL RANGE REVERSAL",
-    "m5_confirmation": "M5 bearish candle + momentum",
+    "m15_setup": "SELL LIQUIDITY SWEEP",
+    "m5_confirmation": "M5 bearish BOS",
     "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
     "pd_zone": "PREMIUM"
   },
@@ -212,9 +201,9 @@
     "warning": "No profitability claim is made until validation is actually executed."
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 71.4,
-    "risk_level": "MEDIUM",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit_r": 3.0,
@@ -234,7 +223,7 @@
   "sop": {
     "news_filter": "BLOCK",
     "session_filter": "BLOCK",
-    "risk": "MEDIUM",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "YES",
@@ -247,8 +236,8 @@
       "score": true,
       "m15_setup": true,
       "m5_confirmation": true,
-      "risk": true,
-      "rr": true,
+      "risk": false,
+      "rr": false,
       "news": false,
       "risk_protection": true
     }
