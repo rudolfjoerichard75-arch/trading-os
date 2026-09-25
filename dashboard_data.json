@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-26T03:35:33.854473+08:00"
+    "timestamp": "2026-09-26T03:40:36.760644+08:00"
   },
-  "latest_price": 4288.52,
+  "latest_price": 4288.91,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,25 +17,25 @@
       "high": 4315.59598,
       "low": 4254.77599,
       "width": 60.81998999999996,
-      "location": 0.554830081359757
+      "location": 0.5613062415827451
     }
   },
   "volatility": {
-    "atr": 4.06,
-    "atr_pips": 40.6,
+    "atr": 3.95,
+    "atr_pips": 39.5,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4280.8,
+    "equilibrium": 4284.08,
     "high": 4298.3,
-    "low": 4263.3
+    "low": 4269.85
   },
   "liquidity": {
-    "buy_side_sweep": true,
+    "buy_side_sweep": false,
     "sell_side_sweep": false,
-    "swept_level": 4293.13528,
-    "description": "BUY-SIDE LIQUIDITY SWEPT",
+    "swept_level": null,
+    "description": "NONE",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -51,20 +51,22 @@
     "required": true
   },
   "opportunity": {
-    "type": "SELL LIQUIDITY SWEEP",
+    "type": "SELL PULLBACK",
     "direction": "SELL",
     "valid": true,
-    "score": 80
+    "score": 35
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "SELL",
-    "opportunity": "SELL LIQUIDITY SWEEP",
-    "score": 80,
-    "timestamp": "2026-09-26T03:35:33.854473+08:00",
+    "opportunity": "SELL PULLBACK",
+    "score": 35,
+    "timestamp": "2026-09-26T03:40:36.760644+08:00",
     "blocked": true,
     "block_reason": [
+      "SCORE < 70",
+      "M5 CONFIRMATION",
       "RISK",
       "RR",
       "NEWS"
@@ -72,7 +74,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 93.0 pips outside 25-80"
+    "reason": "Risk 88.8 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -93,22 +95,22 @@
     "swing_low": 4280.63867,
     "setup": {
       "direction": "SELL",
-      "opportunity": "SELL LIQUIDITY SWEEP",
+      "opportunity": "SELL PULLBACK",
       "valid": true,
       "reason": [
-        "M15 buy-side liquidity sweep"
+        "H1 bearish + M15 premium"
       ],
       "pd": {
         "zone": "PREMIUM",
-        "equilibrium": 4280.8,
+        "equilibrium": 4284.08,
         "high": 4298.3,
-        "low": 4263.3
+        "low": 4269.85
       },
       "liquidity": {
-        "buy_side_sweep": true,
+        "buy_side_sweep": false,
         "sell_side_sweep": false,
-        "swept_level": 4293.13528,
-        "description": "BUY-SIDE LIQUIDITY SWEPT"
+        "swept_level": null,
+        "description": "NONE"
       },
       "structure": {
         "direction": "BEARISH",
@@ -119,29 +121,29 @@
       "range": {
         "is_range": true,
         "high": 4298.30217,
-        "low": 4263.3015,
-        "width": 35.000670000000355,
-        "location": 0.7205362068783211
+        "low": 4269.85482,
+        "width": 28.44735000000037,
+        "location": 0.6700030055523768
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4297.0096,
     "swing_low": 4288.67969,
     "confirmation": {
-      "confirmed": true,
-      "bos": "BEARISH BOS",
-      "candle": true,
-      "momentum": "BEARISH",
-      "reason": "M5 bearish BOS"
+      "confirmed": false,
+      "bos": null,
+      "candle": false,
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
-    "score": true,
+    "score": false,
     "setup": true,
-    "m5_confirmation": true,
+    "m5_confirmation": false,
     "risk": false,
     "rr": false,
     "news": false,
@@ -160,9 +162,9 @@
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL LIQUIDITY SWEEP",
-    "m5_confirmation": "M5 bearish BOS",
-    "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
+    "m15_setup": "SELL PULLBACK",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "NONE",
     "pd_zone": "PREMIUM"
   },
   "expectancy": {
@@ -226,16 +228,16 @@
     "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "YES",
+    "m5_confirmation": "NO",
     "risk_protection": "PASS"
   },
   "telegram": {
     "version": "V2",
     "gate": "BLOCK",
     "requirements": {
-      "score": true,
+      "score": false,
       "m15_setup": true,
-      "m5_confirmation": true,
+      "m5_confirmation": false,
       "risk": false,
       "rr": false,
       "news": false,
