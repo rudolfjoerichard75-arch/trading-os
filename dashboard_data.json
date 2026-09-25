@@ -4,10 +4,10 @@
     "version": "PRODUCTION V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-25T21:05:30.238481+08:00",
+    "timestamp": "2026-09-25T21:10:37.745433+08:00",
     "status": "ONLINE"
   },
-  "latest_price": 4299.0,
+  "latest_price": 4293.59,
   "session": "NEW YORK",
   "market_mode": "RANGING",
   "regime": {
@@ -18,19 +18,19 @@
       "high": 4315.59598,
       "low": 4257.01489,
       "width": 58.581089999999676,
-      "location": 0.7166363753217906
+      "location": 0.6242661241024989
     }
   },
   "volatility": {
-    "atr": 5.32,
-    "atr_pips": 53.2,
+    "atr": 5.64,
+    "atr_pips": 56.4,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "PREMIUM",
-    "equilibrium": 4295.46,
+    "zone": "DISCOUNT",
+    "equilibrium": 4297.28,
     "high": 4315.6,
-    "low": 4275.33
+    "low": 4278.96
   },
   "liquidity": {
     "buy_side_sweep": false,
@@ -52,23 +52,26 @@
     "allowed": false
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 15,
-    "reason": []
+    "type": "SELL BREAKOUT RETEST",
+    "direction": "SELL",
+    "valid": true,
+    "score": 65,
+    "reason": [
+      "M15 bearish BOS"
+    ]
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 15,
-    "timestamp": "2026-09-25T21:05:30.238481+08:00"
+    "direction": "SELL",
+    "opportunity": "SELL BREAKOUT RETEST",
+    "score": 65,
+    "timestamp": "2026-09-25T21:10:37.745433+08:00"
   },
   "plan": {
     "valid": false,
-    "reason": "NO DIRECTION"
+    "reason": "Risk 151.8 pips outside 25-80",
+    "risk_pips": 151.8
   },
   "potential": {
     "tp1_pips": null,
@@ -77,26 +80,28 @@
   },
   "h1": {
     "direction": "RANGE",
-    "bos": "BULLISH BOS",
-    "swing_high": 4295.53265,
+    "bos": null,
+    "swing_high": 4315.59598,
     "swing_low": 4257.31193,
     "condition": "RANGING"
   },
   "m15": {
     "direction": "RANGE",
-    "bos": null,
+    "bos": "BEARISH BOS",
     "swing_high": 4309.04468,
     "swing_low": 4295.74594,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "SELL",
+      "opportunity": "SELL BREAKOUT RETEST",
+      "valid": true,
+      "reason": [
+        "M15 bearish BOS"
+      ],
       "pd": {
-        "zone": "PREMIUM",
-        "equilibrium": 4295.46,
+        "zone": "DISCOUNT",
+        "equilibrium": 4297.28,
         "high": 4315.6,
-        "low": 4275.33
+        "low": 4278.96
       },
       "liquidity": {
         "buy_side_sweep": false,
@@ -106,36 +111,36 @@
       },
       "structure": {
         "direction": "RANGE",
-        "bos": null,
+        "bos": "BEARISH BOS",
         "swing_high": 4309.04468,
         "swing_low": 4295.74594
       },
       "range": {
         "is_range": true,
         "high": 4315.59598,
-        "low": 4275.33134,
-        "width": 40.26464000000033,
-        "location": 0.5877338031583003
+        "low": 4278.95628,
+        "width": 36.63969999999972,
+        "location": 0.399260910979064
       }
     }
   },
   "m5": {
     "direction": "BEARISH",
-    "bos": null,
+    "bos": "BEARISH BOS",
     "swing_high": 4307.64088,
     "swing_low": 4295.74594,
     "confirmation": {
-      "confirmed": false,
-      "bos": null,
-      "candle": false,
+      "confirmed": true,
+      "bos": "BEARISH BOS",
+      "candle": true,
       "momentum": "BEARISH",
-      "reason": "NO DIRECTION"
+      "reason": "M5 bearish BOS"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
-    "m5_confirmation": false,
+    "setup": true,
+    "m5_confirmation": true,
     "risk": false,
     "rr": false,
     "news": false,
@@ -144,14 +149,14 @@
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
+    "m15_setup": "SELL BREAKOUT RETEST",
+    "m5_confirmation": "M5 bearish BOS",
     "liquidity": "NONE",
-    "pd_zone": "PREMIUM"
+    "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
     "status": "INVALID",
-    "risk_pips": null,
+    "risk_pips": 151.8,
     "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
@@ -176,9 +181,9 @@
     "news_filter": "BLOCK",
     "session_filter": "PASS",
     "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
-    "m5_confirmation": "NO",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
+    "m5_confirmation": "YES",
     "risk_protection": "PASS"
   },
   "expectancy": {
