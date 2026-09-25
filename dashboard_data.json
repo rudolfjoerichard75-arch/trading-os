@@ -4,9 +4,9 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-25T14:05:27.325399+08:00"
+    "timestamp": "2026-09-25T14:10:33.755011+08:00"
   },
-  "latest_price": 4267.49,
+  "latest_price": 4270.71,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4295.53265,
       "low": 4243.31612,
       "width": 52.21652999999969,
-      "location": 0.4630393861867012
+      "location": 0.5246926595849943
     }
   },
   "volatility": {
-    "atr": 4.72,
-    "atr_pips": 47.2,
+    "atr": 4.76,
+    "atr_pips": 47.6,
     "condition": "NORMAL"
   },
   "pd": {
@@ -32,10 +32,10 @@
     "low": 4257.31
   },
   "liquidity": {
-    "buy_side_sweep": true,
+    "buy_side_sweep": false,
     "sell_side_sweep": false,
-    "swept_level": 4273.50427,
-    "description": "BUY-SIDE LIQUIDITY SWEPT",
+    "swept_level": null,
+    "description": "NONE",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -50,22 +50,22 @@
     "filter": "NOT CONNECTED"
   },
   "opportunity": {
-    "type": "SELL LIQUIDITY SWEEP",
-    "direction": "SELL",
+    "type": "BUY PULLBACK",
+    "direction": "BUY",
     "valid": true,
-    "score": 65
+    "score": 35
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": "SELL",
-    "opportunity": "SELL LIQUIDITY SWEEP",
-    "score": 65,
-    "timestamp": "2026-09-25T14:05:27.325399+08:00"
+    "direction": "BUY",
+    "opportunity": "BUY PULLBACK",
+    "score": 35,
+    "timestamp": "2026-09-25T14:10:33.755011+08:00"
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 84.2 pips outside 25-80"
+    "reason": "Risk 143.5 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -80,16 +80,16 @@
     "condition": "TRENDING"
   },
   "m15": {
-    "direction": "BEARISH",
+    "direction": "RANGE",
     "bos": null,
-    "swing_high": 4273.50427,
+    "swing_high": 4274.9658,
     "swing_low": 4257.31193,
     "setup": {
-      "direction": "SELL",
-      "opportunity": "SELL LIQUIDITY SWEEP",
+      "direction": "BUY",
+      "opportunity": "BUY PULLBACK",
       "valid": true,
       "reason": [
-        "M15 buy-side liquidity sweep"
+        "H1 bullish + M15 discount"
       ],
       "pd": {
         "zone": "DISCOUNT",
@@ -98,15 +98,15 @@
         "low": 4257.31
       },
       "liquidity": {
-        "buy_side_sweep": true,
+        "buy_side_sweep": false,
         "sell_side_sweep": false,
-        "swept_level": 4273.50427,
-        "description": "BUY-SIDE LIQUIDITY SWEPT"
+        "swept_level": null,
+        "description": "NONE"
       },
       "structure": {
-        "direction": "BEARISH",
+        "direction": "RANGE",
         "bos": null,
-        "swing_high": 4273.50427,
+        "swing_high": 4274.9658,
         "swing_low": 4257.31193
       },
       "range": {
@@ -114,7 +114,7 @@
         "high": 4295.53265,
         "low": 4257.31193,
         "width": 38.220720000000256,
-        "location": 0.2664130869329469
+        "location": 0.35064279270510745
       }
     }
   },
@@ -124,17 +124,17 @@
     "swing_high": 4274.9658,
     "swing_low": 4257.31193,
     "confirmation": {
-      "confirmed": true,
+      "confirmed": false,
       "bos": null,
-      "candle": true,
+      "candle": false,
       "momentum": "BEARISH",
-      "reason": "M5 bearish candle + momentum"
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": true,
+    "m5_confirmation": false,
     "risk": false,
     "rr": false,
     "news": true,
@@ -142,9 +142,9 @@
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "SELL LIQUIDITY SWEEP",
-    "m5_confirmation": "M5 bearish candle + momentum",
-    "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
+    "m15_setup": "BUY PULLBACK",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
@@ -171,7 +171,7 @@
     "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "m5_confirmation": "NO"
   },
   "expectancy": {
     "status": "NOT TRACKED",
