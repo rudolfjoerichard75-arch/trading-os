@@ -4,9 +4,9 @@
     "version": "SCALPING V2",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-25T19:00:50.169922+08:00"
+    "timestamp": "2026-09-25T19:05:32.870948+08:00"
   },
-  "latest_price": 4305.19,
+  "latest_price": 4310.64,
   "session": "LONDON",
   "market_mode": "NEUTRAL",
   "regime": {
@@ -14,21 +14,21 @@
     "h1_direction": "RANGE",
     "range": {
       "is_range": false,
-      "high": 4309.85097,
+      "high": 4311.64576,
       "low": 4243.31612,
-      "width": 66.53485,
-      "location": 0.9299137219066329
+      "width": 68.32963999999993,
+      "location": 0.9852276405963771
     }
   },
   "volatility": {
-    "atr": 3.92,
-    "atr_pips": 39.2,
+    "atr": 4.1,
+    "atr_pips": 41.0,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4288.54,
-    "high": 4309.85,
+    "equilibrium": 4289.44,
+    "high": 4311.65,
     "low": 4267.23
   },
   "liquidity": {
@@ -53,37 +53,24 @@
     "type": "BUY BREAKOUT RETEST",
     "direction": "BUY",
     "valid": true,
-    "score": 35
+    "score": 60
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY BREAKOUT RETEST",
-    "score": 35,
-    "timestamp": "2026-09-25T19:00:50.169922+08:00"
+    "score": 60,
+    "timestamp": "2026-09-25T19:05:32.870948+08:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "BUY",
-    "entry": 4305.19,
-    "sl": 4301.41,
-    "risk_pips": 37.8,
-    "tp1": 4311.19,
-    "tp2": 4317.19,
-    "tp3": 4323.19,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 1.59,
-    "rr_tp2": 3.17,
-    "rr_tp3": 4.76,
-    "risk_level": "LOW"
+    "valid": false,
+    "reason": "Risk 92.7 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "RANGE",
@@ -106,8 +93,8 @@
       ],
       "pd": {
         "zone": "PREMIUM",
-        "equilibrium": 4288.54,
-        "high": 4309.85,
+        "equilibrium": 4289.44,
+        "high": 4311.65,
         "low": 4267.23
       },
       "liquidity": {
@@ -123,47 +110,47 @@
         "swing_low": 4272.04375
       },
       "range": {
-        "is_range": true,
-        "high": 4309.85097,
+        "is_range": false,
+        "high": 4311.64576,
         "low": 4267.2321,
-        "width": 42.61887000000024,
-        "location": 0.890584147350682
+        "width": 44.413660000000164,
+        "location": 0.9772729831317626
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4309.85097,
     "swing_low": 4302.18928,
     "confirmation": {
-      "confirmed": false,
-      "bos": null,
+      "confirmed": true,
+      "bos": "BULLISH BOS",
       "candle": false,
-      "momentum": "BEARISH",
-      "reason": "NO CONFIRMATION"
+      "momentum": "NEUTRAL",
+      "reason": "M5 bullish BOS"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "m5_confirmation": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": true
   },
   "confirmations": {
     "h1_bias": "RANGE",
     "m15_setup": "BUY BREAKOUT RETEST",
-    "m5_confirmation": "NO CONFIRMATION",
+    "m5_confirmation": "M5 bullish BOS",
     "liquidity": "NONE",
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 37.8,
-    "risk_level": "LOW",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -181,10 +168,10 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "PASS",
-    "risk": "LOW",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "NO"
+    "m5_confirmation": "YES"
   },
   "expectancy": {
     "status": "NOT TRACKED",
