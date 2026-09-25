@@ -4,9 +4,9 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-26T02:50:37.048298+08:00"
+    "timestamp": "2026-09-26T02:55:29.636473+08:00"
   },
-  "latest_price": 4291.08,
+  "latest_price": 4293.71,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4315.59598,
       "low": 4254.77599,
       "width": 60.81998999999996,
-      "location": 0.5969762573127612
+      "location": 0.6401974087795727
     }
   },
   "volatility": {
-    "atr": 3.87,
-    "atr_pips": 38.7,
+    "atr": 3.7,
+    "atr_pips": 37.0,
     "condition": "NORMAL"
   },
   "pd": {
@@ -32,10 +32,10 @@
     "low": 4254.78
   },
   "liquidity": {
-    "buy_side_sweep": true,
+    "buy_side_sweep": false,
     "sell_side_sweep": false,
-    "swept_level": 4293.13528,
-    "description": "BUY-SIDE LIQUIDITY SWEPT",
+    "swept_level": null,
+    "description": "NONE",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -53,7 +53,7 @@
     "connected": true
   },
   "opportunity": {
-    "type": "SELL LIQUIDITY SWEEP",
+    "type": "SELL PULLBACK",
     "direction": "SELL",
     "valid": true,
     "score": 45
@@ -62,31 +62,18 @@
     "active": false,
     "id": null,
     "direction": "SELL",
-    "opportunity": "SELL LIQUIDITY SWEEP",
+    "opportunity": "SELL PULLBACK",
     "score": 45,
-    "timestamp": "2026-09-26T02:50:37.048298+08:00"
+    "timestamp": "2026-09-26T02:55:29.636473+08:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "SELL",
-    "entry": 4291.08,
-    "sl": 4293.91,
-    "risk_pips": 28.3,
-    "tp1": 4285.08,
-    "tp2": 4279.08,
-    "tp3": 4273.08,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 2.12,
-    "rr_tp2": 4.25,
-    "rr_tp3": 6.37,
-    "risk_level": "LOW"
+    "valid": false,
+    "reason": "Risk 17.0 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BEARISH",
@@ -97,15 +84,15 @@
   },
   "m15": {
     "direction": "BEARISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4293.13528,
     "swing_low": 4280.63867,
     "setup": {
       "direction": "SELL",
-      "opportunity": "SELL LIQUIDITY SWEEP",
+      "opportunity": "SELL PULLBACK",
       "valid": true,
       "reason": [
-        "M15 buy-side liquidity sweep"
+        "H1 bearish + M15 premium"
       ],
       "pd": {
         "zone": "PREMIUM",
@@ -114,14 +101,14 @@
         "low": 4254.78
       },
       "liquidity": {
-        "buy_side_sweep": true,
+        "buy_side_sweep": false,
         "sell_side_sweep": false,
-        "swept_level": 4293.13528,
-        "description": "BUY-SIDE LIQUIDITY SWEPT"
+        "swept_level": null,
+        "description": "NONE"
       },
       "structure": {
         "direction": "BEARISH",
-        "bos": null,
+        "bos": "BULLISH BOS",
         "swing_high": 4293.13528,
         "swing_low": 4280.63867
       },
@@ -130,14 +117,14 @@
         "high": 4298.30217,
         "low": 4254.77599,
         "width": 43.52617999999984,
-        "location": 0.8341667015115884
+        "location": 0.8945604691245507
       }
     }
   },
   "m5": {
     "direction": "RANGE",
     "bos": null,
-    "swing_high": 4293.13528,
+    "swing_high": 4294.66881,
     "swing_low": 4280.63867,
     "confirmation": {
       "confirmed": false,
@@ -151,23 +138,23 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": false,
     "session": false
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL LIQUIDITY SWEEP",
+    "m15_setup": "SELL PULLBACK",
     "m5_confirmation": "NO CONFIRMATION",
-    "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
+    "liquidity": "NONE",
     "pd_zone": "PREMIUM",
     "news": "NEWS TIMING UNAVAILABLE"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 28.3,
-    "risk_level": "LOW",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -186,7 +173,7 @@
   "sop": {
     "news_filter": "BLOCK",
     "session_filter": "BLOCK",
-    "risk": "LOW",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
