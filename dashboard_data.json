@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-26T19:35:30.003541+08:00"
+    "timestamp": "2026-09-26T19:40:34.030157+08:00"
   },
-  "latest_price": 4286.22,
+  "latest_price": 4286.11,
   "session": "LONDON",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,7 +17,7 @@
       "high": 4298.30217,
       "low": 4280.63867,
       "width": 17.663499999999658,
-      "location": 0.31584963342483535
+      "location": 0.3096973985903109
     }
   },
   "volatility": {
@@ -26,7 +26,7 @@
     "condition": "LOW"
   },
   "pd": {
-    "zone": "PREMIUM",
+    "zone": "DISCOUNT",
     "equilibrium": 4286.21,
     "high": 4286.34,
     "low": 4286.08
@@ -51,22 +51,21 @@
     "required": true
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 20
+    "type": "BUY PULLBACK",
+    "direction": "BUY",
+    "valid": true,
+    "score": 35
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 20,
-    "timestamp": "2026-09-26T19:35:30.003541+08:00",
+    "direction": "BUY",
+    "opportunity": "BUY PULLBACK",
+    "score": 35,
+    "timestamp": "2026-09-26T19:40:34.030157+08:00",
     "blocked": true,
     "block_reason": [
       "SCORE < 70",
-      "M15 SETUP",
       "M5 CONFIRMATION",
       "RISK",
       "RR",
@@ -74,7 +73,8 @@
     ]
   },
   "plan": {
-    "valid": false
+    "valid": false,
+    "reason": "Risk 2.3 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -89,17 +89,19 @@
     "condition": "TRENDING"
   },
   "m15": {
-    "direction": "BULLISH",
+    "direction": "RANGE",
     "bos": null,
-    "swing_high": 4286.33767,
+    "swing_high": 4286.33719,
     "swing_low": 4286.07698,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "BUY",
+      "opportunity": "BUY PULLBACK",
+      "valid": true,
+      "reason": [
+        "H1 bullish + M15 discount"
+      ],
       "pd": {
-        "zone": "PREMIUM",
+        "zone": "DISCOUNT",
         "equilibrium": 4286.21,
         "high": 4286.34,
         "low": 4286.08
@@ -111,22 +113,22 @@
         "description": "NONE"
       },
       "structure": {
-        "direction": "BULLISH",
+        "direction": "RANGE",
         "bos": null,
-        "swing_high": 4286.33767,
+        "swing_high": 4286.33719,
         "swing_low": 4286.07698
       },
       "range": {
         "is_range": true,
-        "high": 4286.34063,
+        "high": 4286.33945,
         "low": 4286.07697,
-        "width": 0.26365999999961787,
-        "location": 0.533679739057406
+        "width": 0.26248000000032334,
+        "location": 0.1220664431576209
       }
     }
   },
   "m5": {
-    "direction": "BULLISH",
+    "direction": "RANGE",
     "bos": null,
     "swing_high": 4286.33719,
     "swing_low": 4286.07951,
@@ -134,13 +136,13 @@
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "NEUTRAL",
-      "reason": "NO DIRECTION"
+      "momentum": "BEARISH",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
@@ -160,10 +162,10 @@
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
+    "m15_setup": "BUY PULLBACK",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
-    "pd_zone": "PREMIUM"
+    "pd_zone": "DISCOUNT"
   },
   "expectancy": {
     "status": "WAITING FOR FIRST CLOSED TRADE",
@@ -224,8 +226,8 @@
     "news_filter": "BLOCK",
     "session_filter": "PASS",
     "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
     "m5_confirmation": "NO",
     "risk_protection": "PASS"
   },
@@ -234,7 +236,7 @@
     "gate": "BLOCK",
     "requirements": {
       "score": false,
-      "m15_setup": false,
+      "m15_setup": true,
       "m5_confirmation": false,
       "risk": false,
       "rr": false,
