@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-26T11:40:32.489388+08:00"
+    "timestamp": "2026-09-26T11:45:38.298690+08:00"
   },
-  "latest_price": 4286.21,
+  "latest_price": 4286.12,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,7 +17,7 @@
       "high": 4315.59598,
       "low": 4254.77599,
       "width": 60.81998999999996,
-      "location": 0.5168927189892594
+      "location": 0.5153509561576723
     }
   },
   "volatility": {
@@ -26,16 +26,16 @@
     "condition": "LOW"
   },
   "pd": {
-    "zone": "PREMIUM",
+    "zone": "DISCOUNT",
     "equilibrium": 4286.21,
     "high": 4286.34,
     "low": 4286.08
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "sell_side_sweep": true,
+    "swept_level": 4286.07963,
+    "description": "SELL-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -51,18 +51,18 @@
     "required": true
   },
   "opportunity": {
-    "type": "SELL PULLBACK",
-    "direction": "SELL",
+    "type": "BUY RANGE REVERSAL",
+    "direction": "BUY",
     "valid": true,
-    "score": 30
+    "score": 40
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": "SELL",
-    "opportunity": "SELL PULLBACK",
-    "score": 30,
-    "timestamp": "2026-09-26T11:40:32.489388+08:00",
+    "direction": "BUY",
+    "opportunity": "BUY RANGE REVERSAL",
+    "score": 40,
+    "timestamp": "2026-09-26T11:45:38.298690+08:00",
     "blocked": true,
     "block_reason": [
       "SCORE < 70",
@@ -74,7 +74,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 3.2 pips outside 25-80"
+    "reason": "Risk 2.4 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -94,23 +94,23 @@
     "swing_high": 4286.33761,
     "swing_low": 4286.07963,
     "setup": {
-      "direction": "SELL",
-      "opportunity": "SELL PULLBACK",
+      "direction": "BUY",
+      "opportunity": "BUY RANGE REVERSAL",
       "valid": true,
       "reason": [
-        "H1 bearish + M15 premium"
+        "M15 range low + sell-side sweep"
       ],
       "pd": {
-        "zone": "PREMIUM",
+        "zone": "DISCOUNT",
         "equilibrium": 4286.21,
         "high": 4286.34,
         "low": 4286.08
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "sell_side_sweep": true,
+        "swept_level": 4286.07963,
+        "description": "SELL-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "RANGE",
@@ -121,22 +121,22 @@
       "range": {
         "is_range": true,
         "high": 4286.34091,
-        "low": 4286.07696,
-        "width": 0.2639499999995678,
-        "location": 0.5169160825896364
+        "low": 4286.07685,
+        "width": 0.26405999999951746,
+        "location": 0.16200863440068236
       }
     }
   },
   "m5": {
-    "direction": "BEARISH",
+    "direction": "RANGE",
     "bos": null,
-    "swing_high": 4286.33575,
+    "swing_high": 4286.33945,
     "swing_low": 4286.07696,
     "confirmation": {
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "NEUTRAL",
+      "momentum": "BEARISH",
       "reason": "NO CONFIRMATION"
     }
   },
@@ -162,10 +162,10 @@
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL PULLBACK",
+    "m15_setup": "BUY RANGE REVERSAL",
     "m5_confirmation": "NO CONFIRMATION",
-    "liquidity": "NONE",
-    "pd_zone": "PREMIUM"
+    "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
+    "pd_zone": "DISCOUNT"
   },
   "expectancy": {
     "status": "WAITING FOR FIRST CLOSED TRADE",
