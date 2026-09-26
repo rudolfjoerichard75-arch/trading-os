@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-26T08:00:52.018368+08:00"
+    "timestamp": "2026-09-26T08:05:26.627134+08:00"
   },
-  "latest_price": 4286.24,
+  "latest_price": 4286.22,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,7 +17,7 @@
       "high": 4315.59598,
       "low": 4254.77599,
       "width": 60.81998999999996,
-      "location": 0.5173795655014094
+      "location": 0.5170587828113747
     }
   },
   "volatility": {
@@ -32,10 +32,10 @@
     "low": 4284.86
   },
   "liquidity": {
-    "buy_side_sweep": false,
+    "buy_side_sweep": true,
     "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "swept_level": 4286.33908,
+    "description": "BUY-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -51,22 +51,21 @@
     "required": true
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 15
+    "type": "SELL LIQUIDITY SWEEP",
+    "direction": "SELL",
+    "valid": true,
+    "score": 35
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 15,
-    "timestamp": "2026-09-26T08:00:52.018368+08:00",
+    "direction": "SELL",
+    "opportunity": "SELL LIQUIDITY SWEEP",
+    "score": 35,
+    "timestamp": "2026-09-26T08:05:26.627134+08:00",
     "blocked": true,
     "block_reason": [
       "SCORE < 70",
-      "M15 SETUP",
       "M5 CONFIRMATION",
       "RISK",
       "RR",
@@ -74,7 +73,8 @@
     ]
   },
   "plan": {
-    "valid": false
+    "valid": false,
+    "reason": "Risk 3.2 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -94,10 +94,12 @@
     "swing_high": 4286.33908,
     "swing_low": 4286.0777,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "SELL",
+      "opportunity": "SELL LIQUIDITY SWEEP",
+      "valid": true,
+      "reason": [
+        "M15 buy-side liquidity sweep"
+      ],
       "pd": {
         "zone": "DISCOUNT",
         "equilibrium": 4290.93,
@@ -105,10 +107,10 @@
         "low": 4284.86
       },
       "liquidity": {
-        "buy_side_sweep": false,
+        "buy_side_sweep": true,
         "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "swept_level": 4286.33908,
+        "description": "BUY-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "RANGE",
@@ -121,7 +123,7 @@
         "high": 4297.0096,
         "low": 4284.85731,
         "width": 12.152289999999994,
-        "location": 0.11402789103945149
+        "location": 0.11242243231520428
       }
     }
   },
@@ -129,18 +131,18 @@
     "direction": "BULLISH",
     "bos": null,
     "swing_high": 4286.33886,
-    "swing_low": 4286.08144,
+    "swing_low": 4286.08247,
     "confirmation": {
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "BULLISH",
-      "reason": "NO DIRECTION"
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
@@ -160,9 +162,9 @@
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
-    "liquidity": "NONE",
+    "m15_setup": "SELL LIQUIDITY SWEEP",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
     "pd_zone": "DISCOUNT"
   },
   "expectancy": {
@@ -224,8 +226,8 @@
     "news_filter": "BLOCK",
     "session_filter": "BLOCK",
     "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
     "m5_confirmation": "NO",
     "risk_protection": "PASS"
   },
@@ -234,7 +236,7 @@
     "gate": "BLOCK",
     "requirements": {
       "score": false,
-      "m15_setup": false,
+      "m15_setup": true,
       "m5_confirmation": false,
       "risk": false,
       "rr": false,
