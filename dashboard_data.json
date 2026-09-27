@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-28T06:15:35.465301+08:00"
+    "timestamp": "2026-09-28T06:20:46.611381+08:00"
   },
-  "latest_price": 4273.91,
+  "latest_price": 4269.65,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4287.40522,
       "low": 4262.12678,
       "width": 25.278440000000046,
-      "location": 0.46619490759717136
+      "location": 0.297699145991615
     }
   },
   "volatility": {
-    "atr": 2.76,
-    "atr_pips": 27.6,
+    "atr": 3.19,
+    "atr_pips": 31.9,
     "condition": "NORMAL"
   },
   "pd": {
@@ -54,17 +54,19 @@
     "type": "SELL LIQUIDITY SWEEP",
     "direction": "SELL",
     "valid": true,
-    "score": 80
+    "score": 55
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "SELL",
     "opportunity": "SELL LIQUIDITY SWEEP",
-    "score": 80,
-    "timestamp": "2026-09-28T06:15:35.465301+08:00",
+    "score": 55,
+    "timestamp": "2026-09-28T06:20:46.611381+08:00",
     "blocked": true,
     "block_reason": [
+      "SCORE < 70",
+      "M5 CONFIRMATION",
       "RISK",
       "RR",
       "NEWS"
@@ -72,7 +74,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 140.5 pips outside 25-80"
+    "reason": "Risk 183.9 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -121,27 +123,27 @@
         "high": 4287.40522,
         "low": 4262.12678,
         "width": 25.278440000000046,
-        "location": 0.46619490759717136
+        "location": 0.297699145991615
       }
     }
   },
   "m5": {
-    "direction": "BULLISH",
-    "bos": "BEARISH BOS",
+    "direction": "RANGE",
+    "bos": null,
     "swing_high": 4287.40522,
-    "swing_low": 4285.9592,
+    "swing_low": 4262.12678,
     "confirmation": {
-      "confirmed": true,
-      "bos": "BEARISH BOS",
+      "confirmed": false,
+      "bos": null,
       "candle": false,
       "momentum": "BULLISH",
-      "reason": "M5 bearish BOS"
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
-    "score": true,
+    "score": false,
     "setup": true,
-    "m5_confirmation": true,
+    "m5_confirmation": false,
     "risk": false,
     "rr": false,
     "news": false,
@@ -161,7 +163,7 @@
   "confirmations": {
     "h1_bias": "BULLISH",
     "m15_setup": "SELL LIQUIDITY SWEEP",
-    "m5_confirmation": "M5 bearish BOS",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
     "pd_zone": "DISCOUNT"
   },
@@ -226,16 +228,16 @@
     "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "YES",
+    "m5_confirmation": "NO",
     "risk_protection": "PASS"
   },
   "telegram": {
     "version": "V2",
     "gate": "BLOCK",
     "requirements": {
-      "score": true,
+      "score": false,
       "m15_setup": true,
-      "m5_confirmation": true,
+      "m5_confirmation": false,
       "risk": false,
       "rr": false,
       "news": false,
