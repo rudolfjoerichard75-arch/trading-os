@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-27T16:15:30.676066+08:00"
+    "timestamp": "2026-09-27T16:20:33.279822+08:00"
   },
-  "latest_price": 4286.22,
+  "latest_price": 4286.13,
   "session": "LONDON",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,7 +17,7 @@
       "high": 4286.33577,
       "low": 4286.07684,
       "width": 0.2589299999999639,
-      "location": 0.5706561618964789
+      "location": 0.21689259645502118
     }
   },
   "volatility": {
@@ -26,7 +26,7 @@
     "condition": "LOW"
   },
   "pd": {
-    "zone": "PREMIUM",
+    "zone": "DISCOUNT",
     "equilibrium": 4286.21,
     "high": 4286.34,
     "low": 4286.08
@@ -51,21 +51,22 @@
     "required": true
   },
   "opportunity": {
-    "type": "SELL PULLBACK",
-    "direction": "SELL",
-    "valid": true,
-    "score": 35
+    "type": "NO VALID SETUP",
+    "direction": null,
+    "valid": false,
+    "score": 20
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": "SELL",
-    "opportunity": "SELL PULLBACK",
-    "score": 35,
-    "timestamp": "2026-09-27T16:15:30.676066+08:00",
+    "direction": null,
+    "opportunity": "NO VALID SETUP",
+    "score": 20,
+    "timestamp": "2026-09-27T16:20:33.279822+08:00",
     "blocked": true,
     "block_reason": [
       "SCORE < 70",
+      "M15 SETUP",
       "M5 CONFIRMATION",
       "RISK",
       "RR",
@@ -73,8 +74,7 @@
     ]
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 3.1 pips outside 25-80"
+    "valid": false
   },
   "potential": {
     "tp1_pips": null,
@@ -94,14 +94,12 @@
     "swing_high": 4286.33576,
     "swing_low": 4286.07866,
     "setup": {
-      "direction": "SELL",
-      "opportunity": "SELL PULLBACK",
-      "valid": true,
-      "reason": [
-        "H1 bearish + M15 premium"
-      ],
+      "direction": null,
+      "opportunity": "NO VALID SETUP",
+      "valid": false,
+      "reason": [],
       "pd": {
-        "zone": "PREMIUM",
+        "zone": "DISCOUNT",
         "equilibrium": 4286.21,
         "high": 4286.34,
         "low": 4286.08
@@ -123,7 +121,7 @@
         "high": 4286.33576,
         "low": 4286.07866,
         "width": 0.25709999999980937,
-        "location": 0.5676390509511309
+        "location": 0.21135744846255905
       }
     }
   },
@@ -131,18 +129,18 @@
     "direction": "RANGE",
     "bos": null,
     "swing_high": 4286.33576,
-    "swing_low": 4286.07885,
+    "swing_low": 4286.07866,
     "confirmation": {
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "BULLISH",
-      "reason": "NO CONFIRMATION"
+      "momentum": "NEUTRAL",
+      "reason": "NO DIRECTION"
     }
   },
   "filters": {
     "score": false,
-    "setup": true,
+    "setup": false,
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
@@ -162,10 +160,10 @@
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL PULLBACK",
-    "m5_confirmation": "NO CONFIRMATION",
+    "m15_setup": "NO VALID SETUP",
+    "m5_confirmation": "NO DIRECTION",
     "liquidity": "NONE",
-    "pd_zone": "PREMIUM"
+    "pd_zone": "DISCOUNT"
   },
   "expectancy": {
     "status": "WAITING FOR FIRST CLOSED TRADE",
@@ -226,8 +224,8 @@
     "news_filter": "BLOCK",
     "session_filter": "PASS",
     "risk": "UNKNOWN",
-    "fresh_zone": "YES",
-    "m15_setup": "YES",
+    "fresh_zone": "NO",
+    "m15_setup": "NO",
     "m5_confirmation": "NO",
     "risk_protection": "PASS"
   },
@@ -236,7 +234,7 @@
     "gate": "BLOCK",
     "requirements": {
       "score": false,
-      "m15_setup": true,
+      "m15_setup": false,
       "m5_confirmation": false,
       "risk": false,
       "rr": false,
