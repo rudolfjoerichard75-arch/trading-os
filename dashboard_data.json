@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-28T23:20:39.993048+08:00"
+    "timestamp": "2026-09-28T23:25:28.491261+08:00"
   },
-  "latest_price": 4119.32,
+  "latest_price": 4124.77,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4287.40522,
       "low": 4113.02595,
       "width": 174.37926999999945,
-      "location": 0.03609477204486456
+      "location": 0.06734194953333283
     }
   },
   "volatility": {
-    "atr": 5.82,
-    "atr_pips": 58.2,
+    "atr": 5.67,
+    "atr_pips": 56.7,
     "condition": "NORMAL"
   },
   "pd": {
@@ -51,21 +51,22 @@
     "required": true
   },
   "opportunity": {
-    "type": "SELL BREAKOUT RETEST",
-    "direction": "SELL",
-    "valid": true,
-    "score": 45
+    "type": "NO VALID SETUP",
+    "direction": null,
+    "valid": false,
+    "score": 25
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": "SELL",
-    "opportunity": "SELL BREAKOUT RETEST",
-    "score": 45,
-    "timestamp": "2026-09-28T23:20:39.993048+08:00",
+    "direction": null,
+    "opportunity": "NO VALID SETUP",
+    "score": 25,
+    "timestamp": "2026-09-28T23:25:28.491261+08:00",
     "blocked": true,
     "block_reason": [
       "SCORE < 70",
+      "M15 SETUP",
       "M5 CONFIRMATION",
       "RISK",
       "RR",
@@ -73,8 +74,7 @@
     ]
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 253.8 pips outside 25-80"
+    "valid": false
   },
   "potential": {
     "tp1_pips": null,
@@ -90,16 +90,14 @@
   },
   "m15": {
     "direction": "BEARISH",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4160.25294,
-    "swing_low": 4138.04519,
+    "swing_low": 4113.02595,
     "setup": {
-      "direction": "SELL",
-      "opportunity": "SELL BREAKOUT RETEST",
-      "valid": true,
-      "reason": [
-        "M15 bearish BOS"
-      ],
+      "direction": null,
+      "opportunity": "NO VALID SETUP",
+      "valid": false,
+      "reason": [],
       "pd": {
         "zone": "DISCOUNT",
         "equilibrium": 4142.11,
@@ -114,16 +112,16 @@
       },
       "structure": {
         "direction": "BEARISH",
-        "bos": "BEARISH BOS",
+        "bos": null,
         "swing_high": 4160.25294,
-        "swing_low": 4138.04519
+        "swing_low": 4113.02595
       },
       "range": {
-        "is_range": false,
+        "is_range": true,
         "high": 4171.18545,
         "low": 4113.02595,
         "width": 58.15949999999975,
-        "location": 0.10822273231372168
+        "location": 0.20191095177914928
       }
     }
   },
@@ -137,12 +135,12 @@
       "bos": null,
       "candle": false,
       "momentum": "BULLISH",
-      "reason": "NO CONFIRMATION"
+      "reason": "NO DIRECTION"
     }
   },
   "filters": {
     "score": false,
-    "setup": true,
+    "setup": false,
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
@@ -162,8 +160,8 @@
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL BREAKOUT RETEST",
-    "m5_confirmation": "NO CONFIRMATION",
+    "m15_setup": "NO VALID SETUP",
+    "m5_confirmation": "NO DIRECTION",
     "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
@@ -226,8 +224,8 @@
     "news_filter": "BLOCK",
     "session_filter": "BLOCK",
     "risk": "UNKNOWN",
-    "fresh_zone": "YES",
-    "m15_setup": "YES",
+    "fresh_zone": "NO",
+    "m15_setup": "NO",
     "m5_confirmation": "NO",
     "risk_protection": "PASS"
   },
@@ -236,7 +234,7 @@
     "gate": "BLOCK",
     "requirements": {
       "score": false,
-      "m15_setup": true,
+      "m15_setup": false,
       "m5_confirmation": false,
       "risk": false,
       "rr": false,
