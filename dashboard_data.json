@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-28T20:10:42.885500+08:00"
+    "timestamp": "2026-09-28T20:15:33.632289+08:00"
   },
-  "latest_price": 4152.01,
+  "latest_price": 4162.93,
   "session": "NEW YORK",
   "market_mode": "NEUTRAL",
   "regime": {
@@ -17,18 +17,18 @@
       "high": 4287.40522,
       "low": 4139.69385,
       "width": 147.71137,
-      "location": 0.0834046153657634
+      "location": 0.15731131598061973
     }
   },
   "volatility": {
-    "atr": 4.48,
-    "atr_pips": 44.8,
+    "atr": 5.92,
+    "atr_pips": 59.2,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "DISCOUNT",
-    "equilibrium": 4152.05,
-    "high": 4164.41,
+    "zone": "PREMIUM",
+    "equilibrium": 4154.4,
+    "high": 4169.12,
     "low": 4139.69
   },
   "liquidity": {
@@ -51,30 +51,29 @@
     "required": true
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 10
+    "type": "BUY BREAKOUT RETEST",
+    "direction": "BUY",
+    "valid": true,
+    "score": 65
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 10,
-    "timestamp": "2026-09-28T20:10:42.885500+08:00",
+    "direction": "BUY",
+    "opportunity": "BUY BREAKOUT RETEST",
+    "score": 65,
+    "timestamp": "2026-09-28T20:15:33.632289+08:00",
     "blocked": true,
     "block_reason": [
       "SCORE < 70",
-      "M15 SETUP",
-      "M5 CONFIRMATION",
       "RISK",
       "RR",
       "NEWS"
     ]
   },
   "plan": {
-    "valid": false
+    "valid": false,
+    "reason": "Risk 164.0 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -90,18 +89,20 @@
   },
   "m15": {
     "direction": "BEARISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4159.67846,
     "swing_low": 4139.69385,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "BUY",
+      "opportunity": "BUY BREAKOUT RETEST",
+      "valid": true,
+      "reason": [
+        "M15 bullish BOS"
+      ],
       "pd": {
-        "zone": "DISCOUNT",
-        "equilibrium": 4152.05,
-        "high": 4164.41,
+        "zone": "PREMIUM",
+        "equilibrium": 4154.4,
+        "high": 4169.12,
         "low": 4139.69
       },
       "liquidity": {
@@ -112,36 +113,36 @@
       },
       "structure": {
         "direction": "BEARISH",
-        "bos": null,
+        "bos": "BULLISH BOS",
         "swing_high": 4159.67846,
         "swing_low": 4139.69385
       },
       "range": {
         "is_range": true,
-        "high": 4164.41094,
+        "high": 4169.11506,
         "low": 4139.69385,
-        "width": 24.7170900000001,
-        "location": 0.4984328656811911
+        "width": 29.42121000000043,
+        "location": 0.7897931458291447
       }
     }
   },
   "m5": {
     "direction": "BEARISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4155.2983,
     "swing_low": 4147.71437,
     "confirmation": {
-      "confirmed": false,
-      "bos": null,
-      "candle": false,
-      "momentum": "NEUTRAL",
-      "reason": "NO DIRECTION"
+      "confirmed": true,
+      "bos": "BULLISH BOS",
+      "candle": true,
+      "momentum": "BULLISH",
+      "reason": "M5 bullish BOS"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
-    "m5_confirmation": false,
+    "setup": true,
+    "m5_confirmation": true,
     "risk": false,
     "rr": false,
     "news": false,
@@ -160,10 +161,10 @@
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
+    "m15_setup": "BUY BREAKOUT RETEST",
+    "m5_confirmation": "M5 bullish BOS",
     "liquidity": "NONE",
-    "pd_zone": "DISCOUNT"
+    "pd_zone": "PREMIUM"
   },
   "expectancy": {
     "status": "WAITING FOR FIRST CLOSED TRADE",
@@ -224,9 +225,9 @@
     "news_filter": "BLOCK",
     "session_filter": "PASS",
     "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
-    "m5_confirmation": "NO",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
+    "m5_confirmation": "YES",
     "risk_protection": "PASS"
   },
   "telegram": {
@@ -234,8 +235,8 @@
     "gate": "BLOCK",
     "requirements": {
       "score": false,
-      "m15_setup": false,
-      "m5_confirmation": false,
+      "m15_setup": true,
+      "m5_confirmation": true,
       "risk": false,
       "rr": false,
       "news": false,
