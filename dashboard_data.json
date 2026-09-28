@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-28T11:20:35.699544+08:00"
+    "timestamp": "2026-09-28T11:25:29.404833+08:00"
   },
-  "latest_price": 4202.59,
+  "latest_price": 4200.15,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,18 +17,18 @@
       "high": 4287.40522,
       "low": 4195.33479,
       "width": 92.07042999999976,
-      "location": 0.07876524525843824
+      "location": 0.052255105140710925
     }
   },
   "volatility": {
-    "atr": 4.29,
-    "atr_pips": 42.9,
+    "atr": 4.21,
+    "atr_pips": 42.1,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4233.48,
-    "high": 4271.62,
+    "equilibrium": 4233.02,
+    "high": 4270.7,
     "low": 4195.33
   },
   "liquidity": {
@@ -54,32 +54,43 @@
     "type": "BUY PULLBACK",
     "direction": "BUY",
     "valid": true,
-    "score": 50
+    "score": 40
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY PULLBACK",
-    "score": 50,
-    "timestamp": "2026-09-28T11:20:35.699544+08:00",
+    "score": 40,
+    "timestamp": "2026-09-28T11:25:29.404833+08:00",
     "blocked": true,
     "block_reason": [
       "SCORE < 70",
       "M5 CONFIRMATION",
-      "RISK",
-      "RR",
       "NEWS"
     ]
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 81.1 pips outside 25-80"
+    "valid": true,
+    "direction": "BUY",
+    "entry": 4200.15,
+    "sl": 4194.49,
+    "risk_pips": 56.5,
+    "tp1": 4206.15,
+    "tp2": 4212.15,
+    "tp3": 4218.15,
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180,
+    "rr_tp1": 1.06,
+    "rr_tp2": 2.12,
+    "rr_tp3": 3.18,
+    "risk_level": "MEDIUM"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180
   },
   "h1": {
     "direction": "BULLISH",
@@ -90,9 +101,9 @@
   },
   "m15": {
     "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4287.40522,
-    "swing_low": 4206.42593,
+    "swing_low": 4195.33479,
     "setup": {
       "direction": "BUY",
       "opportunity": "BUY PULLBACK",
@@ -102,8 +113,8 @@
       ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 4233.48,
-        "high": 4271.62,
+        "equilibrium": 4233.02,
+        "high": 4270.7,
         "low": 4195.33
       },
       "liquidity": {
@@ -114,16 +125,16 @@
       },
       "structure": {
         "direction": "RANGE",
-        "bos": "BEARISH BOS",
+        "bos": null,
         "swing_high": 4287.40522,
-        "swing_low": 4206.42593
+        "swing_low": 4195.33479
       },
       "range": {
         "is_range": false,
-        "high": 4271.61839,
+        "high": 4270.70084,
         "low": 4195.33479,
-        "width": 76.28359999999975,
-        "location": 0.09506564975957972
+        "width": 75.36605000000054,
+        "location": 0.06383709906516817
       }
     }
   },
@@ -144,8 +155,8 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "news": false,
     "session": false,
     "risk_protection": true
@@ -203,9 +214,9 @@
     "warning": "No profitability claim is made until validation is actually executed."
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 56.5,
+    "risk_level": "MEDIUM",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit_r": 3.0,
@@ -225,7 +236,7 @@
   "sop": {
     "news_filter": "BLOCK",
     "session_filter": "BLOCK",
-    "risk": "UNKNOWN",
+    "risk": "MEDIUM",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "NO",
@@ -238,8 +249,8 @@
       "score": false,
       "m15_setup": true,
       "m5_confirmation": false,
-      "risk": false,
-      "rr": false,
+      "risk": true,
+      "rr": true,
       "news": false,
       "risk_protection": true
     }
