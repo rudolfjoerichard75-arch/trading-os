@@ -4,32 +4,32 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-28T16:35:42.390061+08:00"
+    "timestamp": "2026-09-28T16:40:36.727779+08:00"
   },
-  "latest_price": 4146.19,
+  "latest_price": 4147.06,
   "session": "LONDON",
-  "market_mode": "TRENDING",
+  "market_mode": "NEUTRAL",
   "regime": {
-    "type": "TRENDING",
-    "h1_direction": "BULLISH",
+    "type": "NEUTRAL",
+    "h1_direction": "RANGE",
     "range": {
       "is_range": false,
       "high": 4287.40522,
-      "low": 4145.59323,
-      "width": 141.81198999999924,
-      "location": 0.004229120541920745
+      "low": 4144.14227,
+      "width": 143.26294999999936,
+      "location": 0.02038182237626816
     }
   },
   "volatility": {
-    "atr": 5.6,
-    "atr_pips": 56.0,
+    "atr": 5.38,
+    "atr_pips": 53.8,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4173.11,
+    "equilibrium": 4172.38,
     "high": 4200.62,
-    "low": 4145.59
+    "low": 4144.14
   },
   "liquidity": {
     "buy_side_sweep": false,
@@ -51,53 +51,41 @@
     "required": true
   },
   "opportunity": {
-    "type": "BUY PULLBACK",
-    "direction": "BUY",
+    "type": "SELL BREAKOUT RETEST",
+    "direction": "SELL",
     "valid": true,
-    "score": 65
+    "score": 60
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": "BUY",
-    "opportunity": "BUY PULLBACK",
-    "score": 65,
-    "timestamp": "2026-09-28T16:35:42.390061+08:00",
+    "direction": "SELL",
+    "opportunity": "SELL BREAKOUT RETEST",
+    "score": 60,
+    "timestamp": "2026-09-28T16:40:36.727779+08:00",
     "blocked": true,
     "block_reason": [
       "SCORE < 70",
-      "M5 CONFIRMATION",
+      "RISK",
+      "RR",
       "NEWS"
     ]
   },
   "plan": {
-    "valid": true,
-    "direction": "BUY",
-    "entry": 4146.19,
-    "sl": 4150.15,
-    "risk_pips": 39.6,
-    "tp1": 4152.19,
-    "tp2": 4158.19,
-    "tp3": 4164.19,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 1.52,
-    "rr_tp2": 3.03,
-    "rr_tp3": 4.55,
-    "risk_level": "LOW"
+    "valid": false,
+    "reason": "Risk 141.2 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
-    "direction": "BULLISH",
+    "direction": "RANGE",
     "bos": "BEARISH BOS",
     "swing_high": 4287.40522,
     "swing_low": 4286.07865,
-    "condition": "TRENDING"
+    "condition": "NEUTRAL"
   },
   "m15": {
     "direction": "BEARISH",
@@ -105,17 +93,17 @@
     "swing_high": 4200.61743,
     "swing_low": 4192.16903,
     "setup": {
-      "direction": "BUY",
-      "opportunity": "BUY PULLBACK",
+      "direction": "SELL",
+      "opportunity": "SELL BREAKOUT RETEST",
       "valid": true,
       "reason": [
-        "H1 bullish + M15 discount"
+        "M15 bearish BOS"
       ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 4173.11,
+        "equilibrium": 4172.38,
         "high": 4200.62,
-        "low": 4145.59
+        "low": 4144.14
       },
       "liquidity": {
         "buy_side_sweep": false,
@@ -132,9 +120,9 @@
       "range": {
         "is_range": false,
         "high": 4200.61743,
-        "low": 4145.59323,
-        "width": 55.02419999999984,
-        "location": 0.010899567826513749
+        "low": 4144.14227,
+        "width": 56.47515999999996,
+        "location": 0.05170343917573984
       }
     }
   },
@@ -144,19 +132,19 @@
     "swing_high": 4160.10666,
     "swing_low": 4151.27236,
     "confirmation": {
-      "confirmed": false,
+      "confirmed": true,
       "bos": "BEARISH BOS",
       "candle": false,
       "momentum": "NEUTRAL",
-      "reason": "NO CONFIRMATION"
+      "reason": "M5 bearish BOS"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "m5_confirmation": true,
+    "risk": false,
+    "rr": false,
     "news": false,
     "session": true,
     "risk_protection": true
@@ -172,9 +160,9 @@
     "reason": "NONE"
   },
   "confirmations": {
-    "h1_bias": "BULLISH",
-    "m15_setup": "BUY PULLBACK",
-    "m5_confirmation": "NO CONFIRMATION",
+    "h1_bias": "RANGE",
+    "m15_setup": "SELL BREAKOUT RETEST",
+    "m5_confirmation": "M5 bearish BOS",
     "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
@@ -214,9 +202,9 @@
     "warning": "No profitability claim is made until validation is actually executed."
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 39.6,
-    "risk_level": "LOW",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit_r": 3.0,
@@ -236,10 +224,10 @@
   "sop": {
     "news_filter": "BLOCK",
     "session_filter": "PASS",
-    "risk": "LOW",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "NO",
+    "m5_confirmation": "YES",
     "risk_protection": "PASS"
   },
   "telegram": {
@@ -248,9 +236,9 @@
     "requirements": {
       "score": false,
       "m15_setup": true,
-      "m5_confirmation": false,
-      "risk": true,
-      "rr": true,
+      "m5_confirmation": true,
+      "risk": false,
+      "rr": false,
       "news": false,
       "risk_protection": true
     }
