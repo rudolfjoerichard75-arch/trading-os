@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-28T23:50:37.719057+08:00"
+    "timestamp": "2026-09-28T23:55:36.492800+08:00"
   },
-  "latest_price": 4120.54,
+  "latest_price": 4119.23,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4287.40522,
       "low": 4113.02595,
       "width": 174.37926999999945,
-      "location": 0.04308946814606858
+      "location": 0.035569193517094026
     }
   },
   "volatility": {
-    "atr": 5.72,
-    "atr_pips": 57.2,
+    "atr": 5.75,
+    "atr_pips": 57.5,
     "condition": "NORMAL"
   },
   "pd": {
@@ -44,11 +44,15 @@
     "session_low": null
   },
   "news": {
-    "status": "NEWS TIMING UNAVAILABLE",
-    "high_impact": null,
+    "status": "CLEAR",
+    "high_impact": false,
     "minutes_to_news": null,
-    "filter": "BLOCK",
-    "required": true
+    "filter": "PASS",
+    "event": null,
+    "currency": "USD",
+    "time": null,
+    "source": "FinanceCalendar",
+    "source_url": "https://www.financecalendar.com/"
   },
   "opportunity": {
     "type": "NO VALID SETUP",
@@ -62,16 +66,7 @@
     "direction": null,
     "opportunity": "NO VALID SETUP",
     "score": 25,
-    "timestamp": "2026-09-28T23:50:37.719057+08:00",
-    "blocked": true,
-    "block_reason": [
-      "SCORE < 70",
-      "M15 SETUP",
-      "M5 CONFIRMATION",
-      "RISK",
-      "RR",
-      "NEWS"
-    ]
+    "timestamp": "2026-09-28T23:55:36.492800+08:00"
   },
   "plan": {
     "valid": false
@@ -121,7 +116,7 @@
         "high": 4171.18545,
         "low": 4113.02595,
         "width": 58.15949999999975,
-        "location": 0.12919488647597901
+        "location": 0.10664689345678
       }
     }
   },
@@ -134,7 +129,7 @@
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "NEUTRAL",
+      "momentum": "BEARISH",
       "reason": "NO DIRECTION"
     }
   },
@@ -144,19 +139,8 @@
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
-    "news": false,
-    "session": false,
-    "risk_protection": true
-  },
-  "risk_protection": {
-    "status": "PASS",
-    "daily_r": 0,
-    "daily_loss_limit_r": 3.0,
-    "consecutive_losses": 0,
-    "consecutive_loss_limit": 3,
-    "daily_loss_block": false,
-    "consecutive_loss_block": false,
-    "reason": "NONE"
+    "news": true,
+    "session": false
   },
   "confirmations": {
     "h1_bias": "BEARISH",
@@ -165,49 +149,14 @@
     "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
-  "expectancy": {
-    "status": "WAITING FOR FIRST CLOSED TRADE",
-    "trades": 0,
-    "wins": 0,
-    "losses": 0,
-    "win_rate": 0.0,
-    "average_r": 0.0,
-    "profit_factor": null,
-    "expectancy_r": null,
-    "max_drawdown": 0.0,
-    "max_consecutive_losses": 0,
-    "current_consecutive_losses": 0,
-    "total_r": 0.0
-  },
-  "trade_journal": {
-    "file": "trade_journal.json",
-    "total_records": 0,
-    "open_trades": 0
-  },
-  "validation": {
-    "status": "FRAMEWORK READY",
-    "development": {
-      "period": "2022-2024",
-      "status": "NOT RUN"
-    },
-    "out_of_sample": {
-      "period": "2025",
-      "status": "NOT RUN"
-    },
-    "forward": {
-      "period": "2026",
-      "status": "LIVE TRACKING"
-    },
-    "warning": "No profitability claim is made until validation is actually executed."
-  },
   "risk_engine": {
     "status": "INVALID",
     "risk_pips": null,
     "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
-    "daily_loss_limit_r": 3.0,
-    "consecutive_loss_limit": 3
+    "daily_loss_limit": "NOT CONFIGURED",
+    "consecutive_loss_limit": "NOT CONFIGURED"
   },
   "invalidation": {
     "status": "WAIT",
@@ -215,31 +164,37 @@
       "M5 confirmation required",
       "Risk must remain valid",
       "RR TP2 must remain >= 1:2",
-      "News filter must pass",
-      "Risk protection must remain unlocked",
+      "News filter must remain PASS",
       "Avoid invalidation after structure failure"
     ]
   },
   "sop": {
-    "news_filter": "BLOCK",
+    "news_filter": "PASS",
     "session_filter": "BLOCK",
     "risk": "UNKNOWN",
     "fresh_zone": "NO",
     "m15_setup": "NO",
-    "m5_confirmation": "NO",
-    "risk_protection": "PASS"
+    "m5_confirmation": "NO"
   },
-  "telegram": {
-    "version": "V2",
-    "gate": "BLOCK",
-    "requirements": {
-      "score": false,
-      "m15_setup": false,
-      "m5_confirmation": false,
-      "risk": false,
-      "rr": false,
-      "news": false,
-      "risk_protection": true
-    }
+  "expectancy": {
+    "status": "NOT TRACKED",
+    "trades": null,
+    "win_rate": null,
+    "average_r": null,
+    "profit_factor": null,
+    "expectancy_r": null,
+    "max_drawdown": null,
+    "max_consecutive_losses": null
+  },
+  "backtest": {
+    "status": "NOT RUN",
+    "development_period": "2022-2024",
+    "out_of_sample": "2025",
+    "forward": "2026"
+  },
+  "data_sources": {
+    "market_data": "Twelve Data",
+    "economic_calendar": "FinanceCalendar",
+    "economic_calendar_url": "https://www.financecalendar.com/"
   }
 }
