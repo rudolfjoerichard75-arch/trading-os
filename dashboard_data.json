@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-28T08:15:33.268071+08:00"
+    "timestamp": "2026-09-28T08:20:36.893101+08:00"
   },
-  "latest_price": 4258.05,
+  "latest_price": 4255.6,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4287.40522,
       "low": 4253.76285,
       "width": 33.64236999999957,
-      "location": 0.12730880731649583
+      "location": 0.05469293631810627
     }
   },
   "volatility": {
-    "atr": 3.23,
-    "atr_pips": 32.3,
+    "atr": 3.08,
+    "atr_pips": 30.8,
     "condition": "NORMAL"
   },
   "pd": {
@@ -54,17 +54,19 @@
     "type": "BUY PULLBACK",
     "direction": "BUY",
     "valid": true,
-    "score": 85
+    "score": 50
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY PULLBACK",
-    "score": 85,
-    "timestamp": "2026-09-28T08:15:33.268071+08:00",
+    "score": 50,
+    "timestamp": "2026-09-28T08:20:36.893101+08:00",
     "blocked": true,
     "block_reason": [
+      "SCORE < 70",
+      "M5 CONFIRMATION",
       "RISK",
       "RR",
       "NEWS"
@@ -72,7 +74,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 11.6 pips outside 25-80"
+    "reason": "Risk 24.6 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -121,27 +123,27 @@
         "high": 4287.40522,
         "low": 4253.76285,
         "width": 33.64236999999957,
-        "location": 0.12730880731649583
+        "location": 0.05469293631810627
       }
     }
   },
   "m5": {
-    "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "direction": "BEARISH",
+    "bos": null,
     "swing_high": 4264.75606,
-    "swing_low": 4259.85091,
+    "swing_low": 4253.76285,
     "confirmation": {
-      "confirmed": true,
-      "bos": "BEARISH BOS",
-      "candle": true,
-      "momentum": "BULLISH",
-      "reason": "M5 bullish candle + momentum"
+      "confirmed": false,
+      "bos": null,
+      "candle": false,
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
-    "score": true,
+    "score": false,
     "setup": true,
-    "m5_confirmation": true,
+    "m5_confirmation": false,
     "risk": false,
     "rr": false,
     "news": false,
@@ -161,7 +163,7 @@
   "confirmations": {
     "h1_bias": "BULLISH",
     "m15_setup": "BUY PULLBACK",
-    "m5_confirmation": "M5 bullish candle + momentum",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
@@ -226,16 +228,16 @@
     "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "YES",
+    "m5_confirmation": "NO",
     "risk_protection": "PASS"
   },
   "telegram": {
     "version": "V2",
     "gate": "BLOCK",
     "requirements": {
-      "score": true,
+      "score": false,
       "m15_setup": true,
-      "m5_confirmation": true,
+      "m5_confirmation": false,
       "risk": false,
       "rr": false,
       "news": false,
