@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-28T17:20:36.173734+08:00"
+    "timestamp": "2026-09-28T17:25:30.158009+08:00"
   },
-  "latest_price": 4142.67,
+  "latest_price": 4145.1,
   "session": "LONDON",
   "market_mode": "NEUTRAL",
   "regime": {
@@ -15,21 +15,21 @@
     "range": {
       "is_range": false,
       "high": 4287.40522,
-      "low": 4141.1297,
-      "width": 146.27551999999923,
-      "location": 0.010516660614157538
+      "low": 4139.69385,
+      "width": 147.71137,
+      "location": 0.03657409717343087
     }
   },
   "volatility": {
-    "atr": 5.14,
-    "atr_pips": 51.4,
+    "atr": 5.36,
+    "atr_pips": 53.6,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4170.87,
+    "equilibrium": 4170.16,
     "high": 4200.62,
-    "low": 4141.13
+    "low": 4139.69
   },
   "liquidity": {
     "buy_side_sweep": false,
@@ -54,17 +54,19 @@
     "type": "SELL BREAKOUT RETEST",
     "direction": "SELL",
     "valid": true,
-    "score": 70
+    "score": 35
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "SELL",
     "opportunity": "SELL BREAKOUT RETEST",
-    "score": 70,
-    "timestamp": "2026-09-28T17:20:36.173734+08:00",
+    "score": 35,
+    "timestamp": "2026-09-28T17:25:30.158009+08:00",
     "blocked": true,
     "block_reason": [
+      "SCORE < 70",
+      "M5 CONFIRMATION",
       "RISK",
       "RR",
       "NEWS"
@@ -72,7 +74,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 108.4 pips outside 25-80"
+    "reason": "Risk 84.5 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -100,9 +102,9 @@
       ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 4170.87,
+        "equilibrium": 4170.16,
         "high": 4200.62,
-        "low": 4141.13
+        "low": 4139.69
       },
       "liquidity": {
         "buy_side_sweep": false,
@@ -119,29 +121,29 @@
       "range": {
         "is_range": false,
         "high": 4200.61743,
-        "low": 4141.1297,
-        "width": 59.48772999999983,
-        "location": 0.025859618445676268
+        "low": 4139.69385,
+        "width": 60.923580000000584,
+        "location": 0.0886751894750858
       }
     }
   },
   "m5": {
     "direction": "BEARISH",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4152.47903,
     "swing_low": 4143.53195,
     "confirmation": {
-      "confirmed": true,
-      "bos": "BEARISH BOS",
-      "candle": true,
+      "confirmed": false,
+      "bos": null,
+      "candle": false,
       "momentum": "BEARISH",
-      "reason": "M5 bearish BOS"
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
-    "score": true,
+    "score": false,
     "setup": true,
-    "m5_confirmation": true,
+    "m5_confirmation": false,
     "risk": false,
     "rr": false,
     "news": false,
@@ -161,7 +163,7 @@
   "confirmations": {
     "h1_bias": "RANGE",
     "m15_setup": "SELL BREAKOUT RETEST",
-    "m5_confirmation": "M5 bearish BOS",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
@@ -226,16 +228,16 @@
     "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "YES",
+    "m5_confirmation": "NO",
     "risk_protection": "PASS"
   },
   "telegram": {
     "version": "V2",
     "gate": "BLOCK",
     "requirements": {
-      "score": true,
+      "score": false,
       "m15_setup": true,
-      "m5_confirmation": true,
+      "m5_confirmation": false,
       "risk": false,
       "rr": false,
       "news": false,
