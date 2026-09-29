@@ -4,39 +4,39 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-29T21:35:31.154566+08:00",
+    "timestamp": "2026-09-29T21:40:35.151887+08:00",
     "data_requests_this_scan": 1
   },
-  "latest_price": 4156.23,
+  "latest_price": 4153.23,
   "session": "NEW YORK",
-  "market_mode": "TRENDING",
+  "market_mode": "NEUTRAL",
   "regime": {
-    "type": "TRENDING",
-    "h1_direction": "BULLISH",
+    "type": "NEUTRAL",
+    "h1_direction": "RANGE",
     "range": {
       "is_range": false,
-      "high": 4160.94537,
+      "high": 4161.39394,
       "low": 4111.79963,
-      "width": 49.14573999999993,
-      "location": 0.9041078636724098
+      "width": 49.594309999999496,
+      "location": 0.8353970445399825
     }
   },
   "volatility": {
-    "atr": 4.53,
-    "atr_pips": 45.3,
+    "atr": 4.77,
+    "atr_pips": 47.7,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4149.32,
-    "high": 4160.95,
+    "equilibrium": 4149.55,
+    "high": 4161.39,
     "low": 4137.7
   },
   "liquidity": {
-    "buy_side_sweep": false,
+    "buy_side_sweep": true,
     "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "swept_level": 4160.94537,
+    "description": "BUY-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -51,35 +51,48 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 25
+    "type": "SELL LIQUIDITY SWEEP",
+    "direction": "SELL",
+    "valid": true,
+    "score": 40
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 25,
-    "timestamp": "2026-09-29T21:35:31.154566+08:00",
-    "candle_time": "2026-09-29T23:25:00+00:00"
+    "direction": "SELL",
+    "opportunity": "SELL LIQUIDITY SWEEP",
+    "score": 40,
+    "timestamp": "2026-09-29T21:40:35.151887+08:00",
+    "candle_time": "2026-09-29T23:30:00+00:00"
   },
   "plan": {
-    "valid": false,
-    "reason": "NO DIRECTION"
+    "valid": true,
+    "direction": "SELL",
+    "entry": 4153.23,
+    "sl": 4160.52,
+    "risk_pips": 72.9,
+    "tp1": 4147.23,
+    "tp2": 4138.65,
+    "tp3": 4131.35,
+    "tp1_pips": 60,
+    "tp2_pips": 145.8,
+    "tp3_pips": 218.8,
+    "rr_tp1": 0.82,
+    "rr_tp2": 2.0,
+    "rr_tp3": 3.0,
+    "risk_level": "MEDIUM"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 145.8,
+    "tp3_pips": 218.8
   },
   "h1": {
-    "direction": "BULLISH",
-    "bos": null,
-    "swing_high": 4160.94537,
+    "direction": "RANGE",
+    "bos": "BULLISH BOS",
+    "swing_high": 4149.03328,
     "swing_low": 4122.69129,
-    "condition": "TRENDING"
+    "condition": "NEUTRAL"
   },
   "m15": {
     "direction": "BULLISH",
@@ -87,21 +100,23 @@
     "swing_high": 4160.94537,
     "swing_low": 4148.25188,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "SELL",
+      "opportunity": "SELL LIQUIDITY SWEEP",
+      "valid": true,
+      "reason": [
+        "M15 buy-side liquidity sweep"
+      ],
       "pd": {
         "zone": "PREMIUM",
-        "equilibrium": 4149.32,
-        "high": 4160.95,
+        "equilibrium": 4149.55,
+        "high": 4161.39,
         "low": 4137.7
       },
       "liquidity": {
-        "buy_side_sweep": false,
+        "buy_side_sweep": true,
         "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "swept_level": 4160.94537,
+        "description": "BUY-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "BULLISH",
@@ -111,10 +126,10 @@
       },
       "range": {
         "is_range": true,
-        "high": 4160.94537,
+        "high": 4161.39394,
         "low": 4137.70275,
-        "width": 23.242619999999988,
-        "location": 0.7972392957420336
+        "width": 23.69118999999955,
+        "location": 0.6554259199305578
       }
     }
   },
@@ -127,31 +142,31 @@
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "BULLISH",
-      "reason": "NO DIRECTION"
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": true,
     "session_blocking": false
   },
   "confirmations": {
-    "h1_bias": "BULLISH",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
-    "liquidity": "NONE",
+    "h1_bias": "RANGE",
+    "m15_setup": "SELL LIQUIDITY SWEEP",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 72.9,
+    "risk_level": "MEDIUM",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -170,9 +185,9 @@
     "news_filter": "PASS",
     "session_filter": "PREFERRED",
     "session_blocking": "NO",
-    "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
+    "risk": "MEDIUM",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
     "m5_confirmation": "NO"
   },
   "journal": {
@@ -202,14 +217,14 @@
     "average_r": null,
     "profit_factor": null,
     "open_trades": 0,
-    "last_updated": "2026-09-29T21:35:31.632252+08:00"
+    "last_updated": "2026-09-29T21:40:36.165784+08:00"
   },
   "backtest": {
     "status": "COMPLETED",
     "file": "backtest_results.json",
     "bars_used": 499,
-    "period_start": "2026-09-28T05:55:00+00:00",
-    "period_end": "2026-09-29T23:25:00+00:00",
+    "period_start": "2026-09-28T06:00:00+00:00",
+    "period_end": "2026-09-29T23:30:00+00:00",
     "stats": {
       "trades": 0,
       "wins": 0,
