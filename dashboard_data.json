@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-29T18:00:55.457869+08:00",
+    "timestamp": "2026-09-29T18:05:33.077295+08:00",
     "data_requests_this_scan": 1
   },
-  "latest_price": 4141.15,
+  "latest_price": 4145.57,
   "session": "LONDON",
   "market_mode": "RANGING",
   "regime": {
@@ -18,12 +18,12 @@
       "high": 4158.64845,
       "low": 4111.79963,
       "width": 46.84881999999925,
-      "location": 0.626416844650522
+      "location": 0.7207948887506624
     }
   },
   "volatility": {
-    "atr": 3.55,
-    "atr_pips": 35.5,
+    "atr": 3.89,
+    "atr_pips": 38.9,
     "condition": "NORMAL"
   },
   "pd": {
@@ -51,41 +51,28 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "SELL LIQUIDITY SWEEP",
+    "type": "SELL RANGE REVERSAL",
     "direction": "SELL",
     "valid": true,
-    "score": 35
+    "score": 45
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "SELL",
-    "opportunity": "SELL LIQUIDITY SWEEP",
-    "score": 35,
-    "timestamp": "2026-09-29T18:00:55.457869+08:00",
-    "candle_time": "2026-09-29T19:50:00+00:00"
+    "opportunity": "SELL RANGE REVERSAL",
+    "score": 45,
+    "timestamp": "2026-09-29T18:05:33.077295+08:00",
+    "candle_time": "2026-09-29T19:55:00+00:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "SELL",
-    "entry": 4141.15,
-    "sl": 4144.16,
-    "risk_pips": 30.1,
-    "tp1": 4135.15,
-    "tp2": 4129.15,
-    "tp3": 4123.15,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 1.99,
-    "rr_tp2": 3.99,
-    "rr_tp3": 5.98,
-    "risk_level": "LOW"
+    "valid": false,
+    "reason": "Risk 13.4 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "RANGE",
@@ -101,10 +88,10 @@
     "swing_low": 4137.70275,
     "setup": {
       "direction": "SELL",
-      "opportunity": "SELL LIQUIDITY SWEEP",
+      "opportunity": "SELL RANGE REVERSAL",
       "valid": true,
       "reason": [
-        "M15 buy-side liquidity sweep"
+        "M15 range high + buy-side sweep"
       ],
       "pd": {
         "zone": "PREMIUM",
@@ -129,18 +116,18 @@
         "high": 4149.03328,
         "low": 4122.69129,
         "width": 26.341989999999896,
-        "location": 0.7006012074258838
+        "location": 0.8684510927230646
       }
     }
   },
   "m5": {
     "direction": "RANGE",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4143.44752,
     "swing_low": 4139.39801,
     "confirmation": {
       "confirmed": false,
-      "bos": null,
+      "bos": "BULLISH BOS",
       "candle": false,
       "momentum": "BULLISH",
       "reason": "NO CONFIRMATION"
@@ -150,23 +137,23 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": true,
     "session_blocking": false
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "SELL LIQUIDITY SWEEP",
+    "m15_setup": "SELL RANGE REVERSAL",
     "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 30.1,
-    "risk_level": "LOW",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -185,7 +172,7 @@
     "news_filter": "PASS",
     "session_filter": "PREFERRED",
     "session_blocking": "NO",
-    "risk": "LOW",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
@@ -217,14 +204,14 @@
     "average_r": null,
     "profit_factor": null,
     "open_trades": 0,
-    "last_updated": "2026-09-29T18:00:56.504907+08:00"
+    "last_updated": "2026-09-29T18:05:34.138507+08:00"
   },
   "backtest": {
     "status": "COMPLETED",
     "file": "backtest_results.json",
     "bars_used": 499,
-    "period_start": "2026-09-28T02:20:00+00:00",
-    "period_end": "2026-09-29T19:50:00+00:00",
+    "period_start": "2026-09-28T02:25:00+00:00",
+    "period_end": "2026-09-29T19:55:00+00:00",
     "stats": {
       "trades": 0,
       "wins": 0,
