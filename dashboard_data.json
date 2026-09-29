@@ -4,11 +4,12 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T02:10:35.695483+08:00",
-    "data_requests_this_scan": 1
+    "timestamp": "2026-09-30T02:15:36.149937+08:00",
+    "status": "WAIT — CONDITIONS NOT MET"
   },
-  "latest_price": 4160.32,
+  "latest_price": 4158.04,
   "session": "OFF SESSION",
+  "session_preferred": false,
   "market_mode": "TRENDING",
   "regime": {
     "type": "TRENDING",
@@ -18,16 +19,16 @@
       "high": 4175.71405,
       "low": 4112.09033,
       "width": 63.623719999999594,
-      "location": 0.7581205562956745
+      "location": 0.7221335061829142
     }
   },
   "volatility": {
-    "atr": 3.66,
-    "atr_pips": 36.6,
+    "atr": 3.89,
+    "atr_pips": 38.9,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "PREMIUM",
+    "zone": "DISCOUNT",
     "equilibrium": 4158.96,
     "high": 4175.71,
     "low": 4142.2
@@ -53,32 +54,42 @@
   "opportunity": {
     "type": "BUY LIQUIDITY SWEEP",
     "direction": "BUY",
-    "valid": true,
-    "score": 65
+    "valid": false,
+    "analysis_valid": true,
+    "score": 70,
+    "minimum_score": 70,
+    "status": "WAIT — CONDITIONS NOT MET"
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY LIQUIDITY SWEEP",
-    "score": 65,
-    "timestamp": "2026-09-30T02:10:35.695483+08:00",
-    "candle_time": "2026-09-30T04:00:00+00:00"
+    "score": 70,
+    "timestamp": "2026-09-30T02:15:36.149937+08:00",
+    "status": "WAIT",
+    "gate_reasons": [
+      "Risk 143.4 pips outside 25-80"
+    ]
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 165.8 pips outside 25-80"
+    "status": "NO EXECUTABLE PLAN",
+    "reason": "Risk 143.4 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
     "tp2_pips": null,
-    "tp3_pips": null
+    "tp3_pips": null,
+    "status": "WAIT"
   },
   "h1": {
     "direction": "BULLISH",
     "bos": null,
     "swing_high": 4175.71405,
     "swing_low": 4122.69129,
+    "swing_highs_count": 3,
+    "swing_lows_count": 5,
     "condition": "TRENDING"
   },
   "m15": {
@@ -86,6 +97,8 @@
     "bos": null,
     "swing_high": 4175.71405,
     "swing_low": 4144.45985,
+    "swing_highs_count": 18,
+    "swing_lows_count": 20,
     "setup": {
       "direction": "BUY",
       "opportunity": "BUY LIQUIDITY SWEEP",
@@ -94,7 +107,7 @@
         "M15 sell-side liquidity sweep"
       ],
       "pd": {
-        "zone": "PREMIUM",
+        "zone": "DISCOUNT",
         "equilibrium": 4158.96,
         "high": 4175.71,
         "low": 4142.2
@@ -109,14 +122,16 @@
         "direction": "RANGE",
         "bos": null,
         "swing_high": 4175.71405,
-        "swing_low": 4144.45985
+        "swing_low": 4144.45985,
+        "swing_highs_count": 18,
+        "swing_lows_count": 20
       },
       "range": {
         "is_range": true,
         "high": 4175.71405,
         "low": 4142.19646,
         "width": 33.51758999999947,
-        "location": 0.5408598887927231
+        "location": 0.4725485931416858
       }
     }
   },
@@ -125,6 +140,8 @@
     "bos": "BULLISH BOS",
     "swing_high": 4148.86114,
     "swing_low": 4144.47809,
+    "swing_highs_count": 69,
+    "swing_lows_count": 67,
     "confirmation": {
       "confirmed": true,
       "bos": "BULLISH BOS",
@@ -134,7 +151,7 @@
     }
   },
   "filters": {
-    "score": false,
+    "score": true,
     "setup": true,
     "m5_confirmation": true,
     "risk": false,
@@ -148,16 +165,35 @@
     "m15_setup": "BUY LIQUIDITY SWEEP",
     "m5_confirmation": "M5 bullish BOS",
     "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
-    "pd_zone": "PREMIUM"
+    "pd_zone": "DISCOUNT"
+  },
+  "signal_gate": {
+    "valid": false,
+    "score": 70,
+    "minimum_score": 70,
+    "reasons": [
+      "Risk 143.4 pips outside 25-80"
+    ]
   },
   "risk_engine": {
     "status": "INVALID",
-    "risk_pips": null,
+    "risk_pips": 143.4,
     "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
     "consecutive_loss_limit": "NOT CONFIGURED"
+  },
+  "trade_plan_audit": {
+    "status": "FAIL",
+    "direction": "BUY",
+    "entry": 4158.04,
+    "sl": 4143.7,
+    "tp1": null,
+    "tp2": null,
+    "tp3": null,
+    "geometry": null,
+    "reason": "Risk 143.4 pips outside 25-80"
   },
   "invalidation": {
     "status": "WAIT",
@@ -165,6 +201,10 @@
       "M5 confirmation required",
       "Risk must remain valid",
       "RR TP2 must remain >= 1:2",
+      "BUY SL must remain below Entry",
+      "SELL SL must remain above Entry",
+      "BUY TP levels must remain above Entry",
+      "SELL TP levels must remain below Entry",
       "Avoid invalidation after structure failure"
     ]
   },
@@ -180,49 +220,34 @@
   "journal": {
     "status": "ACTIVE",
     "file": "trade_journal.json",
+    "total_signals": 0,
     "open_trades": 0,
-    "trades": 0,
-    "wins": 0,
-    "losses": 0,
-    "breakeven": 0,
-    "win_rate": null,
-    "total_pips": 0,
-    "average_pips": null,
-    "average_r": null,
-    "profit_factor": null
+    "closed_trades": 0
   },
   "forward_test": {
     "status": "FORWARD TESTING",
     "symbol": "XAU/USD",
-    "trades": 0,
+    "total_signals": 0,
+    "open_trades": 0,
+    "closed_trades": 0,
     "wins": 0,
     "losses": 0,
     "breakeven": 0,
     "win_rate": null,
-    "total_pips": 0,
+    "total_pips": 0.0,
     "average_pips": null,
+    "total_r": 0.0,
     "average_r": null,
-    "profit_factor": null,
-    "open_trades": 0,
-    "last_updated": "2026-09-30T02:10:36.686729+08:00"
+    "max_drawdown_r": 0.0,
+    "max_consecutive_losses": 0,
+    "last_updated": "2026-09-30T02:15:36.661985+08:00"
   },
   "backtest": {
-    "status": "COMPLETED",
+    "status": "READY",
     "file": "backtest_results.json",
-    "bars_used": 499,
-    "period_start": "2026-09-28T10:30:00+00:00",
-    "period_end": "2026-09-30T04:00:00+00:00",
-    "stats": {
-      "trades": 0,
-      "wins": 0,
-      "losses": 0,
-      "breakeven": 0,
-      "win_rate": null,
-      "total_pips": 0,
-      "average_pips": null,
-      "average_r": null,
-      "profit_factor": null
-    },
-    "note": "Rolling replay of the already-fetched M5 dataset. No additional Twelve Data request is made."
+    "development_period": "2022-2024",
+    "out_of_sample": "2025",
+    "forward": "2026",
+    "note": "Historical backtest runner will be activated separately after V4 live signal validation."
   }
 }
