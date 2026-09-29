@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-29T17:55:33.672976+08:00",
+    "timestamp": "2026-09-29T18:00:55.457869+08:00",
     "data_requests_this_scan": 1
   },
-  "latest_price": 4147.29,
+  "latest_price": 4141.15,
   "session": "LONDON",
   "market_mode": "RANGING",
   "regime": {
@@ -18,12 +18,12 @@
       "high": 4158.64845,
       "low": 4111.79963,
       "width": 46.84881999999925,
-      "location": 0.7576126783983002
+      "location": 0.626416844650522
     }
   },
   "volatility": {
-    "atr": 3.2,
-    "atr_pips": 32.0,
+    "atr": 3.55,
+    "atr_pips": 35.5,
     "condition": "NORMAL"
   },
   "pd": {
@@ -33,10 +33,10 @@
     "low": 4122.69
   },
   "liquidity": {
-    "buy_side_sweep": false,
+    "buy_side_sweep": true,
     "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "swept_level": 4145.96709,
+    "description": "BUY-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -51,28 +51,41 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "BUY BREAKOUT RETEST",
-    "direction": "BUY",
+    "type": "SELL LIQUIDITY SWEEP",
+    "direction": "SELL",
     "valid": true,
-    "score": 65
+    "score": 35
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": "BUY",
-    "opportunity": "BUY BREAKOUT RETEST",
-    "score": 65,
-    "timestamp": "2026-09-29T17:55:33.672976+08:00",
-    "candle_time": "2026-09-29T19:45:00+00:00"
+    "direction": "SELL",
+    "opportunity": "SELL LIQUIDITY SWEEP",
+    "score": 35,
+    "timestamp": "2026-09-29T18:00:55.457869+08:00",
+    "candle_time": "2026-09-29T19:50:00+00:00"
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 85.3 pips outside 25-80"
+    "valid": true,
+    "direction": "SELL",
+    "entry": 4141.15,
+    "sl": 4144.16,
+    "risk_pips": 30.1,
+    "tp1": 4135.15,
+    "tp2": 4129.15,
+    "tp3": 4123.15,
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180,
+    "rr_tp1": 1.99,
+    "rr_tp2": 3.99,
+    "rr_tp3": 5.98,
+    "risk_level": "LOW"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180
   },
   "h1": {
     "direction": "RANGE",
@@ -83,15 +96,15 @@
   },
   "m15": {
     "direction": "BEARISH",
-    "bos": "BULLISH BOS",
+    "bos": null,
     "swing_high": 4145.96709,
     "swing_low": 4137.70275,
     "setup": {
-      "direction": "BUY",
-      "opportunity": "BUY BREAKOUT RETEST",
+      "direction": "SELL",
+      "opportunity": "SELL LIQUIDITY SWEEP",
       "valid": true,
       "reason": [
-        "M15 bullish BOS"
+        "M15 buy-side liquidity sweep"
       ],
       "pd": {
         "zone": "PREMIUM",
@@ -100,14 +113,14 @@
         "low": 4122.69
       },
       "liquidity": {
-        "buy_side_sweep": false,
+        "buy_side_sweep": true,
         "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "swept_level": 4145.96709,
+        "description": "BUY-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "BEARISH",
-        "bos": "BULLISH BOS",
+        "bos": null,
         "swing_high": 4145.96709,
         "swing_low": 4137.70275
       },
@@ -116,44 +129,44 @@
         "high": 4149.03328,
         "low": 4122.69129,
         "width": 26.341989999999896,
-        "location": 0.9339309596579476
+        "location": 0.7006012074258838
       }
     }
   },
   "m5": {
     "direction": "RANGE",
-    "bos": "BULLISH BOS",
+    "bos": null,
     "swing_high": 4143.44752,
     "swing_low": 4139.39801,
     "confirmation": {
-      "confirmed": true,
-      "bos": "BULLISH BOS",
-      "candle": true,
+      "confirmed": false,
+      "bos": null,
+      "candle": false,
       "momentum": "BULLISH",
-      "reason": "M5 bullish BOS"
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": true,
-    "risk": false,
-    "rr": false,
+    "m5_confirmation": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": true,
     "session_blocking": false
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "BUY BREAKOUT RETEST",
-    "m5_confirmation": "M5 bullish BOS",
-    "liquidity": "NONE",
+    "m15_setup": "SELL LIQUIDITY SWEEP",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 30.1,
+    "risk_level": "LOW",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -172,10 +185,10 @@
     "news_filter": "PASS",
     "session_filter": "PREFERRED",
     "session_blocking": "NO",
-    "risk": "UNKNOWN",
+    "risk": "LOW",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "m5_confirmation": "NO"
   },
   "journal": {
     "status": "ACTIVE",
@@ -204,14 +217,14 @@
     "average_r": null,
     "profit_factor": null,
     "open_trades": 0,
-    "last_updated": "2026-09-29T17:55:34.704096+08:00"
+    "last_updated": "2026-09-29T18:00:56.504907+08:00"
   },
   "backtest": {
     "status": "COMPLETED",
     "file": "backtest_results.json",
     "bars_used": 499,
-    "period_start": "2026-09-28T02:15:00+00:00",
-    "period_end": "2026-09-29T19:45:00+00:00",
+    "period_start": "2026-09-28T02:20:00+00:00",
+    "period_end": "2026-09-29T19:50:00+00:00",
     "stats": {
       "trades": 0,
       "wins": 0,
