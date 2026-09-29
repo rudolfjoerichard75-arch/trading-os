@@ -1,12 +1,13 @@
 {
   "engine": {
     "name": "BOSQUE FOREX AI",
-    "version": "SCALPING V3",
+    "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-29T16:10:48.704674+08:00"
+    "timestamp": "2026-09-29T16:13:07.059241+08:00",
+    "data_requests_this_scan": 1
   },
-  "latest_price": 4143.42,
+  "latest_price": 4138.05,
   "session": "LONDON",
   "market_mode": "RANGING",
   "regime": {
@@ -17,12 +18,12 @@
       "high": 4160.25294,
       "low": 4111.79963,
       "width": 48.453309999999874,
-      "location": 0.6526947281826563
+      "location": 0.5417572091566091
     }
   },
   "volatility": {
-    "atr": 3.48,
-    "atr_pips": 34.8,
+    "atr": 3.7,
+    "atr_pips": 37.0,
     "condition": "NORMAL"
   },
   "pd": {
@@ -53,18 +54,20 @@
     "type": "NO VALID SETUP",
     "direction": null,
     "valid": false,
-    "score": 10
+    "score": 20
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": null,
     "opportunity": "NO VALID SETUP",
-    "score": 10,
-    "timestamp": "2026-09-29T16:10:48.704674+08:00"
+    "score": 20,
+    "timestamp": "2026-09-29T16:13:07.059241+08:00",
+    "candle_time": "2026-09-29T18:05:00+00:00"
   },
   "plan": {
-    "valid": false
+    "valid": false,
+    "reason": "NO DIRECTION"
   },
   "potential": {
     "tp1_pips": null,
@@ -111,18 +114,18 @@
         "high": 4149.03328,
         "low": 4122.69129,
         "width": 26.341989999999896,
-        "location": 0.7870916358255645
+        "location": 0.5830337799080741
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BEARISH BOS",
     "swing_high": 4149.03328,
     "swing_low": 4141.81577,
     "confirmation": {
       "confirmed": false,
-      "bos": null,
+      "bos": "BEARISH BOS",
       "candle": false,
       "momentum": "BEARISH",
       "reason": "NO DIRECTION"
@@ -174,7 +177,17 @@
   },
   "journal": {
     "status": "ACTIVE",
-    "file": "trade_journal.json"
+    "file": "trade_journal.json",
+    "open_trades": 0,
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "breakeven": 0,
+    "win_rate": null,
+    "total_pips": 0,
+    "average_pips": null,
+    "average_r": null,
+    "profit_factor": null
   },
   "forward_test": {
     "status": "FORWARD TESTING",
@@ -182,15 +195,32 @@
     "trades": 0,
     "wins": 0,
     "losses": 0,
+    "breakeven": 0,
     "win_rate": null,
+    "total_pips": 0,
+    "average_pips": null,
     "average_r": null,
-    "last_updated": "2026-09-29T16:10:49.552676+08:00"
+    "profit_factor": null,
+    "open_trades": 0,
+    "last_updated": "2026-09-29T16:13:07.623659+08:00"
   },
   "backtest": {
-    "status": "READY",
+    "status": "COMPLETED",
     "file": "backtest_results.json",
-    "development_period": "2022-2024",
-    "out_of_sample": "2025",
-    "forward": "2026"
+    "bars_used": 499,
+    "period_start": "2026-09-28T00:35:00+00:00",
+    "period_end": "2026-09-29T18:05:00+00:00",
+    "stats": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "breakeven": 0,
+      "win_rate": null,
+      "total_pips": 0,
+      "average_pips": null,
+      "average_r": null,
+      "profit_factor": null
+    },
+    "note": "Rolling replay of the already-fetched M5 dataset. No additional Twelve Data request is made."
   }
 }
