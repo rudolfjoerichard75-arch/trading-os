@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T02:06:11.253936+08:00",
+    "timestamp": "2026-09-30T02:10:35.695483+08:00",
     "data_requests_this_scan": 1
   },
-  "latest_price": 4143.0,
+  "latest_price": 4160.32,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -18,25 +18,25 @@
       "high": 4175.71405,
       "low": 4112.09033,
       "width": 63.623719999999594,
-      "location": 0.4858508744851835
+      "location": 0.7581205562956745
     }
   },
   "volatility": {
-    "atr": 2.56,
-    "atr_pips": 25.6,
+    "atr": 3.66,
+    "atr_pips": 36.6,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "DISCOUNT",
-    "equilibrium": 4159.17,
+    "zone": "PREMIUM",
+    "equilibrium": 4158.96,
     "high": 4175.71,
-    "low": 4142.62
+    "low": 4142.2
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "sell_side_sweep": true,
+    "swept_level": 4144.45985,
+    "description": "SELL-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -51,23 +51,23 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "BUY PULLBACK",
+    "type": "BUY LIQUIDITY SWEEP",
     "direction": "BUY",
     "valid": true,
-    "score": 55
+    "score": 65
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
-    "opportunity": "BUY PULLBACK",
-    "score": 55,
-    "timestamp": "2026-09-30T02:06:11.253936+08:00",
-    "candle_time": "2026-09-30T03:55:00+00:00"
+    "opportunity": "BUY LIQUIDITY SWEEP",
+    "score": 65,
+    "timestamp": "2026-09-30T02:10:35.695483+08:00",
+    "candle_time": "2026-09-30T04:00:00+00:00"
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 9.6 pips outside 25-80"
+    "reason": "Risk 165.8 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -83,60 +83,60 @@
   },
   "m15": {
     "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4175.71405,
     "swing_low": 4144.45985,
     "setup": {
       "direction": "BUY",
-      "opportunity": "BUY PULLBACK",
+      "opportunity": "BUY LIQUIDITY SWEEP",
       "valid": true,
       "reason": [
-        "H1 bullish + M15 discount"
+        "M15 sell-side liquidity sweep"
       ],
       "pd": {
-        "zone": "DISCOUNT",
-        "equilibrium": 4159.17,
+        "zone": "PREMIUM",
+        "equilibrium": 4158.96,
         "high": 4175.71,
-        "low": 4142.62
+        "low": 4142.2
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "sell_side_sweep": true,
+        "swept_level": 4144.45985,
+        "description": "SELL-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "RANGE",
-        "bos": "BEARISH BOS",
+        "bos": null,
         "swing_high": 4175.71405,
         "swing_low": 4144.45985
       },
       "range": {
         "is_range": true,
         "high": 4175.71405,
-        "low": 4142.62417,
-        "width": 33.08987999999954,
-        "location": 0.011417388035260687
+        "low": 4142.19646,
+        "width": 33.51758999999947,
+        "location": 0.5408598887927231
       }
     }
   },
   "m5": {
     "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "bos": "BULLISH BOS",
     "swing_high": 4148.86114,
     "swing_low": 4144.47809,
     "confirmation": {
-      "confirmed": false,
-      "bos": "BEARISH BOS",
+      "confirmed": true,
+      "bos": "BULLISH BOS",
       "candle": false,
       "momentum": "BEARISH",
-      "reason": "NO CONFIRMATION"
+      "reason": "M5 bullish BOS"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": false,
+    "m5_confirmation": true,
     "risk": false,
     "rr": false,
     "news": true,
@@ -145,10 +145,10 @@
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "BUY PULLBACK",
-    "m5_confirmation": "NO CONFIRMATION",
-    "liquidity": "NONE",
-    "pd_zone": "DISCOUNT"
+    "m15_setup": "BUY LIQUIDITY SWEEP",
+    "m5_confirmation": "M5 bullish BOS",
+    "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
+    "pd_zone": "PREMIUM"
   },
   "risk_engine": {
     "status": "INVALID",
@@ -175,7 +175,7 @@
     "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "NO"
+    "m5_confirmation": "YES"
   },
   "journal": {
     "status": "ACTIVE",
@@ -204,14 +204,14 @@
     "average_r": null,
     "profit_factor": null,
     "open_trades": 0,
-    "last_updated": "2026-09-30T02:06:12.410837+08:00"
+    "last_updated": "2026-09-30T02:10:36.686729+08:00"
   },
   "backtest": {
     "status": "COMPLETED",
     "file": "backtest_results.json",
     "bars_used": 499,
-    "period_start": "2026-09-28T10:25:00+00:00",
-    "period_end": "2026-09-30T03:55:00+00:00",
+    "period_start": "2026-09-28T10:30:00+00:00",
+    "period_end": "2026-09-30T04:00:00+00:00",
     "stats": {
       "trades": 0,
       "wins": 0,
