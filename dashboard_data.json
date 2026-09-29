@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-29T09:15:35.783348+08:00"
+    "timestamp": "2026-09-29T09:20:34.121196+08:00"
   },
-  "latest_price": 4119.78,
+  "latest_price": 4123.64,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,16 +17,16 @@
       "high": 4181.72827,
       "low": 4111.79963,
       "width": 69.92863999999918,
-      "location": 0.11407729365249347
+      "location": 0.16931832222104962
     }
   },
   "volatility": {
-    "atr": 5.95,
-    "atr_pips": 59.5,
+    "atr": 6.12,
+    "atr_pips": 61.2,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "DISCOUNT",
+    "zone": "PREMIUM",
     "equilibrium": 4120.5,
     "high": 4129.21,
     "low": 4111.8
@@ -53,37 +53,24 @@
     "type": "BUY LIQUIDITY SWEEP",
     "direction": "BUY",
     "valid": true,
-    "score": 45
+    "score": 65
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY LIQUIDITY SWEEP",
-    "score": 45,
-    "timestamp": "2026-09-29T09:15:35.783348+08:00"
+    "score": 65,
+    "timestamp": "2026-09-29T09:20:34.121196+08:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "BUY",
-    "entry": 4119.78,
-    "sl": 4112.86,
-    "risk_pips": 69.2,
-    "tp1": 4125.78,
-    "tp2": 4133.62,
-    "tp3": 4140.54,
-    "tp1_pips": 60,
-    "tp2_pips": 138.4,
-    "tp3_pips": 207.6,
-    "rr_tp1": 0.87,
-    "rr_tp2": 2.0,
-    "rr_tp3": 3.0,
-    "risk_level": "MEDIUM"
+    "valid": false,
+    "reason": "Risk 127.7 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 138.4,
-    "tp3_pips": 207.6
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BEARISH",
@@ -105,7 +92,7 @@
         "M15 sell-side liquidity sweep"
       ],
       "pd": {
-        "zone": "DISCOUNT",
+        "zone": "PREMIUM",
         "equilibrium": 4120.5,
         "high": 4129.21,
         "low": 4111.8
@@ -127,7 +114,7 @@
         "high": 4129.20936,
         "low": 4111.79963,
         "width": 17.4097299999994,
-        "location": 0.45820756553948183
+        "location": 0.6800909606294899
       }
     }
   },
@@ -135,21 +122,21 @@
     "direction": "BEARISH",
     "bos": null,
     "swing_high": 4126.43394,
-    "swing_low": 4114.04564,
+    "swing_low": 4112.09033,
     "confirmation": {
-      "confirmed": false,
+      "confirmed": true,
       "bos": null,
-      "candle": false,
-      "momentum": "NEUTRAL",
-      "reason": "NO CONFIRMATION"
+      "candle": true,
+      "momentum": "BULLISH",
+      "reason": "M5 bullish candle + momentum"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "m5_confirmation": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": false,
     "session_blocking": false
@@ -157,14 +144,14 @@
   "confirmations": {
     "h1_bias": "BEARISH",
     "m15_setup": "BUY LIQUIDITY SWEEP",
-    "m5_confirmation": "NO CONFIRMATION",
+    "m5_confirmation": "M5 bullish candle + momentum",
     "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
-    "pd_zone": "DISCOUNT"
+    "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 69.2,
-    "risk_level": "MEDIUM",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -183,10 +170,10 @@
     "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
     "session_blocking": "NO",
-    "risk": "MEDIUM",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "NO"
+    "m5_confirmation": "YES"
   },
   "journal": {
     "status": "ACTIVE",
@@ -200,7 +187,7 @@
     "losses": 0,
     "win_rate": null,
     "average_r": null,
-    "last_updated": "2026-09-29T09:15:36.783850+08:00"
+    "last_updated": "2026-09-29T09:20:35.124866+08:00"
   },
   "backtest": {
     "status": "READY",
