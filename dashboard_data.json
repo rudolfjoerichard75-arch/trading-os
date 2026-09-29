@@ -4,29 +4,29 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-29T13:35:28.937450+08:00"
+    "timestamp": "2026-09-29T13:40:36.040521+08:00"
   },
-  "latest_price": 4129.88,
+  "latest_price": 4123.08,
   "session": "ASIAN",
-  "market_mode": "RANGING",
+  "market_mode": "NEUTRAL",
   "regime": {
-    "type": "RANGING",
+    "type": "NEUTRAL",
     "h1_direction": "RANGE",
     "range": {
-      "is_range": true,
+      "is_range": false,
       "high": 4171.18545,
       "low": 4111.79963,
       "width": 59.38581999999951,
-      "location": 0.3044701580276154
+      "location": 0.18997009723869074
     }
   },
   "volatility": {
-    "atr": 2.78,
-    "atr_pips": 27.8,
+    "atr": 3.33,
+    "atr_pips": 33.3,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "PREMIUM",
+    "zone": "DISCOUNT",
     "equilibrium": 4126.6,
     "high": 4141.11,
     "low": 4112.09
@@ -50,21 +50,22 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 5
+    "type": "SELL BREAKOUT RETEST",
+    "direction": "SELL",
+    "valid": true,
+    "score": 50
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 5,
-    "timestamp": "2026-09-29T13:35:28.937450+08:00"
+    "direction": "SELL",
+    "opportunity": "SELL BREAKOUT RETEST",
+    "score": 50,
+    "timestamp": "2026-09-29T13:40:36.040521+08:00"
   },
   "plan": {
-    "valid": false
+    "valid": false,
+    "reason": "Risk 105.0 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -76,20 +77,22 @@
     "bos": null,
     "swing_high": 4141.11306,
     "swing_low": 4112.09033,
-    "condition": "RANGING"
+    "condition": "NEUTRAL"
   },
   "m15": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BEARISH BOS",
     "swing_high": 4141.11306,
     "swing_low": 4125.24236,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "SELL",
+      "opportunity": "SELL BREAKOUT RETEST",
+      "valid": true,
+      "reason": [
+        "M15 bearish BOS"
+      ],
       "pd": {
-        "zone": "PREMIUM",
+        "zone": "DISCOUNT",
         "equilibrium": 4126.6,
         "high": 4141.11,
         "low": 4112.09
@@ -102,7 +105,7 @@
       },
       "structure": {
         "direction": "BULLISH",
-        "bos": null,
+        "bos": "BEARISH BOS",
         "swing_high": 4141.11306,
         "swing_low": 4125.24236
       },
@@ -111,27 +114,27 @@
         "high": 4141.11306,
         "low": 4112.09033,
         "width": 29.022729999999683,
-        "location": 0.6129854083333997
+        "location": 0.37869731758521175
       }
     }
   },
   "m5": {
-    "direction": "RANGE",
-    "bos": null,
-    "swing_high": 4132.39044,
+    "direction": "BULLISH",
+    "bos": "BEARISH BOS",
+    "swing_high": 4132.91453,
     "swing_low": 4126.09341,
     "confirmation": {
-      "confirmed": false,
-      "bos": null,
+      "confirmed": true,
+      "bos": "BEARISH BOS",
       "candle": false,
-      "momentum": "BULLISH",
-      "reason": "NO DIRECTION"
+      "momentum": "NEUTRAL",
+      "reason": "M5 bearish BOS"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
-    "m5_confirmation": false,
+    "setup": true,
+    "m5_confirmation": true,
     "risk": false,
     "rr": false,
     "news": true,
@@ -140,10 +143,10 @@
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
+    "m15_setup": "SELL BREAKOUT RETEST",
+    "m5_confirmation": "M5 bearish BOS",
     "liquidity": "NONE",
-    "pd_zone": "PREMIUM"
+    "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
     "status": "INVALID",
@@ -168,9 +171,9 @@
     "session_filter": "NON-PREFERRED",
     "session_blocking": "NO",
     "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
-    "m5_confirmation": "NO"
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
+    "m5_confirmation": "YES"
   },
   "journal": {
     "status": "ACTIVE",
@@ -184,7 +187,7 @@
     "losses": 0,
     "win_rate": null,
     "average_r": null,
-    "last_updated": "2026-09-29T13:35:29.711675+08:00"
+    "last_updated": "2026-09-29T13:40:36.997166+08:00"
   },
   "backtest": {
     "status": "READY",
