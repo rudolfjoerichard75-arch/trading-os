@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T04:55:30.795327+08:00",
-    "status": "WAIT — CONDITIONS NOT MET"
+    "timestamp": "2026-09-30T05:00:55.276747+08:00",
+    "status": "WAIT — SCORE BELOW 70"
   },
-  "latest_price": 4182.62,
+  "latest_price": 4179.85,
   "session": "OFF SESSION",
   "session_preferred": false,
   "market_mode": "TRENDING",
@@ -19,12 +19,12 @@
       "high": 4184.8008,
       "low": 4112.09033,
       "width": 72.71046999999999,
-      "location": 0.970010508802927
+      "location": 0.9318472291542025
     }
   },
   "volatility": {
-    "atr": 3.2,
-    "atr_pips": 32.0,
+    "atr": 3.24,
+    "atr_pips": 32.4,
     "condition": "NORMAL"
   },
   "pd": {
@@ -56,26 +56,28 @@
     "direction": "BUY",
     "valid": false,
     "analysis_valid": true,
-    "score": 70,
+    "score": 45,
     "minimum_score": 70,
-    "status": "WAIT — CONDITIONS NOT MET"
+    "status": "WAIT — SCORE BELOW 70"
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY BREAKOUT RETEST",
-    "score": 70,
-    "timestamp": "2026-09-30T04:55:30.795327+08:00",
+    "score": 45,
+    "timestamp": "2026-09-30T05:00:55.276747+08:00",
     "status": "WAIT",
     "gate_reasons": [
-      "Risk 117.3 pips outside 25-80"
+      "Score 45 < 70",
+      "M5 confirmation missing",
+      "Risk 89.6 pips outside 25-80"
     ]
   },
   "plan": {
     "valid": false,
     "status": "NO EXECUTABLE PLAN",
-    "reason": "Risk 117.3 pips outside 25-80"
+    "reason": "Risk 89.6 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -131,29 +133,29 @@
         "high": 4184.8008,
         "low": 4142.19646,
         "width": 42.604339999999866,
-        "location": 0.9488185945375507
+        "location": 0.8836874365381497
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": "BULLISH BOS",
-    "swing_high": 4177.98203,
+    "bos": null,
+    "swing_high": 4184.8008,
     "swing_low": 4171.53346,
-    "swing_highs_count": 68,
+    "swing_highs_count": 69,
     "swing_lows_count": 70,
     "confirmation": {
-      "confirmed": true,
-      "bos": "BULLISH BOS",
+      "confirmed": false,
+      "bos": null,
       "candle": false,
-      "momentum": "BULLISH",
-      "reason": "M5 bullish BOS"
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
-    "score": true,
+    "score": false,
     "setup": true,
-    "m5_confirmation": true,
+    "m5_confirmation": false,
     "risk": false,
     "rr": false,
     "news": true,
@@ -163,21 +165,23 @@
   "confirmations": {
     "h1_bias": "BULLISH",
     "m15_setup": "BUY BREAKOUT RETEST",
-    "m5_confirmation": "M5 bullish BOS",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
     "pd_zone": "PREMIUM"
   },
   "signal_gate": {
     "valid": false,
-    "score": 70,
+    "score": 45,
     "minimum_score": 70,
     "reasons": [
-      "Risk 117.3 pips outside 25-80"
+      "Score 45 < 70",
+      "M5 confirmation missing",
+      "Risk 89.6 pips outside 25-80"
     ]
   },
   "risk_engine": {
     "status": "INVALID",
-    "risk_pips": 117.3,
+    "risk_pips": 89.6,
     "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
@@ -187,13 +191,13 @@
   "trade_plan_audit": {
     "status": "FAIL",
     "direction": "BUY",
-    "entry": 4182.62,
+    "entry": 4179.85,
     "sl": 4170.89,
     "tp1": null,
     "tp2": null,
     "tp3": null,
     "geometry": null,
-    "reason": "Risk 117.3 pips outside 25-80"
+    "reason": "Risk 89.6 pips outside 25-80"
   },
   "invalidation": {
     "status": "WAIT",
@@ -215,7 +219,7 @@
     "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "m5_confirmation": "NO"
   },
   "journal": {
     "status": "ACTIVE",
@@ -240,7 +244,7 @@
     "average_r": null,
     "max_drawdown_r": 0.0,
     "max_consecutive_losses": 0,
-    "last_updated": "2026-09-30T04:55:31.741901+08:00"
+    "last_updated": "2026-09-30T05:00:56.372046+08:00"
   },
   "backtest": {
     "status": "READY",
