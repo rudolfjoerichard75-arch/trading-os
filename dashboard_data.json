@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T09:00:53.895618+08:00",
+    "timestamp": "2026-09-30T09:05:31.029682+08:00",
     "status": "WAIT — SCORE BELOW 70"
   },
-  "latest_price": 4179.79,
+  "latest_price": 4178.42,
   "session": "ASIAN",
   "session_preferred": false,
   "market_mode": "TRENDING",
@@ -19,25 +19,25 @@
       "high": 4187.64029,
       "low": 4122.69129,
       "width": 64.94900000000052,
-      "location": 0.8791183851945279
+      "location": 0.8581066683089805
     }
   },
   "volatility": {
-    "atr": 2.98,
-    "atr_pips": 29.8,
+    "atr": 2.75,
+    "atr_pips": 27.5,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "PREMIUM",
+    "zone": "DISCOUNT",
     "equilibrium": 4179.59,
     "high": 4187.64,
     "low": 4171.53
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": true,
-    "swept_level": 4178.68037,
-    "description": "SELL-SIDE LIQUIDITY SWEPT",
+    "sell_side_sweep": false,
+    "swept_level": null,
+    "description": "NONE",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -52,11 +52,11 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "BUY LIQUIDITY SWEEP",
+    "type": "BUY PULLBACK",
     "direction": "BUY",
     "valid": false,
     "analysis_valid": true,
-    "score": 50,
+    "score": 55,
     "minimum_score": 70,
     "status": "WAIT — SCORE BELOW 70"
   },
@@ -64,12 +64,12 @@
     "active": false,
     "id": null,
     "direction": "BUY",
-    "opportunity": "BUY LIQUIDITY SWEEP",
-    "score": 50,
-    "timestamp": "2026-09-30T09:00:53.895618+08:00",
+    "opportunity": "BUY PULLBACK",
+    "score": 55,
+    "timestamp": "2026-09-30T09:05:31.029682+08:00",
     "status": "WAIT",
     "gate_reasons": [
-      "Score 50 < 70",
+      "Score 55 < 70",
       "M5 confirmation missing",
       "BUY invalid: swing low is not below entry"
     ]
@@ -96,33 +96,33 @@
   },
   "m15": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BEARISH BOS",
     "swing_high": 4187.64029,
     "swing_low": 4178.68037,
     "swing_highs_count": 21,
     "swing_lows_count": 21,
     "setup": {
       "direction": "BUY",
-      "opportunity": "BUY LIQUIDITY SWEEP",
+      "opportunity": "BUY PULLBACK",
       "valid": true,
       "reason": [
-        "M15 sell-side liquidity sweep"
+        "H1 bullish + M15 discount"
       ],
       "pd": {
-        "zone": "PREMIUM",
+        "zone": "DISCOUNT",
         "equilibrium": 4179.59,
         "high": 4187.64,
         "low": 4171.53
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": true,
-        "swept_level": 4178.68037,
-        "description": "SELL-SIDE LIQUIDITY SWEPT"
+        "sell_side_sweep": false,
+        "swept_level": null,
+        "description": "NONE"
       },
       "structure": {
         "direction": "BULLISH",
-        "bos": null,
+        "bos": "BEARISH BOS",
         "swing_high": 4187.64029,
         "swing_low": 4178.68037,
         "swing_highs_count": 21,
@@ -133,7 +133,7 @@
         "high": 4187.64029,
         "low": 4171.53346,
         "width": 16.106830000000627,
-        "location": 0.5125583370532648
+        "location": 0.42783092638342013
       }
     }
   },
@@ -164,17 +164,17 @@
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "BUY LIQUIDITY SWEEP",
+    "m15_setup": "BUY PULLBACK",
     "m5_confirmation": "NO CONFIRMATION",
-    "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
-    "pd_zone": "PREMIUM"
+    "liquidity": "NONE",
+    "pd_zone": "DISCOUNT"
   },
   "signal_gate": {
     "valid": false,
-    "score": 50,
+    "score": 55,
     "minimum_score": 70,
     "reasons": [
-      "Score 50 < 70",
+      "Score 55 < 70",
       "M5 confirmation missing",
       "BUY invalid: swing low is not below entry"
     ]
@@ -191,7 +191,7 @@
   "trade_plan_audit": {
     "status": "FAIL",
     "direction": "BUY",
-    "entry": 4179.79,
+    "entry": 4178.42,
     "sl": null,
     "tp1": null,
     "tp2": null,
@@ -244,7 +244,7 @@
     "average_r": null,
     "max_drawdown_r": 0.0,
     "max_consecutive_losses": 0,
-    "last_updated": "2026-09-30T09:00:54.478517+08:00"
+    "last_updated": "2026-09-30T09:05:31.737950+08:00"
   },
   "backtest": {
     "status": "READY",
