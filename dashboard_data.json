@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T14:20:33.979305+08:00",
+    "timestamp": "2026-09-30T14:25:32.891515+08:00",
     "status": "WAIT — SCORE BELOW 70"
   },
-  "latest_price": 4182.97,
+  "latest_price": 4181.55,
   "session": "ASIAN",
   "session_preferred": false,
   "market_mode": "TRENDING",
@@ -19,25 +19,25 @@
       "high": 4187.64029,
       "low": 4142.19646,
       "width": 45.44383000000016,
-      "location": 0.897317633658951
+      "location": 0.8660354992085719
     }
   },
   "volatility": {
-    "atr": 4.27,
-    "atr_pips": 42.7,
+    "atr": 4.21,
+    "atr_pips": 42.1,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4174.97,
-    "high": 4184.32,
+    "equilibrium": 4175.04,
+    "high": 4184.45,
     "low": 4165.63
   },
   "liquidity": {
-    "buy_side_sweep": false,
+    "buy_side_sweep": true,
     "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "swept_level": 4184.27549,
+    "description": "BUY-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -52,33 +52,32 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
+    "type": "SELL RANGE REVERSAL",
+    "direction": "SELL",
     "valid": false,
-    "analysis_valid": false,
-    "score": 30,
+    "analysis_valid": true,
+    "score": 55,
     "minimum_score": 70,
     "status": "WAIT — SCORE BELOW 70"
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 30,
-    "timestamp": "2026-09-30T14:20:33.979305+08:00",
+    "direction": "SELL",
+    "opportunity": "SELL RANGE REVERSAL",
+    "score": 55,
+    "timestamp": "2026-09-30T14:25:32.891515+08:00",
     "status": "WAIT",
     "gate_reasons": [
-      "Score 30 < 70",
-      "M15 setup invalid",
+      "Score 55 < 70",
       "M5 confirmation missing",
-      "NO VALID DIRECTION"
+      "SELL invalid: swing high is not above entry"
     ]
   },
   "plan": {
     "valid": false,
     "status": "NO EXECUTABLE PLAN",
-    "reason": "NO VALID DIRECTION"
+    "reason": "SELL invalid: swing high is not above entry"
   },
   "potential": {
     "tp1_pips": null,
@@ -103,21 +102,23 @@
     "swing_highs_count": 21,
     "swing_lows_count": 23,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "SELL",
+      "opportunity": "SELL RANGE REVERSAL",
+      "valid": true,
+      "reason": [
+        "M15 range high + buy-side sweep"
+      ],
       "pd": {
         "zone": "PREMIUM",
-        "equilibrium": 4174.97,
-        "high": 4184.32,
+        "equilibrium": 4175.04,
+        "high": 4184.45,
         "low": 4165.63
       },
       "liquidity": {
-        "buy_side_sweep": false,
+        "buy_side_sweep": true,
         "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "swept_level": 4184.27549,
+        "description": "BUY-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "BEARISH",
@@ -129,10 +130,10 @@
       },
       "range": {
         "is_range": true,
-        "high": 4184.31985,
+        "high": 4184.45058,
         "low": 4165.62526,
-        "width": 18.694590000000062,
-        "location": 0.9280091192157759
+        "width": 18.82531999999992,
+        "location": 0.8460504257032551
       }
     }
   },
@@ -148,12 +149,12 @@
       "bos": "BULLISH BOS",
       "candle": false,
       "momentum": "BULLISH",
-      "reason": "NO DIRECTION"
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
@@ -163,20 +164,19 @@
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
-    "liquidity": "NONE",
+    "m15_setup": "SELL RANGE REVERSAL",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
     "pd_zone": "PREMIUM"
   },
   "signal_gate": {
     "valid": false,
-    "score": 30,
+    "score": 55,
     "minimum_score": 70,
     "reasons": [
-      "Score 30 < 70",
-      "M15 setup invalid",
+      "Score 55 < 70",
       "M5 confirmation missing",
-      "NO VALID DIRECTION"
+      "SELL invalid: swing high is not above entry"
     ]
   },
   "risk_engine": {
@@ -190,14 +190,14 @@
   },
   "trade_plan_audit": {
     "status": "FAIL",
-    "direction": null,
-    "entry": null,
+    "direction": "SELL",
+    "entry": 4181.55,
     "sl": null,
     "tp1": null,
     "tp2": null,
     "tp3": null,
     "geometry": null,
-    "reason": "NO VALID DIRECTION"
+    "reason": "SELL invalid: swing high is not above entry"
   },
   "invalidation": {
     "status": "WAIT",
@@ -217,8 +217,8 @@
     "session_filter": "NON-PREFERRED",
     "session_blocking": "NO",
     "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
     "m5_confirmation": "NO"
   },
   "journal": {
@@ -244,7 +244,7 @@
     "average_r": null,
     "max_drawdown_r": 0.0,
     "max_consecutive_losses": 0,
-    "last_updated": "2026-09-30T14:20:34.384052+08:00"
+    "last_updated": "2026-09-30T14:25:33.924009+08:00"
   },
   "backtest": {
     "status": "READY",
