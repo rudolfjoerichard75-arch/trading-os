@@ -4,33 +4,33 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T14:55:31.054042+08:00",
-    "status": "WAIT — SCORE BELOW 70"
+    "timestamp": "2026-09-30T15:00:54.257022+08:00",
+    "status": "WAIT — CONDITIONS NOT MET"
   },
-  "latest_price": 4180.46,
-  "session": "ASIAN",
-  "session_preferred": false,
+  "latest_price": 4192.89,
+  "session": "LONDON",
+  "session_preferred": true,
   "market_mode": "TRENDING",
   "regime": {
     "type": "TRENDING",
     "h1_direction": "BULLISH",
     "range": {
       "is_range": false,
-      "high": 4187.64029,
+      "high": 4193.39959,
       "low": 4142.19646,
-      "width": 45.44383000000016,
-      "location": 0.8420859333379194
+      "width": 51.203129999999874,
+      "location": 0.9900726771976602
     }
   },
   "volatility": {
-    "atr": 2.77,
-    "atr_pips": 27.7,
+    "atr": 3.59,
+    "atr_pips": 35.9,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4175.04,
-    "high": 4184.45,
+    "equilibrium": 4179.51,
+    "high": 4193.4,
     "low": 4165.63
   },
   "liquidity": {
@@ -52,33 +52,30 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
+    "type": "BUY BREAKOUT RETEST",
+    "direction": "BUY",
     "valid": false,
-    "analysis_valid": false,
-    "score": 20,
+    "analysis_valid": true,
+    "score": 75,
     "minimum_score": 70,
-    "status": "WAIT — SCORE BELOW 70"
+    "status": "WAIT — CONDITIONS NOT MET"
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 20,
-    "timestamp": "2026-09-30T14:55:31.054042+08:00",
+    "direction": "BUY",
+    "opportunity": "BUY BREAKOUT RETEST",
+    "score": 75,
+    "timestamp": "2026-09-30T15:00:54.257022+08:00",
     "status": "WAIT",
     "gate_reasons": [
-      "Score 20 < 70",
-      "M15 setup invalid",
-      "M5 confirmation missing",
-      "NO VALID DIRECTION"
+      "Risk 140.6 pips outside 25-80"
     ]
   },
   "plan": {
     "valid": false,
     "status": "NO EXECUTABLE PLAN",
-    "reason": "NO VALID DIRECTION"
+    "reason": "Risk 140.6 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -88,7 +85,7 @@
   },
   "h1": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4187.64029,
     "swing_low": 4167.87279,
     "swing_highs_count": 4,
@@ -96,21 +93,23 @@
     "condition": "TRENDING"
   },
   "m15": {
-    "direction": "RANGE",
-    "bos": null,
-    "swing_high": 4184.45058,
+    "direction": "BEARISH",
+    "bos": "BULLISH BOS",
+    "swing_high": 4184.27549,
     "swing_low": 4165.62526,
-    "swing_highs_count": 22,
+    "swing_highs_count": 21,
     "swing_lows_count": 22,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "BUY",
+      "opportunity": "BUY BREAKOUT RETEST",
+      "valid": true,
+      "reason": [
+        "M15 bullish BOS"
+      ],
       "pd": {
         "zone": "PREMIUM",
-        "equilibrium": 4175.04,
-        "high": 4184.45,
+        "equilibrium": 4179.51,
+        "high": 4193.4,
         "low": 4165.63
       },
       "liquidity": {
@@ -120,68 +119,65 @@
         "description": "NONE"
       },
       "structure": {
-        "direction": "RANGE",
-        "bos": null,
-        "swing_high": 4184.45058,
+        "direction": "BEARISH",
+        "bos": "BULLISH BOS",
+        "swing_high": 4184.27549,
         "swing_low": 4165.62526,
-        "swing_highs_count": 22,
+        "swing_highs_count": 21,
         "swing_lows_count": 22
       },
       "range": {
         "is_range": true,
-        "high": 4184.45058,
+        "high": 4193.39959,
         "low": 4165.62526,
-        "width": 18.82531999999992,
-        "location": 0.7882368002243924
+        "width": 27.77433000000019,
+        "location": 0.9816985684263072
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4184.45058,
     "swing_low": 4179.55362,
     "swing_highs_count": 66,
     "swing_lows_count": 68,
     "confirmation": {
-      "confirmed": false,
-      "bos": null,
+      "confirmed": true,
+      "bos": "BULLISH BOS",
       "candle": false,
       "momentum": "NEUTRAL",
-      "reason": "NO DIRECTION"
+      "reason": "M5 bullish BOS"
     }
   },
   "filters": {
-    "score": false,
-    "setup": false,
-    "m5_confirmation": false,
+    "score": true,
+    "setup": true,
+    "m5_confirmation": true,
     "risk": false,
     "rr": false,
     "news": true,
-    "session": false,
+    "session": true,
     "session_blocking": false
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
+    "m15_setup": "BUY BREAKOUT RETEST",
+    "m5_confirmation": "M5 bullish BOS",
     "liquidity": "NONE",
     "pd_zone": "PREMIUM"
   },
   "signal_gate": {
     "valid": false,
-    "score": 20,
+    "score": 75,
     "minimum_score": 70,
     "reasons": [
-      "Score 20 < 70",
-      "M15 setup invalid",
-      "M5 confirmation missing",
-      "NO VALID DIRECTION"
+      "Risk 140.6 pips outside 25-80"
     ]
   },
   "risk_engine": {
     "status": "INVALID",
-    "risk_pips": null,
+    "risk_pips": 140.6,
     "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
@@ -190,14 +186,14 @@
   },
   "trade_plan_audit": {
     "status": "FAIL",
-    "direction": null,
-    "entry": null,
-    "sl": null,
+    "direction": "BUY",
+    "entry": 4192.89,
+    "sl": 4178.84,
     "tp1": null,
     "tp2": null,
     "tp3": null,
     "geometry": null,
-    "reason": "NO VALID DIRECTION"
+    "reason": "Risk 140.6 pips outside 25-80"
   },
   "invalidation": {
     "status": "WAIT",
@@ -214,12 +210,12 @@
   },
   "sop": {
     "news_filter": "PASS",
-    "session_filter": "NON-PREFERRED",
+    "session_filter": "PREFERRED",
     "session_blocking": "NO",
     "risk": "UNKNOWN",
-    "fresh_zone": "NO",
-    "m15_setup": "NO",
-    "m5_confirmation": "NO"
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
+    "m5_confirmation": "YES"
   },
   "journal": {
     "status": "ACTIVE",
@@ -244,7 +240,7 @@
     "average_r": null,
     "max_drawdown_r": 0.0,
     "max_consecutive_losses": 0,
-    "last_updated": "2026-09-30T14:55:31.750000+08:00"
+    "last_updated": "2026-09-30T15:00:55.304378+08:00"
   },
   "backtest": {
     "status": "READY",
