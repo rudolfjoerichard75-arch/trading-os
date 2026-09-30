@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T09:55:29.704835+08:00",
+    "timestamp": "2026-09-30T10:00:56.075980+08:00",
     "status": "WAIT — SCORE BELOW 70"
   },
-  "latest_price": 4171.15,
+  "latest_price": 4171.95,
   "session": "ASIAN",
   "session_preferred": false,
   "market_mode": "TRENDING",
@@ -19,12 +19,12 @@
       "high": 4187.64029,
       "low": 4136.16247,
       "width": 51.477820000000065,
-      "location": 0.6796251278705941
+      "location": 0.6952877957924427
     }
   },
   "volatility": {
-    "atr": 3.16,
-    "atr_pips": 31.6,
+    "atr": 3.19,
+    "atr_pips": 31.9,
     "condition": "NORMAL"
   },
   "pd": {
@@ -56,7 +56,7 @@
     "direction": "BUY",
     "valid": false,
     "analysis_valid": true,
-    "score": 55,
+    "score": 45,
     "minimum_score": 70,
     "status": "WAIT — SCORE BELOW 70"
   },
@@ -65,19 +65,18 @@
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY PULLBACK",
-    "score": 55,
-    "timestamp": "2026-09-30T09:55:29.704835+08:00",
+    "score": 45,
+    "timestamp": "2026-09-30T10:00:56.075980+08:00",
     "status": "WAIT",
     "gate_reasons": [
-      "Score 55 < 70",
-      "M5 confirmation missing",
-      "BUY invalid: swing low is not below entry"
+      "Score 45 < 70",
+      "M5 confirmation missing"
     ]
   },
   "plan": {
     "valid": false,
     "status": "NO EXECUTABLE PLAN",
-    "reason": "BUY invalid: swing low is not below entry"
+    "reason": "Signal gate not passed"
   },
   "potential": {
     "tp1_pips": null,
@@ -133,22 +132,22 @@
         "high": 4187.64029,
         "low": 4167.87279,
         "width": 19.767499999999927,
-        "location": 0.16569115973185003
+        "location": 0.20647932211964315
       }
     }
   },
   "m5": {
-    "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "direction": "BEARISH",
+    "bos": null,
     "swing_high": 4173.97112,
-    "swing_low": 4183.05028,
+    "swing_low": 4167.87279,
     "swing_highs_count": 69,
-    "swing_lows_count": 68,
+    "swing_lows_count": 69,
     "confirmation": {
       "confirmed": false,
-      "bos": "BEARISH BOS",
+      "bos": null,
       "candle": false,
-      "momentum": "BEARISH",
+      "momentum": "NEUTRAL",
       "reason": "NO CONFIRMATION"
     }
   },
@@ -156,8 +155,8 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": false,
     "session_blocking": false
@@ -171,33 +170,32 @@
   },
   "signal_gate": {
     "valid": false,
-    "score": 55,
+    "score": 45,
     "minimum_score": 70,
     "reasons": [
-      "Score 55 < 70",
-      "M5 confirmation missing",
-      "BUY invalid: swing low is not below entry"
+      "Score 45 < 70",
+      "M5 confirmation missing"
     ]
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 47.2,
+    "risk_level": "MEDIUM",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
     "consecutive_loss_limit": "NOT CONFIGURED"
   },
   "trade_plan_audit": {
-    "status": "FAIL",
+    "status": "PASS",
     "direction": "BUY",
-    "entry": 4171.15,
-    "sl": null,
-    "tp1": null,
-    "tp2": null,
-    "tp3": null,
-    "geometry": null,
-    "reason": "BUY invalid: swing low is not below entry"
+    "entry": 4171.95,
+    "sl": 4167.23,
+    "tp1": 4177.95,
+    "tp2": 4183.95,
+    "tp3": 4189.95,
+    "geometry": "VALID",
+    "reason": null
   },
   "invalidation": {
     "status": "WAIT",
@@ -216,7 +214,7 @@
     "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
     "session_blocking": "NO",
-    "risk": "UNKNOWN",
+    "risk": "MEDIUM",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
@@ -244,7 +242,7 @@
     "average_r": null,
     "max_drawdown_r": 0.0,
     "max_consecutive_losses": 0,
-    "last_updated": "2026-09-30T09:55:30.335961+08:00"
+    "last_updated": "2026-09-30T10:00:57.080209+08:00"
   },
   "backtest": {
     "status": "READY",
