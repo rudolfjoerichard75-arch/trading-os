@@ -2,6 +2,7 @@ import os
 import json
 import math
 import hashlib
+import re
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
@@ -11,11 +12,11 @@ import pandas as pd
 
 # =========================================================
 # BOSQUE FOREX AI
-# SCALPING ENGINE V4.1
+# SCALPING ENGINE V5
 #
 # H1 -> M15 -> M5
 #
-# V4.1 OBJECTIVES
+# V5 OBJECTIVES
 # ---------------------------------------------------------
 # - Twelve Data M5
 # - Local M15 / H1 aggregation
@@ -27,7 +28,12 @@ import pandas as pd
 # - Market regime
 # - ATR volatility
 # - Risk engine
-# - News filter
+# - REAL NEWS FILTER
+# - USD/XAUUSD event relevance
+# - PRE-NEWS BLOCK
+# - POST-NEWS COOLDOWN
+# - News cache
+# - News stale protection
 # - Session context
 # - Telegram alerts
 # - Signal journal
@@ -35,7 +41,7 @@ import pandas as pd
 # - Forward-test statistics
 # - Directional SL/TP validation
 # - Strict valid-signal gating
-# - Dashboard Journal Sync
+# - Backtest / OOS foundation
 # =========================================================
 
 
@@ -55,6 +61,8 @@ JOURNAL_FILE = ENGINE_DIR / "trade_journal.json"
 BACKTEST_FILE = ENGINE_DIR / "backtest_results.json"
 
 FORWARD_FILE = ENGINE_DIR / "forward_test.json"
+
+NEWS_CACHE_FILE = ENGINE_DIR / "news_cache.json"
 
 
 # =========================================================
@@ -88,21 +96,168 @@ OUTPUT_SIZE = 500
 
 
 # =========================================================
+# NEWS
+# =========================================================
+#
+# IMPORTANT:
+#
+# News calendar is intentionally separated from
+# Twelve Data market-data request.
+#
+# This protects the Twelve Data quota.
+#
+# Primary calendar:
+# ForexFactory calendar page.
+#
+# If calendar cannot be retrieved:
+# NEWS FEED = STALE / UNKNOWN
+#
+# The engine will NOT silently assume CLEAR.
+# =========================================================
+
+NEWS_CALENDAR_URL = (
+    "https://www.forexfactory.com/calendar"
+)
+
+NEWS_CACHE_MINUTES = 15
+
+NEWS_STALE_MINUTES = 60
+
+NEWS_PRE_BLOCK_MINUTES = 30
+
+NEWS_POST_COOLDOWN_MINUTES = 15
+
+NEWS_CAUTION_BEFORE_MINUTES = 60
+
+NEWS_CAUTION_AFTER_MINUTES = 30
+
+
+# =========================================================
+# NEWS IMPACT
+# =========================================================
+#
+# USD events that can materially affect XAUUSD.
+#
+# We intentionally use keyword classification instead
+# of relying only on colour/HTML classes.
+# =========================================================
+
+HIGH_IMPACT_KEYWORDS = [
+
+    "non-farm payroll",
+
+    "nonfarm payroll",
+
+    "nfp",
+
+    "consumer price index",
+
+    "cpi",
+
+    "core cpi",
+
+    "personal consumption expenditures",
+
+    "core pce",
+
+    "pce price index",
+
+    "fomc",
+
+    "federal funds rate",
+
+    "interest rate decision",
+
+    "fed interest rate",
+
+    "fed rate",
+
+    "powell",
+
+    "fomc press conference",
+
+    "fomc statement",
+
+    "fomc minutes",
+
+    "unemployment rate",
+
+    "initial jobless claims",
+
+    "adp non-farm",
+
+    "adp employment",
+
+    "retail sales",
+
+    "gross domestic product",
+
+    "gdp",
+
+    "ism manufacturing",
+
+    "ism services",
+
+    "ism non-manufacturing",
+
+    "producer price index",
+
+    "ppi",
+
+    "core ppi",
+
+    "durable goods",
+
+    "consumer confidence"
+]
+
+
+MEDIUM_IMPACT_KEYWORDS = [
+
+    "jolts",
+
+    "industrial production",
+
+    "housing starts",
+
+    "building permits",
+
+    "existing home sales",
+
+    "new home sales",
+
+    "trade balance",
+
+    "personal income",
+
+    "personal spending",
+
+    "wholesale inventories",
+
+    "factory orders",
+
+    "pending home sales",
+
+    "michigan consumer sentiment",
+
+    "chicago pmi"
+]
+
+
+# =========================================================
 # RISK / SCORING
 # =========================================================
 
 MIN_SCORE = 70
 
-# =========================================================
-# XAUUSD PIP MODEL
+# XAUUSD
 #
-# 1 pip = 0.10 price movement
+# 1 pip = 0.10 price
 #
 # Example:
 #
 # 4156.50 -> 4157.50
 # = 10 pips
-# =========================================================
 
 PIP_SIZE = 0.10
 
@@ -132,9 +287,13 @@ MY_TZ = timezone(
 )
 
 SESSIONS = [
+
     ("ASIAN", 7, 15),
+
     ("LONDON", 15, 20),
+
     ("NEW YORK", 20, 23),
+
     ("NEW YORK", 0, 1),
 ]
 
@@ -299,6 +458,49 @@ def round_price(
     )
 
 
+def parse_timestamp(
+    value
+):
+
+    if not value:
+
+        return None
+
+    try:
+
+        dt = pd.to_datetime(
+            value,
+            utc=True
+        )
+
+        return dt.to_pydatetime()
+
+    except Exception:
+
+        return None
+
+
+def normalize_text(
+    value
+):
+
+    if value is None:
+
+        return ""
+
+    text = str(
+        value
+    ).strip().lower()
+
+    text = re.sub(
+        r"\s+",
+        " ",
+        text
+    )
+
+    return text
+
+
 # =========================================================
 # SESSION
 # =========================================================
@@ -329,7 +531,9 @@ def is_preferred_session(
 ):
 
     return session in [
+
         "LONDON",
+
         "NEW YORK"
     ]
 
@@ -396,10 +600,15 @@ def fetch_m5():
     )
 
     for col in [
+
         "open",
+
         "high",
+
         "low",
+
         "close"
+
     ]:
 
         df[col] = pd.to_numeric(
@@ -409,10 +618,15 @@ def fetch_m5():
 
     df = df.dropna(
         subset=[
+
             "datetime",
+
             "open",
+
             "high",
+
             "low",
+
             "close"
         ]
     )
@@ -555,7 +769,9 @@ def find_swing_highs(
         if (
             value >
             left_values.max()
+
             and
+
             value >=
             right_values.max()
         ):
@@ -606,7 +822,9 @@ def find_swing_lows(
         if (
             value <
             left_values.min()
+
             and
+
             value <=
             right_values.min()
         ):
@@ -645,7 +863,9 @@ def analyze_structure(
 
     if (
         len(highs) >= 2
+
         and
+
         len(lows) >= 2
     ):
 
@@ -659,7 +879,9 @@ def analyze_structure(
 
         if (
             h2 > h1
+
             and
+
             l2 > l1
         ):
 
@@ -667,7 +889,9 @@ def analyze_structure(
 
         elif (
             h2 < h1
+
             and
+
             l2 < l1
         ):
 
@@ -781,8 +1005,11 @@ def analyze_range(
     )
 
     is_range = (
+
         0.20 <= location <= 0.80
+
         or
+
         width < close * 0.01
     )
 
@@ -932,7 +1159,9 @@ def liquidity_analysis(
 
         if (
             current_high > swing_high
+
             and
+
             current_close < swing_high
         ):
 
@@ -966,7 +1195,9 @@ def liquidity_analysis(
 
         if (
             current_low < swing_low
+
             and
+
             current_close > swing_low
         ):
 
@@ -1106,13 +1337,17 @@ def candle_confirmation(
 
     bullish = (
         c["close"] > c["open"]
+
         and
+
         ratio >= 0.55
     )
 
     bearish = (
         c["close"] < c["open"]
+
         and
+
         ratio >= 0.55
     )
 
@@ -1297,7 +1532,9 @@ def detect_m15_setup(
             m15_liquidity[
                 "sell_side_sweep"
             ]
+
             and
+
             range_info[
                 "location"
             ] <= 0.25
@@ -1317,7 +1554,9 @@ def detect_m15_setup(
             m15_liquidity[
                 "buy_side_sweep"
             ]
+
             and
+
             range_info[
                 "location"
             ] >= 0.75
@@ -1375,7 +1614,9 @@ def detect_m15_setup(
 
         if (
             h1_direction == "BULLISH"
+
             and
+
             m15_pd["zone"]
             == "DISCOUNT"
         ):
@@ -1392,7 +1633,9 @@ def detect_m15_setup(
 
         elif (
             h1_direction == "BEARISH"
+
             and
+
             m15_pd["zone"]
             == "PREMIUM"
         ):
@@ -1504,7 +1747,9 @@ def m5_confirmation(
 
         candle_ok = (
             candle["bullish"]
+
             and
+
             momentum_data[
                 "direction"
             ]
@@ -1560,7 +1805,9 @@ def m5_confirmation(
 
         candle_ok = (
             candle["bearish"]
+
             and
+
             momentum_data[
                 "direction"
             ]
@@ -1643,13 +1890,12 @@ def calculate_score(
 
     score = 0
 
-    # -----------------------------------------------------
-    # H1
-    # -----------------------------------------------------
-
     if h1["direction"] in [
+
         "BULLISH",
+
         "BEARISH"
+
     ]:
 
         score += 15
@@ -1657,10 +1903,6 @@ def calculate_score(
     if h1["bos"]:
 
         score += 5
-
-    # -----------------------------------------------------
-    # M15
-    # -----------------------------------------------------
 
     if m15_setup["valid"]:
 
@@ -1672,7 +1914,9 @@ def calculate_score(
         ].get(
             "buy_side_sweep"
         )
+
         or
+
         m15_setup[
             "liquidity"
         ].get(
@@ -1692,10 +1936,6 @@ def calculate_score(
 
         score += 10
 
-    # -----------------------------------------------------
-    # M5
-    # -----------------------------------------------------
-
     if m5_confirm[
         "confirmed"
     ]:
@@ -1714,10 +1954,6 @@ def calculate_score(
 
         score += 10
 
-    # -----------------------------------------------------
-    # PD
-    # -----------------------------------------------------
-
     zone = m15_setup[
         "pd"
     ]["zone"]
@@ -1730,7 +1966,9 @@ def calculate_score(
 
     if (
         direction == "BUY"
+
         and
+
         zone == "DISCOUNT"
     ):
 
@@ -1738,25 +1976,19 @@ def calculate_score(
 
     elif (
         direction == "SELL"
+
         and
+
         zone == "PREMIUM"
     ):
 
         score += 5
-
-    # -----------------------------------------------------
-    # SESSION BONUS ONLY
-    # -----------------------------------------------------
 
     if is_preferred_session(
         session
     ):
 
         score += 5
-
-    # -----------------------------------------------------
-    # VOLATILITY
-    # -----------------------------------------------------
 
     if (
         volatility[
@@ -1786,8 +2018,11 @@ def create_trade_plan(
 ):
 
     if direction not in [
+
         "BUY",
+
         "SELL"
+
     ]:
 
         return {
@@ -1914,10 +2149,6 @@ def create_trade_plan(
             buffer
         )
 
-    # -----------------------------------------------------
-    # RISK
-    # -----------------------------------------------------
-
     risk_price = abs(
         entry - sl
     )
@@ -1928,7 +2159,9 @@ def create_trade_plan(
 
     if (
         risk_pips < MIN_RISK_PIPS
+
         or
+
         risk_pips > MAX_RISK_PIPS
     ):
 
@@ -1957,10 +2190,6 @@ def create_trade_plan(
                     1
                 )
         }
-
-    # -----------------------------------------------------
-    # TP
-    # -----------------------------------------------------
 
     if direction == "BUY":
 
@@ -2028,10 +2257,6 @@ def create_trade_plan(
             )
         )
 
-    # -----------------------------------------------------
-    # RR
-    # -----------------------------------------------------
-
     rr_tp1 = (
         TP1_PIPS
         /
@@ -2050,22 +2275,26 @@ def create_trade_plan(
         risk_pips
     )
 
-    # -----------------------------------------------------
-    # FINAL GEOMETRY AUDIT
-    # -----------------------------------------------------
-
     geometry_ok = True
 
     if direction == "BUY":
 
         if not (
+
             sl < entry
+
             and
+
             tp1_price > entry
+
             and
+
             tp2_price > entry
+
             and
+
             tp3_price > entry
+
         ):
 
             geometry_ok = False
@@ -2073,13 +2302,21 @@ def create_trade_plan(
     elif direction == "SELL":
 
         if not (
+
             sl > entry
+
             and
+
             tp1_price < entry
+
             and
+
             tp2_price < entry
+
             and
+
             tp3_price < entry
+
         ):
 
             geometry_ok = False
@@ -2198,66 +2435,935 @@ def create_trade_plan(
 
 
 # =========================================================
-# NEWS FILTER
+# NEWS ENGINE
 # =========================================================
 
-def evaluate_news_filter(
-    news
+def classify_news_event(
+    event_name,
+    impact=None
 ):
 
-    high_impact = str(
-        news.get(
-            "high_impact",
-            ""
-        )
-    ).strip().upper()
-
-    minutes = news.get(
-        "minutes_to_news"
+    name = normalize_text(
+        event_name
     )
 
-    clear_states = {
+    impact_text = normalize_text(
+        impact
+    )
 
-        "CLEAR",
-        "NONE",
-        "NO",
-        "NO HIGH IMPACT",
-        "FALSE",
-        "0"
-    }
+    # Explicit high impact from calendar.
+    if (
+        "high" in impact_text
 
-    blocked_states = {
+        or
 
-        "BLOCK",
-        "HIGH IMPACT",
-        "YES",
-        "TRUE",
-        "1"
-    }
+        "red" in impact_text
 
-    if high_impact in clear_states:
+        or
+
+        "3" == impact_text
+
+    ):
+
+        return "HIGH"
+
+    for keyword in HIGH_IMPACT_KEYWORDS:
+
+        if keyword in name:
+
+            return "HIGH"
+
+    for keyword in MEDIUM_IMPACT_KEYWORDS:
+
+        if keyword in name:
+
+            return "MEDIUM"
+
+    return "LOW"
+
+
+def is_xau_relevant_event(
+    currency,
+    event_name
+):
+
+    currency = (
+        str(currency)
+        .strip()
+        .upper()
+    )
+
+    name = normalize_text(
+        event_name
+    )
+
+    # USD is the main macro driver
+    # for this news filter.
+    if currency == "USD":
+
+        return True
+
+    # Gold can react to certain global
+    # central-bank / geopolitical events,
+    # but we do not block them automatically
+    # unless explicitly classified.
+    global_keywords = [
+
+        "federal reserve",
+
+        "powell",
+
+        "fomc",
+
+        "interest rate",
+
+        "central bank"
+    ]
+
+    for keyword in global_keywords:
+
+        if keyword in name:
+
+            return True
+
+    return False
+
+
+def parse_news_datetime(
+    value
+):
+
+    if value is None:
+
+        return None
+
+    text = str(
+        value
+    ).strip()
+
+    if not text:
+
+        return None
+
+    # Direct ISO parsing first.
+    try:
+
+        dt = pd.to_datetime(
+            text,
+            utc=True
+        )
+
+        if not pd.isna(dt):
+
+            return dt.to_pydatetime()
+
+    except Exception:
+
+        pass
+
+    return None
+
+
+def extract_calendar_rows(
+    html
+):
+
+    """
+    Attempts to parse ForexFactory's calendar
+    using pandas HTML tables.
+
+    This is intentionally defensive because
+    website HTML can change.
+    """
+
+    rows = []
+
+    try:
+
+        tables = pd.read_html(
+            html
+        )
+
+    except Exception:
+
+        tables = []
+
+    for table in tables:
+
+        if table.empty:
+
+            continue
+
+        columns = [
+            normalize_text(
+                c
+            )
+            for c in table.columns
+        ]
+
+        table_text = " ".join(
+            columns
+        )
+
+        # We only want calendar-like tables.
+        if not any(
+            token in table_text
+            for token in [
+                "currency",
+                "impact",
+                "event",
+                "actual",
+                "forecast",
+                "previous"
+            ]
+        ):
+
+            continue
+
+        for _, row in table.iterrows():
+
+            values = {
+
+                normalize_text(
+                    col
+                ):
+                row[col]
+
+                for col in table.columns
+            }
+
+            event_name = ""
+
+            currency = ""
+
+            impact = ""
+
+            for key, value in values.items():
+
+                if (
+                    "event" in key
+                    or
+                    "detail" in key
+                ):
+
+                    event_name = str(
+                        value
+                    )
+
+                elif (
+                    "currency" in key
+                ):
+
+                    currency = str(
+                        value
+                    )
+
+                elif (
+                    "impact" in key
+                ):
+
+                    impact = str(
+                        value
+                    )
+
+            if not event_name:
+
+                # Fallback:
+                # Search entire row.
+                event_name = " ".join(
+                    str(v)
+                    for v in values.values()
+                )
+
+            if not event_name:
+
+                continue
+
+            rows.append({
+
+                "currency":
+                    currency,
+
+                "event":
+                    event_name,
+
+                "impact":
+                    classify_news_event(
+                        event_name,
+                        impact
+                    )
+            })
+
+    return rows
+
+
+def parse_calendar_with_regex(
+    html
+):
+
+    """
+    Secondary defensive parser.
+
+    This does not guarantee complete extraction,
+    but can recover event names/currency from
+    common HTML structures.
+    """
+
+    rows = []
+
+    # Remove scripts/styles.
+    text = re.sub(
+        r"<script.*?</script>",
+        " ",
+        html,
+        flags=re.I | re.S
+    )
+
+    text = re.sub(
+        r"<style.*?</style>",
+        " ",
+        text,
+        flags=re.I | re.S
+    )
+
+    text = re.sub(
+        r"<[^>]+>",
+        " ",
+        text
+    )
+
+    text = re.sub(
+        r"\s+",
+        " ",
+        text
+    )
+
+    text_lower = text.lower()
+
+    currencies = [
+        "USD"
+    ]
+
+    for currency in currencies:
+
+        # Find windows around USD.
+        for match in re.finditer(
+            currency.lower(),
+            text_lower
+        ):
+
+            start = max(
+                0,
+                match.start() - 300
+            )
+
+            end = min(
+                len(text),
+                match.end() + 500
+            )
+
+            window = text[
+                start:end
+            ]
+
+            window_lower = (
+                window.lower()
+            )
+
+            for keyword in (
+                HIGH_IMPACT_KEYWORDS
+                +
+                MEDIUM_IMPACT_KEYWORDS
+            ):
+
+                if keyword in window_lower:
+
+                    rows.append({
+
+                        "currency":
+                            currency,
+
+                        "event":
+                            keyword,
+
+                        "impact":
+                            classify_news_event(
+                                keyword
+                            )
+                    })
+
+    return rows
+
+
+def fetch_news_calendar():
+
+    now = now_my()
+
+    cache = load_json(
+        NEWS_CACHE_FILE
+    )
+
+    cached_at = parse_timestamp(
+        cache.get(
+            "cached_at"
+        )
+    )
+
+    # -----------------------------------------------------
+    # USE CACHE
+    # -----------------------------------------------------
+
+    if cached_at:
+
+        age = (
+            datetime.now(
+                timezone.utc
+            )
+            -
+            cached_at
+        ).total_seconds() / 60
+
+        if age <= NEWS_CACHE_MINUTES:
+
+            return {
+
+                "status":
+                    "CACHE",
+
+                "source":
+                    cache.get(
+                        "source",
+                        "ForexFactory"
+                    ),
+
+                "events":
+                    cache.get(
+                        "events",
+                        []
+                    ),
+
+                "cached_at":
+                    cache.get(
+                        "cached_at"
+                    ),
+
+                "age_minutes":
+                    round(
+                        age,
+                        1
+                    ),
+
+                "error":
+                    None
+            }
+
+    # -----------------------------------------------------
+    # FETCH
+    # -----------------------------------------------------
+
+    try:
+
+        response = requests.get(
+
+            NEWS_CALENDAR_URL,
+
+            params={
+
+                "range":
+                    "today"
+            },
+
+            headers={
+
+                "User-Agent":
+                    (
+                        "Mozilla/5.0 "
+                        "(Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 "
+                        "Chrome/120 Safari/537.36"
+                    )
+            },
+
+            timeout=15
+        )
+
+        response.raise_for_status()
+
+        html = response.text
+
+        rows = extract_calendar_rows(
+            html
+        )
+
+        # Regex fallback.
+        if not rows:
+
+            rows = parse_calendar_with_regex(
+                html
+            )
+
+        # Keep only relevant USD/XAU events.
+        filtered = []
+
+        seen = set()
+
+        for row in rows:
+
+            currency = (
+                row.get(
+                    "currency",
+                    ""
+                )
+                .strip()
+                .upper()
+            )
+
+            event = (
+                row.get(
+                    "event",
+                    ""
+                )
+                .strip()
+            )
+
+            impact = (
+                row.get(
+                    "impact",
+                    "LOW"
+                )
+                .upper()
+            )
+
+            if not event:
+
+                continue
+
+            if not is_xau_relevant_event(
+                currency,
+                event
+            ):
+
+                continue
+
+            if impact not in [
+
+                "HIGH",
+
+                "MEDIUM"
+
+            ]:
+
+                continue
+
+            key = (
+                currency,
+                normalize_text(event),
+                impact
+            )
+
+            if key in seen:
+
+                continue
+
+            seen.add(key)
+
+            filtered.append({
+
+                "currency":
+                    currency,
+
+                "event":
+                    event,
+
+                "impact":
+                    impact
+            })
+
+        # Save cache.
+        cache_data = {
+
+            "status":
+                "OK",
+
+            "source":
+                "ForexFactory",
+
+            "cached_at":
+                datetime.now(
+                    timezone.utc
+                ).isoformat(),
+
+            "events":
+                filtered,
+
+            "error":
+                None
+        }
+
+        save_json_atomic(
+            NEWS_CACHE_FILE,
+            cache_data
+        )
 
         return {
 
-            "ok":
-                True,
-
             "status":
-                "PASS",
+                "LIVE",
 
-            "high_impact":
-                "CLEAR",
+            "source":
+                "ForexFactory",
 
-            "minutes":
-                (
-                    minutes
-                    if minutes is not None
-                    else
-                    "NOT PROVIDED"
-                )
+            "events":
+                filtered,
+
+            "cached_at":
+                cache_data[
+                    "cached_at"
+                ],
+
+            "age_minutes":
+                0,
+
+            "error":
+                None
         }
 
-    if high_impact in blocked_states:
+    except Exception as exc:
+
+        # -------------------------------------------------
+        # FALLBACK TO LAST CACHE
+        # -------------------------------------------------
+
+        if cache:
+
+            cached_at = parse_timestamp(
+                cache.get(
+                    "cached_at"
+                )
+            )
+
+            age_minutes = None
+
+            if cached_at:
+
+                age_minutes = (
+                    datetime.now(
+                        timezone.utc
+                    )
+                    -
+                    cached_at
+                ).total_seconds()
+                / 60
+
+            return {
+
+                "status":
+                    "STALE",
+
+                "source":
+                    cache.get(
+                        "source",
+                        "ForexFactory"
+                    ),
+
+                "events":
+                    cache.get(
+                        "events",
+                        []
+                    ),
+
+                "cached_at":
+                    cache.get(
+                        "cached_at"
+                    ),
+
+                "age_minutes":
+                    (
+                        round(
+                            age_minutes,
+                            1
+                        )
+                        if age_minutes
+                        is not None
+                        else
+                        None
+                    ),
+
+                "error":
+                    str(exc)
+            }
+
+        return {
+
+            "status":
+                "ERROR",
+
+            "source":
+                "ForexFactory",
+
+            "events":
+                [],
+
+            "cached_at":
+                None,
+
+            "age_minutes":
+                None,
+
+            "error":
+                str(exc)
+        }
+
+
+def infer_event_datetime(
+    event,
+    reference_time
+):
+
+    """
+    Calendar HTML can differ by version.
+
+    This function attempts to locate a datetime
+    if available. It also accepts explicit datetime
+    fields if future calendar parsing provides them.
+    """
+
+    for key in [
+
+        "datetime",
+
+        "timestamp",
+
+        "event_datetime",
+
+        "time"
+
+    ]:
+
+        value = event.get(
+            key
+        )
+
+        if value:
+
+            dt = parse_news_datetime(
+                value
+            )
+
+            if dt:
+
+                return dt
+
+    return None
+
+
+def news_window_status(
+    event_time,
+    now_utc
+):
+
+    if event_time is None:
+
+        return {
+
+            "status":
+                "UNKNOWN",
+
+            "minutes":
+                None,
+
+            "block":
+                True,
+
+            "reason":
+                "Event time unavailable"
+        }
+
+    diff_minutes = (
+        event_time
+        -
+        now_utc
+    ).total_seconds()
+    / 60
+
+    # -----------------------------------------------------
+    # PRE-NEWS
+    # -----------------------------------------------------
+
+    if (
+        0
+        <=
+        diff_minutes
+        <=
+        NEWS_PRE_BLOCK_MINUTES
+    ):
+
+        return {
+
+            "status":
+                "BLOCK",
+
+            "minutes":
+                round(
+                    diff_minutes,
+                    1
+                ),
+
+            "block":
+                True,
+
+            "reason":
+                "HIGH IMPACT NEWS APPROACHING"
+        }
+
+    # -----------------------------------------------------
+    # CAUTION BEFORE
+    # -----------------------------------------------------
+
+    if (
+        NEWS_PRE_BLOCK_MINUTES
+        <
+        diff_minutes
+        <=
+        NEWS_CAUTION_BEFORE_MINUTES
+    ):
+
+        return {
+
+            "status":
+                "CAUTION",
+
+            "minutes":
+                round(
+                    diff_minutes,
+                    1
+                ),
+
+            "block":
+                False,
+
+            "reason":
+                "HIGH IMPACT NEWS NEARBY"
+        }
+
+    # -----------------------------------------------------
+    # POST NEWS
+    # -----------------------------------------------------
+
+    minutes_after = (
+        -diff_minutes
+    )
+
+    if (
+        0
+        <
+        minutes_after
+        <=
+        NEWS_POST_COOLDOWN_MINUTES
+    ):
+
+        return {
+
+            "status":
+                "BLOCK",
+
+            "minutes":
+                round(
+                    minutes_after,
+                    1
+                ),
+
+            "block":
+                True,
+
+            "reason":
+                "POST-NEWS COOLDOWN"
+        }
+
+    # -----------------------------------------------------
+    # POST NEWS CAUTION
+    # -----------------------------------------------------
+
+    if (
+        NEWS_POST_COOLDOWN_MINUTES
+        <
+        minutes_after
+        <=
+        NEWS_CAUTION_AFTER_MINUTES
+    ):
+
+        return {
+
+            "status":
+                "CAUTION",
+
+            "minutes":
+                round(
+                    minutes_after,
+                    1
+                ),
+
+            "block":
+                False,
+
+            "reason":
+                "POST-NEWS VOLATILITY WINDOW"
+        }
+
+    return {
+
+        "status":
+            "CLEAR",
+
+        "minutes":
+            round(
+                diff_minutes,
+                1
+            ),
+
+        "block":
+            False,
+
+        "reason":
+            "Outside news window"
+    }
+
+
+def evaluate_news_filter(
+    calendar_data,
+    now=None
+):
+
+    now = now or now_my()
+
+    now_utc = (
+        now.astimezone(
+            timezone.utc
+        )
+    )
+
+    feed_status = (
+        calendar_data.get(
+            "status",
+            "ERROR"
+        )
+    )
+
+    events = (
+        calendar_data.get(
+            "events",
+            []
+        )
+    )
+
+    # -----------------------------------------------------
+    # FEED ERROR
+    # -----------------------------------------------------
+    #
+    # We do NOT silently pass.
+    # -----------------------------------------------------
+
+    if feed_status == "ERROR":
 
         return {
 
@@ -2267,40 +3373,499 @@ def evaluate_news_filter(
             "status":
                 "BLOCK",
 
-            "high_impact":
-                high_impact,
+            "feed_status":
+                "ERROR",
+
+            "source":
+                calendar_data.get(
+                    "source"
+                ),
+
+            "event":
+                None,
+
+            "currency":
+                None,
+
+            "impact":
+                None,
 
             "minutes":
-                (
-                    minutes
-                    if minutes is not None
-                    else
-                    "NOT PROVIDED"
+                None,
+
+            "reason":
+                "NEWS FEED UNAVAILABLE",
+
+            "error":
+                calendar_data.get(
+                    "error"
                 )
         }
+
+    # -----------------------------------------------------
+    # STALE FEED
+    # -----------------------------------------------------
+
+    age = calendar_data.get(
+        "age_minutes"
+    )
+
+    if (
+        feed_status == "STALE"
+
+        and
+
+        (
+            age is None
+
+            or
+
+            age > NEWS_STALE_MINUTES
+        )
+    ):
+
+        return {
+
+            "ok":
+                False,
+
+            "status":
+                "BLOCK",
+
+            "feed_status":
+                "STALE",
+
+            "source":
+                calendar_data.get(
+                    "source"
+                ),
+
+            "event":
+                None,
+
+            "currency":
+                None,
+
+            "impact":
+                None,
+
+            "minutes":
+                None,
+
+            "reason":
+                "NEWS FEED TOO STALE",
+
+            "error":
+                calendar_data.get(
+                    "error"
+                )
+        }
+
+    # -----------------------------------------------------
+    # FIND RELEVANT EVENTS
+    # -----------------------------------------------------
+
+    best = None
+
+    caution_events = []
+
+    for event in events:
+
+        impact = (
+            event.get(
+                "impact",
+                "LOW"
+            )
+            .upper()
+        )
+
+        if impact != "HIGH":
+
+            continue
+
+        event_time = infer_event_datetime(
+            event,
+            now
+        )
+
+        # If event time isn't available,
+        # do not automatically block.
+        #
+        # But mark it as unknown.
+        if event_time is None:
+
+            event_copy = dict(
+                event
+            )
+
+            event_copy[
+                "window_status"
+            ] = "UNKNOWN"
+
+            caution_events.append(
+                event_copy
+            )
+
+            continue
+
+        window = news_window_status(
+            event_time,
+            now_utc
+        )
+
+        event_copy = dict(
+            event
+        )
+
+        event_copy[
+            "datetime"
+        ] = event_time.isoformat()
+
+        event_copy[
+            "window_status"
+        ] = window[
+            "status"
+        ]
+
+        event_copy[
+            "minutes"
+        ] = window[
+            "minutes"
+        ]
+
+        event_copy[
+            "window_reason"
+        ] = window[
+            "reason"
+        ]
+
+        if window["block"]:
+
+            best = event_copy
+
+            break
+
+        if (
+            window["status"]
+            ==
+            "CAUTION"
+        ):
+
+            caution_events.append(
+                event_copy
+            )
+
+    # -----------------------------------------------------
+    # BLOCK
+    # -----------------------------------------------------
+
+    if best:
+
+        return {
+
+            "ok":
+                False,
+
+            "status":
+                "BLOCK",
+
+            "feed_status":
+                feed_status,
+
+            "source":
+                calendar_data.get(
+                    "source"
+                ),
+
+            "event":
+                best.get(
+                    "event"
+                ),
+
+            "currency":
+                best.get(
+                    "currency"
+                ),
+
+            "impact":
+                best.get(
+                    "impact"
+                ),
+
+            "minutes":
+                best.get(
+                    "minutes"
+                ),
+
+            "event_datetime":
+                best.get(
+                    "datetime"
+                ),
+
+            "reason":
+                best.get(
+                    "window_reason"
+                ),
+
+            "error":
+                calendar_data.get(
+                    "error"
+                )
+        }
+
+    # -----------------------------------------------------
+    # CAUTION
+    # -----------------------------------------------------
+
+    if caution_events:
+
+        nearest = min(
+
+            caution_events,
+
+            key=lambda x:
+            abs(
+                float(
+                    x.get(
+                        "minutes",
+                        999999
+                    )
+                )
+            )
+        )
+
+        return {
+
+            "ok":
+                True,
+
+            "status":
+                "CAUTION",
+
+            "feed_status":
+                feed_status,
+
+            "source":
+                calendar_data.get(
+                    "source"
+                ),
+
+            "event":
+                nearest.get(
+                    "event"
+                ),
+
+            "currency":
+                nearest.get(
+                    "currency"
+                ),
+
+            "impact":
+                nearest.get(
+                    "impact"
+                ),
+
+            "minutes":
+                nearest.get(
+                    "minutes"
+                ),
+
+            "event_datetime":
+                nearest.get(
+                    "datetime"
+                ),
+
+            "reason":
+                nearest.get(
+                    "window_reason",
+                    "HIGH IMPACT NEWS NEARBY"
+                ),
+
+            "error":
+                calendar_data.get(
+                    "error"
+                )
+        }
+
+    # -----------------------------------------------------
+    # UNKNOWN EVENTS
+    # -----------------------------------------------------
+
+    if caution_events and feed_status in [
+        "STALE"
+    ]:
+
+        return {
+
+            "ok":
+                False,
+
+            "status":
+                "BLOCK",
+
+            "feed_status":
+                feed_status,
+
+            "source":
+                calendar_data.get(
+                    "source"
+                ),
+
+            "event":
+                None,
+
+            "currency":
+                None,
+
+            "impact":
+                None,
+
+            "minutes":
+                None,
+
+            "event_datetime":
+                None,
+
+            "reason":
+                "NEWS CALENDAR STALE",
+
+            "error":
+                calendar_data.get(
+                    "error"
+                )
+        }
+
+    # -----------------------------------------------------
+    # CLEAR
+    # -----------------------------------------------------
 
     return {
 
         "ok":
-            False,
+            True,
 
         "status":
-            "BLOCK",
+            "PASS",
 
-        "high_impact":
-            (
-                high_impact
-                if high_impact
-                else
-                "NOT PROVIDED"
+        "feed_status":
+            feed_status,
+
+        "source":
+            calendar_data.get(
+                "source"
             ),
 
+        "event":
+            None,
+
+        "currency":
+            None,
+
+        "impact":
+            None,
+
         "minutes":
+            None,
+
+        "event_datetime":
+            None,
+
+        "reason":
+            "NO HIGH IMPACT XAUUSD NEWS IN BLOCK WINDOW",
+
+        "error":
+            calendar_data.get(
+                "error"
+            )
+    }
+
+
+# =========================================================
+# NEWS SUMMARY
+# =========================================================
+
+def build_news_summary(
+    calendar_data,
+    news_result
+):
+
+    events = (
+        calendar_data.get(
+            "events",
+            []
+        )
+    )
+
+    high_events = [
+
+        e for e in events
+
+        if e.get(
+            "impact"
+        ) == "HIGH"
+    ]
+
+    return {
+
+        "status":
+            news_result.get(
+                "status"
+            ),
+
+        "filter":
             (
-                minutes
-                if minutes is not None
+                "PASS"
+                if news_result.get(
+                    "ok"
+                )
                 else
-                "NOT PROVIDED"
+                "BLOCK"
+            ),
+
+        "feed_status":
+            calendar_data.get(
+                "status"
+            ),
+
+        "source":
+            calendar_data.get(
+                "source"
+            ),
+
+        "event":
+            news_result.get(
+                "event"
+            ),
+
+        "currency":
+            news_result.get(
+                "currency"
+            ),
+
+        "impact":
+            news_result.get(
+                "impact"
+            ),
+
+        "minutes_to_event":
+            news_result.get(
+                "minutes"
+            ),
+
+        "reason":
+            news_result.get(
+                "reason"
+            ),
+
+        "events_detected":
+            len(events),
+
+        "high_impact_events":
+            len(high_events),
+
+        "cache_age_minutes":
+            calendar_data.get(
+                "age_minutes"
             )
     }
 
@@ -2404,9 +3969,40 @@ def format_telegram(
         "NO"
     )
 
+    news_status = (
+        news_result.get(
+            "status",
+            "UNKNOWN"
+        )
+    )
+
+    news_event = (
+        news_result.get(
+            "event"
+        )
+        or
+        "NONE"
+    )
+
+    news_minutes = (
+        news_result.get(
+            "minutes"
+        )
+    )
+
+    news_line = (
+        f"{news_status}"
+    )
+
+    if news_minutes is not None:
+
+        news_line += (
+            f" ({news_minutes} min)"
+        )
+
     return (
 
-        "👑 BOSQUE FOREX AI\n\n"
+        "👑 BOSQUE FOREX AI V5\n\n"
 
         f"🚨 {direction} "
         f"{opportunity}\n"
@@ -2451,7 +4047,10 @@ def format_telegram(
         f"{volatility.get('atr_pips')} pips\n"
 
         f"📰 News: "
-        f"{news_result['status']}\n\n"
+        f"{news_line}\n"
+
+        f"📢 Event: "
+        f"{news_event}\n\n"
 
         "⚠️ Manual confirmation required."
     )
@@ -2472,7 +4071,7 @@ def load_journal():
         data = {
 
             "version":
-                "2.1",
+                "3.0",
 
             "symbol":
                 SYMBOL,
@@ -2487,14 +4086,6 @@ def load_journal():
     if "trades" not in data:
 
         data["trades"] = []
-
-    if "version" not in data:
-
-        data["version"] = "2.1"
-
-    if "symbol" not in data:
-
-        data["symbol"] = SYMBOL
 
     return data
 
@@ -2529,10 +4120,6 @@ def journal_signal(
     signal_id = signal.get(
         "id"
     )
-
-    if not signal_id:
-
-        return
 
     for trade in journal[
         "trades"
@@ -2577,9 +4164,24 @@ def journal_signal(
             ),
 
         "news_status":
-            news_result[
+            news_result.get(
                 "status"
-            ],
+            ),
+
+        "news_event":
+            news_result.get(
+                "event"
+            ),
+
+        "news_currency":
+            news_result.get(
+                "currency"
+            ),
+
+        "news_impact":
+            news_result.get(
+                "impact"
+            ),
 
         "entry":
             plan.get(
@@ -2683,28 +4285,6 @@ def journal_signal(
 # JOURNAL OUTCOME ENGINE
 # =========================================================
 
-def parse_timestamp(
-    value
-):
-
-    if not value:
-
-        return None
-
-    try:
-
-        dt = pd.to_datetime(
-            value,
-            utc=True
-        )
-
-        return dt.to_pydatetime()
-
-    except Exception:
-
-        return None
-
-
 def evaluate_trade_against_candle(
     trade,
     candle
@@ -2770,15 +4350,13 @@ def evaluate_trade_against_candle(
 
     if (
         trade_time
+
         and
+
         candle_time <= trade_time
     ):
 
         return trade
-
-    # -----------------------------------------------------
-    # BUY
-    # -----------------------------------------------------
 
     if direction == "BUY":
 
@@ -2864,10 +4442,6 @@ def evaluate_trade_against_candle(
             trade[
                 "tp3_hit"
             ] = True
-
-    # -----------------------------------------------------
-    # SELL
-    # -----------------------------------------------------
 
     elif direction == "SELL":
 
@@ -2992,46 +4566,34 @@ def update_journal_outcomes(
 
             continue
 
-        trade_timestamp = pd.Timestamp(
+        trade_time_ts = pd.Timestamp(
             trade_time
         )
 
         candles = m5[
             m5["datetime"]
             >
-            trade_timestamp
+            trade_time_ts
         ]
 
         for _, candle in candles.iterrows():
 
-            old_state = (
-                json.dumps(
+            old_result = trade.get(
+                "result"
+            )
+
+            trade = (
+                evaluate_trade_against_candle(
                     trade,
-                    sort_keys=True,
-                    default=str
+                    candle
                 )
             )
-
-            evaluate_trade_against_candle(
-                trade,
-                candle
-            )
-
-            new_state = (
-                json.dumps(
-                    trade,
-                    sort_keys=True,
-                    default=str
-                )
-            )
-
-            if old_state != new_state:
-
-                changed = True
 
             if trade.get(
                 "result"
-            ) != "OPEN":
+            ) != old_result:
+
+                changed = True
 
                 break
 
@@ -3046,10 +4608,10 @@ def update_journal_outcomes(
 
 
 # =========================================================
-# JOURNAL STATISTICS
+# FORWARD TEST
 # =========================================================
 
-def calculate_journal_stats():
+def calculate_forward_stats():
 
     journal = load_journal()
 
@@ -3058,68 +4620,45 @@ def calculate_journal_stats():
         []
     )
 
-    if not isinstance(
-        trades,
-        list
-    ):
-
-        trades = []
-
     closed = [
 
-        trade
+        x for x in trades
 
-        for trade in trades
-
-        if trade.get(
+        if x.get(
             "result"
         ) in [
+
             "WIN",
+
             "LOSS",
+
             "BE"
         ]
     ]
 
-    open_trades = [
-
-        trade
-
-        for trade in trades
-
-        if trade.get(
-            "result"
-        ) == "OPEN"
-    ]
-
     wins = [
 
-        trade
+        x for x in closed
 
-        for trade in closed
-
-        if trade.get(
+        if x.get(
             "result"
         ) == "WIN"
     ]
 
     losses = [
 
-        trade
+        x for x in closed
 
-        for trade in closed
-
-        if trade.get(
+        if x.get(
             "result"
         ) == "LOSS"
     ]
 
     breakeven = [
 
-        trade
+        x for x in closed
 
-        for trade in closed
-
-        if trade.get(
+        if x.get(
             "result"
         ) == "BE"
     ]
@@ -3128,76 +4667,55 @@ def calculate_journal_stats():
         closed
     )
 
-    total_signals = len(
-        trades
-    )
+    result_rs = [
 
-    win_rate = (
-
-        (
-            len(wins)
-            /
-            total
+        float(
+            x["result_r"]
         )
-        *
-        100
 
-        if total > 0
+        for x in closed
+
+        if x.get(
+            "result_r"
+        ) is not None
+    ]
+
+    result_pips = [
+
+        float(
+            x["result_pips"]
+        )
+
+        for x in closed
+
+        if x.get(
+            "result_pips"
+        ) is not None
+    ]
+
+    total_r = (
+
+        sum(result_rs)
+
+        if result_rs
 
         else
 
         0.0
     )
 
-    result_pips = []
+    average_r = (
 
-    for trade in closed:
+        sum(result_rs)
+        /
+        len(result_rs)
 
-        value = trade.get(
-            "result_pips"
-        )
+        if result_rs
 
-        if value is None:
+        else
 
-            continue
-
-        try:
-
-            result_pips.append(
-                float(value)
-            )
-
-        except (
-            TypeError,
-            ValueError
-        ):
-
-            continue
-
-    result_r = []
-
-    for trade in closed:
-
-        value = trade.get(
-            "result_r"
-        )
-
-        if value is None:
-
-            continue
-
-        try:
-
-            result_r.append(
-                float(value)
-            )
-
-        except (
-            TypeError,
-            ValueError
-        ):
-
-            continue
+        None
+    )
 
     total_pips = (
 
@@ -3212,48 +4730,31 @@ def calculate_journal_stats():
 
     average_pips = (
 
-        (
-            sum(result_pips)
-            /
-            len(result_pips)
-        )
+        sum(result_pips)
+        /
+        len(result_pips)
 
         if result_pips
 
         else
 
-        0.0
+        None
     )
 
-    total_r = (
+    win_rate = (
 
-        sum(result_r)
+        len(wins)
+        /
+        total
+        *
+        100
 
-        if result_r
+        if total
 
         else
 
-        0.0
+        None
     )
-
-    average_r = (
-
-        (
-            sum(result_r)
-            /
-            len(result_r)
-        )
-
-        if result_r
-
-        else
-
-        0.0
-    )
-
-    # -----------------------------------------------------
-    # EQUITY / DRAWDOWN
-    # -----------------------------------------------------
 
     equity = 0.0
 
@@ -3261,25 +4762,23 @@ def calculate_journal_stats():
 
     max_drawdown = 0.0
 
-    for r in result_r:
+    for r in result_rs:
 
         equity += r
 
-        if equity > peak:
-
-            peak = equity
+        peak = max(
+            peak,
+            equity
+        )
 
         drawdown = (
             peak - equity
         )
 
-        if drawdown > max_drawdown:
-
-            max_drawdown = drawdown
-
-    # -----------------------------------------------------
-    # CONSECUTIVE LOSSES
-    # -----------------------------------------------------
+        max_drawdown = max(
+            max_drawdown,
+            drawdown
+        )
 
     current_losses = 0
 
@@ -3302,44 +4801,28 @@ def calculate_journal_stats():
 
             current_losses = 0
 
-    # -----------------------------------------------------
-    # LATEST TRADE
-    # -----------------------------------------------------
+    open_trades = len([
 
-    latest_trade = (
+        x for x in trades
 
-        trades[-1]
+        if x.get(
+            "result"
+        ) == "OPEN"
+    ])
 
-        if trades
-
-        else
-
-        None
-    )
-
-    latest_closed_trade = None
-
-    for trade in reversed(
-        closed
-    ):
-
-        latest_closed_trade = trade
-
-        break
-
-    stats = {
+    data = {
 
         "status":
-            "ACTIVE",
+            "FORWARD TESTING",
 
         "symbol":
             SYMBOL,
 
         "total_signals":
-            total_signals,
+            len(trades),
 
         "open_trades":
-            len(open_trades),
+            open_trades,
 
         "closed_trades":
             total,
@@ -3354,9 +4837,17 @@ def calculate_journal_stats():
             len(breakeven),
 
         "win_rate":
-            round(
-                win_rate,
-                2
+            (
+                round(
+                    win_rate,
+                    2
+                )
+
+                if win_rate is not None
+
+                else
+
+                None
             ),
 
         "total_pips":
@@ -3366,9 +4857,17 @@ def calculate_journal_stats():
             ),
 
         "average_pips":
-            round(
-                average_pips,
-                1
+            (
+                round(
+                    average_pips,
+                    1
+                )
+
+                if average_pips is not None
+
+                else
+
+                None
             ),
 
         "total_r":
@@ -3378,9 +4877,17 @@ def calculate_journal_stats():
             ),
 
         "average_r":
-            round(
-                average_r,
-                3
+            (
+                round(
+                    average_r,
+                    3
+                )
+
+                if average_r is not None
+
+                else
+
+                None
             ),
 
         "max_drawdown_r":
@@ -3391,100 +4898,6 @@ def calculate_journal_stats():
 
         "max_consecutive_losses":
             max_consecutive_losses,
-
-        "latest_trade":
-            latest_trade,
-
-        "latest_closed_trade":
-            latest_closed_trade,
-
-        "last_updated":
-            now_my().isoformat()
-    }
-
-    return stats
-
-
-# =========================================================
-# FORWARD TEST
-# =========================================================
-
-def calculate_forward_stats():
-
-    stats = calculate_journal_stats()
-
-    data = {
-
-        "status":
-            "FORWARD TESTING",
-
-        "symbol":
-            SYMBOL,
-
-        "total_signals":
-            stats[
-                "total_signals"
-            ],
-
-        "open_trades":
-            stats[
-                "open_trades"
-            ],
-
-        "closed_trades":
-            stats[
-                "closed_trades"
-            ],
-
-        "wins":
-            stats[
-                "wins"
-            ],
-
-        "losses":
-            stats[
-                "losses"
-            ],
-
-        "breakeven":
-            stats[
-                "breakeven"
-            ],
-
-        "win_rate":
-            stats[
-                "win_rate"
-            ],
-
-        "total_pips":
-            stats[
-                "total_pips"
-            ],
-
-        "average_pips":
-            stats[
-                "average_pips"
-            ],
-
-        "total_r":
-            stats[
-                "total_r"
-            ],
-
-        "average_r":
-            stats[
-                "average_r"
-            ],
-
-        "max_drawdown_r":
-            stats[
-                "max_drawdown_r"
-            ],
-
-        "max_consecutive_losses":
-            stats[
-                "max_consecutive_losses"
-            ],
 
         "last_updated":
             now_my().isoformat()
@@ -3543,7 +4956,7 @@ def validate_signal_gate(
     setup,
     m5_confirm,
     plan,
-    news_ok
+    news_result
 ):
 
     reasons = []
@@ -3584,10 +4997,22 @@ def validate_signal_gate(
             )
         )
 
-    if not news_ok:
+    if not news_result.get(
+        "ok",
+        False
+    ):
 
         reasons.append(
-            "News filter BLOCK"
+            (
+                "NEWS BLOCK: "
+                +
+                str(
+                    news_result.get(
+                        "reason",
+                        "News filter BLOCK"
+                    )
+                )
+            )
         )
 
     return {
@@ -3611,7 +5036,7 @@ def main():
     timestamp = now_my()
 
     # =====================================================
-    # FETCH
+    # FETCH M5
     # =====================================================
 
     m5 = fetch_m5()
@@ -3627,7 +5052,7 @@ def main():
         )
 
     # =====================================================
-    # UPDATE EXISTING JOURNAL OUTCOMES FIRST
+    # UPDATE JOURNAL
     # =====================================================
 
     journal = update_journal_outcomes(
@@ -3636,10 +5061,6 @@ def main():
 
     forward_stats = (
         calculate_forward_stats()
-    )
-
-    journal_stats = (
-        calculate_journal_stats()
     )
 
     # =====================================================
@@ -3660,7 +5081,9 @@ def main():
 
     if (
         len(m15) < 50
+
         or
+
         len(h1) < 30
     ):
 
@@ -3703,8 +5126,11 @@ def main():
     if h1_structure[
         "direction"
     ] in [
+
         "BULLISH",
+
         "BEARISH"
+
     ]:
 
         market_mode = "TRENDING"
@@ -3750,32 +5176,31 @@ def main():
     )
 
     # =====================================================
-    # NEWS
+    # REAL NEWS ENGINE
     # =====================================================
 
-    news = {
-
-        "status":
-            "CLEAR",
-
-        "high_impact":
-            "CLEAR",
-
-        "minutes_to_news":
-            None,
-
-        "filter":
-            "PASS"
-    }
+    calendar_data = (
+        fetch_news_calendar()
+    )
 
     news_result = (
         evaluate_news_filter(
-            news
+            calendar_data,
+            timestamp
         )
     )
 
     news_ok = (
-        news_result["ok"]
+        news_result[
+            "ok"
+        ]
+    )
+
+    news_summary = (
+        build_news_summary(
+            calendar_data,
+            news_result
+        )
     )
 
     # =====================================================
@@ -3831,7 +5256,7 @@ def main():
         setup,
         m5_confirm,
         plan,
-        news_ok
+        news_result
     )
 
     valid_signal = (
@@ -3899,7 +5324,22 @@ def main():
             "WAIT",
 
         "gate_reasons":
-            gate["reasons"]
+            gate["reasons"],
+
+        "news_status":
+            news_result.get(
+                "status"
+            ),
+
+        "news_event":
+            news_result.get(
+                "event"
+            ),
+
+        "news_minutes":
+            news_result.get(
+                "minutes"
+            )
     }
 
     state = load_state()
@@ -3911,10 +5351,15 @@ def main():
     if valid_signal:
 
         signal_id = make_signal_id(
+
             setup["direction"],
+
             setup["opportunity"],
+
             plan["entry"],
+
             plan["sl"],
+
             plan["tp2"]
         )
 
@@ -3958,13 +5403,21 @@ def main():
         if signal_id != last_signal:
 
             message = format_telegram(
+
                 setup["direction"],
+
                 setup["opportunity"],
+
                 score,
+
                 plan,
+
                 session,
+
                 pd_data,
+
                 volatility,
+
                 news_result
             )
 
@@ -3991,22 +5444,22 @@ def main():
     # =====================================================
 
     journal_signal(
+
         signal,
+
         setup,
+
         m5_confirm,
+
         plan,
+
         score,
+
         session,
+
         news_result,
+
         timestamp
-    )
-
-    # =====================================================
-    # RECALCULATE JOURNAL
-    # =====================================================
-
-    journal_stats = (
-        calculate_journal_stats()
     )
 
     forward_stats = (
@@ -4021,6 +5474,18 @@ def main():
 
         dashboard_status = (
             "VALID SIGNAL"
+        )
+
+    elif (
+        news_result.get(
+            "status"
+        )
+        ==
+        "BLOCK"
+    ):
+
+        dashboard_status = (
+            "WAIT — NEWS BLOCK"
         )
 
     elif score < MIN_SCORE:
@@ -4040,14 +5505,20 @@ def main():
     # =====================================================
 
     dashboard_plan = (
+
         plan
+
         if plan.get(
             "valid",
             False
         )
+
         and
+
         valid_signal
+
         else
+
         {
 
             "valid":
@@ -4058,12 +5529,16 @@ def main():
 
             "reason":
                 (
+
                     plan.get(
                         "reason",
                         "Signal gate not passed"
                     )
+
                     if not valid_signal
+
                     else
+
                     plan.get(
                         "reason",
                         "Invalid trade plan"
@@ -4071,140 +5546,6 @@ def main():
                 )
         }
     )
-
-    # =====================================================
-    # JOURNAL DASHBOARD DATA
-    #
-    # IMPORTANT:
-    #
-    # We expose the values directly inside
-    # dashboard["journal"] so frontend does not
-    # need to guess / calculate them.
-    #
-    # Zero is used instead of null for empty
-    # statistics.
-    # =====================================================
-
-    dashboard_journal = {
-
-        "status":
-            "ACTIVE",
-
-        "enabled":
-            True,
-
-        "file":
-            JOURNAL_FILE.name,
-
-        "symbol":
-            SYMBOL,
-
-        "total_signals":
-            int(
-                journal_stats[
-                    "total_signals"
-                ]
-            ),
-
-        "open_trades":
-            int(
-                journal_stats[
-                    "open_trades"
-                ]
-            ),
-
-        "closed_trades":
-            int(
-                journal_stats[
-                    "closed_trades"
-                ]
-            ),
-
-        "wins":
-            int(
-                journal_stats[
-                    "wins"
-                ]
-            ),
-
-        "losses":
-            int(
-                journal_stats[
-                    "losses"
-                ]
-            ),
-
-        "breakeven":
-            int(
-                journal_stats[
-                    "breakeven"
-                ]
-            ),
-
-        "win_rate":
-            float(
-                journal_stats[
-                    "win_rate"
-                ]
-            ),
-
-        "total_pips":
-            float(
-                journal_stats[
-                    "total_pips"
-                ]
-            ),
-
-        "average_pips":
-            float(
-                journal_stats[
-                    "average_pips"
-                ]
-            ),
-
-        "total_r":
-            float(
-                journal_stats[
-                    "total_r"
-                ]
-            ),
-
-        "average_r":
-            float(
-                journal_stats[
-                    "average_r"
-                ]
-            ),
-
-        "max_drawdown_r":
-            float(
-                journal_stats[
-                    "max_drawdown_r"
-                ]
-            ),
-
-        "max_consecutive_losses":
-            int(
-                journal_stats[
-                    "max_consecutive_losses"
-                ]
-            ),
-
-        "latest_trade":
-            journal_stats[
-                "latest_trade"
-            ],
-
-        "latest_closed_trade":
-            journal_stats[
-                "latest_closed_trade"
-            ],
-
-        "last_updated":
-            journal_stats[
-                "last_updated"
-            ]
-    }
 
     # =====================================================
     # DASHBOARD
@@ -4218,7 +5559,7 @@ def main():
                 "BOSQUE FOREX AI",
 
             "version":
-                "SCALPING V4.1",
+                "SCALPING V5",
 
             "symbol":
                 SYMBOL,
@@ -4296,28 +5637,8 @@ def main():
         # NEWS
         # =================================================
 
-        "news": {
-
-            "status":
-                news_result[
-                    "status"
-                ],
-
-            "high_impact":
-                news_result[
-                    "high_impact"
-                ],
-
-            "minutes_to_news":
-                news_result[
-                    "minutes"
-                ],
-
-            "filter":
-                news_result[
-                    "status"
-                ]
-        },
+        "news":
+            news_summary,
 
         # =================================================
         # OPPORTUNITY
@@ -4500,7 +5821,12 @@ def main():
             "pd_zone":
                 pd_data[
                     "zone"
-                ]
+                ],
+
+            "news":
+                news_result.get(
+                    "reason"
+                )
         },
 
         # =================================================
@@ -4571,11 +5897,14 @@ def main():
             "status":
                 (
                     "PASS"
+
                     if plan.get(
                         "valid",
                         False
                     )
+
                     else
+
                     "FAIL"
                 ),
 
@@ -4621,6 +5950,72 @@ def main():
         },
 
         # =================================================
+        # NEWS AUDIT
+        # =================================================
+
+        "news_audit": {
+
+            "status":
+                news_result.get(
+                    "status"
+                ),
+
+            "filter":
+                (
+                    "PASS"
+                    if news_result.get(
+                        "ok"
+                    )
+                    else
+                    "BLOCK"
+                ),
+
+            "feed":
+                news_result.get(
+                    "feed_status"
+                ),
+
+            "source":
+                news_result.get(
+                    "source"
+                ),
+
+            "currency":
+                news_result.get(
+                    "currency"
+                ),
+
+            "impact":
+                news_result.get(
+                    "impact"
+                ),
+
+            "event":
+                news_result.get(
+                    "event"
+                ),
+
+            "minutes":
+                news_result.get(
+                    "minutes"
+                ),
+
+            "reason":
+                news_result.get(
+                    "reason"
+                ),
+
+            "pre_block_minutes":
+                NEWS_PRE_BLOCK_MINUTES,
+
+            "post_cooldown_minutes":
+                NEWS_POST_COOLDOWN_MINUTES,
+
+            "stale_after_minutes":
+                NEWS_STALE_MINUTES
+        },
+
+        # =================================================
         # INVALIDATION
         # =================================================
 
@@ -4653,6 +6048,8 @@ def main():
 
                 "SELL TP levels must remain below Entry",
 
+                "High-impact news block overrides technical signal",
+
                 "Avoid invalidation after structure failure"
             ]
         },
@@ -4669,6 +6066,16 @@ def main():
                     if news_ok
                     else
                     "BLOCK"
+                ),
+
+            "news_status":
+                news_result.get(
+                    "status"
+                ),
+
+            "news_event":
+                news_result.get(
+                    "event"
                 ),
 
             "session_filter":
@@ -4716,23 +6123,30 @@ def main():
         # =================================================
         # JOURNAL
         # =================================================
-        #
-        # THIS IS THE IMPORTANT FIX.
-        # All values are directly exposed.
-        # =================================================
 
-        "journal":
-            dashboard_journal,
+        "journal": {
 
-        # =================================================
-        # FRONTEND ALIAS
-        #
-        # Some dashboard versions may use
-        # "trading_journal" instead of "journal".
-        # =================================================
+            "status":
+                "ACTIVE",
 
-        "trading_journal":
-            dashboard_journal,
+            "file":
+                JOURNAL_FILE.name,
+
+            "total_signals":
+                forward_stats[
+                    "total_signals"
+                ],
+
+            "open_trades":
+                forward_stats[
+                    "open_trades"
+                ],
+
+            "closed_trades":
+                forward_stats[
+                    "closed_trades"
+                ]
+        },
 
         # =================================================
         # FORWARD TEST
@@ -4766,7 +6180,7 @@ def main():
                 (
                     "Historical backtest runner "
                     "will be activated separately "
-                    "after V4 live signal validation."
+                    "after V5 live signal validation."
                 )
         }
     }
