@@ -11,11 +11,11 @@ import pandas as pd
 
 # =========================================================
 # BOSQUE FOREX AI
-# SCALPING ENGINE V4
+# SCALPING ENGINE V4.1
 #
 # H1 -> M15 -> M5
 #
-# V4 OBJECTIVES
+# V4.1 OBJECTIVES
 # ---------------------------------------------------------
 # - Twelve Data M5
 # - Local M15 / H1 aggregation
@@ -35,7 +35,7 @@ import pandas as pd
 # - Forward-test statistics
 # - Directional SL/TP validation
 # - Strict valid-signal gating
-# - Backtest / OOS foundation
+# - Dashboard Journal Sync
 # =========================================================
 
 
@@ -61,7 +61,9 @@ FORWARD_FILE = ENGINE_DIR / "forward_test.json"
 # TWELVE DATA
 # =========================================================
 
-TWELVEDATA_URL = "https://api.twelvedata.com/time_series"
+TWELVEDATA_URL = (
+    "https://api.twelvedata.com/time_series"
+)
 
 API_KEY = os.getenv(
     "TWELVEDATA_API_KEY",
@@ -91,29 +93,28 @@ OUTPUT_SIZE = 500
 
 MIN_SCORE = 70
 
-# XAUUSD
+# =========================================================
+# XAUUSD PIP MODEL
 #
-# 1 pip = 0.10 price
+# 1 pip = 0.10 price movement
 #
 # Example:
 #
 # 4156.50 -> 4157.50
 # = 10 pips
+# =========================================================
 
 PIP_SIZE = 0.10
-
 
 MIN_RISK_PIPS = 25
 
 MAX_RISK_PIPS = 80
-
 
 TP1_PIPS = 60
 
 MIN_TP2_PIPS = 120
 
 TP3_PIPS = 180
-
 
 MIN_RR = 2.0
 
@@ -129,7 +130,6 @@ MIN_RR = 2.0
 MY_TZ = timezone(
     timedelta(hours=8)
 )
-
 
 SESSIONS = [
     ("ASIAN", 7, 15),
@@ -195,9 +195,11 @@ def clean_for_json(value):
     ):
 
         if math.isnan(value):
+
             return None
 
         if math.isinf(value):
+
             return None
 
     return value
@@ -1775,23 +1777,6 @@ def calculate_score(
 # =========================================================
 # TRADE PLAN
 # =========================================================
-#
-# IMPORTANT V4:
-#
-# BUY:
-#     SL MUST BE BELOW ENTRY
-#
-# SELL:
-#     SL MUST BE ABOVE ENTRY
-#
-# BUY:
-#     TP1/TP2/TP3 MUST BE ABOVE ENTRY
-#
-# SELL:
-#     TP1/TP2/TP3 MUST BE BELOW ENTRY
-#
-# Any violation = INVALID PLAN.
-# =========================================================
 
 def create_trade_plan(
     direction,
@@ -1860,9 +1845,6 @@ def create_trade_plan(
                     "BUY requires swing low"
             }
 
-        # Critical V4 safety:
-        # swing low MUST be below entry.
-
         if float(swing_low) >= entry:
 
             return {
@@ -1905,9 +1887,6 @@ def create_trade_plan(
                 "reason":
                     "SELL requires swing high"
             }
-
-        # Critical V4 safety:
-        # swing high MUST be above entry.
 
         if float(swing_high) <= entry:
 
@@ -2256,7 +2235,6 @@ def evaluate_news_filter(
         "1"
     }
 
-    # CLEAR
     if high_impact in clear_states:
 
         return {
@@ -2279,7 +2257,6 @@ def evaluate_news_filter(
                 )
         }
 
-    # BLOCK
     if high_impact in blocked_states:
 
         return {
@@ -2302,7 +2279,6 @@ def evaluate_news_filter(
                 )
         }
 
-    # UNKNOWN
     return {
 
         "ok":
@@ -2496,7 +2472,7 @@ def load_journal():
         data = {
 
             "version":
-                "2.0",
+                "2.1",
 
             "symbol":
                 SYMBOL,
@@ -2511,6 +2487,14 @@ def load_journal():
     if "trades" not in data:
 
         data["trades"] = []
+
+    if "version" not in data:
+
+        data["version"] = "2.1"
+
+    if "symbol" not in data:
+
+        data["symbol"] = SYMBOL
 
     return data
 
@@ -2545,6 +2529,10 @@ def journal_signal(
     signal_id = signal.get(
         "id"
     )
+
+    if not signal_id:
+
+        return
 
     for trade in journal[
         "trades"
@@ -2694,24 +2682,6 @@ def journal_signal(
 # =========================================================
 # JOURNAL OUTCOME ENGINE
 # =========================================================
-#
-# Every engine scan checks OPEN journal trades against
-# newly available M5 candles.
-#
-# BUY:
-#   SL hit if candle LOW <= SL
-#   TP hit if candle HIGH >= TP
-#
-# SELL:
-#   SL hit if candle HIGH >= SL
-#   TP hit if candle LOW <= TP
-#
-# If one candle touches both SL and TP:
-#   conservative assumption = LOSS / SL first.
-#
-# This is important for backtesting / forward testing
-# because M5 OHLC does not tell us the intrabar order.
-# =========================================================
 
 def parse_timestamp(
     value
@@ -2792,10 +2762,6 @@ def evaluate_trade_against_candle(
             .to_pydatetime()
         )
 
-    # -----------------------------------------------------
-    # Ignore candle at or before entry.
-    # -----------------------------------------------------
-
     trade_time = parse_timestamp(
         trade.get(
             "timestamp"
@@ -2815,10 +2781,6 @@ def evaluate_trade_against_candle(
     # -----------------------------------------------------
 
     if direction == "BUY":
-
-        # Conservative:
-        # if same candle hits SL and TP,
-        # SL is assumed first.
 
         if low <= sl:
 
@@ -3030,42 +2992,48 @@ def update_journal_outcomes(
 
             continue
 
+        trade_timestamp = pd.Timestamp(
+            trade_time
+        )
+
         candles = m5[
             m5["datetime"]
             >
-            pd.Timestamp(
-                trade_time,
-                tz="UTC"
-            )
+            trade_timestamp
         ]
 
         for _, candle in candles.iterrows():
 
-            old_result = trade.get(
-                "result"
-            )
-
-            trade = (
-                evaluate_trade_against_candle(
+            old_state = (
+                json.dumps(
                     trade,
-                    candle
+                    sort_keys=True,
+                    default=str
                 )
             )
 
-            if trade.get(
-                "result"
-            ) != old_result:
+            evaluate_trade_against_candle(
+                trade,
+                candle
+            )
+
+            new_state = (
+                json.dumps(
+                    trade,
+                    sort_keys=True,
+                    default=str
+                )
+            )
+
+            if old_state != new_state:
 
                 changed = True
 
-                break
+            if trade.get(
+                "result"
+            ) != "OPEN":
 
-        # Replace original dictionary
-        # with updated object.
-        #
-        # Python mutates the same dict,
-        # so no explicit replacement is
-        # technically required.
+                break
 
     if changed:
 
@@ -3078,10 +3046,10 @@ def update_journal_outcomes(
 
 
 # =========================================================
-# FORWARD TEST
+# JOURNAL STATISTICS
 # =========================================================
 
-def calculate_forward_stats():
+def calculate_journal_stats():
 
     journal = load_journal()
 
@@ -3090,11 +3058,20 @@ def calculate_forward_stats():
         []
     )
 
+    if not isinstance(
+        trades,
+        list
+    ):
+
+        trades = []
+
     closed = [
 
-        x for x in trades
+        trade
 
-        if x.get(
+        for trade in trades
+
+        if trade.get(
             "result"
         ) in [
             "WIN",
@@ -3103,29 +3080,46 @@ def calculate_forward_stats():
         ]
     ]
 
+    open_trades = [
+
+        trade
+
+        for trade in trades
+
+        if trade.get(
+            "result"
+        ) == "OPEN"
+    ]
+
     wins = [
 
-        x for x in closed
+        trade
 
-        if x.get(
+        for trade in closed
+
+        if trade.get(
             "result"
         ) == "WIN"
     ]
 
     losses = [
 
-        x for x in closed
+        trade
 
-        if x.get(
+        for trade in closed
+
+        if trade.get(
             "result"
         ) == "LOSS"
     ]
 
     breakeven = [
 
-        x for x in closed
+        trade
 
-        if x.get(
+        for trade in closed
+
+        if trade.get(
             "result"
         ) == "BE"
     ]
@@ -3134,55 +3128,76 @@ def calculate_forward_stats():
         closed
     )
 
-    result_rs = [
+    total_signals = len(
+        trades
+    )
 
-        float(
-            x["result_r"]
+    win_rate = (
+
+        (
+            len(wins)
+            /
+            total
         )
+        *
+        100
 
-        for x in closed
-
-        if x.get(
-            "result_r"
-        ) is not None
-    ]
-
-    result_pips = [
-
-        float(
-            x["result_pips"]
-        )
-
-        for x in closed
-
-        if x.get(
-            "result_pips"
-        ) is not None
-    ]
-
-    total_r = (
-
-        sum(result_rs)
-
-        if result_rs
+        if total > 0
 
         else
 
         0.0
     )
 
-    average_r = (
+    result_pips = []
 
-        sum(result_rs)
-        /
-        len(result_rs)
+    for trade in closed:
 
-        if result_rs
+        value = trade.get(
+            "result_pips"
+        )
 
-        else
+        if value is None:
 
-        None
-    )
+            continue
+
+        try:
+
+            result_pips.append(
+                float(value)
+            )
+
+        except (
+            TypeError,
+            ValueError
+        ):
+
+            continue
+
+    result_r = []
+
+    for trade in closed:
+
+        value = trade.get(
+            "result_r"
+        )
+
+        if value is None:
+
+            continue
+
+        try:
+
+            result_r.append(
+                float(value)
+            )
+
+        except (
+            TypeError,
+            ValueError
+        ):
+
+            continue
 
     total_pips = (
 
@@ -3197,34 +3212,47 @@ def calculate_forward_stats():
 
     average_pips = (
 
-        sum(result_pips)
-        /
-        len(result_pips)
+        (
+            sum(result_pips)
+            /
+            len(result_pips)
+        )
 
         if result_pips
 
         else
 
-        None
+        0.0
     )
 
-    win_rate = (
+    total_r = (
 
-        len(wins)
-        /
-        total
-        *
-        100
+        sum(result_r)
 
-        if total
+        if result_r
 
         else
 
-        None
+        0.0
+    )
+
+    average_r = (
+
+        (
+            sum(result_r)
+            /
+            len(result_r)
+        )
+
+        if result_r
+
+        else
+
+        0.0
     )
 
     # -----------------------------------------------------
-    # Maximum drawdown in R
+    # EQUITY / DRAWDOWN
     # -----------------------------------------------------
 
     equity = 0.0
@@ -3233,26 +3261,24 @@ def calculate_forward_stats():
 
     max_drawdown = 0.0
 
-    for r in result_rs:
+    for r in result_r:
 
         equity += r
 
-        peak = max(
-            peak,
-            equity
-        )
+        if equity > peak:
+
+            peak = equity
 
         drawdown = (
             peak - equity
         )
 
-        max_drawdown = max(
-            max_drawdown,
-            drawdown
-        )
+        if drawdown > max_drawdown:
+
+            max_drawdown = drawdown
 
     # -----------------------------------------------------
-    # Consecutive losses
+    # CONSECUTIVE LOSSES
     # -----------------------------------------------------
 
     current_losses = 0
@@ -3276,28 +3302,44 @@ def calculate_forward_stats():
 
             current_losses = 0
 
-    open_trades = len([
+    # -----------------------------------------------------
+    # LATEST TRADE
+    # -----------------------------------------------------
 
-        x for x in trades
+    latest_trade = (
 
-        if x.get(
-            "result"
-        ) == "OPEN"
-    ])
+        trades[-1]
 
-    data = {
+        if trades
+
+        else
+
+        None
+    )
+
+    latest_closed_trade = None
+
+    for trade in reversed(
+        closed
+    ):
+
+        latest_closed_trade = trade
+
+        break
+
+    stats = {
 
         "status":
-            "FORWARD TESTING",
+            "ACTIVE",
 
         "symbol":
             SYMBOL,
 
         "total_signals":
-            len(trades),
+            total_signals,
 
         "open_trades":
-            open_trades,
+            len(open_trades),
 
         "closed_trades":
             total,
@@ -3312,17 +3354,9 @@ def calculate_forward_stats():
             len(breakeven),
 
         "win_rate":
-            (
-                round(
-                    win_rate,
-                    2
-                )
-
-                if win_rate is not None
-
-                else
-
-                None
+            round(
+                win_rate,
+                2
             ),
 
         "total_pips":
@@ -3332,17 +3366,9 @@ def calculate_forward_stats():
             ),
 
         "average_pips":
-            (
-                round(
-                    average_pips,
-                    1
-                )
-
-                if average_pips is not None
-
-                else
-
-                None
+            round(
+                average_pips,
+                1
             ),
 
         "total_r":
@@ -3352,17 +3378,9 @@ def calculate_forward_stats():
             ),
 
         "average_r":
-            (
-                round(
-                    average_r,
-                    3
-                )
-
-                if average_r is not None
-
-                else
-
-                None
+            round(
+                average_r,
+                3
             ),
 
         "max_drawdown_r":
@@ -3373,6 +3391,100 @@ def calculate_forward_stats():
 
         "max_consecutive_losses":
             max_consecutive_losses,
+
+        "latest_trade":
+            latest_trade,
+
+        "latest_closed_trade":
+            latest_closed_trade,
+
+        "last_updated":
+            now_my().isoformat()
+    }
+
+    return stats
+
+
+# =========================================================
+# FORWARD TEST
+# =========================================================
+
+def calculate_forward_stats():
+
+    stats = calculate_journal_stats()
+
+    data = {
+
+        "status":
+            "FORWARD TESTING",
+
+        "symbol":
+            SYMBOL,
+
+        "total_signals":
+            stats[
+                "total_signals"
+            ],
+
+        "open_trades":
+            stats[
+                "open_trades"
+            ],
+
+        "closed_trades":
+            stats[
+                "closed_trades"
+            ],
+
+        "wins":
+            stats[
+                "wins"
+            ],
+
+        "losses":
+            stats[
+                "losses"
+            ],
+
+        "breakeven":
+            stats[
+                "breakeven"
+            ],
+
+        "win_rate":
+            stats[
+                "win_rate"
+            ],
+
+        "total_pips":
+            stats[
+                "total_pips"
+            ],
+
+        "average_pips":
+            stats[
+                "average_pips"
+            ],
+
+        "total_r":
+            stats[
+                "total_r"
+            ],
+
+        "average_r":
+            stats[
+                "average_r"
+            ],
+
+        "max_drawdown_r":
+            stats[
+                "max_drawdown_r"
+            ],
+
+        "max_consecutive_losses":
+            stats[
+                "max_consecutive_losses"
+            ],
 
         "last_updated":
             now_my().isoformat()
@@ -3526,6 +3638,10 @@ def main():
         calculate_forward_stats()
     )
 
+    journal_stats = (
+        calculate_journal_stats()
+    )
+
     # =====================================================
     # AGGREGATION
     # =====================================================
@@ -3635,19 +3751,6 @@ def main():
 
     # =====================================================
     # NEWS
-    # =====================================================
-    #
-    # Current architecture:
-    #
-    # CLEAR -> PASS
-    #
-    # BLOCK -> BLOCK
-    #
-    # NOT PROVIDED alone does NOT mean
-    # high-impact news exists.
-    #
-    # ForexFactory integration can replace
-    # this layer later.
     # =====================================================
 
     news = {
@@ -3898,8 +4001,13 @@ def main():
         timestamp
     )
 
-    # Recalculate after potential
-    # new journal entry.
+    # =====================================================
+    # RECALCULATE JOURNAL
+    # =====================================================
+
+    journal_stats = (
+        calculate_journal_stats()
+    )
 
     forward_stats = (
         calculate_forward_stats()
@@ -3930,11 +4038,6 @@ def main():
     # =====================================================
     # SAFE PLAN DISPLAY
     # =====================================================
-    #
-    # Important:
-    # An invalid plan should NOT be presented
-    # as an executable trade.
-    # =====================================================
 
     dashboard_plan = (
         plan
@@ -3946,6 +4049,7 @@ def main():
         valid_signal
         else
         {
+
             "valid":
                 False,
 
@@ -3969,6 +4073,140 @@ def main():
     )
 
     # =====================================================
+    # JOURNAL DASHBOARD DATA
+    #
+    # IMPORTANT:
+    #
+    # We expose the values directly inside
+    # dashboard["journal"] so frontend does not
+    # need to guess / calculate them.
+    #
+    # Zero is used instead of null for empty
+    # statistics.
+    # =====================================================
+
+    dashboard_journal = {
+
+        "status":
+            "ACTIVE",
+
+        "enabled":
+            True,
+
+        "file":
+            JOURNAL_FILE.name,
+
+        "symbol":
+            SYMBOL,
+
+        "total_signals":
+            int(
+                journal_stats[
+                    "total_signals"
+                ]
+            ),
+
+        "open_trades":
+            int(
+                journal_stats[
+                    "open_trades"
+                ]
+            ),
+
+        "closed_trades":
+            int(
+                journal_stats[
+                    "closed_trades"
+                ]
+            ),
+
+        "wins":
+            int(
+                journal_stats[
+                    "wins"
+                ]
+            ),
+
+        "losses":
+            int(
+                journal_stats[
+                    "losses"
+                ]
+            ),
+
+        "breakeven":
+            int(
+                journal_stats[
+                    "breakeven"
+                ]
+            ),
+
+        "win_rate":
+            float(
+                journal_stats[
+                    "win_rate"
+                ]
+            ),
+
+        "total_pips":
+            float(
+                journal_stats[
+                    "total_pips"
+                ]
+            ),
+
+        "average_pips":
+            float(
+                journal_stats[
+                    "average_pips"
+                ]
+            ),
+
+        "total_r":
+            float(
+                journal_stats[
+                    "total_r"
+                ]
+            ),
+
+        "average_r":
+            float(
+                journal_stats[
+                    "average_r"
+                ]
+            ),
+
+        "max_drawdown_r":
+            float(
+                journal_stats[
+                    "max_drawdown_r"
+                ]
+            ),
+
+        "max_consecutive_losses":
+            int(
+                journal_stats[
+                    "max_consecutive_losses"
+                ]
+            ),
+
+        "latest_trade":
+            journal_stats[
+                "latest_trade"
+            ],
+
+        "latest_closed_trade":
+            journal_stats[
+                "latest_closed_trade"
+            ],
+
+        "last_updated":
+            journal_stats[
+                "last_updated"
+            ]
+    }
+
+    # =====================================================
     # DASHBOARD
     # =====================================================
 
@@ -3980,7 +4218,7 @@ def main():
                 "BOSQUE FOREX AI",
 
             "version":
-                "SCALPING V4",
+                "SCALPING V4.1",
 
             "symbol":
                 SYMBOL,
@@ -4226,8 +4464,6 @@ def main():
             "news":
                 news_ok,
 
-            # Informational only.
-            # NEVER blocks signal.
             "session":
                 session_ok,
 
@@ -4480,30 +4716,23 @@ def main():
         # =================================================
         # JOURNAL
         # =================================================
+        #
+        # THIS IS THE IMPORTANT FIX.
+        # All values are directly exposed.
+        # =================================================
 
-        "journal": {
+        "journal":
+            dashboard_journal,
 
-            "status":
-                "ACTIVE",
+        # =================================================
+        # FRONTEND ALIAS
+        #
+        # Some dashboard versions may use
+        # "trading_journal" instead of "journal".
+        # =================================================
 
-            "file":
-                JOURNAL_FILE.name,
-
-            "total_signals":
-                forward_stats[
-                    "total_signals"
-                ],
-
-            "open_trades":
-                forward_stats[
-                    "open_trades"
-                ],
-
-            "closed_trades":
-                forward_stats[
-                    "closed_trades"
-                ]
-        },
+        "trading_journal":
+            dashboard_journal,
 
         # =================================================
         # FORWARD TEST
