@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T19:00:52.424066+08:00",
+    "timestamp": "2026-09-30T19:05:33.347637+08:00",
     "status": "WAIT — SCORE BELOW 70"
   },
-  "latest_price": 4183.05,
+  "latest_price": 4185.67,
   "session": "LONDON",
   "session_preferred": true,
   "market_mode": "RANGING",
@@ -19,12 +19,12 @@
       "high": 4202.38696,
       "low": 4142.19646,
       "width": 60.1904999999997,
-      "location": 0.6786979672871983
+      "location": 0.7222845797924892
     }
   },
   "volatility": {
-    "atr": 3.0,
-    "atr_pips": 30.0,
+    "atr": 2.91,
+    "atr_pips": 29.1,
     "condition": "NORMAL"
   },
   "pd": {
@@ -52,11 +52,11 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "BUY RANGE REVERSAL",
+    "type": "BUY LIQUIDITY SWEEP",
     "direction": "BUY",
     "valid": false,
     "analysis_valid": true,
-    "score": 45,
+    "score": 35,
     "minimum_score": 70,
     "status": "WAIT — SCORE BELOW 70"
   },
@@ -64,20 +64,20 @@
     "active": false,
     "id": null,
     "direction": "BUY",
-    "opportunity": "BUY RANGE REVERSAL",
-    "score": 45,
-    "timestamp": "2026-09-30T19:00:52.424066+08:00",
+    "opportunity": "BUY LIQUIDITY SWEEP",
+    "score": 35,
+    "timestamp": "2026-09-30T19:05:33.347637+08:00",
     "status": "WAIT",
     "gate_reasons": [
-      "Score 45 < 70",
+      "Score 35 < 70",
       "M5 confirmation missing",
-      "BUY invalid: swing low is not below entry"
+      "Risk 11.0 pips outside 25-80"
     ]
   },
   "plan": {
     "valid": false,
     "status": "NO EXECUTABLE PLAN",
-    "reason": "BUY invalid: swing low is not below entry"
+    "reason": "Risk 11.0 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -103,10 +103,10 @@
     "swing_lows_count": 21,
     "setup": {
       "direction": "BUY",
-      "opportunity": "BUY RANGE REVERSAL",
+      "opportunity": "BUY LIQUIDITY SWEEP",
       "valid": true,
       "reason": [
-        "M15 range low + sell-side sweep"
+        "M15 sell-side liquidity sweep"
       ],
       "pd": {
         "zone": "DISCOUNT",
@@ -133,22 +133,22 @@
         "high": 4202.38696,
         "low": 4176.91483,
         "width": 25.472130000000107,
-        "location": 0.24076510287911887
+        "location": 0.3437600232096795
       }
     }
   },
   "m5": {
     "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4190.41234,
     "swing_low": 4185.15108,
-    "swing_highs_count": 65,
+    "swing_highs_count": 64,
     "swing_lows_count": 67,
     "confirmation": {
       "confirmed": false,
-      "bos": "BEARISH BOS",
+      "bos": null,
       "candle": false,
-      "momentum": "BEARISH",
+      "momentum": "NEUTRAL",
       "reason": "NO CONFIRMATION"
     }
   },
@@ -164,24 +164,24 @@
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "BUY RANGE REVERSAL",
+    "m15_setup": "BUY LIQUIDITY SWEEP",
     "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
     "pd_zone": "DISCOUNT"
   },
   "signal_gate": {
     "valid": false,
-    "score": 45,
+    "score": 35,
     "minimum_score": 70,
     "reasons": [
-      "Score 45 < 70",
+      "Score 35 < 70",
       "M5 confirmation missing",
-      "BUY invalid: swing low is not below entry"
+      "Risk 11.0 pips outside 25-80"
     ]
   },
   "risk_engine": {
     "status": "INVALID",
-    "risk_pips": null,
+    "risk_pips": 11.0,
     "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
@@ -191,13 +191,13 @@
   "trade_plan_audit": {
     "status": "FAIL",
     "direction": "BUY",
-    "entry": 4183.05,
-    "sl": null,
+    "entry": 4185.67,
+    "sl": 4184.57,
     "tp1": null,
     "tp2": null,
     "tp3": null,
     "geometry": null,
-    "reason": "BUY invalid: swing low is not below entry"
+    "reason": "Risk 11.0 pips outside 25-80"
   },
   "invalidation": {
     "status": "WAIT",
@@ -244,7 +244,7 @@
     "average_r": null,
     "max_drawdown_r": 0.0,
     "max_consecutive_losses": 0,
-    "last_updated": "2026-09-30T19:00:53.081610+08:00"
+    "last_updated": "2026-09-30T19:05:33.908321+08:00"
   },
   "backtest": {
     "status": "READY",
