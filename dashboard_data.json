@@ -4,10 +4,10 @@
     "version": "SCALPING V4",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-09-30T13:35:33.780534+08:00",
+    "timestamp": "2026-09-30T13:40:37.307330+08:00",
     "status": "WAIT — SCORE BELOW 70"
   },
-  "latest_price": 4173.45,
+  "latest_price": 4178.94,
   "session": "ASIAN",
   "session_preferred": false,
   "market_mode": "TRENDING",
@@ -15,29 +15,29 @@
     "type": "TRENDING",
     "h1_direction": "BULLISH",
     "range": {
-      "is_range": true,
+      "is_range": false,
       "high": 4187.64029,
       "low": 4142.19646,
       "width": 45.44383000000016,
-      "location": 0.6877617929650747
+      "location": 0.8085850158316358
     }
   },
   "volatility": {
-    "atr": 3.64,
-    "atr_pips": 36.4,
+    "atr": 4.16,
+    "atr_pips": 41.6,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "DISCOUNT",
+    "zone": "PREMIUM",
     "equilibrium": 4174.97,
     "high": 4184.32,
     "low": 4165.63
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": true,
-    "swept_level": 4170.30318,
-    "description": "SELL-SIDE LIQUIDITY SWEPT",
+    "sell_side_sweep": false,
+    "swept_level": null,
+    "description": "NONE",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -52,32 +52,33 @@
     "filter": "PASS"
   },
   "opportunity": {
-    "type": "BUY LIQUIDITY SWEEP",
-    "direction": "BUY",
+    "type": "NO VALID SETUP",
+    "direction": null,
     "valid": false,
-    "analysis_valid": true,
-    "score": 45,
+    "analysis_valid": false,
+    "score": 20,
     "minimum_score": 70,
     "status": "WAIT — SCORE BELOW 70"
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": "BUY",
-    "opportunity": "BUY LIQUIDITY SWEEP",
-    "score": 45,
-    "timestamp": "2026-09-30T13:35:33.780534+08:00",
+    "direction": null,
+    "opportunity": "NO VALID SETUP",
+    "score": 20,
+    "timestamp": "2026-09-30T13:40:37.307330+08:00",
     "status": "WAIT",
     "gate_reasons": [
-      "Score 45 < 70",
+      "Score 20 < 70",
+      "M15 setup invalid",
       "M5 confirmation missing",
-      "Risk 85.5 pips outside 25-80"
+      "NO VALID DIRECTION"
     ]
   },
   "plan": {
     "valid": false,
     "status": "NO EXECUTABLE PLAN",
-    "reason": "Risk 85.5 pips outside 25-80"
+    "reason": "NO VALID DIRECTION"
   },
   "potential": {
     "tp1_pips": null,
@@ -99,33 +100,31 @@
     "bos": null,
     "swing_high": 4184.27549,
     "swing_low": 4170.30318,
-    "swing_highs_count": 22,
+    "swing_highs_count": 21,
     "swing_lows_count": 22,
     "setup": {
-      "direction": "BUY",
-      "opportunity": "BUY LIQUIDITY SWEEP",
-      "valid": true,
-      "reason": [
-        "M15 sell-side liquidity sweep"
-      ],
+      "direction": null,
+      "opportunity": "NO VALID SETUP",
+      "valid": false,
+      "reason": [],
       "pd": {
-        "zone": "DISCOUNT",
+        "zone": "PREMIUM",
         "equilibrium": 4174.97,
         "high": 4184.32,
         "low": 4165.63
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": true,
-        "swept_level": 4170.30318,
-        "description": "SELL-SIDE LIQUIDITY SWEPT"
+        "sell_side_sweep": false,
+        "swept_level": null,
+        "description": "NONE"
       },
       "structure": {
         "direction": "RANGE",
         "bos": null,
         "swing_high": 4184.27549,
         "swing_low": 4170.30318,
-        "swing_highs_count": 22,
+        "swing_highs_count": 21,
         "swing_lows_count": 22
       },
       "range": {
@@ -133,7 +132,7 @@
         "high": 4184.31985,
         "low": 4165.62526,
         "width": 18.694590000000062,
-        "location": 0.41860934099118785
+        "location": 0.7123130274587764
       }
     }
   },
@@ -142,19 +141,19 @@
     "bos": null,
     "swing_high": 4182.35048,
     "swing_low": 4165.62526,
-    "swing_highs_count": 68,
+    "swing_highs_count": 67,
     "swing_lows_count": 67,
     "confirmation": {
       "confirmed": false,
       "bos": null,
       "candle": false,
       "momentum": "NEUTRAL",
-      "reason": "NO CONFIRMATION"
+      "reason": "NO DIRECTION"
     }
   },
   "filters": {
     "score": false,
-    "setup": true,
+    "setup": false,
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
@@ -164,24 +163,25 @@
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "BUY LIQUIDITY SWEEP",
-    "m5_confirmation": "NO CONFIRMATION",
-    "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
-    "pd_zone": "DISCOUNT"
+    "m15_setup": "NO VALID SETUP",
+    "m5_confirmation": "NO DIRECTION",
+    "liquidity": "NONE",
+    "pd_zone": "PREMIUM"
   },
   "signal_gate": {
     "valid": false,
-    "score": 45,
+    "score": 20,
     "minimum_score": 70,
     "reasons": [
-      "Score 45 < 70",
+      "Score 20 < 70",
+      "M15 setup invalid",
       "M5 confirmation missing",
-      "Risk 85.5 pips outside 25-80"
+      "NO VALID DIRECTION"
     ]
   },
   "risk_engine": {
     "status": "INVALID",
-    "risk_pips": 85.5,
+    "risk_pips": null,
     "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
@@ -190,14 +190,14 @@
   },
   "trade_plan_audit": {
     "status": "FAIL",
-    "direction": "BUY",
-    "entry": 4173.45,
-    "sl": 4164.9,
+    "direction": null,
+    "entry": null,
+    "sl": null,
     "tp1": null,
     "tp2": null,
     "tp3": null,
     "geometry": null,
-    "reason": "Risk 85.5 pips outside 25-80"
+    "reason": "NO VALID DIRECTION"
   },
   "invalidation": {
     "status": "WAIT",
@@ -217,8 +217,8 @@
     "session_filter": "NON-PREFERRED",
     "session_blocking": "NO",
     "risk": "UNKNOWN",
-    "fresh_zone": "YES",
-    "m15_setup": "YES",
+    "fresh_zone": "NO",
+    "m15_setup": "NO",
     "m5_confirmation": "NO"
   },
   "journal": {
@@ -244,7 +244,7 @@
     "average_r": null,
     "max_drawdown_r": 0.0,
     "max_consecutive_losses": 0,
-    "last_updated": "2026-09-30T13:35:34.473998+08:00"
+    "last_updated": "2026-09-30T13:40:38.076635+08:00"
   },
   "backtest": {
     "status": "READY",
