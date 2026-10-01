@@ -1,16 +1,16 @@
 {
   "engine": {
     "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-01T14:16:13.484112+00:00",
+    "timestamp": "2026-10-01T14:21:06.078369+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4153.65706,
+  "latest_price": 4155.24326,
   "session": "NEW YORK",
   "signal": {
     "active": false,
     "direction": null,
-    "candle_time": "2026-10-01T14:10:00+00:00"
+    "candle_time": "2026-10-01T14:15:00+00:00"
   },
   "plan": {
     "valid": false,
@@ -26,8 +26,8 @@
     "type": "BULLISH"
   },
   "volatility": {
-    "atr": 5.57,
-    "atr_pips": 55.7,
+    "atr": 5.75,
+    "atr_pips": 57.5,
     "condition": "NORMAL"
   },
   "pd": {
@@ -240,14 +240,14 @@
   },
   "backtest": {
     "status": "COMPLETED",
-    "version": "V5.2 REPAIRED",
+    "version": "V5.3 CANDIDATE",
     "symbol": "XAU/USD",
     "timeframe": "M5",
     "bars_used": 4999,
-    "period_start": "2026-09-13T19:25:00+00:00",
-    "period_end": "2026-10-01T03:55:00+00:00",
+    "period_start": "2026-09-14T05:35:00+00:00",
+    "period_end": "2026-10-01T14:05:00+00:00",
     "source_sha256": {
-      "XAUUSD_M5_auto.csv": "2d792c58940e34459d1a13abbe1d1f7fae2e0d5388074d5e517c01f3222bf82a"
+      "XAUUSD_M5_auto.csv": "655762ee422e273ecced90fced76d9b3473f41d48bf5bdf603179a651aecaf93"
     },
     "cost_model": {
       "status": "GROSS_ONLY_UNCONFIGURED",
@@ -256,27 +256,34 @@
       "commission_round_trip_pips": 0.0
     },
     "news_mode": "WITHOUT_NEWS_NOT_LIVE_EQUIVALENT",
-    "development_period": "Before 2026-09-27 16:40:00+00:00",
-    "out_of_sample": "From 2026-09-27 16:40:00+00:00",
+    "development_period": "Before 2026-09-28 02:50:00+00:00",
+    "out_of_sample": "From 2026-09-28 02:50:00+00:00",
     "forward": "Separate live paper journal; not historical proof",
+    "data_quality": {
+      "rows": 4999,
+      "expected_interval_minutes": 5,
+      "gaps": 0,
+      "largest_gap_minutes": 0,
+      "first_candle": "2026-09-14T05:35:00+00:00",
+      "last_candle": "2026-10-01T14:05:00+00:00",
+      "gap_policy": "UNRESOLVED_TRADES_BLOCK_NEW_ENTRIES"
+    },
+    "walk_forward": {},
     "results": {
       "development": {
         "stats": {
           "status": "PAPER SIMULATION",
-          "trades": 7,
-          "wins": 2,
-          "losses": 5,
-          "win_rate": 28.57,
-          "win_rate_95_interval": [
-            8.22,
-            64.11
-          ],
-          "average_r": -0.22181171428571428,
-          "expectancy_r": -0.22181171428571428,
-          "profit_factor": 0.6894636000000001,
-          "max_drawdown": 5.0,
-          "max_consecutive_losses": 5,
-          "total_pips": -178.64200000000002,
+          "trades": 0,
+          "wins": 0,
+          "losses": 0,
+          "win_rate": null,
+          "win_rate_95_interval": null,
+          "average_r": null,
+          "expectancy_r": null,
+          "profit_factor": null,
+          "max_drawdown": 0,
+          "max_consecutive_losses": 0,
+          "total_pips": 0,
           "open_trades": 0,
           "unresolved": 0,
           "cost_status": "GROSS_OR_MIXED_NOT_NET_VALIDATED"
@@ -285,34 +292,35 @@
       "out_of_sample": {
         "stats": {
           "status": "PAPER SIMULATION",
-          "trades": 3,
-          "wins": 1,
-          "losses": 2,
-          "win_rate": 33.33,
-          "win_rate_95_interval": [
-            6.15,
-            79.23
-          ],
-          "average_r": 0.03440466666666664,
-          "expectancy_r": 0.03440466666666664,
-          "profit_factor": 1.051607,
-          "max_drawdown": 2.0,
-          "max_consecutive_losses": 2,
-          "total_pips": 30.328500000000005,
+          "trades": 0,
+          "wins": 0,
+          "losses": 0,
+          "win_rate": null,
+          "win_rate_95_interval": null,
+          "average_r": null,
+          "expectancy_r": null,
+          "profit_factor": null,
+          "max_drawdown": 0,
+          "max_consecutive_losses": 0,
+          "total_pips": 0,
           "open_trades": 0,
           "unresolved": 0,
           "cost_status": "GROSS_OR_MIXED_NOT_NET_VALIDATED"
         }
       }
     },
-    "last_updated": "2026-10-01T04:04:03.189482+00:00",
+    "last_updated": "2026-10-01T14:15:55.842531+00:00",
     "note": "No optimization. Data gaps unresolved and block further entries. OPEN/PENDING are excluded from winrate. Costs charged once on exit. OHLC ambiguity uses SL first.",
     "automation": {
       "source": "Twelve Data XAU/USD M5",
       "requests": 1,
-      "requested_bars": 5000,
+      "requested_bars_per_request": 5000,
+      "requested_start": null,
+      "requested_end": "2026-10-01T14:14:40.039425+00:00",
+      "coverage_complete": true,
       "received_closed_bars": 4999,
       "split_rule": "FIXED_CHRONOLOGICAL_80_20",
+      "walk_forward_folds": 0,
       "cost_input": "UNCONFIGURED_GROSS_ONLY",
       "historical_news": "UNAVAILABLE \u2014 current weekly feed is not a historical calendar"
     }
@@ -322,7 +330,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-01T14:10:00+00:00"
+    "last_processed_candle": "2026-10-01T14:15:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -332,8 +340,8 @@
     "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
-    "last_candle": "2026-10-01T14:10:00+00:00",
-    "age_minutes": 1.2247352,
+    "last_candle": "2026-10-01T14:15:00+00:00",
+    "age_minutes": 1.1013061499999999,
     "late_signal_blocked": false
   },
   "telegram": {
