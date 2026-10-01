@@ -1,608 +1,85 @@
-import pandas as pd
-import numpy as np
+"""Explicit historical replay using the V5.2 live strategy and paper execution model."""
+import argparse, hashlib, json
 from pathlib import Path
-
-
-# =========================================================
-# BOSQUE FOREX AI
-# BACKTEST FRAMEWORK
-# =========================================================
-
-ENGINE_DIR = Path(__file__).resolve().parent
-REPO_DIR = ENGINE_DIR.parent
-
-DATA_DIR = REPO_DIR / "backtest_data"
-RESULT_FILE = REPO_DIR / "backtest_results.csv"
-
-
-# =========================================================
-# SETTINGS
-# =========================================================
-
-START_YEAR = 2022
-END_YEAR = 2025
-
-INITIAL_R = 0.0
-
-MIN_SCORE = 70
-
-MIN_RISK_PIPS = 25
-MAX_RISK_PIPS = 80
-
-TP1_R = None
-TP2_R = 2.0
-TP3_R = 3.0
-
-
-# =========================================================
-# LOAD DATA
-# =========================================================
-
-def load_data():
-
-    files = list(
-        DATA_DIR.glob("*.csv")
-    )
-
-    if not files:
-        raise RuntimeError(
-            "No CSV files found in backtest_data/"
-        )
-
-    frames = []
-
-    for file in files:
-
-        df = pd.read_csv(file)
-
-        frames.append(df)
-
-    data = pd.concat(
-        frames,
-        ignore_index=True
-    )
-
-    if "datetime" not in data.columns:
-
-        raise RuntimeError(
-            "CSV must contain datetime column"
-        )
-
-    data["datetime"] = pd.to_datetime(
-        data["datetime"]
-    )
-
-    data = data.sort_values(
-        "datetime"
-    )
-
-    data = data.drop_duplicates(
-        "datetime"
-    )
-
-    data = data.reset_index(
-        drop=True
-    )
-
-    return data
-
-
-# =========================================================
-# ATR
-# =========================================================
-
-def calculate_atr(
-    df,
-    period=14
-):
-
-    prev_close = \
-        df["close"].shift(1)
-
-    tr1 = \
-        df["high"] - df["low"]
-
-    tr2 = \
-        abs(
-            df["high"] -
-            prev_close
-        )
-
-    tr3 = \
-        abs(
-            df["low"] -
-            prev_close
-        )
-
-    tr = pd.concat(
-        [tr1,tr2,tr3],
-        axis=1
-    ).max(axis=1)
-
-    return tr.rolling(
-        period
-    ).mean()
-
-
-# =========================================================
-# BASIC STRUCTURE
-# =========================================================
-
-def get_direction(
-    closes
-):
-
-    if len(closes) < 10:
-        return "RANGE"
-
-    first = closes.iloc[0]
-    last = closes.iloc[-1]
-
-    change = last - first
-
-    if change > 0:
-        return "BULLISH"
-
-    if change < 0:
-        return "BEARISH"
-
-    return "RANGE"
-
-
-# =========================================================
-# SESSION
-# =========================================================
-
-def get_session(
-    dt
-):
-
-    hour = dt.hour
-
-    if 7 <= hour < 15:
-        return "ASIAN"
-
-    if 15 <= hour < 20:
-        return "LONDON"
-
-    if 20 <= hour < 23:
-        return "NEW YORK"
-
-    if 0 <= hour < 1:
-        return "NEW YORK"
-
-    return "OFF"
-
-
-# =========================================================
-# SIGNAL SIMULATION
-# =========================================================
-
-def generate_signal(
-    data,
-    index
-):
-
-    if index < 100:
-        return None
-
-    current = data.iloc[index]
-
-    history = data.iloc[
-        index-100:index
-    ]
-
-    direction = get_direction(
-        history["close"]
-    )
-
-    session = get_session(
-        current["datetime"]
-    )
-
-    # Mandatory SOP:
-    # Avoid Asia / OFF session
-
-    if session not in [
-        "LONDON",
-        "NEW YORK"
-    ]:
-        return None
-
-    atr = current["atr"]
-
-    if pd.isna(atr):
-        return None
-
-    # Volatility filter
-
-    atr_pips = atr / 0.10
-
-    if atr_pips < 25:
-        return None
-
-    if atr_pips > 100:
-        return None
-
-    entry = float(
-        current["close"]
-    )
-
-    # -----------------------------------------------------
-    # Simplified historical test logic
-    # -----------------------------------------------------
-
-    if direction == "BULLISH":
-
-        recent_low = \
-            history["low"].tail(10).min()
-
-        sl = recent_low - 0.20
-
-        risk_price = \
-            entry - sl
-
-        risk_pips = \
-            risk_price / 0.10
-
-        if not (
-            MIN_RISK_PIPS
-            <= risk_pips
-            <= MAX_RISK_PIPS
-        ):
-            return None
-
-        tp2 = \
-            entry + (
-                risk_price * 2
-            )
-
-        return {
-            "direction":"BUY",
-            "entry":entry,
-            "sl":sl,
-            "tp2":tp2,
-            "risk_pips":risk_pips,
-            "session":session,
-            "score":70
-        }
-
-    if direction == "BEARISH":
-
-        recent_high = \
-            history["high"].tail(10).max()
-
-        sl = recent_high + 0.20
-
-        risk_price = \
-            sl - entry
-
-        risk_pips = \
-            risk_price / 0.10
-
-        if not (
-            MIN_RISK_PIPS
-            <= risk_pips
-            <= MAX_RISK_PIPS
-        ):
-            return None
-
-        tp2 = \
-            entry - (
-                risk_price * 2
-            )
-
-        return {
-            "direction":"SELL",
-            "entry":entry,
-            "sl":sl,
-            "tp2":tp2,
-            "risk_pips":risk_pips,
-            "session":session,
-            "score":70
-        }
-
-    return None
-
-
-# =========================================================
-# TRADE OUTCOME
-# =========================================================
-
-def simulate_trade(
-    data,
-    entry_index,
-    signal
-):
-
-    entry = signal["entry"]
-    sl = signal["sl"]
-    tp2 = signal["tp2"]
-
-    direction = signal["direction"]
-
-    for i in range(
-        entry_index + 1,
-        len(data)
-    ):
-
-        candle = data.iloc[i]
-
-        high = float(
-            candle["high"]
-        )
-
-        low = float(
-            candle["low"]
-        )
-
-        # BUY
-        if direction == "BUY":
-
-            if low <= sl:
-
-                return {
-                    **signal,
-                    "result":"LOSS",
-                    "r":-1,
-                    "exit_index":i
-                }
-
-            if high >= tp2:
-
-                return {
-                    **signal,
-                    "result":"WIN",
-                    "r":2,
-                    "exit_index":i
-                }
-
-        # SELL
-        if direction == "SELL":
-
-            if high >= sl:
-
-                return {
-                    **signal,
-                    "result":"LOSS",
-                    "r":-1,
-                    "exit_index":i
-                }
-
-            if low <= tp2:
-
-                return {
-                    **signal,
-                    "result":"WIN",
-                    "r":2,
-                    "exit_index":i
-                }
-
-    return {
-        **signal,
-        "result":"OPEN",
-        "r":0,
-        "exit_index":len(data)-1
-    }
-
-
-# =========================================================
-# METRICS
-# =========================================================
-
-def calculate_metrics(
-    trades
-):
-
-    if not trades:
-
-        return {
-            "trades":0
-        }
-
-    df = pd.DataFrame(
-        trades
-    )
-
-    closed = df[
-        df["result"].isin(
-            ["WIN","LOSS"]
-        )
-    ]
-
-    if closed.empty:
-
-        return {
-            "trades":0
-        }
-
-    wins = closed[
-        closed["result"] == "WIN"
-    ]
-
-    losses = closed[
-        closed["result"] == "LOSS"
-    ]
-
-    win_rate = (
-        len(wins) /
-        len(closed) *
-        100
-    )
-
-    avg_r = \
-        closed["r"].mean()
-
-    gross_profit = \
-        wins["r"].sum()
-
-    gross_loss = abs(
-        losses["r"].sum()
-    )
-
-    if gross_loss > 0:
-
-        profit_factor = \
-            gross_profit / gross_loss
-
+import pandas as pd
+import bosque_engine as e
+
+
+def replay(df, cost, calendar=None, start=None, end=None):
+    trades=[]; eligible=0
+    for i,row in enumerate(df.itertuples(index=False)):
+        # Resolve existing positions before deciding at this bar's close.
+        for t in trades[-1:]: e.process_bar(t,row)
+        at=row.datetime+pd.Timedelta(minutes=5)
+        if (start is not None and at<start) or (end is not None and at>=end): continue
+        if not e.entry_allowed(trades,at): continue
+        if calendar is not None and not e.news_at(calendar,at)['ok']: continue
+        ev=e.evaluate(df.iloc[max(0,i+1-e.OUTPUT_SIZE):i+1])
+        if ev['active']:
+            eligible+=1; trades.append(e.new_trade(ev,cost))
+    return {'stats':e.stats(trades),'trades':trades,'eligible_signals':eligible}
+
+
+def run(args):
+    frames=[]; hashes={}
+    for name in args.csv:
+        path=Path(name); hashes[path.name]=hashlib.sha256(path.read_bytes()).hexdigest()
+        frame=pd.read_csv(path)
+        # Naive CSV timestamps must be explicitly localized; never guess broker timezone.
+        parsed=pd.to_datetime(frame['datetime'])
+        if parsed.dt.tz is None:
+            if not args.timezone: raise ValueError('Naive timestamps require --timezone, e.g. UTC')
+            parsed=parsed.dt.tz_localize(args.timezone,ambiguous='raise',nonexistent='raise')
+        frame['datetime']=parsed.dt.tz_convert('UTC'); frames.append(frame)
+    df=e.validate_bars(pd.concat(frames,ignore_index=True))
+    if len(df)<400: raise ValueError('At least 400 M5 candles required')
+    cost=args.spread_pips+2*args.slippage_pips+args.commission_pips
+    if any(not e.math.isfinite(x) or x<0 for x in [args.spread_pips,args.slippage_pips,args.commission_pips]): raise ValueError('Costs must be finite and nonnegative')
+    calendar=None
+    if args.news:
+        calendar=e.load_json(args.news)
+        calendar['events']=e.normalize_events(calendar['events'])
+        if e.stamp(calendar['coverage_start'])>df.iloc[0].datetime or e.stamp(calendar['coverage_end'])<=df.iloc[-1].datetime+pd.Timedelta(minutes=5): raise ValueError('Historical calendar must cover full dataset')
+    split=e.stamp(args.split) if args.split else None
+    if split is not None and not df.iloc[0].datetime<split<df.iloc[-1].datetime: raise ValueError('Split must be inside dataset')
+    if split is None:
+        results={'full_sample':replay(df,cost,calendar)}
     else:
+        # Independent runs; past bars warm up OOS but no development position crosses the split.
+        results={'development':replay(df[df.datetime+pd.Timedelta(minutes=5)<split],cost,calendar),
+                 'out_of_sample':replay(df,cost,calendar,start=split)}
+    out={'status':'INCOMPLETE_DATA' if any(v['stats']['unresolved'] for v in results.values()) else 'COMPLETED','version':e.VERSION,'symbol':e.SYMBOL,'timeframe':'M5',
+         'bars_used':len(df),'period_start':df.iloc[0].datetime.isoformat(),'period_end':df.iloc[-1].datetime.isoformat(),
+         'source_sha256':hashes,'cost_model':{'spread_pips':args.spread_pips,'slippage_per_side_pips':args.slippage_pips,'commission_round_trip_pips':args.commission_pips},
+         'news_mode':'HISTORICAL_CALENDAR' if calendar else 'WITHOUT_NEWS_NOT_LIVE_EQUIVALENT',
+         'development_period':'Before '+str(split) if split is not None else 'Full sample; no holdout',
+         'out_of_sample':'From '+str(split) if split is not None else 'NOT SEPARATED',
+         'forward':'Separate live paper journal; not historical proof',
+         'results':results,'last_updated':e.now_utc().isoformat(),
+         'note':'No optimization. Data gaps unresolved and block further entries. OPEN/PENDING are excluded from winrate. Costs charged once on exit. OHLC ambiguity uses SL first.'}
+    e.save_json(e.BACKTEST_FILE,out)
+    for name,result in results.items():
+        e.save_json(e.DATA_DIR/('backtest_'+name+'_trades.json'),result['trades'])
+    # The live engine publishes this summary on its next scan.
+    print(json.dumps(e.clean({k:v['stats'] for k,v in results.items()}),indent=2))
+    return out
 
-        profit_factor = np.inf
-
-    equity = 0
-    peak = 0
-    max_dd = 0
-
-    for r in closed["r"]:
-
-        equity += r
-
-        peak = max(
-            peak,
-            equity
-        )
-
-        dd = peak - equity
-
-        max_dd = max(
-            max_dd,
-            dd
-        )
-
-    consecutive_losses = 0
-    max_consecutive_losses = 0
-
-    for r in closed["r"]:
-
-        if r < 0:
-
-            consecutive_losses += 1
-
-            max_consecutive_losses = max(
-                max_consecutive_losses,
-                consecutive_losses
-            )
-
-        else:
-
-            consecutive_losses = 0
-
-    return {
-        "trades":len(closed),
-        "win_rate":round(
-            win_rate,
-            2
-        ),
-        "average_r":round(
-            avg_r,
-            3
-        ),
-        "profit_factor":round(
-            profit_factor,
-            3
-        )
-        if np.isfinite(profit_factor)
-        else None,
-        "max_drawdown_r":round(
-            max_dd,
-            2
-        ),
-        "max_consecutive_losses":
-            max_consecutive_losses
-    }
-
-
-# =========================================================
-# MAIN
-# =========================================================
 
 def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--csv',nargs='+',required=True)
+    p.add_argument('--timezone',help='Timezone for naive CSV dates; timestamps are candle OPEN times')
+    p.add_argument('--spread-pips',type=float,required=True)
+    p.add_argument('--slippage-pips',type=float,required=True,help='Per side')
+    p.add_argument('--commission-pips',type=float,default=0,help='Round trip equivalent in project pips')
+    p.add_argument('--split',help='Predeclared holdout boundary, e.g. 2025-01-01T00:00:00Z')
+    mode=p.add_mutually_exclusive_group(required=True)
+    mode.add_argument('--news',help='JSON envelope: coverage_start, coverage_end, events (offset-aware dates)')
+    mode.add_argument('--without-news',action='store_true',help='Explicitly run a research baseline without historical news')
+    args=p.parse_args()
+    try: run(args)
+    except Exception as exc:
+        e.save_json(e.BACKTEST_FILE,{'status':'FAILED','reason':str(exc),'last_updated':e.now_utc().isoformat()})
+        raise
 
-    print(
-        "👑 BOSQUE FOREX AI BACKTEST"
-    )
-
-    data = load_data()
-
-    data["atr"] = calculate_atr(
-        data
-    )
-
-    data = data[
-        data["datetime"].dt.year
-        .between(
-            START_YEAR,
-            END_YEAR
-        )
-    ].reset_index(
-        drop=True
-    )
-
-    trades = []
-
-    i = 100
-
-    while i < len(data):
-
-        signal = generate_signal(
-            data,
-            i
-        )
-
-        if signal:
-
-            result = simulate_trade(
-                data,
-                i,
-                signal
-            )
-
-            trades.append(
-                result
-            )
-
-            exit_index = result[
-                "exit_index"
-            ]
-
-            # Move to after trade closes
-            i = max(
-                i + 1,
-                exit_index + 1
-            )
-
-        else:
-
-            i += 1
-
-    metrics = calculate_metrics(
-        trades
-    )
-
-    print("\nBACKTEST RESULTS")
-    print("================")
-
-    for key, value in metrics.items():
-
-        print(
-            f"{key}: {value}"
-        )
-
-    if trades:
-
-        results = pd.DataFrame(
-            trades
-        )
-
-        results.to_csv(
-            RESULT_FILE,
-            index=False
-        )
-
-        print(
-            f"\nSaved: {RESULT_FILE}"
-        )
-
-
-if __name__ == "__main__":
-    main()
+if __name__=='__main__': main()

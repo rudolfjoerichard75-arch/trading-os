@@ -1,0 +1,73 @@
+name: Bosque historical backtest
+on:
+  workflow_dispatch:
+    inputs:
+      spread_pips:
+        description: 'Measured spread in project pips (1 pip = 0.10)'
+        required: true
+      slippage_pips:
+        description: 'Slippage per side in project pips'
+        required: true
+      split:
+        description: 'Optional predeclared OOS boundary, e.g. 2025-01-01T00:00:00Z'
+        required: false
+      historical_news:
+        description: 'Use backtest_data/news.json; false explicitly tests WITHOUT news'
+        type: boolean
+        default: true
+concurrency:
+  group: bosque-historical-backtest
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r engine/requirements.txt
+      - run: |
+          python -m unittest discover -s tests -v
+          node tests/test_dashboard.cjs
+      - name: Replay historical dataset
+        id: replay
+        continue-on-error: true
+        env:
+          SPREAD_INPUT: ${{ inputs.spread_pips }}
+          SLIPPAGE_INPUT: ${{ inputs.slippage_pips }}
+          SPLIT_INPUT: ${{ inputs.split }}
+          NEWS_INPUT: ${{ inputs.historical_news }}
+        shell: bash
+        run: |
+          args=(--csv backtest_data/*.csv --spread-pips "$SPREAD_INPUT" --slippage-pips "$SLIPPAGE_INPUT")
+          if [ -n "$SPLIT_INPUT" ]; then args+=(--split "$SPLIT_INPUT"); fi
+          if [ "$NEWS_INPUT" = 'true' ]; then args+=(--news backtest_data/news.json); else args+=(--without-news); fi
+          python engine/bosque_backtest.py "${args[@]}"
+      - name: Save result
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for file in engine/backtest_results.json; do
+            if [ -f "$file" ]; then git add "$file"; fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m 'Save Bosque historical replay results'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bosque-backtest-${{ github.run_id }}
+          path: engine/backtest*.json
+          retention-days: 90
+      - if: steps.replay.outcome == 'failure'
+        run: exit 1
