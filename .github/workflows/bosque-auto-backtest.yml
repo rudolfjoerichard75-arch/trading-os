@@ -1,0 +1,60 @@
+name: Bosque automatic research backtest
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - engine/bosque_auto_backtest.py
+      - .github/workflows/bosque-auto-backtest.yml
+  schedule:
+    - cron: '15 22 * * 1-5'
+concurrency:
+  group: bosque-historical-backtest
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r engine/requirements.txt
+      - name: Regression tests
+        run: |
+          python -m unittest discover -s tests -v
+          node tests/test_dashboard.cjs
+      - name: Download and replay up to 5000 M5 candles
+        id: replay
+        continue-on-error: true
+        env:
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+          ROUND_TRIP_COST_PIPS: ${{ vars.ROUND_TRIP_COST_PIPS }}
+        run: python engine/bosque_auto_backtest.py
+      - name: Preserve research result
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if [ -f engine/backtest_results.json ]; then git add engine/backtest_results.json; fi
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update automatic research backtest'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bosque-research-${{ github.run_id }}
+          path: |
+            engine/backtest*.json
+            backtest_data/XAUUSD_M5_auto.csv
+          retention-days: 90
+      - if: steps.replay.outcome == 'failure'
+        run: exit 1

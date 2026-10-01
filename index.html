@@ -971,6 +971,19 @@ ul{
 </div>
 
 
+<div class="card">
+  <b>Service Status</b>
+  <pre id="serviceDetails" style="white-space:pre-wrap;font:inherit;font-size:12px">Waiting for verified service health...</pre>
+</div>
+<div class="card">
+  <b>Historical Research Results</b>
+  <pre id="researchDetails" style="white-space:pre-wrap;font:inherit;font-size:12px">No historical result loaded.</pre>
+</div>
+<div class="card">
+  <b>Recent Paper Journal (last 30)</b>
+  <p><a href="./paper_journal.csv" download>Download paper journal CSV</a></p>
+  <pre id="journalRecords" style="white-space:pre-wrap;font:inherit;font-size:12px">No paper trades recorded.</pre>
+</div>
 <script>
 
 /* ========================================================
@@ -1152,7 +1165,15 @@ async function loadDashboard(){
 
   }
 
-  return await response.json();
+  const dashboard = await response.json();
+  try {
+    const research = await fetch('./engine/backtest_results.json?ts='+Date.now(), {cache:'no-store'});
+    if (research.ok) {
+      const result = await research.json();
+      if (result.status) dashboard.backtest = result;
+    }
+  } catch (_) { /* Keep the engine's last known research summary. */ }
+  return dashboard;
 
 }
 
@@ -2047,6 +2068,22 @@ async function runDashboard(){
       data.signal = {...data.signal, active:false};
     }
     render(data);
+    const services=data.services || {};
+    setText('serviceDetails', [
+      `Telegram: ${services.telegram_health?.status || 'NOT CHECKED'} (delivery: ${services.telegram_health?.delivery_tested ? 'tested' : 'not tested'})`,
+      `News archive: ${services.news_archive?.status || 'NOT CHECKED'} (${services.news_archive?.weeks || 0} observed weeks)`,
+      `Journal export: ${services.journal_export?.status || 'NOT CHECKED'}`
+    ].join('\n'));
+    const bt=data.backtest || {};
+    const research=[`Status: ${bt.status || 'NOT RUN'}`, `Period: ${bt.period_start || '--'} to ${bt.period_end || '--'}`, `Bars: ${bt.bars_used || 0}`, `News: ${bt.news_mode || 'UNKNOWN'}`, `Costs: ${bt.cost_model?.status || 'UNKNOWN'}`];
+    for (const [name,result] of Object.entries(bt.results || {})) {
+      const s=result.stats || {};
+      research.push(`${name}: ${s.trades || 0} closed | Winrate ${s.win_rate == null ? '--' : s.win_rate+'%'} | Avg R ${s.average_r == null ? '--' : Number(s.average_r).toFixed(3)} | DD ${s.max_drawdown ?? '--'}R | Unresolved ${s.unresolved || 0}`);
+    }
+    if(bt.reason) research.push(bt.reason);
+    setText('researchDetails',research.join('\n'));
+    const recent=data.journal_recent || [];
+    setText('journalRecords', recent.length ? recent.map(t=>`${t.timestamp} | ${t.direction} | ${t.result} | ${t.result_pips ?? '--'} pips | ${t.exit_reason || '--'} | ${t.signal_id}`).join('\n') : 'No paper trades recorded.');
     setText('potentialConfidence', 'TP TARGETS — NOT A FORECAST');
     setText('forwardTest', 'PAPER OHLC; NOT MT5 EXECUTIONS');
     setText('journalStatus', `${data.journal?.status || '--'} | ${data.journal?.cost_status || '--'}`);
