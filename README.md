@@ -1,4 +1,32 @@
-# Bosque Forex AI — V5.2 repair
+# Bosque Forex AI — V5.3 candidate
+
+## V5.3 signal quality and workspace
+
+V5.3 is an unvalidated strategy candidate, not a demonstrated win-rate upgrade.
+The default evaluator now requires 30 complete UTC-aligned H4 candles (up to
+2,000 M5 bars), aligned H4/H1 structure, M15 premium/discount, a first FVG retest
+within 16 M15 bars with rejection, directional M15 sweep/BOS, and M5 BOS plus
+candle and momentum. London/New York use the existing fixed Malaysia-time
+buckets, not DST-aware exchange sessions. A low-efficiency compressed market
+is excluded. Every gate is mandatory; the score is checklist completion,
+not a probability. No order-block detector is claimed.
+
+Live V5.3 entries require configured costs and net reward/risk >= 2, rechecked
+at the simulated next-bar fill. The paper weekly lock is -4R, alongside the
+existing daily -2R lock and single-position policy. Existing V5.2 positions
+retain their original execution rules and remain in the journal. Summary
+statistics are version-specific. Set `BOSQUE_STRATEGY=v52` for baseline replay.
+Broker lot sizing remains unavailable until contract/tick-value/volume-step
+specifications are verified; stop distance is not an account risk rating.
+
+The responsive workspace keeps the chart, signal and active plan visible.
+Journal, research and service status use native modal dialogs (Close/Escape,
+keyboard focus containment). Detailed gates/news use collapsible sections.
+Stale data disables plans while historical research remains viewable; older
+strategy backtests are explicitly identified. Public JSON is rendered as text
+or escaped table cells. No fabricated trades or performance are displayed.
+
+The sections below describe the retained V5.2 baseline and research tooling.
 
 This branch rebuilds the engine from the user's V5 source, retaining H1 → M15 → M5, liquidity/pullback/breakout setups, score >= 70, and TP2 full-exit policy. It does not continue the broken V6 implementation. No winrate target is claimed.
 
@@ -91,9 +119,9 @@ Prior V6 source remains in git history. The old `engine/state.json` is retained 
 
 ## Activated service follow-up
 
-`Bosque automatic research backtest` requests up to 5,000 closed XAU/USD M5 bars using the existing Twelve Data secret. It runs on activation and at 22:15 UTC Monday–Friday (06:15 MY the following day), using a fixed chronological 80/20 split. It uses one data request per run. Actual received bars and period are recorded. This is a rolling research baseline, not a 2022–2025 backtest or an untouched validation set after repeated inspection.
+`Bosque automatic research backtest` requests up to 5,000 closed XAU/USD M5 bars using the existing Twelve Data secret. It runs on activation and at 22:15 UTC Monday–Friday (06:15 MY the following day), using a fixed chronological 80/20 split. The scheduled run uses one provider request as a cheap rolling smoke baseline. For a longer real-data study, run it manually with `history_start`, `history_end`, and enough `max_chunks`; the downloader walks backwards in provider-sized chunks, records the number of requests, and fails if the requested range is not fully covered. It never fills gaps with synthetic candles.
 
-If `ROUND_TRIP_COST_PIPS` is absent, results explicitly remain **gross only**. Historical news is explicitly disabled for this baseline because a current-week feed cannot supply earlier news. The separate CSV/news runner remains available for full historical inputs. Gap-censored research reports `INCOMPLETE_DATA` and its unresolved count instead of a misleading completed winrate.
+If `ROUND_TRIP_COST_PIPS` is absent, results explicitly remain **gross only**. Historical news is explicitly disabled for this baseline because a current-week feed cannot supply earlier news. A committed `backtest_data/news.json` can be supplied to the manual automatic run with `historical_news_path`; its coverage must span the complete candle range. The separate CSV/news runner remains available for full historical inputs. Gap-censored research reports `INCOMPLETE_DATA` and its unresolved count instead of a misleading completed winrate. Results now include data-gap diagnostics, breakdowns by session/setup/direction/exit reason, and optional chronological walk-forward folds. These are research diagnostics, not parameter optimization and not a guarantee of a target win rate.
 
 Telegram readiness checks `getMe` and `getChat` once daily; it sends no test message and does not claim delivery has been proven. Actual delivery remains recorded per signal.
 

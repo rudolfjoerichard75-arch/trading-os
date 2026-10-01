@@ -37,6 +37,19 @@ class ServiceTests(unittest.TestCase):
         with patch.dict(e.os.environ,{'TWELVEDATA_API_KEY':'test'}),patch.object(e,'http_json',return_value={'values':frame.to_dict('records')}) as api,patch.object(e,'now_utc',return_value=pd.Timestamp('2026-10-10T00:00Z')):
             result=a.download_history(); self.assertEqual(len(result),900);self.assertEqual(api.call_count,1)
 
+    def test_history_paginates_explicit_long_range(self):
+        def chunk(start):
+            frame=bars(500)
+            frame['datetime']=pd.date_range(start,periods=500,freq='5min',tz='UTC').astype(str)
+            return {'values':frame.to_dict('records')}
+        responses=[chunk('2026-09-29T06:25Z'),chunk('2026-09-27T12:45Z'),chunk('2026-09-25T00:00Z')]
+        with patch.dict(e.os.environ,{'TWELVEDATA_API_KEY':'test','HISTORY_START_DATE':'2026-09-25T00:00:00Z','HISTORY_END_DATE':'2026-10-01T00:00:00Z','HISTORY_MAX_CHUNKS':'3','HISTORY_CHUNK_SIZE':'500'}),patch.object(e,'http_json',side_effect=responses) as api,patch.object(e,'now_utc',return_value=pd.Timestamp('2026-10-02T00:00Z')):
+            result,meta=a.download_history(return_meta=True)
+        self.assertEqual(api.call_count,3)
+        self.assertTrue(meta['coverage_complete'])
+        self.assertEqual(meta['requests'],3)
+        self.assertEqual(len(result),1499)  # requested_end is an exclusive boundary
+
     def test_export_zero_trades_does_not_add_examples(self):
         with tempfile.TemporaryDirectory() as directory:
             with patch.object(e,'REPO_DIR',Path(directory)):
