@@ -32,6 +32,7 @@ const assert=require('node:assert/strict');
   }
   await page.evaluate(()=>render({engine:{timestamp:'2020-01-01',status:'WAIT'},signal:{active:true,direction:'BUY'},news:{status:'CLEAR'}}));
   assert.equal(await page.locator('#finalSignal').innerText(),'WAIT');
+  await page.getByText('News & risk controls',{exact:true}).click();
   assert.equal(await page.locator('#newsStatus').innerText(),'NEWS STALE');
   await page.setViewportSize({width:1440,height:1000});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
