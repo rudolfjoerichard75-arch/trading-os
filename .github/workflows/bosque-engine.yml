@@ -1,5 +1,12 @@
 name: Run Bosque Forex AI
 on:
+  push:
+    branches: [main]
+    paths:
+      - "engine/*.py"
+      - "engine/requirements.txt"
+      - ".github/workflows/bosque-engine.yml"
+      - "tests/**"
   workflow_dispatch:
   schedule:
     - cron: '*/5 * * * *'
