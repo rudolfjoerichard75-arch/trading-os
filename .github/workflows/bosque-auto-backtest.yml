@@ -1,6 +1,27 @@
 name: Bosque automatic research backtest
 on:
   workflow_dispatch:
+    inputs:
+      history_start:
+        description: 'UTC start for a longer Twelve Data download, e.g. 2025-01-01T00:00:00Z (blank = latest window)'
+        required: false
+        default: ''
+      history_end:
+        description: 'UTC end for the download (blank = now)'
+        required: false
+        default: ''
+      max_chunks:
+        description: 'Maximum 5000-candle provider chunks'
+        required: false
+        default: '20'
+      historical_news_path:
+        description: 'Committed JSON historical calendar path, e.g. backtest_data/news.json (blank = no historical news)'
+        required: false
+        default: ''
+      walk_forward_folds:
+        description: 'Chronological diagnostic folds (blank = disabled)'
+        required: false
+        default: '4'
   push:
     branches: [main]
     paths:
@@ -36,6 +57,11 @@ jobs:
         env:
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
           ROUND_TRIP_COST_PIPS: ${{ vars.ROUND_TRIP_COST_PIPS }}
+          HISTORY_START_DATE: ${{ inputs.history_start }}
+          HISTORY_END_DATE: ${{ inputs.history_end }}
+          HISTORY_MAX_CHUNKS: ${{ inputs.max_chunks }}
+          HISTORICAL_NEWS_PATH: ${{ inputs.historical_news_path }}
+          WALK_FORWARD_FOLDS: ${{ inputs.walk_forward_folds }}
         run: python engine/bosque_auto_backtest.py
       - name: Preserve research result
         if: always()

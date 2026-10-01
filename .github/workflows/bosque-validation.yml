@@ -1,0 +1,25 @@
+name: Bosque candidate validation
+on:
+  pull_request:
+  push:
+    branches: [repair/v53-quality-ui]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install -r engine/requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: node tests/test_dashboard.cjs
+      - run: npm install --no-save playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/test_ui_browser.cjs

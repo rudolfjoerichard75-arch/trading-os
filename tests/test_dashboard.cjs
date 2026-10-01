@@ -17,7 +17,7 @@ vm.createContext(context); vm.runInContext(script,context);
  data={engine:{timestamp:'2020-01-01T00:00:00Z'},signal:{active:true,direction:'BUY'},plan:{entry:100}};
  await vm.runInContext('runDashboard()',context);
  assert.equal(elements.finalSignal.innerText,'WAIT');
- assert.equal(elements.entry.innerText,'--');
+ assert.equal(elements.entry.innerText,'—');
  assert.equal(elements.healthBadge.innerText,'● OFFLINE / STALE');
  console.log('Dashboard: blocked signals and stale data checks PASS');
 })().catch(e=>{console.error(e);process.exitCode=1});

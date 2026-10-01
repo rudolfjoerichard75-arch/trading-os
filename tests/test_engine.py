@@ -18,6 +18,7 @@ def event():
 class EngineTests(unittest.TestCase):
     def test_time_exit_loss(self):
         t=e.new_trade(event(),1)
+        t['tp2']=112.
         frame=bars(73); frame.loc[72,'close']=99
         for row in frame.itertuples(index=False): e.process_bar(t,row)
         self.assertEqual(t['result'],'LOSS'); self.assertEqual(t['result_pips'],-11)
@@ -32,6 +33,7 @@ class EngineTests(unittest.TestCase):
     def test_sell_profit(self):
         ev=event(); ev['plan'].update(direction='SELL',sl=105.,tp1=94.,tp2=90.,tp3=85.)
         t=e.new_trade(ev,1); frame=bars(2); frame.loc[1,'low']=89
+        t['strategy_version']='V5.2 REPAIRED'  # existing V5.2 fills retain their contract
         e.process_bar(t,next(frame.iloc[1:].itertuples(index=False)))
         self.assertEqual(t['result'],'WIN'); self.assertEqual(t['result_pips'],99)
 
@@ -111,7 +113,7 @@ class IntegrationTests(unittest.TestCase):
             root=Path(d); frame=bars(400)
             at=frame.iloc[-1].datetime+pd.Timedelta(minutes=5,seconds=10)
             ev=event(); ev.update(active=True,decision_time=(frame.iloc[-1].datetime+pd.Timedelta(minutes=5)).isoformat(),candle_time=frame.iloc[-1].datetime.isoformat())
-            ev['plan'].update(valid=True,rr_tp2=2.)
+            ev['plan'].update(valid=True,rr_tp2=2.4,tp2=112.)
             values=frame.copy(); values['datetime']=values.datetime.astype(str)
             patches={'DATA_DIR':root,'REPO_DIR':root,'DASHBOARD_FILE':root/'dashboard.json','JOURNAL_FILE':root/'journal.json','NEWS_CACHE_FILE':root/'news.json','BACKTEST_FILE':root/'backtest.json'}
             with patch.multiple(e,**patches), patch.object(e,'now_utc',return_value=at.to_pydatetime()), patch.object(e,'http_json',return_value={'values':values.to_dict('records')}), patch.object(e,'evaluate',return_value=ev), patch.object(e,'fetch_news',return_value={'ok':True,'status':'CLEAR','reason':'test'}), patch.object(e,'telegram',return_value='SENT') as send, patch.dict(e.os.environ,{'TWELVEDATA_API_KEY':'test','ROUND_TRIP_COST_PIPS':'1'}):
@@ -143,5 +145,17 @@ class IntegrationTests(unittest.TestCase):
                 self.assertEqual(out['status'],'COMPLETED')
                 self.assertEqual(out['news_mode'],'WITHOUT_NEWS_NOT_LIVE_EQUIVALENT')
                 self.assertTrue((root/'backtest_full_sample_trades.json').exists())
+
+    def test_backtest_reports_quality_and_walk_forward_diagnostics(self):
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d); csv=root/'history.csv'; bars(800).to_csv(csv,index=False)
+            args=SimpleNamespace(csv=[str(csv)],timezone=None,spread_pips=1.,slippage_pips=.5,commission_pips=0.,news=None,split=None,walk_forward_folds=2)
+            with patch.multiple(e,DATA_DIR=root,BACKTEST_FILE=root/'backtest.json',DASHBOARD_FILE=root/'dashboard.json'):
+                out=b.run(args)
+            self.assertEqual(out['data_quality']['rows'],800)
+            self.assertEqual(out['data_quality']['gaps'],0)
+            self.assertEqual(set(out['walk_forward']),{'fold_1','fold_2'})
+            self.assertIn('by_session',out['results']['full_sample']['diagnostics'])
 
 if __name__=='__main__': unittest.main()

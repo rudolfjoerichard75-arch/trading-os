@@ -14,13 +14,15 @@ DASHBOARD_FILE = REPO_DIR / 'dashboard_data.json'
 JOURNAL_FILE = DATA_DIR / 'trade_journal.json'
 NEWS_CACHE_FILE = DATA_DIR / 'news_cache.json'
 BACKTEST_FILE = DATA_DIR / 'backtest_results.json'
-VERSION = 'V5.2 REPAIRED'
+STRATEGY = os.getenv('BOSQUE_STRATEGY', 'v53')
+if STRATEGY not in ('v52', 'v53'): raise ValueError('Unknown BOSQUE_STRATEGY')
+VERSION = 'V5.3 CANDIDATE' if STRATEGY == 'v53' else 'V5.2 REPAIRED'
 SYMBOL = 'XAU/USD'
 PIP_SIZE = 0.10
-MIN_SCORE = 70
+MIN_SCORE = 80 if STRATEGY == 'v53' else 70
 MIN_RISK_PIPS, MAX_RISK_PIPS = 25, 80
 TP1_PIPS, MIN_TP2_PIPS, TP3_PIPS, MIN_RR = 60, 120, 180, 2.0
-OUTPUT_SIZE = 500
+OUTPUT_SIZE = 2000 if STRATEGY == 'v53' else 500
 MAX_HOLD_BARS = 72
 COOLDOWN_MINUTES = 30
 MY_TZ = timezone(timedelta(hours=8))
@@ -209,6 +211,9 @@ def plan(d,df,vol):
 
 # Shared signal evaluator: closed bars only, bounded identically in live/replay.
 def evaluate(df):
+    if STRATEGY == 'v53':
+        from bosque_quality import evaluate_quality
+        return evaluate_quality(df, sys.modules[__name__])
     w=df.tail(OUTPUT_SIZE).reset_index(drop=True)
     m15,h1=aggregate(w,15),aggregate(w,60)
     if len(h1)<30 or len(m15)<50: return {'active':False,'reason':'WARMUP'}
@@ -276,6 +281,7 @@ def new_trade(ev, cost):
     return {'signal_id':sid,'strategy_version':VERSION,'mode':'PAPER','result':'PENDING',
             'timestamp':ev['decision_time'],'signal_candle_time':ev['candle_time'],
             'opportunity':ev['m15']['opportunity'],'score':ev['score'],'session':ev['session'],
+            'entry_gates':ev.get('gates',{}),'fresh_zone':ev['m15'].get('fresh_zone',{}),
             **p,'planned_entry':p['entry'],'round_trip_cost_pips':cost,
             'cost_status':'CONFIGURED' if cost is not None else 'UNCONFIGURED_GROSS_ONLY',
             'bars_held':0,'last_bar':None,'tp1_hit':False,'execution_model':'NEXT_M5_OPEN; TP2 FULL EXIT; SL FIRST ON AMBIGUOUS BAR'}
@@ -300,6 +306,10 @@ def process_bar(t, row):
         risk=sign*(entry-t['sl'])/PIP_SIZE; reward=sign*(t['tp2']-entry)/PIP_SIZE
         if risk<MIN_RISK_PIPS or risk>MAX_RISK_PIPS or reward/risk<MIN_RR:
             t.update(result='CANCELLED',exit_reason='ENTRY_GAP_INVALIDATES_PLAN'); return
+        if t.get('strategy_version')=='V5.3 CANDIDATE' and t.get('round_trip_cost_pips') is not None:
+            cost=t['round_trip_cost_pips']
+            if (reward-cost)/(risk+cost)<MIN_RR:
+                t.update(result='CANCELLED',exit_reason='NET_RR_BELOW_MINIMUM'); return
         t.update(result='OPEN',entry=entry,risk_pips=risk,filled_at=at.isoformat())
     elif t.get('last_bar') and at-stamp(t['last_bar'])!=pd.Timedelta(minutes=5):
         # Do not infer outcomes across unavailable bars, including session gaps.
@@ -316,7 +326,7 @@ def process_bar(t, row):
 
 def advance(trades, df):
     for t in trades:
-        if t.get('strategy_version')!=VERSION and t.get('result') in ('OPEN','PENDING'):
+        if t.get('strategy_version') not in ('V5.2 REPAIRED', 'V5.3 CANDIDATE') and t.get('result') in ('OPEN','PENDING'):
             t.update(result='LEGACY_UNRESOLVED',exit_reason='PRE_REPAIR_EXECUTION_UNKNOWN'); continue
         if t['result'] in ('OPEN','PENDING'):
             for row in df.itertuples(index=False):
@@ -328,6 +338,10 @@ def entry_allowed(trades, at):
     # Unresolved data gaps require investigation, not silently assuming flat.
     if trades and (pd.Timestamp(at)-stamp(trades[-1]['timestamp'])).total_seconds()<COOLDOWN_MINUTES*60: return False
     day=pd.Timestamp(at).tz_convert(MY_TZ).date()
+    if STRATEGY == 'v53':
+        week=day-timedelta(days=day.weekday())
+        weekly=[t for t in trades if t.get('closed_at') and week<=stamp(t['closed_at']).tz_convert(MY_TZ).date()<=day and t.get('result_r') is not None]
+        if sum(t['result_r'] for t in weekly)<=-4: return False
     closed=[t for t in trades if t.get('closed_at') and stamp(t['closed_at']).tz_convert(MY_TZ).date()==day and t.get('result_r') is not None]
     if sum(t['result_r'] for t in closed)<=-2: return False
     if len(closed)>=3 and all(t['result']=='LOSS' for t in closed[-3:]): return False
@@ -379,8 +393,13 @@ def run_live():
     ev=evaluate(bars); news=fetch_news(at); news.update(filter=news['status'],high_impact='HIGH' if news['status']=='BLOCK' else news['status'],minutes_to_news=news.get('minutes')); pl=ev.get('plan',{}); setup=ev.get('m15',{})
     ct=bars.iloc[-1].datetime.isoformat(); processed=journal.get('last_processed_candle')==ct
     allowed=entry_allowed(trades,ev.get('decision_time',at))
+    cost=os.getenv('ROUND_TRIP_COST_PIPS'); cost=float(cost) if cost else None
+    if cost is not None and (not math.isfinite(cost) or cost<0): raise ValueError('Invalid trading cost')
+    from bosque_quality import net_rr
+    net=net_rr(pl,cost)
+    costs_ok=STRATEGY=='v52' or (net is not None and net>=MIN_RR)
     # First scan of a bar only; do not retroactively enter after the news window expires.
-    valid=bool(ev['active'] and news['ok'] and allowed and not processed and age<=2)
+    valid=bool(ev['active'] and news['ok'] and allowed and costs_ok and not processed and age<=2)
     sig={'active':False,'direction':pl.get('direction'),'candle_time':ct}
     if valid:
         cost=os.getenv('ROUND_TRIP_COST_PIPS'); cost=float(cost) if cost else None
@@ -410,6 +429,13 @@ def run_live():
         'data_health':{'last_candle':ct,'age_minutes':age,'late_signal_blocked':age>2},
         'telegram':{'last_status':trades[-1].get('telegram_status') if trades else 'NO_SIGNAL'}}
     from bosque_services import refresh
+    if STRATEGY=='v53':
+        dashboard['h4']=ev.get('h4',{})
+        dashboard['filters'].update(ev.get('gates',{}),costs=costs_ok,session_blocking=True)
+        dashboard['sop'].update(fresh_zone='PASS' if setup.get('fresh_zone',{}).get('valid') else 'WAIT',session_blocking='YES',session_filter='PASS' if preferred(ev.get('session','')) else 'BLOCK')
+        dashboard['risk_engine'].update(weekly_loss_limit='4R PAPER',net_rr=net,position_sizing='BROKER_SPEC_REQUIRED',risk_level='NOT SIZED')
+        dashboard['invalidation']['conditions'].append('Cost-adjusted RR: '+('PASS' if costs_ok else 'Missing costs or net RR below 2'))
+        dashboard['limitations'].append('V5.3 candidate; profitability not validated; score is a checklist, not a probability')
     dashboard=refresh(dashboard,journal,at)
     save_json(DASHBOARD_FILE,dashboard)
     print(json.dumps({'status':dashboard['engine']['status'],'version':VERSION,'journal_trades':len(trades),'news':news['status']}))
