@@ -1,87 +1,64 @@
 name: Run Bosque Forex AI
-
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/5 * * * *"
-
+    - cron: '*/5 * * * *'
 concurrency:
   group: bosque-forex-ai-main
   cancel-in-progress: false
-
 permissions:
   contents: write
-
 jobs:
   run-engine:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
     steps:
-
-      # =====================================================
-      # CHECKOUT
-      # =====================================================
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           ref: main
-
-      # =====================================================
-      # PYTHON
-      # =====================================================
-      - name: Setup Python
-        uses: actions/setup-python@v5
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-
-      # =====================================================
-      # DEPENDENCIES
-      # =====================================================
-      - name: Install dependencies
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: engine/requirements.txt
+      - run: pip install -r engine/requirements.txt
+      - name: Tests
         run: |
-          python -m pip install --upgrade pip
-          pip install requests pandas
-
-      # =====================================================
-      # RUN BOSQUE FOREX AI
-      # =====================================================
-      - name: Run Bosque Forex AI
+          python -m unittest discover -s tests -v
+          node tests/test_dashboard.cjs
+      - name: Run engine
+        id: engine
+        continue-on-error: true
         env:
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ROUND_TRIP_COST_PIPS: ${{ vars.ROUND_TRIP_COST_PIPS }}
+        run: python engine/bosque_engine.py
+      - name: Preserve outputs and error status
+        if: always()
         run: |
-          python engine/bosque_engine.py
-
-      # =====================================================
-      # COMMIT ENGINE OUTPUT FIRST
-      # =====================================================
-      - name: Commit dashboard data
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add dashboard_data.json
-          git add engine/state.json
-
-          if git diff --cached --quiet; then
-            echo "No generated data changes."
-          else
-            git commit -m "Update BOSQUE FOREX AI data"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for file in dashboard_data.json engine/trade_journal.json engine/news_cache.json; do
+            if [ -f "$file" ]; then git add "$file"; fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update Bosque paper journal and health'
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
-
-      # =====================================================
-      # SYNC WITH LATEST MAIN
-      # =====================================================
-      - name: Sync latest main
-        run: |
-          git fetch origin main
-          git rebase origin/main
-
-      # =====================================================
-      # PUSH
-      # =====================================================
-      - name: Push changes
-        run: |
-          git push origin HEAD:main
+      - name: Preserve recovery artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bosque-state-${{ github.run_id }}
+          path: |
+            engine/trade_journal.json
+            engine/news_cache.json
+            dashboard_data.json
+          retention-days: 30
+      - name: Report engine failure
+        if: steps.engine.outcome == 'failure'
+        run: exit 1

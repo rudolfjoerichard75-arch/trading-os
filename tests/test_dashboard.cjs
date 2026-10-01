@@ -1,0 +1,23 @@
+const fs=require('node:fs');
+const vm=require('node:vm');
+const assert=require('node:assert/strict');
+const html=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
+const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+const script=scripts.at(-1)[1];
+const elements={};
+for(const [,id] of html.matchAll(/id="([^"]+)"/g)) elements[id]={innerText:'',className:'',innerHTML:''};
+let data;
+const context={document:{getElementById:id=>elements[id]},window:{addEventListener:()=>{}},setInterval:()=>{},Date,Number,console:{error:()=>{}},fetch:async()=>({ok:true,json:async()=>data})};
+vm.createContext(context); vm.runInContext(script,context);
+(async()=>{
+ data={engine:{timestamp:new Date().toISOString()},signal:{active:false},opportunity:{direction:'BUY',score:80},plan:{entry:100},news:{status:'CLEAR',filter:'CLEAR'}};
+ await vm.runInContext('runDashboard()',context);
+ assert.equal(elements.finalSignal.innerText,'WAIT');
+ assert.equal(elements.newsStatus.innerText,'NEWS CLEAR');
+ data={engine:{timestamp:'2020-01-01T00:00:00Z'},signal:{active:true,direction:'BUY'},plan:{entry:100}};
+ await vm.runInContext('runDashboard()',context);
+ assert.equal(elements.finalSignal.innerText,'WAIT');
+ assert.equal(elements.entry.innerText,'--');
+ assert.equal(elements.healthBadge.innerText,'● OFFLINE / STALE');
+ console.log('Dashboard: blocked signals and stale data checks PASS');
+})().catch(e=>{console.error(e);process.exitCode=1});

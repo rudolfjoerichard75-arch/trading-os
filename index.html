@@ -318,8 +318,8 @@ ul{
     <p>XAUUSD Trade Intelligence Engine</p>
   </div>
 
-  <div class="live">
-    ● ENGINE LIVE
+  <div class="live" id="healthBadge">
+    ● CHECKING
   </div>
 
 </div>
@@ -1237,10 +1237,7 @@ function render(data){
       opportunity.score ?? 0
     );
 
-  const direction =
-    opportunity.direction ||
-    signal.direction ||
-    "WAIT";
+  const direction = signal.active ? (signal.direction || opportunity.direction || 'WAIT') : 'WAIT';
 
   const opportunityType =
     opportunity.type ||
@@ -1564,7 +1561,7 @@ function render(data){
   );
 
 
-  if(newsFilter === "PASS"){
+  if(newsFilter === "PASS" || newsFilter === "CLEAR"){
 
     setStatus(
       "newsStatus",
@@ -1638,7 +1635,7 @@ function render(data){
       "sessionRule",
       signal.active
         ? "SIGNAL STILL ALLOWED"
-        : "PREFERRED SESSION ONLY"
+        : "SESSION DOES NOT BLOCK"
     );
 
   }
@@ -2041,15 +2038,30 @@ async function runDashboard(){
       await loadDashboard();
 
 
+    const ageMs = Date.now() - Date.parse(data.engine?.timestamp || '');
+    if (!Number.isFinite(ageMs) || ageMs < -60000 || ageMs > 15*60000 || data.engine?.status === 'ERROR') {
+      throw new Error(data.engine?.status === 'ERROR' ? 'Engine failed. Signals disabled.' : 'STALE DATA — signals disabled');
+    }
+    const candleClose = Date.parse(data.signal?.candle_time || '') + 5*60000;
+    if (!Number.isFinite(candleClose) || Date.now()-candleClose > 2*60000) {
+      data.signal = {...data.signal, active:false};
+    }
     render(data);
+    setText('potentialConfidence', 'TP TARGETS — NOT A FORECAST');
+    setText('forwardTest', 'PAPER OHLC; NOT MT5 EXECUTIONS');
+    setText('journalStatus', `${data.journal?.status || '--'} | ${data.journal?.cost_status || '--'}`);
+    const ci = data.journal?.win_rate_95_interval;
+    if (ci && data.journal?.win_rate != null) setText('journalWinRate', `${data.journal.win_rate}% (95% interval ${ci[0]}–${ci[1]}%)`);
+    setText('healthBadge', '● DATA UPDATED');
 
 
   }catch(error){
 
-    console.error(
-      "Bosque Dashboard Error:",
-      error
-    );
+    console.error('Bosque Dashboard Error:', error);
+    setText('healthBadge', '● OFFLINE / STALE');
+    setText('finalSignal', 'WAIT');
+    setText('score', '--');
+    for (const id of ['entry','sl','tp1','tp2','tp3','planDirection','tpRange','riskPips','rrRange','potentialRange','rrTp2']) setText(id, '--');
 
 
     setStatus(
