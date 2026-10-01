@@ -1,46 +1,46 @@
 {
   "engine": {
     "version": "V5.2 REPAIRED",
-    "timestamp": "2026-10-01T10:10:47.878812+00:00",
+    "timestamp": "2026-10-01T10:15:43.322212+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4155.02718,
+  "latest_price": 4158.24665,
   "session": "LONDON",
   "signal": {
     "active": false,
     "direction": null,
-    "candle_time": "2026-10-01T10:05:00+00:00"
+    "candle_time": "2026-10-01T10:10:00+00:00"
   },
   "plan": {
     "valid": false,
-    "reason": "NO DIRECTION"
+    "reason": "Risk 89.4 pips outside 25-80"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
+    "type": "BUY LIQUIDITY SWEEP",
     "direction": null,
-    "score": 20,
+    "score": 35,
     "valid": false
   },
   "regime": {
     "type": "RANGE"
   },
   "volatility": {
-    "atr": 3.52,
-    "atr_pips": 35.2,
+    "atr": 3.61,
+    "atr_pips": 36.1,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4171.29,
+    "equilibrium": 4171.28,
     "high": 4192.52,
-    "low": 4150.06
+    "low": 4150.03
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE"
+    "sell_side_sweep": true,
+    "swept_level": 4150.06484,
+    "description": "SELL-SIDE LIQUIDITY SWEPT"
   },
   "news": {
     "ok": true,
@@ -85,21 +85,23 @@
     "swing_high": 4167.8823,
     "swing_low": 4150.06484,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "BUY",
+      "opportunity": "BUY LIQUIDITY SWEEP",
+      "valid": true,
+      "reason": [
+        "M15 sell-side liquidity sweep"
+      ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 4171.29,
+        "equilibrium": 4171.28,
         "high": 4192.52,
-        "low": 4150.06
+        "low": 4150.03
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "sell_side_sweep": true,
+        "swept_level": 4150.06484,
+        "description": "SELL-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "BEARISH",
@@ -110,19 +112,19 @@
       "range": {
         "is_range": false,
         "high": 4192.52149,
-        "low": 4150.06484,
-        "width": 42.45665000000008,
-        "location": 0.1482172992923348
+        "low": 4150.02881,
+        "width": 42.49268000000029,
+        "location": 0.19339425049208933
       }
     }
   },
   "m5": {
     "confirmation": {
       "confirmed": false,
-      "bos": "BEARISH BOS",
+      "bos": null,
       "candle": false,
-      "momentum": "BEARISH",
-      "reason": "NO DIRECTION"
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "potential": {
@@ -137,7 +139,7 @@
     "rr": false,
     "session_blocking": false,
     "entry_policy": true,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
     "session": true
   },
@@ -156,13 +158,13 @@
     "session_blocking": "NO",
     "session_filter": "INFORMATIONAL",
     "risk": null,
-    "m15_setup": "False",
+    "m15_setup": "True",
     "m5_confirmation": "False"
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION"
+    "m15_setup": "BUY LIQUIDITY SWEEP",
+    "m5_confirmation": "NO CONFIRMATION"
   },
   "invalidation": {
     "status": "WAIT",
@@ -308,7 +310,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-01T10:05:00+00:00"
+    "last_processed_candle": "2026-10-01T10:10:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -317,8 +319,8 @@
     "Session names use fixed MY-time buckets"
   ],
   "data_health": {
-    "last_candle": "2026-10-01T10:05:00+00:00",
-    "age_minutes": 0.7979802,
+    "last_candle": "2026-10-01T10:10:00+00:00",
+    "age_minutes": 0.7220368666666667,
     "late_signal_blocked": false
   },
   "telegram": {
