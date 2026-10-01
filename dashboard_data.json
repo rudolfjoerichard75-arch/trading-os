@@ -1,37 +1,37 @@
 {
   "engine": {
     "version": "V5.2 REPAIRED",
-    "timestamp": "2026-10-01T10:40:40.372719+00:00",
+    "timestamp": "2026-10-01T10:45:42.752190+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4169.03368,
+  "latest_price": 4172.33445,
   "session": "LONDON",
   "signal": {
     "active": false,
     "direction": null,
-    "candle_time": "2026-10-01T10:35:00+00:00"
+    "candle_time": "2026-10-01T10:40:00+00:00"
   },
   "plan": {
     "valid": false,
-    "reason": "NO DIRECTION"
+    "reason": "Risk 231.7 pips outside 25-80"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
+    "type": "BUY BREAKOUT",
     "direction": null,
-    "score": 10,
+    "score": 65,
     "valid": false
   },
   "regime": {
     "type": "RANGE"
   },
   "volatility": {
-    "atr": 4.2,
-    "atr_pips": 42.0,
+    "atr": 4.33,
+    "atr_pips": 43.3,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "DISCOUNT",
+    "zone": "PREMIUM",
     "equilibrium": 4171.28,
     "high": 4192.52,
     "low": 4150.03
@@ -81,16 +81,18 @@
   },
   "m15": {
     "direction": "BEARISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4167.8823,
-    "swing_low": 4150.06484,
+    "swing_low": 4150.02881,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "BUY",
+      "opportunity": "BUY BREAKOUT",
+      "valid": true,
+      "reason": [
+        "M15 bullish BOS"
+      ],
       "pd": {
-        "zone": "DISCOUNT",
+        "zone": "PREMIUM",
         "equilibrium": 4171.28,
         "high": 4192.52,
         "low": 4150.03
@@ -103,26 +105,26 @@
       },
       "structure": {
         "direction": "BEARISH",
-        "bos": null,
+        "bos": "BULLISH BOS",
         "swing_high": 4167.8823,
-        "swing_low": 4150.06484
+        "swing_low": 4150.02881
       },
       "range": {
         "is_range": true,
         "high": 4192.52149,
         "low": 4150.02881,
         "width": 42.49268000000029,
-        "location": 0.33309454710788194
+        "location": 0.5249289995359281
       }
     }
   },
   "m5": {
     "confirmation": {
-      "confirmed": false,
+      "confirmed": true,
       "bos": "BULLISH BOS",
-      "candle": false,
+      "candle": true,
       "momentum": "BULLISH",
-      "reason": "NO DIRECTION"
+      "reason": "M5 bullish BOS"
     }
   },
   "potential": {
@@ -137,8 +139,8 @@
     "rr": false,
     "session_blocking": false,
     "entry_policy": true,
-    "setup": false,
-    "m5_confirmation": false,
+    "setup": true,
+    "m5_confirmation": true,
     "session": true
   },
   "risk_engine": {
@@ -156,13 +158,13 @@
     "session_blocking": "NO",
     "session_filter": "INFORMATIONAL",
     "risk": null,
-    "m15_setup": "False",
-    "m5_confirmation": "False"
+    "m15_setup": "True",
+    "m5_confirmation": "True"
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION"
+    "m15_setup": "BUY BREAKOUT",
+    "m5_confirmation": "M5 bullish BOS"
   },
   "invalidation": {
     "status": "WAIT",
@@ -308,7 +310,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-01T10:35:00+00:00"
+    "last_processed_candle": "2026-10-01T10:40:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -317,8 +319,8 @@
     "Session names use fixed MY-time buckets"
   ],
   "data_health": {
-    "last_candle": "2026-10-01T10:35:00+00:00",
-    "age_minutes": 0.67287865,
+    "last_candle": "2026-10-01T10:40:00+00:00",
+    "age_minutes": 0.7125365,
     "late_signal_blocked": false
   },
   "telegram": {
