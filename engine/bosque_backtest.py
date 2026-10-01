@@ -33,7 +33,7 @@ def run(args):
         frame['datetime']=parsed.dt.tz_convert('UTC'); frames.append(frame)
     df=e.validate_bars(pd.concat(frames,ignore_index=True))
     if len(df)<400: raise ValueError('At least 400 M5 candles required')
-    cost=args.spread_pips+2*args.slippage_pips+args.commission_pips
+    cost=None if getattr(args,'gross_only',False) else args.spread_pips+2*args.slippage_pips+args.commission_pips
     if any(not e.math.isfinite(x) or x<0 for x in [args.spread_pips,args.slippage_pips,args.commission_pips]): raise ValueError('Costs must be finite and nonnegative')
     calendar=None
     if args.news:
@@ -50,7 +50,7 @@ def run(args):
                  'out_of_sample':replay(df,cost,calendar,start=split)}
     out={'status':'INCOMPLETE_DATA' if any(v['stats']['unresolved'] for v in results.values()) else 'COMPLETED','version':e.VERSION,'symbol':e.SYMBOL,'timeframe':'M5',
          'bars_used':len(df),'period_start':df.iloc[0].datetime.isoformat(),'period_end':df.iloc[-1].datetime.isoformat(),
-         'source_sha256':hashes,'cost_model':{'spread_pips':args.spread_pips,'slippage_per_side_pips':args.slippage_pips,'commission_round_trip_pips':args.commission_pips},
+         'source_sha256':hashes,'cost_model':{'status':'GROSS_ONLY_UNCONFIGURED' if cost is None else 'CONFIGURED','spread_pips':args.spread_pips,'slippage_per_side_pips':args.slippage_pips,'commission_round_trip_pips':args.commission_pips},
          'news_mode':'HISTORICAL_CALENDAR' if calendar else 'WITHOUT_NEWS_NOT_LIVE_EQUIVALENT',
          'development_period':'Before '+str(split) if split is not None else 'Full sample; no holdout',
          'out_of_sample':'From '+str(split) if split is not None else 'NOT SEPARATED',

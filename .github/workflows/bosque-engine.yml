@@ -5,6 +5,7 @@ on:
     paths:
       - "engine/*.py"
       - "engine/requirements.txt"
+      - "engine/backtest_results.json"
       - ".github/workflows/bosque-engine.yml"
       - "tests/**"
   workflow_dispatch:
@@ -48,9 +49,10 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for file in dashboard_data.json engine/trade_journal.json engine/news_cache.json; do
+          for file in dashboard_data.json engine/trade_journal.json engine/news_cache.json engine/telegram_health.json paper_journal.csv; do
             if [ -f "$file" ]; then git add "$file"; fi
           done
+          if [ -d engine/news_archive ]; then git add engine/news_archive; fi
           if ! git diff --cached --quiet; then
             git commit -m 'Update Bosque paper journal and health'
             git pull --rebase origin main
@@ -64,6 +66,9 @@ jobs:
           path: |
             engine/trade_journal.json
             engine/news_cache.json
+            engine/telegram_health.json
+            engine/news_archive/
+            paper_journal.csv
             dashboard_data.json
           retention-days: 30
       - name: Report engine failure

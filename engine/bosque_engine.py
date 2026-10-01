@@ -409,6 +409,8 @@ def run_live():
         'limitations':['Paper OHLC simulation; not MT5 executions','TP1 observation only; full exit TP2','Intrabar order unknown; SL first','Session names use fixed MY-time buckets'],
         'data_health':{'last_candle':ct,'age_minutes':age,'late_signal_blocked':age>2},
         'telegram':{'last_status':trades[-1].get('telegram_status') if trades else 'NO_SIGNAL'}}
+    from bosque_services import refresh
+    dashboard=refresh(dashboard,journal,at)
     save_json(DASHBOARD_FILE,dashboard)
     print(json.dumps({'status':dashboard['engine']['status'],'version':VERSION,'journal_trades':len(trades),'news':news['status']}))
 

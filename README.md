@@ -87,3 +87,16 @@ Results are written to `engine/backtest_results.json`; per-trade details are als
 - `tests/`: regression and integration tests.
 
 Prior V6 source remains in git history. The old `engine/state.json` is retained but unused; V5.2 uses its journal as the persistent source of signal deduplication.
+
+
+## Activated service follow-up
+
+`Bosque automatic research backtest` requests up to 5,000 closed XAU/USD M5 bars using the existing Twelve Data secret. It runs on activation and at 22:15 UTC Monday–Friday (06:15 MY the following day), using a fixed chronological 80/20 split. It uses one data request per run. Actual received bars and period are recorded. This is a rolling research baseline, not a 2022–2025 backtest or an untouched validation set after repeated inspection.
+
+If `ROUND_TRIP_COST_PIPS` is absent, results explicitly remain **gross only**. Historical news is explicitly disabled for this baseline because a current-week feed cannot supply earlier news. The separate CSV/news runner remains available for full historical inputs. Gap-censored research reports `INCOMPLETE_DATA` and its unresolved count instead of a misleading completed winrate.
+
+Telegram readiness checks `getMe` and `getChat` once daily; it sends no test message and does not claim delivery has been proven. Actual delivery remains recorded per signal.
+
+Weekly calendar snapshots are archived from the first observation in `engine/news_archive/`; previous years are not backfilled or inferred. Paper journal export is `paper_journal.csv`, including an honest header-only file when no signals exist. The dashboard shows recent real journal records and the most recent research results directly.
+
+Still requires external inputs: measured broker costs, historical economic calendar coverage, account-specific sizing information and MT5 executions. No automatic broker trading or account-profit synchronization is enabled.

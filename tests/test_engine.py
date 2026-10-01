@@ -113,7 +113,7 @@ class IntegrationTests(unittest.TestCase):
             ev=event(); ev.update(active=True,decision_time=(frame.iloc[-1].datetime+pd.Timedelta(minutes=5)).isoformat(),candle_time=frame.iloc[-1].datetime.isoformat())
             ev['plan'].update(valid=True,rr_tp2=2.)
             values=frame.copy(); values['datetime']=values.datetime.astype(str)
-            patches={'DASHBOARD_FILE':root/'dashboard.json','JOURNAL_FILE':root/'journal.json','NEWS_CACHE_FILE':root/'news.json','BACKTEST_FILE':root/'backtest.json'}
+            patches={'DATA_DIR':root,'REPO_DIR':root,'DASHBOARD_FILE':root/'dashboard.json','JOURNAL_FILE':root/'journal.json','NEWS_CACHE_FILE':root/'news.json','BACKTEST_FILE':root/'backtest.json'}
             with patch.multiple(e,**patches), patch.object(e,'now_utc',return_value=at.to_pydatetime()), patch.object(e,'http_json',return_value={'values':values.to_dict('records')}), patch.object(e,'evaluate',return_value=ev), patch.object(e,'fetch_news',return_value={'ok':True,'status':'CLEAR','reason':'test'}), patch.object(e,'telegram',return_value='SENT') as send, patch.dict(e.os.environ,{'TWELVEDATA_API_KEY':'test','ROUND_TRIP_COST_PIPS':'1'}):
                 e.run_live(); e.run_live()
                 journal=e.load_json(e.JOURNAL_FILE)
