@@ -1,7 +1,7 @@
 {
   "engine": {
-    "version": "V5.2 REPAIRED",
-    "timestamp": "2026-10-01T14:10:45.050644+00:00",
+    "version": "V5.3 CANDIDATE",
+    "timestamp": "2026-10-01T14:14:28.464998+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
@@ -17,9 +17,9 @@
     "reason": "Risk 13.7 pips outside 25-80"
   },
   "opportunity": {
-    "type": "BUY PULLBACK",
+    "type": "BUY FVG RETEST",
     "direction": null,
-    "score": 40,
+    "score": 20,
     "valid": false
   },
   "regime": {
@@ -67,8 +67,8 @@
       }
     ],
     "source": "FOREX FACTORY",
-    "feed_status": "CACHE",
-    "fetched_at": "2026-10-01T13:41:23.553545+00:00",
+    "feed_status": "LIVE",
+    "fetched_at": "2026-10-01T14:14:28.464998+00:00",
     "filter": "CLEAR",
     "high_impact": "CLEAR",
     "minutes_to_news": null
@@ -86,8 +86,8 @@
     "swing_low": 4175.17883,
     "setup": {
       "direction": "BUY",
-      "opportunity": "BUY PULLBACK",
-      "valid": true,
+      "opportunity": "BUY FVG RETEST",
+      "valid": false,
       "reason": [
         "H1 bullish + M15 discount"
       ],
@@ -110,11 +110,13 @@
         "swing_low": 4175.17883
       },
       "range": {
-        "is_range": true,
-        "high": 4187.19446,
-        "low": 4150.02881,
-        "width": 37.165649999999914,
-        "location": 0.4063157781446025
+        "is_range": false,
+        "efficiency": 0.04546837498709416,
+        "compression": 1.1081022906911282
+      },
+      "fresh_zone": {
+        "valid": false,
+        "type": "FVG_FIRST_RETEST"
       }
     }
   },
@@ -124,7 +126,7 @@
       "bos": null,
       "candle": false,
       "momentum": "BULLISH",
-      "reason": "NO CONFIRMATION"
+      "reason": "Waiting for M5 BOS + candle + momentum"
     }
   },
   "potential": {
@@ -137,42 +139,52 @@
     "score": false,
     "risk": false,
     "rr": false,
-    "session_blocking": false,
+    "session_blocking": true,
     "entry_policy": true,
-    "setup": true,
+    "setup": false,
     "m5_confirmation": false,
-    "session": true
+    "session": true,
+    "h4_h1": false,
+    "pd_zone": true,
+    "fresh_zone": false,
+    "m15_structure": false,
+    "trending": true,
+    "costs": false
   },
   "risk_engine": {
     "status": "AVAILABLE",
     "daily_loss_limit": "2R PAPER",
     "consecutive_loss_limit": "3/day PAPER",
     "risk_pips": null,
-    "risk_level": null,
+    "risk_level": "NOT SIZED",
     "min_risk_pips": 25,
-    "max_risk_pips": 80
+    "max_risk_pips": 80,
+    "weekly_loss_limit": "4R PAPER",
+    "net_rr": null,
+    "position_sizing": "BROKER_SPEC_REQUIRED"
   },
   "sop": {
-    "fresh_zone": "NOT IMPLEMENTED",
+    "fresh_zone": "WAIT",
     "news_filter": "CLEAR",
-    "session_blocking": "NO",
-    "session_filter": "INFORMATIONAL",
+    "session_blocking": "YES",
+    "session_filter": "PASS",
     "risk": null,
-    "m15_setup": "True",
+    "m15_setup": "False",
     "m5_confirmation": "False"
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "BUY PULLBACK",
-    "m5_confirmation": "NO CONFIRMATION"
+    "m15_setup": "BUY FVG RETEST",
+    "m5_confirmation": "Waiting for M5 BOS + candle + momentum"
   },
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "SETUP/SCORE/RISK NOT MET",
+      "Waiting: h4_h1, fresh_zone, m15_structure, m5_confirmation, risk, rr",
       "No USD HIGH event in block window",
       "Paper entry policy: AVAILABLE",
-      "Late signals blocked: False"
+      "Late signals blocked: True",
+      "Cost-adjusted RR: Missing costs or net RR below 2"
     ]
   },
   "journal": {
@@ -306,7 +318,7 @@
     }
   },
   "_journal_store": {
-    "version": "V5.2 REPAIRED",
+    "version": "V5.3 CANDIDATE",
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
@@ -316,15 +328,22 @@
     "Paper OHLC simulation; not MT5 executions",
     "TP1 observation only; full exit TP2",
     "Intrabar order unknown; SL first",
-    "Session names use fixed MY-time buckets"
+    "Session names use fixed MY-time buckets",
+    "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
     "last_candle": "2026-10-01T14:05:00+00:00",
-    "age_minutes": 0.7508440666666666,
-    "late_signal_blocked": false
+    "age_minutes": 4.474416633333333,
+    "late_signal_blocked": true
   },
   "telegram": {
     "last_status": "NO_SIGNAL"
+  },
+  "h4": {
+    "direction": "RANGE",
+    "bos": null,
+    "swing_high": 4220.14543,
+    "swing_low": 4139.77873
   },
   "services": {
     "news_archive": {
