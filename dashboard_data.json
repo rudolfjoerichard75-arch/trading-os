@@ -1,33 +1,46 @@
 {
   "engine": {
     "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-02T02:51:13.835129+00:00",
+    "timestamp": "2026-10-02T02:56:11.333253+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4161.50176,
+  "latest_price": 4162.58209,
   "session": "ASIAN",
   "signal": {
     "active": false,
-    "direction": null,
-    "candle_time": "2026-10-02T02:45:00+00:00"
+    "direction": "BUY",
+    "candle_time": "2026-10-02T02:50:00+00:00"
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 166.0 pips outside 25-80"
+    "valid": true,
+    "direction": "BUY",
+    "entry": 4162.58,
+    "sl": 4154.83,
+    "risk_pips": 77.5,
+    "tp1": 4168.58,
+    "tp2": 4178.09,
+    "tp3": 4185.84,
+    "tp1_pips": 60,
+    "tp2_pips": 155.0,
+    "tp3_pips": 232.6,
+    "rr_tp1": 0.77,
+    "rr_tp2": 2.0,
+    "rr_tp3": 3.0,
+    "risk_level": "MEDIUM"
   },
   "opportunity": {
     "type": "BUY FVG RETEST",
-    "direction": null,
-    "score": 10,
+    "direction": "BUY",
+    "score": 40,
     "valid": false
   },
   "regime": {
     "type": "BULLISH"
   },
   "volatility": {
-    "atr": 4.59,
-    "atr_pips": 45.9,
+    "atr": 4.45,
+    "atr_pips": 44.5,
     "condition": "NORMAL"
   },
   "pd": {
@@ -67,7 +80,7 @@
       }
     ],
     "source": "FOREX FACTORY",
-    "feed_status": "LIVE",
+    "feed_status": "CACHE",
     "fetched_at": "2026-10-02T02:51:13.835129+00:00",
     "filter": "CLEAR",
     "high_impact": "CLEAR",
@@ -122,27 +135,27 @@
   },
   "m5": {
     "confirmation": {
-      "confirmed": false,
-      "bos": null,
-      "candle": false,
-      "momentum": "NEUTRAL",
-      "reason": "Waiting for M5 BOS + candle + momentum"
+      "confirmed": true,
+      "bos": "BULLISH BOS",
+      "candle": true,
+      "momentum": "BULLISH",
+      "reason": "M5 BOS + candle + momentum"
     }
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 155.0,
+    "tp3_pips": 232.6
   },
   "filters": {
     "news": true,
     "score": false,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "session_blocking": true,
     "entry_policy": true,
     "setup": false,
-    "m5_confirmation": false,
+    "m5_confirmation": true,
     "session": false,
     "h4_h1": false,
     "pd_zone": true,
@@ -155,7 +168,7 @@
     "status": "AVAILABLE",
     "daily_loss_limit": "2R PAPER",
     "consecutive_loss_limit": "3/day PAPER",
-    "risk_pips": null,
+    "risk_pips": 77.5,
     "risk_level": "NOT SIZED",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
@@ -168,19 +181,19 @@
     "news_filter": "CLEAR",
     "session_blocking": "YES",
     "session_filter": "BLOCK",
-    "risk": null,
+    "risk": "MEDIUM",
     "m15_setup": "False",
-    "m5_confirmation": "False"
+    "m5_confirmation": "True"
   },
   "confirmations": {
     "h1_bias": "BULLISH",
     "m15_setup": "BUY FVG RETEST",
-    "m5_confirmation": "Waiting for M5 BOS + candle + momentum"
+    "m5_confirmation": "M5 BOS + candle + momentum"
   },
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "Waiting: h4_h1, fresh_zone, m15_structure, m5_confirmation, session, risk, rr, trending",
+      "Waiting: h4_h1, fresh_zone, m15_structure, session, trending",
       "No USD HIGH event in block window",
       "Paper entry policy: AVAILABLE",
       "Late signals blocked: False",
@@ -330,7 +343,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-02T02:45:00+00:00"
+    "last_processed_candle": "2026-10-02T02:50:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -340,8 +353,8 @@
     "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
-    "last_candle": "2026-10-02T02:45:00+00:00",
-    "age_minutes": 1.2305854833333332,
+    "last_candle": "2026-10-02T02:50:00+00:00",
+    "age_minutes": 1.18888755,
     "late_signal_blocked": false
   },
   "telegram": {
