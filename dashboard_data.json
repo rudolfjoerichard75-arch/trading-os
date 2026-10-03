@@ -1,46 +1,46 @@
 {
   "engine": {
     "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-03T01:58:04.848668+00:00",
+    "timestamp": "2026-10-03T02:01:22.710889+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4137.60115,
+  "latest_price": 4137.62075,
   "session": "ASIAN",
   "signal": {
     "active": false,
     "direction": null,
-    "candle_time": "2026-10-03T01:50:00+00:00"
+    "candle_time": "2026-10-03T01:55:00+00:00"
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 3.3 pips outside 25-80"
+    "reason": "Risk 3.1 pips outside 25-80"
   },
   "opportunity": {
     "type": "SELL FVG RETEST",
     "direction": null,
-    "score": 5,
+    "score": 0,
     "valid": false
   },
   "regime": {
     "type": "BEARISH"
   },
   "volatility": {
-    "atr": 0.22,
-    "atr_pips": 2.2,
+    "atr": 0.21,
+    "atr_pips": 2.1,
     "condition": "LOW"
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4139.99,
+    "equilibrium": 4140.33,
     "high": 4143.47,
-    "low": 4136.5
+    "low": 4137.19
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE"
+    "sell_side_sweep": true,
+    "swept_level": 4137.47739,
+    "description": "SELL-SIDE LIQUIDITY SWEPT"
   },
   "news": {
     "ok": true,
@@ -69,18 +69,20 @@
       "direction": "SELL",
       "opportunity": "SELL FVG RETEST",
       "valid": false,
-      "reason": [],
+      "reason": [
+        "M15 range low + sell-side sweep"
+      ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 4139.99,
+        "equilibrium": 4140.33,
         "high": 4143.47,
-        "low": 4136.5
+        "low": 4137.19
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "sell_side_sweep": true,
+        "swept_level": 4137.47739,
+        "description": "SELL-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "RANGE",
@@ -89,9 +91,9 @@
         "swing_low": 4137.47739
       },
       "range": {
-        "is_range": false,
-        "efficiency": 0.7612747786567333,
-        "compression": 0.24449139219782975
+        "is_range": true,
+        "efficiency": 0.07297618523529048,
+        "compression": 0.37370809979356234
       },
       "fresh_zone": {
         "valid": false,
@@ -127,7 +129,7 @@
     "pd_zone": false,
     "fresh_zone": false,
     "m15_structure": false,
-    "trending": true,
+    "trending": false,
     "costs": false
   },
   "risk_engine": {
@@ -159,10 +161,10 @@
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "Waiting: h4_h1, pd_zone, fresh_zone, m15_structure, m5_confirmation, session, risk, rr",
+      "Waiting: h4_h1, pd_zone, fresh_zone, m15_structure, m5_confirmation, session, risk, rr, trending",
       "No USD HIGH event in block window",
       "Paper entry policy: AVAILABLE",
-      "Late signals blocked: True",
+      "Late signals blocked: False",
       "Cost-adjusted RR: Missing costs or net RR below 2"
     ]
   },
@@ -309,7 +311,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-03T01:50:00+00:00"
+    "last_processed_candle": "2026-10-03T01:55:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -319,9 +321,9 @@
     "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
-    "last_candle": "2026-10-03T01:50:00+00:00",
-    "age_minutes": 3.0808111333333335,
-    "late_signal_blocked": true
+    "last_candle": "2026-10-03T01:55:00+00:00",
+    "age_minutes": 1.3785148166666665,
+    "late_signal_blocked": false
   },
   "telegram": {
     "last_status": "NO_SIGNAL"
