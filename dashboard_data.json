@@ -1,16 +1,16 @@
 {
   "engine": {
     "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-04T06:56:06.794823+00:00",
+    "timestamp": "2026-10-04T07:01:30.365102+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4137.6286,
-  "session": "ASIAN",
+  "latest_price": 4137.63065,
+  "session": "LONDON",
   "signal": {
     "active": false,
     "direction": null,
-    "candle_time": "2026-10-04T06:50:00+00:00"
+    "candle_time": "2026-10-04T06:55:00+00:00"
   },
   "plan": {
     "valid": false,
@@ -31,7 +31,7 @@
     "condition": "LOW"
   },
   "pd": {
-    "zone": "DISCOUNT",
+    "zone": "PREMIUM",
     "equilibrium": 4137.6,
     "high": 4137.72,
     "low": 4137.48
@@ -76,11 +76,9 @@
       "direction": "BUY",
       "opportunity": "BUY FVG RETEST",
       "valid": false,
-      "reason": [
-        "H1 bullish + M15 discount"
-      ],
+      "reason": [],
       "pd": {
-        "zone": "DISCOUNT",
+        "zone": "PREMIUM",
         "equilibrium": 4137.6,
         "high": 4137.72,
         "low": 4137.48
@@ -98,9 +96,9 @@
         "swing_low": 4137.47633
       },
       "range": {
-        "is_range": true,
-        "efficiency": 0.11041282912590332,
-        "compression": 0.9983101785300311
+        "is_range": false,
+        "efficiency": 0.021565025061364308,
+        "compression": 1.002013087783873
       },
       "fresh_zone": {
         "valid": false,
@@ -131,12 +129,12 @@
     "entry_policy": true,
     "setup": false,
     "m5_confirmation": false,
-    "session": false,
+    "session": true,
     "h4_h1": false,
-    "pd_zone": true,
+    "pd_zone": false,
     "fresh_zone": false,
     "m15_structure": false,
-    "trending": false,
+    "trending": true,
     "costs": false
   },
   "risk_engine": {
@@ -155,7 +153,7 @@
     "fresh_zone": "WAIT",
     "news_filter": "CLEAR",
     "session_blocking": "YES",
-    "session_filter": "BLOCK",
+    "session_filter": "PASS",
     "risk": null,
     "m15_setup": "False",
     "m5_confirmation": "False"
@@ -168,7 +166,7 @@
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "Waiting: h4_h1, fresh_zone, m15_structure, m5_confirmation, session, risk, rr, trending",
+      "Waiting: h4_h1, pd_zone, fresh_zone, m15_structure, m5_confirmation, risk, rr",
       "No USD HIGH event in block window",
       "Paper entry policy: AVAILABLE",
       "Late signals blocked: False",
@@ -318,7 +316,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-04T06:50:00+00:00"
+    "last_processed_candle": "2026-10-04T06:55:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -328,8 +326,8 @@
     "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
-    "last_candle": "2026-10-04T06:50:00+00:00",
-    "age_minutes": 1.1132470499999998,
+    "last_candle": "2026-10-04T06:55:00+00:00",
+    "age_minutes": 1.5060850333333333,
     "late_signal_blocked": false
   },
   "telegram": {
