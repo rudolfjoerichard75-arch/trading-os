@@ -1,40 +1,40 @@
 {
   "engine": {
     "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-08T16:50:17.862215+00:00",
+    "timestamp": "2026-10-08T21:35:01.296755+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4118.54343,
-  "session": "NEW YORK",
+  "latest_price": 4134.89282,
+  "session": "OFF SESSION",
   "signal": {
     "active": false,
     "direction": null,
-    "candle_time": "2026-10-08T16:45:00+00:00"
+    "candle_time": "2026-10-08T21:30:00+00:00"
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 81.8 pips outside 25-80"
+    "reason": "NO DIRECTION"
   },
   "opportunity": {
-    "type": "SELL FVG RETEST",
+    "type": "NO ALIGNED TREND",
     "direction": null,
-    "score": 25,
+    "score": 0,
     "valid": false
   },
   "regime": {
-    "type": "BEARISH"
+    "type": "RANGE"
   },
   "volatility": {
-    "atr": 4.99,
-    "atr_pips": 49.9,
-    "condition": "NORMAL"
+    "atr": 1.11,
+    "atr_pips": 11.1,
+    "condition": "LOW"
   },
   "pd": {
-    "zone": "DISCOUNT",
-    "equilibrium": 4122.33,
-    "high": 4138.9,
-    "low": 4105.76
+    "zone": "PREMIUM",
+    "equilibrium": 4130.12,
+    "high": 4146.28,
+    "low": 4113.95
   },
   "liquidity": {
     "buy_side_sweep": false,
@@ -49,32 +49,32 @@
     "events": [],
     "source": "FOREX FACTORY",
     "feed_status": "LIVE",
-    "fetched_at": "2026-10-08T16:50:17.862215+00:00",
+    "fetched_at": "2026-10-08T21:35:01.296755+00:00",
     "filter": "CLEAR",
     "high_impact": "CLEAR",
     "minutes_to_news": null
   },
   "h1": {
-    "direction": "BEARISH",
+    "direction": "RANGE",
     "bos": null,
-    "swing_high": 4131.88993,
-    "swing_low": 4110.32102
+    "swing_high": 4146.28079,
+    "swing_low": 4105.76449
   },
   "m15": {
     "direction": "RANGE",
     "bos": null,
-    "swing_high": 4138.90154,
-    "swing_low": 4105.76449,
+    "swing_high": 4136.50465,
+    "swing_low": 4121.16217,
     "setup": {
-      "direction": "SELL",
-      "opportunity": "SELL FVG RETEST",
+      "direction": null,
+      "opportunity": "NO ALIGNED TREND",
       "valid": false,
       "reason": [],
       "pd": {
-        "zone": "DISCOUNT",
-        "equilibrium": 4122.33,
-        "high": 4138.9,
-        "low": 4105.76
+        "zone": "PREMIUM",
+        "equilibrium": 4130.12,
+        "high": 4146.28,
+        "low": 4113.95
       },
       "liquidity": {
         "buy_side_sweep": false,
@@ -85,26 +85,25 @@
       "structure": {
         "direction": "RANGE",
         "bos": null,
-        "swing_high": 4138.90154,
-        "swing_low": 4105.76449
+        "swing_high": 4136.50465,
+        "swing_low": 4121.16217
       },
       "range": {
         "is_range": true,
-        "efficiency": 0.04660472335430655,
-        "compression": 0.8806677009405693
+        "efficiency": 0.2556479137260059,
+        "compression": 0.2588337453184373
       },
       "fresh_zone": {
-        "valid": false,
-        "type": "FVG_FIRST_RETEST"
+        "valid": false
       }
     }
   },
   "m5": {
     "confirmation": {
       "confirmed": false,
-      "bos": null,
+      "bos": "BULLISH BOS",
       "candle": false,
-      "momentum": "BEARISH",
+      "momentum": "BULLISH",
       "reason": "Waiting for M5 BOS + candle + momentum"
     }
   },
@@ -122,8 +121,8 @@
     "entry_policy": true,
     "setup": false,
     "m5_confirmation": false,
-    "session": true,
-    "h4_h1": true,
+    "session": false,
+    "h4_h1": false,
     "pd_zone": false,
     "fresh_zone": false,
     "m15_structure": false,
@@ -146,20 +145,20 @@
     "fresh_zone": "WAIT",
     "news_filter": "CLEAR",
     "session_blocking": "YES",
-    "session_filter": "PASS",
+    "session_filter": "BLOCK",
     "risk": null,
     "m15_setup": "False",
     "m5_confirmation": "False"
   },
   "confirmations": {
-    "h1_bias": "BEARISH",
-    "m15_setup": "SELL FVG RETEST",
+    "h1_bias": "RANGE",
+    "m15_setup": "NO ALIGNED TREND",
     "m5_confirmation": "Waiting for M5 BOS + candle + momentum"
   },
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "Waiting: pd_zone, fresh_zone, m15_structure, m5_confirmation, risk, rr, trending",
+      "Waiting: h4_h1, pd_zone, fresh_zone, m15_structure, m5_confirmation, session, risk, rr, trending",
       "No USD HIGH event in block window",
       "Paper entry policy: AVAILABLE",
       "Late signals blocked: False",
@@ -309,7 +308,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-08T16:45:00+00:00"
+    "last_processed_candle": "2026-10-08T21:30:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -319,8 +318,8 @@
     "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
-    "last_candle": "2026-10-08T16:45:00+00:00",
-    "age_minutes": 0.2977035833333333,
+    "last_candle": "2026-10-08T21:30:00+00:00",
+    "age_minutes": 0.021612583333333334,
     "late_signal_blocked": false
   },
   "telegram": {
