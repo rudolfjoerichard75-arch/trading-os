@@ -1,16 +1,16 @@
 {
   "engine": {
     "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-12T01:38:33.507535+00:00",
+    "timestamp": "2026-10-12T07:58:07.936466+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4206.60537,
-  "session": "ASIAN",
+  "latest_price": 4183.1329,
+  "session": "LONDON",
   "signal": {
     "active": false,
     "direction": null,
-    "candle_time": "2026-10-12T01:30:00+00:00"
+    "candle_time": "2026-10-12T07:50:00+00:00"
   },
   "plan": {
     "valid": false,
@@ -19,28 +19,28 @@
   "opportunity": {
     "type": "NO ALIGNED TREND",
     "direction": null,
-    "score": 5,
+    "score": 10,
     "valid": false
   },
   "regime": {
     "type": "RANGE"
   },
   "volatility": {
-    "atr": 5.82,
-    "atr_pips": 58.2,
+    "atr": 2.58,
+    "atr_pips": 25.8,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "PREMIUM",
-    "equilibrium": 4200.18,
-    "high": 4216.21,
-    "low": 4184.15
+    "zone": "DISCOUNT",
+    "equilibrium": 4195.64,
+    "high": 4211.38,
+    "low": 4179.9
   },
   "liquidity": {
-    "buy_side_sweep": true,
+    "buy_side_sweep": false,
     "sell_side_sweep": false,
-    "swept_level": 4210.70361,
-    "description": "BUY-SIDE LIQUIDITY SWEPT"
+    "swept_level": null,
+    "description": "NONE"
   },
   "news": {
     "ok": true,
@@ -80,51 +80,49 @@
     ],
     "source": "FOREX FACTORY",
     "feed_status": "LIVE",
-    "fetched_at": "2026-10-12T01:38:33.507535+00:00",
+    "fetched_at": "2026-10-12T07:58:07.936466+00:00",
     "filter": "CLEAR",
     "high_impact": "CLEAR",
     "minutes_to_news": null
   },
   "h1": {
     "direction": "RANGE",
-    "bos": "BULLISH BOS",
-    "swing_high": 4195.99881,
+    "bos": null,
+    "swing_high": 4216.2071,
     "swing_low": 4184.14984
   },
   "m15": {
-    "direction": "BULLISH",
+    "direction": "RANGE",
     "bos": null,
-    "swing_high": 4210.70361,
-    "swing_low": 4188.12104,
+    "swing_high": 4192.17088,
+    "swing_low": 4181.10166,
     "setup": {
       "direction": null,
       "opportunity": "NO ALIGNED TREND",
       "valid": false,
-      "reason": [
-        "M15 range high + buy-side sweep"
-      ],
+      "reason": [],
       "pd": {
-        "zone": "PREMIUM",
-        "equilibrium": 4200.18,
-        "high": 4216.21,
-        "low": 4184.15
+        "zone": "DISCOUNT",
+        "equilibrium": 4195.64,
+        "high": 4211.38,
+        "low": 4179.9
       },
       "liquidity": {
-        "buy_side_sweep": true,
+        "buy_side_sweep": false,
         "sell_side_sweep": false,
-        "swept_level": 4210.70361,
-        "description": "BUY-SIDE LIQUIDITY SWEPT"
+        "swept_level": null,
+        "description": "NONE"
       },
       "structure": {
-        "direction": "BULLISH",
+        "direction": "RANGE",
         "bos": null,
-        "swing_high": 4210.70361,
-        "swing_low": 4188.12104
+        "swing_high": 4192.17088,
+        "swing_low": 4181.10166
       },
       "range": {
         "is_range": false,
-        "efficiency": 0.23586689013068113,
-        "compression": 1.9841060748925559
+        "efficiency": 0.3626641754583009,
+        "compression": 0.6195930087480902
       },
       "fresh_zone": {
         "valid": false
@@ -136,7 +134,7 @@
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "BEARISH",
+      "momentum": "NEUTRAL",
       "reason": "Waiting for M5 BOS + candle + momentum"
     }
   },
@@ -154,7 +152,7 @@
     "entry_policy": true,
     "setup": false,
     "m5_confirmation": false,
-    "session": false,
+    "session": true,
     "h4_h1": false,
     "pd_zone": false,
     "fresh_zone": false,
@@ -178,7 +176,7 @@
     "fresh_zone": "WAIT",
     "news_filter": "CLEAR",
     "session_blocking": "YES",
-    "session_filter": "BLOCK",
+    "session_filter": "PASS",
     "risk": null,
     "m15_setup": "False",
     "m5_confirmation": "False"
@@ -191,7 +189,7 @@
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "Waiting: h4_h1, pd_zone, fresh_zone, m15_structure, m5_confirmation, session, risk, rr",
+      "Waiting: h4_h1, pd_zone, fresh_zone, m15_structure, m5_confirmation, risk, rr",
       "No USD HIGH event in block window",
       "Paper entry policy: AVAILABLE",
       "Late signals blocked: True",
@@ -341,7 +339,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-12T01:30:00+00:00"
+    "last_processed_candle": "2026-10-12T07:50:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -351,8 +349,8 @@
     "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
-    "last_candle": "2026-10-12T01:30:00+00:00",
-    "age_minutes": 3.5584589166666665,
+    "last_candle": "2026-10-12T07:50:00+00:00",
+    "age_minutes": 3.1322744333333334,
     "late_signal_blocked": true
   },
   "telegram": {
@@ -360,7 +358,7 @@
   },
   "h4": {
     "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "bos": "BULLISH BOS",
     "swing_high": 4202.03378,
     "swing_low": 4195.7313
   },
