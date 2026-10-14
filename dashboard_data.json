@@ -1,16 +1,16 @@
 {
   "engine": {
     "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-14T12:17:39.241658+00:00",
+    "timestamp": "2026-10-14T17:19:00.995937+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4148.77537,
-  "session": "NEW YORK",
+  "latest_price": 4080.27319,
+  "session": "OFF SESSION",
   "signal": {
     "active": false,
     "direction": null,
-    "candle_time": "2026-10-14T12:10:00+00:00"
+    "candle_time": "2026-10-14T17:10:00+00:00"
   },
   "plan": {
     "valid": false,
@@ -19,22 +19,22 @@
   "opportunity": {
     "type": "NO ALIGNED TREND",
     "direction": null,
-    "score": 10,
+    "score": 5,
     "valid": false
   },
   "regime": {
     "type": "RANGE"
   },
   "volatility": {
-    "atr": 3.28,
-    "atr_pips": 32.8,
+    "atr": 3.39,
+    "atr_pips": 33.9,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "PREMIUM",
-    "equilibrium": 4146.97,
-    "high": 4157.61,
-    "low": 4136.33
+    "zone": "DISCOUNT",
+    "equilibrium": 4123.32,
+    "high": 4172.83,
+    "low": 4073.82
   },
   "liquidity": {
     "buy_side_sweep": false,
@@ -43,50 +43,69 @@
     "description": "NONE"
   },
   "news": {
-    "ok": false,
-    "status": "BLOCK",
-    "reason": "Core CPI m/m",
-    "event": "Core CPI m/m",
-    "minutes": 12.3,
-    "event_time": "2026-10-14T12:30:00+00:00",
+    "ok": true,
+    "status": "CLEAR",
+    "reason": "No USD HIGH event in block window",
     "events": [
       {
-        "date": "2026-10-14T12:30:00+00:00",
+        "date": "2026-10-15T12:30:00+00:00",
         "currency": "USD",
         "impact": "HIGH",
-        "title": "Core CPI m/m"
+        "title": "Core PPI m/m"
+      },
+      {
+        "date": "2026-10-15T12:30:00+00:00",
+        "currency": "USD",
+        "impact": "HIGH",
+        "title": "Core Retail Sales m/m"
+      },
+      {
+        "date": "2026-10-15T12:30:00+00:00",
+        "currency": "USD",
+        "impact": "HIGH",
+        "title": "PPI m/m"
+      },
+      {
+        "date": "2026-10-15T12:30:00+00:00",
+        "currency": "USD",
+        "impact": "HIGH",
+        "title": "Retail Sales m/m"
+      },
+      {
+        "date": "2026-10-16T03:30:00+00:00",
+        "currency": "USD",
+        "impact": "HIGH",
+        "title": "Fed Chairman Warsh Speaks"
       }
     ],
     "source": "FOREX FACTORY",
     "feed_status": "LIVE",
-    "fetched_at": "2026-10-14T12:17:39.241658+00:00",
-    "filter": "BLOCK",
-    "high_impact": "HIGH",
-    "minutes_to_news": 12.3
+    "fetched_at": "2026-10-14T17:19:00.995937+00:00",
+    "filter": "CLEAR",
+    "high_impact": "CLEAR",
+    "minutes_to_news": null
   },
   "h1": {
     "direction": "RANGE",
-    "bos": "BEARISH BOS",
-    "swing_high": 4169.96789,
-    "swing_low": 4143.75731
+    "bos": null,
+    "swing_high": 4172.82699,
+    "swing_low": 4080.21108
   },
   "m15": {
     "direction": "BEARISH",
-    "bos": "BULLISH BOS",
-    "swing_high": 4145.22571,
-    "swing_low": 4136.33355,
+    "bos": null,
+    "swing_high": 4105.42737,
+    "swing_low": 4073.81757,
     "setup": {
       "direction": null,
       "opportunity": "NO ALIGNED TREND",
       "valid": false,
-      "reason": [
-        "M15 bullish BOS"
-      ],
+      "reason": [],
       "pd": {
-        "zone": "PREMIUM",
-        "equilibrium": 4146.97,
-        "high": 4157.61,
-        "low": 4136.33
+        "zone": "DISCOUNT",
+        "equilibrium": 4123.32,
+        "high": 4172.83,
+        "low": 4073.82
       },
       "liquidity": {
         "buy_side_sweep": false,
@@ -96,14 +115,14 @@
       },
       "structure": {
         "direction": "BEARISH",
-        "bos": "BULLISH BOS",
-        "swing_high": 4145.22571,
-        "swing_low": 4136.33355
+        "bos": null,
+        "swing_high": 4105.42737,
+        "swing_low": 4073.81757
       },
       "range": {
         "is_range": false,
-        "efficiency": 0.08026668629860534,
-        "compression": 1.3435918656280268
+        "efficiency": 0.3908011121466942,
+        "compression": 0.3085451404414849
       },
       "fresh_zone": {
         "valid": false
@@ -113,9 +132,9 @@
   "m5": {
     "confirmation": {
       "confirmed": false,
-      "bos": "BULLISH BOS",
+      "bos": null,
       "candle": false,
-      "momentum": "BULLISH",
+      "momentum": "BEARISH",
       "reason": "Waiting for M5 BOS + candle + momentum"
     }
   },
@@ -125,7 +144,7 @@
     "tp3_pips": null
   },
   "filters": {
-    "news": false,
+    "news": true,
     "score": false,
     "risk": false,
     "rr": false,
@@ -133,7 +152,7 @@
     "entry_policy": true,
     "setup": false,
     "m5_confirmation": false,
-    "session": true,
+    "session": false,
     "h4_h1": false,
     "pd_zone": false,
     "fresh_zone": false,
@@ -155,9 +174,9 @@
   },
   "sop": {
     "fresh_zone": "WAIT",
-    "news_filter": "BLOCK",
+    "news_filter": "CLEAR",
     "session_blocking": "YES",
-    "session_filter": "PASS",
+    "session_filter": "BLOCK",
     "risk": null,
     "m15_setup": "False",
     "m5_confirmation": "False"
@@ -170,8 +189,8 @@
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "Waiting: h4_h1, pd_zone, fresh_zone, m15_structure, m5_confirmation, risk, rr",
-      "Core CPI m/m",
+      "Waiting: h4_h1, pd_zone, fresh_zone, m15_structure, m5_confirmation, session, risk, rr",
+      "No USD HIGH event in block window",
       "Paper entry policy: AVAILABLE",
       "Late signals blocked: True",
       "Cost-adjusted RR: Missing costs or net RR below 2"
@@ -320,7 +339,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-14T12:10:00+00:00"
+    "last_processed_candle": "2026-10-14T17:10:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -330,8 +349,8 @@
     "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
-    "last_candle": "2026-10-14T12:10:00+00:00",
-    "age_minutes": 2.6540276333333335,
+    "last_candle": "2026-10-14T17:10:00+00:00",
+    "age_minutes": 4.01659895,
     "late_signal_blocked": true
   },
   "telegram": {
