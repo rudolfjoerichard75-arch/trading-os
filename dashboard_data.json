@@ -1,40 +1,53 @@
 {
   "engine": {
     "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-13T22:54:41.392249+00:00",
+    "timestamp": "2026-10-14T01:28:54.361526+00:00",
     "status": "WAIT",
     "symbol": "XAU/USD"
   },
-  "latest_price": 4161.69456,
-  "session": "OFF SESSION",
+  "latest_price": 4157.74625,
+  "session": "ASIAN",
   "signal": {
     "active": false,
-    "direction": null,
-    "candle_time": "2026-10-13T22:45:00+00:00"
+    "direction": "SELL",
+    "candle_time": "2026-10-14T01:20:00+00:00"
   },
   "plan": {
-    "valid": false,
-    "reason": "INVALID SELL PLAN: SL must be above entry"
+    "valid": true,
+    "direction": "SELL",
+    "entry": 4157.75,
+    "sl": 4160.32,
+    "risk_pips": 25.7,
+    "tp1": 4151.75,
+    "tp2": 4145.75,
+    "tp3": 4139.75,
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180,
+    "rr_tp1": 2.33,
+    "rr_tp2": 4.67,
+    "rr_tp3": 7.0,
+    "risk_level": "LOW"
   },
   "opportunity": {
     "type": "SELL FVG RETEST",
-    "direction": null,
-    "score": 30,
+    "direction": "SELL",
+    "score": 65,
     "valid": false
   },
   "regime": {
     "type": "BEARISH"
   },
   "volatility": {
-    "atr": 1.45,
-    "atr_pips": 14.5,
-    "condition": "LOW"
+    "atr": 4.65,
+    "atr_pips": 46.5,
+    "condition": "NORMAL"
   },
   "pd": {
-    "zone": "PREMIUM",
-    "equilibrium": 4157.12,
-    "high": 4166.75,
-    "low": 4147.48
+    "zone": "DISCOUNT",
+    "equilibrium": 4157.77,
+    "high": 4164.22,
+    "low": 4151.31
   },
   "liquidity": {
     "buy_side_sweep": false,
@@ -80,7 +93,7 @@
     ],
     "source": "FOREX FACTORY",
     "feed_status": "LIVE",
-    "fetched_at": "2026-10-13T22:54:41.392249+00:00",
+    "fetched_at": "2026-10-14T01:28:54.361526+00:00",
     "filter": "CLEAR",
     "high_impact": "CLEAR",
     "minutes_to_news": null
@@ -92,22 +105,22 @@
     "swing_low": 4147.48455
   },
   "m15": {
-    "direction": "BEARISH",
-    "bos": null,
-    "swing_high": 4163.23306,
-    "swing_low": 4157.40564,
+    "direction": "RANGE",
+    "bos": "BEARISH BOS",
+    "swing_high": 4164.21812,
+    "swing_low": 4154.8136,
     "setup": {
       "direction": "SELL",
       "opportunity": "SELL FVG RETEST",
-      "valid": false,
+      "valid": true,
       "reason": [
-        "H1 bearish + M15 premium"
+        "M15 bearish BOS"
       ],
       "pd": {
-        "zone": "PREMIUM",
-        "equilibrium": 4157.12,
-        "high": 4166.75,
-        "low": 4147.48
+        "zone": "DISCOUNT",
+        "equilibrium": 4157.77,
+        "high": 4164.22,
+        "low": 4151.31
       },
       "liquidity": {
         "buy_side_sweep": false,
@@ -116,58 +129,63 @@
         "description": "NONE"
       },
       "structure": {
-        "direction": "BEARISH",
-        "bos": null,
-        "swing_high": 4163.23306,
-        "swing_low": 4157.40564
+        "direction": "RANGE",
+        "bos": "BEARISH BOS",
+        "swing_high": 4164.21812,
+        "swing_low": 4154.8136
       },
       "range": {
-        "is_range": true,
-        "efficiency": 0.2806753524463766,
-        "compression": 0.524447792612145
+        "is_range": false,
+        "efficiency": 0.1591369641427784,
+        "compression": 2.3158347270910986
       },
       "fresh_zone": {
-        "valid": false,
-        "type": "FVG_FIRST_RETEST"
+        "valid": true,
+        "type": "FVG_FIRST_RETEST",
+        "low": 4158.34519,
+        "high": 4158.34997,
+        "formed_at": "2026-10-14T00:45:00+00:00",
+        "age_bars": 1,
+        "previous_touches": 0
       }
     }
   },
   "m5": {
     "confirmation": {
       "confirmed": false,
-      "bos": "BULLISH BOS",
+      "bos": null,
       "candle": false,
-      "momentum": "BULLISH",
+      "momentum": "NEUTRAL",
       "reason": "Waiting for M5 BOS + candle + momentum"
     }
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180
   },
   "filters": {
     "news": true,
     "score": false,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "session_blocking": true,
     "entry_policy": true,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
     "session": false,
     "h4_h1": true,
-    "pd_zone": true,
-    "fresh_zone": false,
-    "m15_structure": false,
-    "trending": false,
+    "pd_zone": false,
+    "fresh_zone": true,
+    "m15_structure": true,
+    "trending": true,
     "costs": false
   },
   "risk_engine": {
     "status": "AVAILABLE",
     "daily_loss_limit": "2R PAPER",
     "consecutive_loss_limit": "3/day PAPER",
-    "risk_pips": null,
+    "risk_pips": 25.7,
     "risk_level": "NOT SIZED",
     "min_risk_pips": 25,
     "max_risk_pips": 80,
@@ -176,12 +194,12 @@
     "position_sizing": "BROKER_SPEC_REQUIRED"
   },
   "sop": {
-    "fresh_zone": "WAIT",
+    "fresh_zone": "PASS",
     "news_filter": "CLEAR",
     "session_blocking": "YES",
     "session_filter": "BLOCK",
-    "risk": null,
-    "m15_setup": "False",
+    "risk": "LOW",
+    "m15_setup": "True",
     "m5_confirmation": "False"
   },
   "confirmations": {
@@ -192,7 +210,7 @@
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "Waiting: fresh_zone, m15_structure, m5_confirmation, session, risk, rr, trending",
+      "Waiting: pd_zone, m5_confirmation, session",
       "No USD HIGH event in block window",
       "Paper entry policy: AVAILABLE",
       "Late signals blocked: True",
@@ -256,10 +274,10 @@
     "symbol": "XAU/USD",
     "timeframe": "M5",
     "bars_used": 4999,
-    "period_start": "2026-09-25T18:25:00+00:00",
-    "period_end": "2026-10-13T02:55:00+00:00",
+    "period_start": "2026-09-26T16:35:00+00:00",
+    "period_end": "2026-10-14T01:05:00+00:00",
     "source_sha256": {
-      "XAUUSD_M5_auto.csv": "5ead1f68968c625696c377148a56787791cc986cacae6bd1b70c8188ab5022c1"
+      "XAUUSD_M5_auto.csv": "e3f703b0d3f1b427fdf7b031af4a16c53c11fcd53fa4db22c2b11b248883561c"
     },
     "cost_model": {
       "status": "GROSS_ONLY_UNCONFIGURED",
@@ -268,16 +286,16 @@
       "commission_round_trip_pips": 0.0
     },
     "news_mode": "WITHOUT_NEWS_NOT_LIVE_EQUIVALENT",
-    "development_period": "Before 2026-10-09 15:40:00+00:00",
-    "out_of_sample": "From 2026-10-09 15:40:00+00:00",
+    "development_period": "Before 2026-10-10 13:50:00+00:00",
+    "out_of_sample": "From 2026-10-10 13:50:00+00:00",
     "forward": "Separate live paper journal; not historical proof",
     "data_quality": {
       "rows": 4999,
       "expected_interval_minutes": 5,
       "gaps": 0,
       "largest_gap_minutes": 0,
-      "first_candle": "2026-09-25T18:25:00+00:00",
-      "last_candle": "2026-10-13T02:55:00+00:00",
+      "first_candle": "2026-09-26T16:35:00+00:00",
+      "last_candle": "2026-10-14T01:05:00+00:00",
       "gap_policy": "UNRESOLVED_TRADES_BLOCK_NEW_ENTRIES"
     },
     "walk_forward": {},
@@ -321,14 +339,14 @@
         }
       }
     },
-    "last_updated": "2026-10-13T03:04:11.657724+00:00",
+    "last_updated": "2026-10-14T01:14:49.876051+00:00",
     "note": "No optimization. Data gaps unresolved and block further entries. OPEN/PENDING are excluded from winrate. Costs charged once on exit. OHLC ambiguity uses SL first.",
     "automation": {
       "source": "Twelve Data XAU/USD M5",
       "requests": 1,
       "requested_bars_per_request": 5000,
       "requested_start": null,
-      "requested_end": "2026-10-13T03:03:08.879469+00:00",
+      "requested_end": "2026-10-14T01:13:13.587057+00:00",
       "coverage_complete": true,
       "received_closed_bars": 4999,
       "split_rule": "FIXED_CHRONOLOGICAL_80_20",
@@ -342,7 +360,7 @@
     "symbol": "XAU/USD",
     "created_at": "2026-10-01T02:53:53.041433+08:00",
     "trades": [],
-    "last_processed_candle": "2026-10-13T22:45:00+00:00"
+    "last_processed_candle": "2026-10-14T01:20:00+00:00"
   },
   "limitations": [
     "Paper OHLC simulation; not MT5 executions",
@@ -352,8 +370,8 @@
     "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
   ],
   "data_health": {
-    "last_candle": "2026-10-13T22:45:00+00:00",
-    "age_minutes": 4.689870816666667,
+    "last_candle": "2026-10-14T01:20:00+00:00",
+    "age_minutes": 3.9060254333333333,
     "late_signal_blocked": true
   },
   "telegram": {
