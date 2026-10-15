@@ -2,6 +2,8 @@
 
 The original September 28 V3 setup, score, confirmation, aggregation and trade-plan functions are preserved. `tests/fixtures/v3_original.py` is the immutable regression reference. No V5.3 entry filters are active.
 
+Current risk range: **15–80 pips inclusive**, changed from 25–80 at the owner's request on 2026-10-15. Other V3 entry parameters and functions remain unchanged. Live diagnostics and replay read this same engine setting; older journal/backtest records retain the settings used when generated.
+
 ## Execution
 
 cron-job.org dispatches `.github/workflows/bosque-engine.yml` on `main`. The engine workflow has no internal cron. Manual workflow dispatch also works. Secrets: `TWELVEDATA_API_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
@@ -22,7 +24,7 @@ The original partial H1/M15 aggregation, directional scoring behavior and setup 
 
 Manual CSV workflow needs committed `backtest_data/*.csv`. CSV columns: datetime, open, high, low, close. Historical calendar JSON requires `coverage_start`, `coverage_end`, and `events` with timezone-aware `time`, `currency` and `impact`. Without historical news the result is explicitly labelled WITHOUT_NEWS_NOT_LIVE_EQUIVALENT. Live news observations are not a complete historical calendar. Engine sees news PASS/BLOCK; malformed provider responses block rather than silently become CLEAR.
 
-Dashboard fetches current engine data and current V3 backtest results. Its original CSS/theme is unchanged; an expandable section exposes journal/research status and CSV download. Inactive or stale signals show WAIT. Session preference is informational.
+Dashboard fetches current engine data and current V3 backtest results. The original navy theme is retained with refined spacing and layout; an expandable section exposes journal/research status and CSV download. Inactive or stale signals show WAIT. Session preference is informational.
 
 ## Tests
 

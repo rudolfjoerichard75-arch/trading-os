@@ -26,7 +26,16 @@ class V3Tests(unittest.TestCase):
             self.assertEqual(a[name],z[name],name)
         assignments=lambda tree:{n.targets[0].id:ast.dump(n.value) for n in tree.body if isinstance(n,ast.Assign) and isinstance(n.targets[0],ast.Name)}
         x,y=assignments(old),assignments(new)
-        for name in ['MIN_SCORE','PIP_SIZE','MIN_RISK_PIPS','MAX_RISK_PIPS','TP1_PIPS','MIN_TP2_PIPS','TP3_PIPS','MIN_RR']:self.assertEqual(x[name],y[name])
+        for name in ['MIN_SCORE','PIP_SIZE','MAX_RISK_PIPS','TP1_PIPS','MIN_TP2_PIPS','TP3_PIPS','MIN_RR']:self.assertEqual(x[name],y[name])
+    def test_requested_risk_range_boundaries(self):
+        # User-approved parameter change; retain the original historical fixture.
+        self.assertEqual(e.MIN_RISK_PIPS,15)
+        self.assertEqual(e.MAX_RISK_PIPS,80)
+        frame=pd.DataFrame([{'close':100.0}])
+        for risk,valid in [(14.9,False),(15.0,True),(24.0,True),(80.0,True),(80.1,False)]:
+            with self.subTest(risk=risk),patch.object(e,'analyze_structure',return_value={'swing_low':100-risk*e.PIP_SIZE+.20,'swing_high':105}):
+                plan=e.create_trade_plan('BUY',frame,80,{'atr':None})
+                self.assertEqual(plan['valid'],valid)
     def test_adapter_matches_original_direct_decision(self):
         df=bars();at=df.iloc[-1].datetime+pd.Timedelta(minutes=5)
         h1=e.analyze_structure(e.aggregate(df,60));setup=e.detect_m15_setup(h1,e.aggregate(df,15),df);conf=e.m5_confirmation(df,setup['direction']);vol=e.volatility_analysis(df);sess=e.get_session(at.to_pydatetime().astimezone(e.MY_TZ));score=e.calculate_score(h1,setup,conf,sess,vol);plan=e.create_trade_plan(setup['direction'],df,score,vol)
@@ -85,13 +94,13 @@ class V3Tests(unittest.TestCase):
 class DiagnosticsTests(unittest.TestCase):
     def test_risk_reason_preserves_entry_decision(self):
         import copy
-        d={'opportunity':{'direction':'BUY','score':80},'plan':{'valid':False,'reason':'Risk 143.0 pips outside 25-80'},'filters':{'setup':True,'score':True,'m5_confirmation':True,'risk':False,'rr':False,'news':True},'signal':{'active':False}}
+        d={'opportunity':{'direction':'BUY','score':80},'plan':{'valid':False,'reason':'Risk 143.0 pips outside 15-80'},'filters':{'setup':True,'score':True,'m5_confirmation':True,'risk':False,'rr':False,'news':True},'signal':{'active':False}}
         old=copy.deepcopy(d);t.add_diagnostics(d)
         for key in old:self.assertEqual(old[key],d[key],key)
         self.assertEqual(d['gate_reasons'],{'risk':'SL 143.0 pips melebihi had 80 pips','rr':'Belum dikira: risk tidak lulus'})
         self.assertEqual(d['diagnostics']['risk_distance_pips'],143.)
-        d['plan']['reason']='Risk 24.0 pips outside 25-80';t.add_diagnostics(d)
-        self.assertIn('bawah minimum 25',d['gate_reasons']['risk'])
+        d['plan']['reason']='Risk 14.0 pips outside 15-80';t.add_diagnostics(d)
+        self.assertIn('bawah minimum 15',d['gate_reasons']['risk'])
     def test_each_gate_has_reason_only_when_waiting(self):
         d={'opportunity':{'score':50},'plan':{},'filters':{},'news':{'filter':'BLOCK','status':'ERROR'}}
         t.add_diagnostics(d)
