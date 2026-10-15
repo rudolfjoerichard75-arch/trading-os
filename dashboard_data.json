@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-16T02:30:52.192638+08:00"
+    "timestamp": "2026-10-16T02:35:36.833643+08:00"
   },
-  "latest_price": 4158.17,
+  "latest_price": 4158.26,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4168.92433,
       "low": 4100.20911,
       "width": 68.71522000000004,
-      "location": 0.8434629184043942
+      "location": 0.8448422343696251
     }
   },
   "volatility": {
-    "atr": 2.8,
-    "atr_pips": 28.0,
+    "atr": 2.53,
+    "atr_pips": 25.3,
     "condition": "NORMAL"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-16T02:30:52.771619+08:00",
+      "checked_at": "2026-10-16T02:35:37.242698+08:00",
       "requested_from": "2026-10-15",
       "requested_to": "2026-10-18",
       "events_received": 3,
@@ -71,28 +71,33 @@
     "type": "BUY BREAKOUT RETEST",
     "direction": "BUY",
     "valid": true,
-    "score": 65
+    "score": 75
   },
   "signal": {
-    "active": false,
-    "id": null,
+    "active": true,
+    "id": "5e06e60508198921",
     "direction": "BUY",
     "opportunity": "BUY BREAKOUT RETEST",
-    "score": 65,
-    "timestamp": "2026-10-16T02:30:52.192638+08:00"
+    "score": 75,
+    "timestamp": "2026-10-16T02:35:36.833643+08:00",
+    "entry": 4158.26,
+    "sl": 4151.85,
+    "tp1": 4164.26,
+    "tp2": 4171.09,
+    "tp3": 4177.5
   },
   "plan": {
     "valid": true,
     "direction": "BUY",
-    "entry": 4158.17,
-    "sl": 4151.79,
-    "risk_pips": 63.7,
-    "tp1": 4164.17,
-    "tp2": 4170.91,
-    "tp3": 4177.29,
+    "entry": 4158.26,
+    "sl": 4151.85,
+    "risk_pips": 64.1,
+    "tp1": 4164.26,
+    "tp2": 4171.09,
+    "tp3": 4177.5,
     "tp1_pips": 60,
-    "tp2_pips": 127.5,
-    "tp3_pips": 191.2,
+    "tp2_pips": 128.3,
+    "tp3_pips": 192.4,
     "rr_tp1": 0.94,
     "rr_tp2": 2.0,
     "rr_tp3": 3.0,
@@ -100,8 +105,8 @@
   },
   "potential": {
     "tp1_pips": 60,
-    "tp2_pips": 127.5,
-    "tp3_pips": 191.2
+    "tp2_pips": 128.3,
+    "tp3_pips": 192.4
   },
   "h1": {
     "direction": "BULLISH",
@@ -145,25 +150,25 @@
         "high": 4164.584,
         "low": 4144.04708,
         "width": 20.536919999999554,
-        "location": 0.687579734448975
+        "location": 0.692194837395296
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4158.17706,
     "swing_low": 4152.35463,
     "confirmation": {
       "confirmed": true,
-      "bos": null,
+      "bos": "BULLISH BOS",
       "candle": true,
       "momentum": "BULLISH",
-      "reason": "M5 bullish candle + momentum"
+      "reason": "M5 bullish BOS"
     }
   },
   "filters": {
-    "score": false,
+    "score": true,
     "setup": true,
     "m5_confirmation": true,
     "risk": true,
@@ -175,13 +180,13 @@
   "confirmations": {
     "h1_bias": "BULLISH",
     "m15_setup": "BUY BREAKOUT RETEST",
-    "m5_confirmation": "M5 bullish candle + momentum",
+    "m5_confirmation": "M5 bullish BOS",
     "liquidity": "NONE",
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
     "status": "VALID",
-    "risk_pips": 63.7,
+    "risk_pips": 64.1,
     "risk_level": "MEDIUM",
     "min_risk_pips": 15,
     "max_risk_pips": 80,
@@ -189,7 +194,7 @@
     "consecutive_loss_limit": "NOT CONFIGURED"
   },
   "invalidation": {
-    "status": "WAIT",
+    "status": "VALID",
     "conditions": [
       "M5 confirmation required",
       "Risk must remain valid",
@@ -218,7 +223,7 @@
     "max_drawdown": 0.0,
     "max_consecutive_losses": 0,
     "total_pips": 0,
-    "open_trades": 0,
+    "open_trades": 1,
     "unresolved": 0,
     "cancelled": 3,
     "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -1448,9 +1453,7 @@
     "economic_calendar": "FinanceCalendar",
     "economic_calendar_url": "https://www.financecalendar.com/"
   },
-  "gate_reasons": {
-    "score": "Skor 65/100 < minimum 70"
-  },
+  "gate_reasons": {},
   "diagnostics": {
     "limits": {
       "min_score": 70,
@@ -1458,10 +1461,8 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 63.7,
-    "blocking_reasons": [
-      "Skor 65/100 < minimum 70"
-    ]
+    "risk_distance_pips": 64.1,
+    "blocking_reasons": []
   },
   "journal": {
     "status": "ACTIVE",
@@ -1475,14 +1476,39 @@
     "max_drawdown": 0.0,
     "max_consecutive_losses": 0,
     "total_pips": 0,
-    "open_trades": 0,
+    "open_trades": 1,
     "unresolved": 0,
     "cancelled": 3,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "file": "engine/trade_journal.json",
-    "recorded_signals": 3
+    "recorded_signals": 4
   },
   "journal_recent": [
+    {
+      "strategy_version": "SCALPING V3",
+      "signal_id": "5e06e60508198921",
+      "timestamp": "2026-10-15T18:35:36.833643+00:00",
+      "direction": "BUY",
+      "opportunity": "BUY BREAKOUT RETEST",
+      "score": 75,
+      "session": "OFF SESSION",
+      "planned_entry": 4158.26,
+      "entry": null,
+      "sl": 4151.85,
+      "tp1": 4164.26,
+      "tp2": 4171.09,
+      "tp3": 4177.5,
+      "result": "PENDING",
+      "bars_held": 0,
+      "cost_pips": null,
+      "cost_status": "GROSS_ONLY_UNCONFIGURED",
+      "tp1_hit": false,
+      "tp3_hit": false,
+      "result_pips": null,
+      "result_r": null,
+      "closed_at": null,
+      "telegram_status": "SENT"
+    },
     {
       "strategy_version": "SCALPING V3",
       "signal_id": "90600fbaa2bdf1b9",
@@ -1574,12 +1600,12 @@
     "max_drawdown": 0.0,
     "max_consecutive_losses": 0,
     "total_pips": 0,
-    "open_trades": 0,
+    "open_trades": 1,
     "unresolved": 0,
     "cancelled": 3,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-16T02:30:52.192638+08:00",
+    "last_updated": "2026-10-16T02:35:36.833643+08:00",
     "execution": "Next available M5 open after signal observed; TP2 exit, SL-first ambiguity, 72 bars maximum; paper only."
   },
   "services": {
@@ -1587,9 +1613,9 @@
       "status": "ACTIVE"
     },
     "telegram": {
-      "status": "NOT_ATTEMPTED",
-      "checked_at": "2026-10-16T02:30:52.192638+08:00",
-      "delivery_tested": false
+      "status": "SENT",
+      "checked_at": "2026-10-16T02:35:36.833643+08:00",
+      "delivery_tested": true
     }
   }
 }
