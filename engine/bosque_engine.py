@@ -255,7 +255,8 @@ def fetch_m5():
         "interval": INTERVAL,
         "outputsize": OUTPUT_SIZE,
         "apikey": API_KEY,
-        "format": "JSON"
+        "format": "JSON",
+        "timezone": "UTC"
     }
 
     r = requests.get(
@@ -285,7 +286,7 @@ def fetch_m5():
         )
 
     df["datetime"] = pd.to_datetime(
-        df["datetime"]
+        df["datetime"], utc=True
     )
 
     for col in [
@@ -2311,73 +2312,32 @@ def main():
             timestamp.isoformat()
     }
 
+    from bosque_signals import select_alert, mark_delivered
     sent = None
     state = load_state()
+    delivery = select_alert(state, setup_ok, setup["direction"], valid_signal,
+                            m5.iloc[-1]["datetime"])
+    # Persist an attempt before network I/O: rerunning the same candle cannot
+    # send another alert. A failed send can retry on the next closed M5 bar.
+    save_state(state)
 
     if valid_signal:
-
-        signal_id = make_signal_id(
-            setup["direction"],
-            setup["opportunity"],
-            plan["entry"],
-            plan["sl"],
-            plan["tp2"]
-        )
-
         signal.update({
-            "active":
-                True,
-            "id":
-                signal_id,
-            "entry":
-                plan["entry"],
-            "sl":
-                plan["sl"],
-            "tp1":
-                plan["tp1"],
-            "tp2":
-                plan["tp2"],
-            "tp3":
-                plan["tp3"]
+            "active": True, "id": delivery["id"],
+            "candidate_id": make_signal_id(setup["direction"], setup["opportunity"],
+                plan["entry"], plan["sl"], plan["tp2"]),
+            "entry": plan["entry"], "sl": plan["sl"],
+            "tp1": plan["tp1"], "tp2": plan["tp2"], "tp3": plan["tp3"]
         })
-
-        last_signal = state.get(
-            "last_signal_id"
-        )
-
-        if signal_id != last_signal:
-
-            message = (
-                format_telegram(
-                    setup["direction"],
-                    setup["opportunity"],
-                    score,
-                    plan,
-                    session,
-                    pd_data,
-                    volatility
-                )
-            )
-
-            sent = send_telegram(
-                message
-            )
-
+        if delivery["allowed"]:
+            message = format_telegram(setup["direction"], setup["opportunity"],
+                score, plan, session, pd_data, volatility)
+            sent = send_telegram(message)
+            delivery["status"] = "SENT" if sent else "FAILED"
             if sent:
-
-                state[
-                    "last_signal_id"
-                ] = signal_id
-
-                state[
-                    "last_signal_sent"
-                ] = (
-                    timestamp.isoformat()
-                )
-
-                save_state(
-                    state
-                )
+                mark_delivered(state, timestamp.isoformat())
+                save_state(state)
+    signal["delivery"] = delivery
 
     # =====================================================
     # DASHBOARD

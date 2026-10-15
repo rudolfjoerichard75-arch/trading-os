@@ -35,6 +35,19 @@ function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
   d.gate_reasons={risk:'<img src=x onerror=alert(1)>'};render(d);
   assert.equal(el('riskGate').children[1].textContent,' (<img src=x onerror=alert(1)>)');
   d.filters.risk=true;d.filters.rr=true;render(d);assert.equal(el('riskGate').innerText,'PASS');assert.equal(el('rrGate').innerText,'PASS');
+  const journal=payload();
+  journal.signal.delivery={status:'DUPLICATE_SUPPRESSED'};
+  journal.expectancy={trades:1,cancelled:4,unresolved:0};
+  journal.signal_audit={tp3_observed_before_sl:0,tp3_after_sl:4,ambiguous_tp3_sl:0};
+  journal.journal_recent=[{timestamp:'2026-10-01T00:00:30Z',direction:'BUY',opportunity:'BUY PULLBACK',planned_entry:100,entry:null,sl:95,tp1:106,tp2:110,tp3:115,result:'CANCELLED',exit_reason:'NEXT_OPEN_OUTSIDE_PLAN',execution_audit:{reason:'OPEN_BEYOND_SL',next_open:94},signal_path:{status:'TP3_AFTER_SL',source:'RECONSTRUCTED_PROVIDER_HISTORY',targets:{tp3:{bar:'2026-10-01T00:30:00Z',order:'AFTER_SL'}}}}];
+  journal.recorded_signal=journal.journal_recent[0];render(journal);
+  assert.match(el('signalDelivery').innerText,/Alert berulang ditahan/);
+  assert.equal(el('signalOutcomes').innerText,'0 / 4 / 0');
+  assert.equal(el('journalUnfilled').innerText,'4 / 0');
+  assert.match(el('journalRecent').innerText,/NO ENTRY \(Open seterusnya sudah melepasi SL\)/);
+  assert.match(el('journalRecent').innerText,/TP3 kemudian, selepas SL/);
+  assert.match(el('journalRecent').innerText,/MYT/);
+  assert.match(el('recordedPlan').innerText,/Entry 100.00.*SL 95.00/);
   // A stale snapshot and a failed refresh cannot leave a live BUY/SELL on screen.
   c.fetch=async()=>({ok:true,json:async()=>({...payload(),signal:{active:true},engine:{timestamp:'2000-01-01T00:00:00Z'}})});
   await vm.runInContext('runDashboard()',c);assert.match(el('finalSignal').innerText,/^WAIT \(Data engine lebih 15 minit/);

@@ -4,6 +4,8 @@ from pathlib import Path
 import pandas as pd
 import bosque_engine as e
 import bosque_tracking as t
+from bosque_signals import select_alert, mark_delivered, POLICY
+from bosque_signal_audit import observe
 
 def news_allowed(calendar, at):
     if calendar is None: return True
@@ -11,22 +13,28 @@ def news_allowed(calendar, at):
     return not any(abs((t.stamp(x['time'])-at).total_seconds())<=1800 for x in calendar['events'] if str(x.get('impact','')).lower()=='high' and x.get('currency')=='USD')
 
 def replay(frame,cost=None,calendar=None,start=None,end=None):
-    df=t.bars(frame); trades=[]; last_id=None; count=0
+    df=t.bars(frame); trades=[]; state={}; count=0; candidates=0
     for i in range(len(df)):
         row=df.iloc[i:i+1]
         for trade in trades:
             if trade['result'] in ('PENDING','OPEN'): t.advance(trade,row)
+            observe(trade,row)
         at=df.iloc[i].datetime+pd.Timedelta(minutes=5)
         if (start is not None and at<start) or (end is not None and at>=end): continue
         if i<359: continue
         window=df.iloc[max(0,i+1-e.OUTPUT_SIZE):i+1]
         ev=t.evaluate(window,at,news_allowed(calendar,at))
-        if not ev.get('active'): continue
-        p=ev['plan'];sid=e.make_signal_id(ev['direction'],ev['opportunity'],p['entry'],p['sl'],p['tp2'])
-        if sid == last_id: continue
-        last_id=sid;count+=1
-        trades.append(t.new_trade({**ev,'id':sid},p,at,cost))
-    return {'stats':t.stats(trades),'trades':trades,'eligible_signals':count}
+        eligible=ev.get('active',False)
+        candidates+=int(eligible)
+        delivery=select_alert(state,ev.get('setup_valid',eligible),ev.get('direction'),eligible,df.iloc[i].datetime)
+        if not delivery['allowed']: continue
+        p=ev['plan'];count+=1
+        mark_delivered(state,at.isoformat())
+        item=t.new_trade({**ev,'id':delivery['id'],'policy':POLICY},p,at,cost)
+        observe(item,df.iloc[0:0])
+        trades.append(item)
+    return {'stats':t.stats(trades),'trades':trades,'eligible_signals':count,
+            'eligible_scan_candidates':candidates,'repeated_candidates_suppressed':candidates-count}
 
 def run(args):
     frames=[]; hashes={}
@@ -50,7 +58,7 @@ def run(args):
     if split is not None and not df.iloc[0].datetime<split<df.iloc[-1].datetime: raise ValueError('Split outside dataset')
     results={'full_sample':replay(df,cost,calendar)} if split is None else {'development':replay(df[df.datetime+pd.Timedelta(minutes=5)<split],cost,calendar),'out_of_sample':replay(df,cost,calendar,start=split)}
     delta=df.datetime.diff().dt.total_seconds()/60
-    out={'status':'COMPLETED','version':t.VERSION,'symbol':e.SYMBOL,'bars_used':len(df),'period_start':df.iloc[0].datetime.isoformat(),'period_end':df.iloc[-1].datetime.isoformat(),'source_sha256':hashes,'results':results,'last_updated':pd.Timestamp.now(tz='UTC').isoformat(),'news_mode':'HISTORICAL_CALENDAR' if calendar else 'WITHOUT_NEWS_NOT_LIVE_EQUIVALENT','cost_model':{'status':'GROSS_ONLY_UNCONFIGURED' if cost is None else 'CONFIGURED','round_trip_pips':cost},'data_quality':{'gaps':int((delta>5).sum())},'note':'Unchanged V3 entry rules including partial aggregated bars. Decisions at M5 close; fill next M5 open; TP2 exit; SL first on ambiguous bars; max 72 bars. Overlapping signals allowed as in V3. Historical replay is not exact wall-clock live execution.'}
+    out={'status':'COMPLETED','version':t.VERSION,'symbol':e.SYMBOL,'parameters':t.configuration(),'signal_policy':POLICY,'bars_used':len(df),'period_start':df.iloc[0].datetime.isoformat(),'period_end':df.iloc[-1].datetime.isoformat(),'source_sha256':hashes,'results':results,'last_updated':pd.Timestamp.now(tz='UTC').isoformat(),'news_mode':'HISTORICAL_CALENDAR' if calendar else 'WITHOUT_NEWS_NOT_LIVE_EQUIVALENT','cost_model':{'status':'GROSS_ONLY_UNCONFIGURED' if cost is None else 'CONFIGURED','round_trip_pips':cost},'data_quality':{'gaps':int((delta>5).sum())},'note':'Unchanged V3 entry rules including partial aggregated bars. Decisions at M5 close; fill next M5 open; TP2 exit; SL first on ambiguous bars; max 72 bars. One alert per directional setup cycle; two closed M5 bars without setup or a direction change rearm alerts. Target path tracked separately after TP2; not additional paper wins. Historical replay is not exact wall-clock live execution.'}
     if any(x['stats']['unresolved'] for x in results.values()): out['status']='COMPLETED_WITH_DATA_GAPS'
     t.save(e.ENGINE_DIR/'backtest_results.json',out)
     print(json.dumps({k:v['stats'] for k,v in results.items()},indent=2));return out
