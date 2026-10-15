@@ -623,6 +623,7 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
         <summary>V3 Journal • Forward Test • Backtest</summary>
         <div class="row"><span>Journal</span><b id="journalStatus">--</b></div>
         <div class="row"><span>Closed / Open</span><b id="journalCounts">--</b></div>
+        <div class="row"><span>Records requiring review</span><b id="journalReview">--</b></div>
         <div class="row"><span>No entry / Data gaps</span><b id="journalUnfilled">--</b></div>
         <div class="row"><span>TP3 observed: before SL / after SL / ambiguous</span><b id="signalOutcomes">--</b></div>
         <div class="row"><span>Latest recorded alert plan</span><b id="recordedPlan">--</b></div>
@@ -1392,9 +1393,10 @@ function render(data){
   setText("signalDelivery", deliveryLabels[delivery.status] || "Menunggu status alert...");
   setText("journalStatus", journal.status || "NOT AVAILABLE");
   setText("journalCounts", `${stats.trades || 0} / ${stats.open_trades || 0}`);
+  setText("journalReview", stats.review_required || 0);
   setText("journalUnfilled", `${stats.cancelled || 0} / ${stats.unresolved || 0}`);
   setText("signalOutcomes", `${audit.tp3_observed_before_sl || 0} / ${audit.tp3_after_sl || 0} / ${audit.ambiguous_tp3_sl || 0}`);
-  const recorded = data.recorded_signal;
+  const recorded = data.recorded_signal || data.journal_recent?.[0];
   setText("recordedPlan", recorded ? `${newsTime(recorded.timestamp)} • ${recorded.direction} • Entry ${fmt(recorded.planned_entry)} • SL ${fmt(recorded.sl)} • TP1 ${fmt(recorded.tp1)} • TP2 ${fmt(recorded.tp2)} • TP3 ${fmt(recorded.tp3)}` : "Belum ada alert direkod");
   setText("journalWinrate", stats.win_rate == null ? "NO CLOSED TRADES" : `${stats.win_rate}%`);
   setText("journalStats", `${fmt(stats.expectancy_r)} R / ${fmt(stats.profit_factor)}`);
@@ -1417,7 +1419,13 @@ function render(data){
       const unfilled = ["CANCELLED","NOT_ENTERED"].includes(trade.result);
       line(`${newsTime(trade.timestamp)} • ${trade.direction} • ${(trade.opportunity || "").replace(/^(BUY|SELL) /,"")}`,true);
       const cause=trade.execution_audit?.reason || trade.exit_reason;
-      line(`Paper: ${unfilled ? "NO ENTRY" : trade.result} (${why[cause] || cause || "Menunggu candle seterusnya"})${trade.result_pips == null ? "" : " • " + trade.result_pips + " pips"}`);
+      if(trade.review_status==="REVIEW_REQUIRED"){
+        line(`REVIEW REQUIRED • Keputusan asal ${trade.result}; sejarah UTC semasa memberi hasil berbeza. Dikecualikan daripada forward win rate.`);
+        const replay=trade.historical_replay;
+        if(replay) line(`Historical paper replay: ${replay.result} (${replay.exit_reason || "masih dipantau"}) • Fill ${fmt(replay.entry)} • ${replay.result_pips==null ? "--" : replay.result_pips+" pips"}. Ini semakan semula, bukan rekod fill broker.`);
+      }else{
+        line(`Paper: ${unfilled ? "NO ENTRY" : trade.result} (${why[cause] || cause || "Menunggu candle seterusnya"})${trade.result_pips == null ? "" : " • " + trade.result_pips + " pips"}`);
+      }
       line(`Plan ${fmt(trade.planned_entry)} • Fill ${trade.entry == null ? "--" : fmt(trade.entry)} • SL ${fmt(trade.sl)} • TP1 ${fmt(trade.tp1)} • TP2 ${fmt(trade.tp2)} • TP3 ${fmt(trade.tp3)}`);
       const nextOpen=trade.next_open ?? trade.execution_audit?.next_open;
       if(nextOpen!=null) line(`Next M5 open: ${fmt(nextOpen)}`);

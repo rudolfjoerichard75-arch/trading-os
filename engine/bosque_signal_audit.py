@@ -73,3 +73,32 @@ def summary(trades):
             'tracking': sum(p['status'] == 'TRACKING' for p in paths),
             'data_gaps': sum(p['status'] == 'DATA_GAP' for p in paths),
             'note': 'Observed target touches only; excludes the partial candle at alert time. Not fills, not paper wins. Up to 72 M5 bars.'}
+
+
+def review_legacy_execution(trade, frame, observed_at):
+    """Flag contradictions; never silently turn historical records into wins."""
+    import bosque_tracking as t
+    if trade.get('historical_replay'):
+        t.advance(trade['historical_replay'], frame)
+        return
+    if trade.get('execution_model') or trade.get('legacy_review_checked'):
+        return
+    if trade.get('result') not in ('CANCELLED','WIN','LOSS','BE'):
+        return
+    plan={k:trade['planned_entry'] if k=='entry' else trade[k]
+          for k in ['entry','sl','tp1','tp2','tp3']}
+    replay=t.new_trade({'id':trade['signal_id'],'direction':trade['direction']},
+                       plan,trade['timestamp'],trade.get('cost_pips'))
+    t.advance(replay,frame)
+    if replay['result'] in ('DATA_GAP','PENDING'):
+        return
+    trade['legacy_review_checked']=observed_at
+    original_result='NOT_ENTERED' if trade['result']=='CANCELLED' else trade['result']
+    if replay['result']==original_result:
+        return
+    # Preserve the old result and money fields; exclude unreliable legacy rows
+    # from forward performance. The replay is an explicitly separate finding.
+    replay.pop('parameters',None)
+    trade.update(review_status='REVIEW_REQUIRED',
+                 review_reason='CURRENT_UTC_HISTORY_CONTRADICTS_ORIGINAL_EXECUTION',
+                 history_observed_at=observed_at,historical_replay=replay)

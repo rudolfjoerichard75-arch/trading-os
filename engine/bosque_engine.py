@@ -323,6 +323,10 @@ def fetch_m5():
         drop=True
     )
 
+    meta_keys = ['symbol','interval','currency_base','currency_quote','exchange','exchange_timezone','type']
+    df.attrs['provider_meta'] = {k:data.get('meta',{}).get(k) for k in meta_keys}
+    df.attrs['requested_timezone'] = 'UTC'
+
     return df
 
 

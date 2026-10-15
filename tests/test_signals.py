@@ -89,6 +89,31 @@ class LifecycleTests(unittest.TestCase):
 
 
 class TargetPathTests(unittest.TestCase):
+    def test_contradictory_legacy_loss_is_reviewed_not_counted_or_rewritten(self):
+        from bosque_signal_audit import review_legacy_execution
+        x=trade();x.pop('execution_model')
+        x.update(result='LOSS',entry=100,result_pips=-50,result_r=-1,closed_at='2026-10-01T00:05Z',exit_reason='SL')
+        original=copy.deepcopy(x)
+        review_legacy_execution(x,row(h=111,l=99),'2026-10-01T01:00Z')
+        self.assertEqual(x['review_status'],'REVIEW_REQUIRED')
+        self.assertEqual(x['historical_replay']['result'],'WIN')
+        self.assertEqual(t.stats([x])['trades'],0)
+        self.assertEqual(t.stats([x])['review_required'],1)
+        for key in original:self.assertEqual(x[key],original[key])
+
+    def test_legacy_feed_diagnostic_runs_once_and_compares_same_timestamps(self):
+        from bosque_feed_audit import audit_once
+        from unittest.mock import Mock
+        frame=row();frame.attrs={'requested_timezone':'UTC','provider_meta':{'exchange_timezone':'UTC'}}
+        legacy=row(o=94,h=96,l=93,c=95).copy();legacy['datetime']=legacy.datetime.astype(str)
+        response=Mock();response.json.return_value={'meta':{'exchange_timezone':'UTC'},'values':legacy.to_dict('records')}
+        with tempfile.TemporaryDirectory() as temp,patch.object(e.requests,'get',return_value=response) as get:
+            first=audit_once(Path(temp),frame,'2026-10-01T00:10Z')
+            second=audit_once(Path(temp),frame,'2026-10-01T00:15Z')
+            self.assertEqual(first['different_bars'],1)
+            self.assertEqual(second,first);self.assertEqual(get.call_count,1)
+            self.assertNotIn('timezone',get.call_args.kwargs['params'])
+
     def test_unsent_alert_is_not_added_and_old_backtest_is_marked_outdated(self):
         with tempfile.TemporaryDirectory() as temp, patch.object(e,'ENGINE_DIR',Path(temp)/'engine'), patch.object(e,'REPO_DIR',Path(temp)):
             e.ENGINE_DIR.mkdir()

@@ -94,7 +94,7 @@ def advance(trade, df):
             trade.update(result='WIN' if net>0 else 'LOSS' if net<0 else 'BE',result_pips=round(net,3),result_r=round(net/risk,4),exit_price=exitp,exit_reason=reason,closed_at=(r.datetime+pd.Timedelta(minutes=5)).isoformat()); return
 
 def stats(trades):
-    closed=[t for t in trades if t.get('result') in ('WIN','LOSS','BE')]
+    closed=[t for t in trades if t.get('result') in ('WIN','LOSS','BE') and t.get('review_status')!='REVIEW_REQUIRED']
     rs=[t['result_r'] for t in closed]; wins=sum(t['result']=='WIN' for t in closed)
     equity=peak=dd=0.; streak=max_streak=0
     for t in sorted(closed,key=lambda x:x['closed_at']):
@@ -182,13 +182,16 @@ def sync(dashboard, frame, sent=None):
     import bosque_engine as e
     add_diagnostics(dashboard)
     directory=e.ENGINE_DIR; at=dashboard['engine']['timestamp']; df=bars(frame)
+    from bosque_feed_audit import audit_once
+    dashboard['market_data_audit']=audit_once(directory,frame,at)
     path=directory/'trade_journal.json'; journal=load(path,{'trades':[]})
     journal.setdefault('trades',[]); current=[t for t in journal['trades'] if t.get('strategy_version')==VERSION]
-    from bosque_signal_audit import observe, audit_unfilled, summary as signal_summary
+    from bosque_signal_audit import observe, audit_unfilled, review_legacy_execution, summary as signal_summary
     for t in current:
         advance(t,df)
         observe(t,df,reconstructed='signal_path' not in t)
         audit_unfilled(t,df)
+        review_legacy_execution(t,df,at)
     sig=dashboard['signal']; plan=dashboard['plan']
     if sig.get('active') and sent is True and not any(t.get('signal_id')==sig['id'] for t in current):
         t=new_trade({**sig,'session':dashboard['session'],'policy':sig.get('delivery',{}).get('policy')},plan,at,cost())
