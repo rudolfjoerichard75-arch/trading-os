@@ -1,389 +1,203 @@
 {
   "engine": {
-    "version": "V5.3 CANDIDATE",
-    "timestamp": "2026-10-14T23:29:18.893728+00:00",
-    "status": "WAIT",
-    "symbol": "XAU/USD"
+    "name": "BOSQUE FOREX AI",
+    "version": "SCALPING V3",
+    "symbol": "XAU/USD",
+    "timeframe": "H1 → M15 → M5",
+    "timestamp": "2026-10-15T08:56:23.131370+08:00"
   },
-  "latest_price": 4104.25302,
+  "latest_price": 4142.73,
   "session": "ASIAN",
-  "signal": {
-    "active": false,
-    "direction": null,
-    "candle_time": "2026-10-14T23:20:00+00:00"
-  },
-  "plan": {
-    "valid": false,
-    "reason": "Risk 81.3 pips outside 25-80"
-  },
-  "opportunity": {
-    "type": "SELL FVG RETEST",
-    "direction": null,
-    "score": 50,
-    "valid": false
-  },
+  "market_mode": "TRENDING",
   "regime": {
-    "type": "BEARISH"
+    "type": "TRENDING",
+    "h1_direction": "BEARISH",
+    "range": {
+      "is_range": true,
+      "high": 4172.82699,
+      "low": 4073.81757,
+      "width": 99.00941999999941,
+      "location": 0.6960361953438398
+    }
   },
   "volatility": {
-    "atr": 3.11,
-    "atr_pips": 31.1,
+    "atr": 6.32,
+    "atr_pips": 63.2,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4100.39,
-    "high": 4111.76,
-    "low": 4089.01
+    "equilibrium": 4121.22,
+    "high": 4145.59,
+    "low": 4096.85
   },
   "liquidity": {
-    "buy_side_sweep": true,
-    "sell_side_sweep": true,
-    "swept_level": 4103.0691,
-    "description": "SELL-SIDE LIQUIDITY SWEPT"
+    "buy_side_sweep": false,
+    "sell_side_sweep": false,
+    "swept_level": null,
+    "description": "NONE",
+    "pdh": null,
+    "pdl": null,
+    "asia_high": null,
+    "asia_low": null,
+    "session_high": null,
+    "session_low": null
   },
   "news": {
-    "ok": true,
     "status": "CLEAR",
-    "reason": "No USD HIGH event in block window",
-    "events": [
-      {
-        "date": "2026-10-15T12:30:00+00:00",
-        "currency": "USD",
-        "impact": "HIGH",
-        "title": "Core PPI m/m"
-      },
-      {
-        "date": "2026-10-15T12:30:00+00:00",
-        "currency": "USD",
-        "impact": "HIGH",
-        "title": "Core Retail Sales m/m"
-      },
-      {
-        "date": "2026-10-15T12:30:00+00:00",
-        "currency": "USD",
-        "impact": "HIGH",
-        "title": "PPI m/m"
-      },
-      {
-        "date": "2026-10-15T12:30:00+00:00",
-        "currency": "USD",
-        "impact": "HIGH",
-        "title": "Retail Sales m/m"
-      },
-      {
-        "date": "2026-10-16T03:30:00+00:00",
-        "currency": "USD",
-        "impact": "HIGH",
-        "title": "Fed Chairman Warsh Speaks"
-      }
-    ],
-    "source": "FOREX FACTORY",
-    "feed_status": "LIVE",
-    "fetched_at": "2026-10-14T23:29:18.893728+00:00",
-    "filter": "CLEAR",
-    "high_impact": "CLEAR",
-    "minutes_to_news": null
+    "high_impact": false,
+    "minutes_to_news": null,
+    "filter": "PASS",
+    "event": null,
+    "currency": "USD",
+    "time": null,
+    "source": "FinanceCalendar",
+    "source_url": "https://www.financecalendar.com/"
   },
-  "h1": {
-    "direction": "BEARISH",
-    "bos": null,
-    "swing_high": 4106.60753,
-    "swing_low": 4073.81757
+  "opportunity": {
+    "type": "SELL PULLBACK",
+    "direction": "SELL",
+    "valid": true,
+    "score": 50
   },
-  "m15": {
-    "direction": "RANGE",
-    "bos": null,
-    "swing_high": 4105.93307,
-    "swing_low": 4103.0691,
-    "setup": {
-      "direction": "SELL",
-      "opportunity": "SELL FVG RETEST",
-      "valid": false,
-      "reason": [
-        "M15 sell-side liquidity sweep"
-      ],
-      "pd": {
-        "zone": "PREMIUM",
-        "equilibrium": 4100.39,
-        "high": 4111.76,
-        "low": 4089.01
-      },
-      "liquidity": {
-        "buy_side_sweep": true,
-        "sell_side_sweep": true,
-        "swept_level": 4103.0691,
-        "description": "SELL-SIDE LIQUIDITY SWEPT"
-      },
-      "structure": {
-        "direction": "RANGE",
-        "bos": null,
-        "swing_high": 4105.93307,
-        "swing_low": 4103.0691
-      },
-      "range": {
-        "is_range": false,
-        "efficiency": 0.23701324649536024,
-        "compression": 1.356492562179867
-      },
-      "fresh_zone": {
-        "valid": false,
-        "type": "FVG_FIRST_RETEST"
-      }
-    }
+  "signal": {
+    "active": false,
+    "id": null,
+    "direction": "SELL",
+    "opportunity": "SELL PULLBACK",
+    "score": 50,
+    "timestamp": "2026-10-15T08:56:23.131370+08:00"
   },
-  "m5": {
-    "confirmation": {
-      "confirmed": false,
-      "bos": null,
-      "candle": false,
-      "momentum": "BEARISH",
-      "reason": "Waiting for M5 BOS + candle + momentum"
-    }
+  "plan": {
+    "valid": false,
+    "reason": "Risk 22.6 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
     "tp2_pips": null,
     "tp3_pips": null
   },
+  "h1": {
+    "direction": "BEARISH",
+    "bos": "BULLISH BOS",
+    "swing_high": 4106.60753,
+    "swing_low": 4073.81757,
+    "condition": "TRENDING"
+  },
+  "m15": {
+    "direction": "RANGE",
+    "bos": "BULLISH BOS",
+    "swing_high": 4111.7571,
+    "swing_low": 4100.20911,
+    "setup": {
+      "direction": "SELL",
+      "opportunity": "SELL PULLBACK",
+      "valid": true,
+      "reason": [
+        "H1 bearish + M15 premium"
+      ],
+      "pd": {
+        "zone": "PREMIUM",
+        "equilibrium": 4121.22,
+        "high": 4145.59,
+        "low": 4096.85
+      },
+      "liquidity": {
+        "buy_side_sweep": false,
+        "sell_side_sweep": false,
+        "swept_level": null,
+        "description": "NONE"
+      },
+      "structure": {
+        "direction": "RANGE",
+        "bos": "BULLISH BOS",
+        "swing_high": 4111.7571,
+        "swing_low": 4100.20911
+      },
+      "range": {
+        "is_range": false,
+        "high": 4145.59323,
+        "low": 4096.84952,
+        "width": 48.74371000000065,
+        "location": 0.9412945793416146
+      }
+    }
+  },
+  "m5": {
+    "direction": "BULLISH",
+    "bos": null,
+    "swing_high": 4143.72986,
+    "swing_low": 4101.04987,
+    "confirmation": {
+      "confirmed": false,
+      "bos": null,
+      "candle": false,
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
+    }
+  },
   "filters": {
-    "news": true,
     "score": false,
+    "setup": true,
+    "m5_confirmation": false,
     "risk": false,
     "rr": false,
-    "session_blocking": true,
-    "entry_policy": true,
-    "setup": false,
-    "m5_confirmation": false,
-    "session": false,
-    "h4_h1": true,
-    "pd_zone": true,
-    "fresh_zone": false,
-    "m15_structure": true,
-    "trending": true,
-    "costs": false
-  },
-  "risk_engine": {
-    "status": "AVAILABLE",
-    "daily_loss_limit": "2R PAPER",
-    "consecutive_loss_limit": "3/day PAPER",
-    "risk_pips": null,
-    "risk_level": "NOT SIZED",
-    "min_risk_pips": 25,
-    "max_risk_pips": 80,
-    "weekly_loss_limit": "4R PAPER",
-    "net_rr": null,
-    "position_sizing": "BROKER_SPEC_REQUIRED"
-  },
-  "sop": {
-    "fresh_zone": "WAIT",
-    "news_filter": "CLEAR",
-    "session_blocking": "YES",
-    "session_filter": "BLOCK",
-    "risk": null,
-    "m15_setup": "False",
-    "m5_confirmation": "False"
+    "news": true,
+    "session": false
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL FVG RETEST",
-    "m5_confirmation": "Waiting for M5 BOS + candle + momentum"
+    "m15_setup": "SELL PULLBACK",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "NONE",
+    "pd_zone": "PREMIUM"
+  },
+  "risk_engine": {
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
+    "min_risk_pips": 25,
+    "max_risk_pips": 80,
+    "daily_loss_limit": "NOT CONFIGURED",
+    "consecutive_loss_limit": "NOT CONFIGURED"
   },
   "invalidation": {
     "status": "WAIT",
     "conditions": [
-      "Waiting: fresh_zone, m5_confirmation, session, risk, rr",
-      "No USD HIGH event in block window",
-      "Paper entry policy: AVAILABLE",
-      "Late signals blocked: True",
-      "Cost-adjusted RR: Missing costs or net RR below 2"
+      "M5 confirmation required",
+      "Risk must remain valid",
+      "RR TP2 must remain >= 1:2",
+      "News filter must remain PASS",
+      "Avoid invalidation after structure failure"
     ]
   },
-  "journal": {
-    "status": "PAPER SIMULATION",
-    "trades": 0,
-    "wins": 0,
-    "losses": 0,
-    "win_rate": null,
-    "win_rate_95_interval": null,
-    "average_r": null,
-    "expectancy_r": null,
-    "profit_factor": null,
-    "max_drawdown": 0,
-    "max_consecutive_losses": 0,
-    "total_pips": 0,
-    "open_trades": 0,
-    "unresolved": 0,
-    "cost_status": "GROSS_OR_MIXED_NOT_NET_VALIDATED"
+  "sop": {
+    "news_filter": "PASS",
+    "session_filter": "BLOCK",
+    "risk": "UNKNOWN",
+    "fresh_zone": "YES",
+    "m15_setup": "YES",
+    "m5_confirmation": "NO"
   },
   "expectancy": {
-    "status": "PAPER SIMULATION",
-    "trades": 0,
-    "wins": 0,
-    "losses": 0,
+    "status": "NOT TRACKED",
+    "trades": null,
     "win_rate": null,
-    "win_rate_95_interval": null,
     "average_r": null,
-    "expectancy_r": null,
     "profit_factor": null,
-    "max_drawdown": 0,
-    "max_consecutive_losses": 0,
-    "total_pips": 0,
-    "open_trades": 0,
-    "unresolved": 0,
-    "cost_status": "GROSS_OR_MIXED_NOT_NET_VALIDATED"
-  },
-  "forward_test": {
-    "status": "PAPER SIMULATION",
-    "trades": 0,
-    "wins": 0,
-    "losses": 0,
-    "win_rate": null,
-    "win_rate_95_interval": null,
-    "average_r": null,
     "expectancy_r": null,
-    "profit_factor": null,
-    "max_drawdown": 0,
-    "max_consecutive_losses": 0,
-    "total_pips": 0,
-    "open_trades": 0,
-    "unresolved": 0,
-    "cost_status": "GROSS_OR_MIXED_NOT_NET_VALIDATED"
+    "max_drawdown": null,
+    "max_consecutive_losses": null
   },
   "backtest": {
-    "status": "COMPLETED",
-    "version": "V5.3 CANDIDATE",
-    "symbol": "XAU/USD",
-    "timeframe": "M5",
-    "bars_used": 4999,
-    "period_start": "2026-09-26T16:35:00+00:00",
-    "period_end": "2026-10-14T01:05:00+00:00",
-    "source_sha256": {
-      "XAUUSD_M5_auto.csv": "e3f703b0d3f1b427fdf7b031af4a16c53c11fcd53fa4db22c2b11b248883561c"
-    },
-    "cost_model": {
-      "status": "GROSS_ONLY_UNCONFIGURED",
-      "spread_pips": 0.0,
-      "slippage_per_side_pips": 0.0,
-      "commission_round_trip_pips": 0.0
-    },
-    "news_mode": "WITHOUT_NEWS_NOT_LIVE_EQUIVALENT",
-    "development_period": "Before 2026-10-10 13:50:00+00:00",
-    "out_of_sample": "From 2026-10-10 13:50:00+00:00",
-    "forward": "Separate live paper journal; not historical proof",
-    "data_quality": {
-      "rows": 4999,
-      "expected_interval_minutes": 5,
-      "gaps": 0,
-      "largest_gap_minutes": 0,
-      "first_candle": "2026-09-26T16:35:00+00:00",
-      "last_candle": "2026-10-14T01:05:00+00:00",
-      "gap_policy": "UNRESOLVED_TRADES_BLOCK_NEW_ENTRIES"
-    },
-    "walk_forward": {},
-    "results": {
-      "development": {
-        "stats": {
-          "status": "PAPER SIMULATION",
-          "trades": 0,
-          "wins": 0,
-          "losses": 0,
-          "win_rate": null,
-          "win_rate_95_interval": null,
-          "average_r": null,
-          "expectancy_r": null,
-          "profit_factor": null,
-          "max_drawdown": 0,
-          "max_consecutive_losses": 0,
-          "total_pips": 0,
-          "open_trades": 0,
-          "unresolved": 0,
-          "cost_status": "GROSS_OR_MIXED_NOT_NET_VALIDATED"
-        }
-      },
-      "out_of_sample": {
-        "stats": {
-          "status": "PAPER SIMULATION",
-          "trades": 0,
-          "wins": 0,
-          "losses": 0,
-          "win_rate": null,
-          "win_rate_95_interval": null,
-          "average_r": null,
-          "expectancy_r": null,
-          "profit_factor": null,
-          "max_drawdown": 0,
-          "max_consecutive_losses": 0,
-          "total_pips": 0,
-          "open_trades": 0,
-          "unresolved": 0,
-          "cost_status": "GROSS_OR_MIXED_NOT_NET_VALIDATED"
-        }
-      }
-    },
-    "last_updated": "2026-10-14T01:14:49.876051+00:00",
-    "note": "No optimization. Data gaps unresolved and block further entries. OPEN/PENDING are excluded from winrate. Costs charged once on exit. OHLC ambiguity uses SL first.",
-    "automation": {
-      "source": "Twelve Data XAU/USD M5",
-      "requests": 1,
-      "requested_bars_per_request": 5000,
-      "requested_start": null,
-      "requested_end": "2026-10-14T01:13:13.587057+00:00",
-      "coverage_complete": true,
-      "received_closed_bars": 4999,
-      "split_rule": "FIXED_CHRONOLOGICAL_80_20",
-      "walk_forward_folds": 0,
-      "cost_input": "UNCONFIGURED_GROSS_ONLY",
-      "historical_news": "UNAVAILABLE \u2014 current weekly feed is not a historical calendar"
-    }
+    "status": "NOT RUN",
+    "development_period": "2022-2024",
+    "out_of_sample": "2025",
+    "forward": "2026"
   },
-  "_journal_store": {
-    "version": "V5.3 CANDIDATE",
-    "symbol": "XAU/USD",
-    "created_at": "2026-10-01T02:53:53.041433+08:00",
-    "trades": [],
-    "last_processed_candle": "2026-10-14T23:20:00+00:00"
-  },
-  "limitations": [
-    "Paper OHLC simulation; not MT5 executions",
-    "TP1 observation only; full exit TP2",
-    "Intrabar order unknown; SL first",
-    "Session names use fixed MY-time buckets",
-    "V5.3 candidate; profitability not validated; score is a checklist, not a probability"
-  ],
-  "data_health": {
-    "last_candle": "2026-10-14T23:20:00+00:00",
-    "age_minutes": 4.314895466666667,
-    "late_signal_blocked": true
-  },
-  "telegram": {
-    "last_status": "NO_SIGNAL"
-  },
-  "h4": {
-    "direction": "BEARISH",
-    "bos": "BEARISH BOS",
-    "swing_high": 4169.96789,
-    "swing_low": 4150.51827
-  },
-  "services": {
-    "news_archive": {
-      "status": "ARCHIVING_FROM_NOW",
-      "weeks": 3,
-      "current_week": "2026-10-11.json",
-      "coverage_start": "2026-10-11T00:00:00-04:00",
-      "coverage_end": "2026-10-18T00:00:00-04:00",
-      "note": "No calendar history is invented before first observation"
-    },
-    "telegram_health": {
-      "checked_at": "2026-10-14T06:32:18.944767+00:00",
-      "status": "BOT_AND_CHAT_ACCESS_VERIFIED",
-      "delivery_tested": false
-    },
-    "journal_export": {
-      "status": "EXPORTED",
-      "file": "paper_journal.csv",
-      "rows": 0
-    }
-  },
-  "journal_recent": []
+  "data_sources": {
+    "market_data": "Twelve Data",
+    "economic_calendar": "FinanceCalendar",
+    "economic_calendar_url": "https://www.financecalendar.com/"
+  }
 }
