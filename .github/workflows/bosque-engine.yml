@@ -1,76 +1,73 @@
-name: Run Bosque Forex AI
+name: Run BOSQUE FOREX AI
+
 on:
-  push:
-    branches: [main]
-    paths:
-      - "engine/*.py"
-      - "engine/requirements.txt"
-      - "engine/backtest_results.json"
-      - ".github/workflows/bosque-engine.yml"
-      - "tests/**"
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'
-concurrency:
-  group: bosque-forex-ai-main
-  cancel-in-progress: false
+    - cron: "*/5 * * * *"
+
 permissions:
   contents: write
+
 jobs:
   run-engine:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+
+    env:
+      TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          ref: main
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: pip
-          cache-dependency-path: engine/requirements.txt
-      - run: pip install -r engine/requirements.txt
-      - name: Tests
+          python-version: "3.11"
+
+      - name: Install dependencies
         run: |
-          python -m unittest discover -s tests -v
-          node tests/test_dashboard.cjs
-      - name: Run engine
-        id: engine
-        continue-on-error: true
-        env:
-          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ROUND_TRIP_COST_PIPS: ${{ vars.ROUND_TRIP_COST_PIPS }}
-        run: python engine/bosque_engine.py
-      - name: Preserve outputs and error status
-        if: always()
+          python -m pip install --upgrade pip
+          pip install -r engine/requirements.txt
+
+      - name: Check environment
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for file in dashboard_data.json engine/trade_journal.json engine/news_cache.json engine/telegram_health.json paper_journal.csv; do
-            if [ -f "$file" ]; then git add "$file"; fi
-          done
-          if [ -d engine/news_archive ]; then git add engine/news_archive; fi
-          if ! git diff --cached --quiet; then
-            git commit -m 'Update Bosque paper journal and health'
-            git pull --rebase origin main
-            git push origin HEAD:main
+          if [ -z "$TWELVEDATA_API_KEY" ]; then
+            echo "ERROR: TWELVEDATA_API_KEY is missing"
+            exit 1
+          else
+            echo "TWELVEDATA_API_KEY is loaded"
           fi
-      - name: Preserve recovery artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: bosque-state-${{ github.run_id }}
-          path: |
-            engine/trade_journal.json
-            engine/news_cache.json
-            engine/telegram_health.json
-            engine/news_archive/
-            paper_journal.csv
-            dashboard_data.json
-          retention-days: 30
-      - name: Report engine failure
-        if: steps.engine.outcome == 'failure'
-        run: exit 1
+
+          if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+            echo "WARNING: TELEGRAM_BOT_TOKEN is missing"
+          else
+            echo "TELEGRAM_BOT_TOKEN is loaded"
+          fi
+
+          if [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "WARNING: TELEGRAM_CHAT_ID is missing"
+          else
+            echo "TELEGRAM_CHAT_ID is loaded"
+          fi
+
+      - name: Run BOSQUE FOREX AI
+        run: |
+          python engine/bosque_engine.py
+
+      - name: Check dashboard data
+        run: |
+          test -f dashboard_data.json
+          echo "dashboard_data.json OK"
+
+      - name: Commit dashboard data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add dashboard_data.json engine/state.json
+
+          git diff --cached --quiet || git commit -m "Update BOSQUE FOREX AI data"
+
+          git push

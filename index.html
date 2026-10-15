@@ -1,142 +1,1618 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bosque · Trading OS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bosque Forex AI - XAUUSD Trade Intelligence</title>
+
 <style>
-:root{color-scheme:dark;--bg:#080d18;--panel:#101929;--line:#233149;--muted:#94a6bf;--ink:#edf3fc;--accent:#66dfbb}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,sans-serif}
-header,main,footer{max-width:1440px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--line)}
-h1{font-size:22px;letter-spacing:-.7px;margin:0}h2{font-size:16px;margin:0 0 16px}h3{font-size:14px}p{margin:8px 0}
-small,.muted{color:var(--muted)}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:10px;color:var(--accent)}
-.badge{display:inline-block;border:1px solid var(--line);border-radius:30px;padding:5px 10px;font-size:11px;white-space:normal}
-.good{color:var(--accent)}.bad{color:#ff8f9b}.warning{color:#f7ca7e}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}button,a.button{font:inherit;color:var(--ink);background:#172338;border:1px solid #354761;border-radius:9px;padding:10px 15px;cursor:pointer;text-decoration:none}
-button:hover,a.button:hover{background:#263a53}button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-.layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(300px,1fr);gap:18px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0;margin-bottom:16px}
-.chart{height:660px;padding:8px}.chart>div{height:100%;width:100%}.chart-note{font-size:11px;margin-top:-8px}
-.signal-line{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0}
-.signal{font-size:38px;font-weight:700;letter-spacing:-1px}.score{font-size:22px}
-.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.metric{padding:12px;background:#0b1320;border-radius:10px}.metric small{display:block;font-size:11px}.metric b{font-size:17px}
-.row{display:flex;justify-content:space-between;gap:18px;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}.row span{color:var(--muted)}.row b{text-align:right;overflow-wrap:anywhere;max-width:65%}
-details summary{cursor:pointer;list-style:none;font-weight:600;display:flex;justify-content:space-between;align-items:center}
-details summary::after{content:'+';font-size:20px;color:var(--accent)}details[open] summary::after{content:'−'}details[open] summary{margin-bottom:16px}
-ul{padding-left:20px;color:var(--muted)}li{margin:8px 0}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}
-dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:18px;width:min(920px,94vw);max-height:88vh;padding:24px;overflow:auto}
-dialog::backdrop{background:#02060dc9;backdrop-filter:blur(4px)}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.modal-head h2{margin:0}
-.scroll{overflow:auto;margin-top:18px}table{width:100%;border-collapse:collapse;font-size:12px}td,th{text-align:left;padding:12px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted);font-weight:500}
-.notice{border-left:3px solid #f7ca7e;padding:9px 12px;background:#f7ca7e08;margin:12px 0}
-footer{color:var(--muted);font-size:11px}#statusStrip{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.chart{height:430px}header,main,footer{padding:16px}.card{padding:16px}.chart{padding:4px}dialog{padding:18px}.metrics{gap:6px}.metric{padding:10px}.metric b{font-size:15px}header small{font-size:11px}.signal{font-size:32px}}
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  padding:14px;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background:#050816;
+  color:#e5e7eb;
+}
+
+.card{
+  background:#111833;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow:0 8px 30px rgba(0,0,0,.20);
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.header h2{
+  margin:0 0 4px;
+  font-size:21px;
+}
+
+.header p{
+  margin:0;
+  color:#94a3b8;
+  font-size:13px;
+}
+
+.live{
+  padding:7px 11px;
+  border-radius:999px;
+  background:rgba(34,197,94,.12);
+  color:#22c55e;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.dashboard{
+  display:grid;
+  grid-template-columns:minmax(0,1.7fr) minmax(330px,.9fr);
+  gap:14px;
+  align-items:start;
+}
+
+.chart-card{
+  padding:8px;
+}
+
+.chart-container{
+  width:100%;
+  height:calc(100vh - 110px);
+  min-height:620px;
+  overflow:hidden;
+  border-radius:12px;
+}
+
+.chart-container > div{
+  height:100%;
+}
+
+.signal-panel{
+  max-height:calc(100vh - 110px);
+  overflow-y:auto;
+  padding-right:2px;
+}
+
+.status-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#1f2937;
+  font-size:10px;
+  font-weight:800;
+}
+
+.score-label{
+  font-size:11px;
+  color:#94a3b8;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.score{
+  font-size:44px;
+  font-weight:900;
+  line-height:1;
+  margin:8px 0;
+}
+
+.signal{
+  font-size:25px;
+  font-weight:900;
+  margin:5px 0;
+}
+
+.buy{
+  color:#22c55e;
+}
+
+.sell{
+  color:#ff6b7a;
+}
+
+.wait{
+  color:#fbbf24;
+}
+
+.block{
+  color:#ff7180;
+}
+
+.pass{
+  color:#22c55e;
+}
+
+.neutral{
+  color:#cbd5e1;
+}
+
+.muted{
+  color:#94a3b8;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.metric{
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:11px;
+  padding:11px;
+}
+
+.metric small{
+  display:block;
+  color:#94a3b8;
+  font-size:10px;
+  margin-bottom:4px;
+  text-transform:uppercase;
+}
+
+.metric b{
+  font-size:14px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:12px;
+}
+
+.row:last-child{
+  border-bottom:0;
+}
+
+.section-title{
+  font-size:17px;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.plan{
+  border-left:3px solid #2563eb;
+  padding-left:12px;
+}
+
+.potential{
+  font-size:26px;
+  font-weight:900;
+  margin:4px 0;
+}
+
+.confidence{
+  font-size:11px;
+  font-weight:800;
+}
+
+.high{
+  color:#22c55e;
+}
+
+.medium{
+  color:#fbbf24;
+}
+
+.low{
+  color:#ef4444;
+}
+
+ul{
+  margin:8px 0 0;
+  padding-left:18px;
+  color:#cbd5e1;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.filter-card{
+  padding:16px;
+}
+
+.filter-status{
+  display:inline-block;
+  padding:4px 8px;
+  border:1px solid currentColor;
+  font-size:11px;
+  font-weight:800;
+}
+
+.mtf-value{
+  font-weight:900;
+}
+
+.footer-status{
+  text-align:center;
+  color:#64748b;
+  font-size:10px;
+  margin:18px 0 5px;
+}
+
+#lastUpdate{
+  font-size:11px;
+  color:#64748b;
+  margin-top:8px;
+}
+
+@media(max-width:991px){
+
+  body{
+    padding:10px;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+
+  .chart-container{
+    height:55vh;
+    min-height:430px;
+  }
+
+  .signal-panel{
+    max-height:none;
+    overflow:visible;
+  }
+
+}
+
+@media(max-width:520px){
+
+  .header{
+    align-items:flex-start;
+  }
+
+  .header h2{
+    font-size:18px;
+  }
+
+  .live{
+    font-size:9px;
+    padding:6px 8px;
+  }
+
+  .grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
 </style>
 </head>
+
 <body>
-<header><div><div class="eyebrow">Bosque Forex AI</div><h1>Trading workspace</h1><small>XAUUSD · Paper signals · Malaysia time</small></div><span id="healthBadge" class="badge warning">Checking data</span></header>
-<main>
-<nav aria-label="Workspace tools"><button type="button" data-open="journalDialog">Trading journal</button><button type="button" data-open="researchDialog">Backtest</button><button type="button" data-open="statusDialog">System status</button><button type="button" id="refreshButton">Refresh</button></nav>
-<div id="statusStrip"><span id="sessionBadge" class="badge">Session —</span><span id="newsBadge" class="badge">News —</span><span id="versionBadge" class="badge">Engine —</span></div>
-<div class="layout">
-<section aria-label="Market chart">
-<div class="card chart">
-<div class="tradingview-widget-container"><div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-<script async src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js">
-{"autosize":true,"symbol":"OANDA:XAUUSD","interval":"5","timezone":"Asia/Kuala_Lumpur","theme":"dark","style":"1","locale":"en","allow_symbol_change":false,"hide_top_toolbar":false,"save_image":false}
-</script></div></div>
-<p class="muted chart-note">Chart: OANDA · Signal data: Twelve Data. Prices can differ.</p>
-<details class="card"><summary>Market structure &amp; entry checks</summary><div id="gateList">Waiting for engine data.</div><div id="structureList"></div><p class="muted">The score measures completed checks; it is not a win probability.</p></details>
-</section>
-<aside>
-<section class="card"><div class="eyebrow">Market intelligence</div><div class="signal-line"><strong id="finalSignal" class="signal warning">WAIT</strong><span><b id="score" class="score">—</b><small> / 100</small></span></div>
-<span id="engineStatus" class="badge">Loading</span><p id="opportunityType" class="muted">Checking the latest scan…</p><div class="row"><span>Last close</span><b id="latestPrice">—</b></div><small id="lastUpdate">No update yet</small></section>
-<section class="card"><h2>Trade plan</h2><p id="planNote" class="muted">Waiting for a valid signal.</p>
-<div class="row"><span>Direction</span><b id="planDirection">—</b></div><div class="row"><span>Reference entry</span><b id="entry">—</b></div><div class="row"><span>Stop loss</span><b id="sl">—</b></div><div class="row"><span>TP1 · observation</span><b id="tp1">—</b></div><div class="row"><span>TP2 · full exit</span><b id="tp2">—</b></div><div class="row"><span>Stop distance</span><b id="riskPips">—</b></div><div class="row"><span>Reward / risk after costs</span><b id="netRR">—</b></div>
-<small>1 trader pip = 0.10 price. Account risk depends on lot size.</small></section>
-<details class="card"><summary>Why WAIT?</summary><ul id="waitReasons"><li>Waiting for data.</li></ul></details>
-<details class="card"><summary>News &amp; risk controls</summary><p id="newsStatus">Unknown</p><div id="newsEvents"></div><p id="riskSummary" class="muted">Waiting for risk status.</p><div class="notice">Lot sizing needs verified broker specifications. Signals are paper simulations.</div></details>
-</aside>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<div class="card header">
+
+  <div>
+    <h2>👑 Bosque Forex AI</h2>
+    <p>XAUUSD Trade Intelligence Engine</p>
+  </div>
+
+  <div class="live">
+    ● AUTO LIVE
+  </div>
+
 </div>
-</main>
-<dialog id="journalDialog" aria-labelledby="journalTitle"><div class="modal-head"><h2 id="journalTitle">Trading journal</h2><button type="button" data-close="journalDialog" aria-label="Close trading journal">Close ×</button></div><p id="journalStatus" class="muted">No journal loaded.</p>
-<div class="metrics"><div class="metric"><small>Closed trades</small><b id="journalTrades">—</b></div><div class="metric"><small>Win rate</small><b id="journalWinRate">—</b></div><div class="metric"><small>Profit factor</small><b id="journalPF">—</b></div><div class="metric"><small>Average R</small><b id="journalR">—</b></div><div class="metric"><small>Drawdown</small><b id="journalDD">—</b></div><div class="metric"><small>Unresolved</small><b id="journalUnresolved">—</b></div></div><p id="journalCI" class="muted"></p><p><a class="button" href="./paper_journal.csv" download>Download CSV</a></p><div id="journalRecords" class="scroll">No paper trades recorded.</div><small>Recent 30 records; includes strategy version. Summary is for the current engine version.</small></dialog>
-<dialog id="researchDialog" aria-labelledby="researchTitle"><div class="modal-head"><h2 id="researchTitle">Historical research</h2><button type="button" data-close="researchDialog" aria-label="Close backtest">Close ×</button></div><p id="researchMeta"></p><p id="researchNotice" class="notice"></p><div id="researchDetails" class="scroll">No result loaded.</div><details><summary>Data quality &amp; chronological folds</summary><pre id="researchDiagnostics"></pre></details></dialog>
-<dialog id="statusDialog" aria-labelledby="statusTitle"><div class="modal-head"><h2 id="statusTitle">System status</h2><button type="button" data-close="statusDialog" aria-label="Close system status">Close ×</button></div><div id="serviceDetails">No verified service data.</div><small>Bot/chat access does not prove message delivery. No broker orders are placed.</small></dialog>
-<footer>Bosque OS · Candidate strategies require historical and forward validation. Profitability has not been established.</footer>
+
+
+<!-- =====================================================
+     MAIN DASHBOARD
+===================================================== -->
+
+<div class="dashboard">
+
+  <!-- ===================================================
+       TRADINGVIEW
+  ==================================================== -->
+
+  <div>
+
+    <div class="card chart-card">
+
+      <div class="chart-container">
+
+        <div
+          class="tradingview-widget-container"
+          style="height:100%;width:100%"
+        >
+
+          <div
+            class="tradingview-widget-container__widget"
+            style="height:100%;width:100%"
+          ></div>
+
+          <script
+            async
+            src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+          >
+          {
+            "autosize":true,
+            "symbol":"OANDA:XAUUSD",
+            "interval":"5",
+            "timezone":"Asia/Kuala_Lumpur",
+            "theme":"dark",
+            "style":"1",
+            "locale":"en",
+            "allow_symbol_change":false,
+            "hide_top_toolbar":false,
+            "hide_legend":false,
+            "save_image":false,
+            "calendar":false
+          }
+          </script>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================
+       INTELLIGENCE PANEL
+  ==================================================== -->
+
+  <div class="signal-panel">
+
+
+    <!-- MARKET INTELLIGENCE -->
+
+    <div class="card">
+
+      <div class="status-row">
+        <b>🧠 Market Intelligence</b>
+
+        <span
+          class="badge"
+          id="engineStatus"
+        >
+          CONNECTING
+        </span>
+      </div>
+
+      <div class="score-label">
+        Opportunity Score
+      </div>
+
+      <div
+        class="score wait"
+        id="score"
+      >
+        --
+      </div>
+
+      <div
+        class="signal wait"
+        id="finalSignal"
+      >
+        WAIT
+      </div>
+
+      <div
+        class="muted"
+        id="opportunityType"
+      >
+        Loading engine...
+      </div>
+
+      <div
+        class="grid"
+        style="margin-top:14px"
+      >
+
+        <div class="metric">
+          <small>Session</small>
+          <b id="session">--</b>
+        </div>
+
+        <div class="metric">
+          <small>Market Mode</small>
+          <b id="marketMode">--</b>
+        </div>
+
+        <div class="metric">
+          <small>Latest Price</small>
+          <b id="latestPrice">--</b>
+        </div>
+
+        <div class="metric">
+          <small>PD Zone</small>
+          <b id="pdZone">--</b>
+        </div>
+
+      </div>
+
+      <div id="lastUpdate">
+        Last update: --
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         MARKET REGIME
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        Market Regime
+      </div>
+
+      <div class="row">
+        <span>Regime</span>
+        <b id="regime">--</b>
+      </div>
+
+      <div class="row">
+        <span>H1 Direction</span>
+        <b id="h1Direction">--</b>
+      </div>
+
+      <div class="row">
+        <span>H1 Condition</span>
+        <b id="h1Condition">--</b>
+      </div>
+
+      <div class="row">
+        <span>Volatility</span>
+        <b id="volatility">--</b>
+      </div>
+
+      <div class="row">
+        <span>ATR</span>
+        <b id="atr">--</b>
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         LIQUIDITY MAP
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        Liquidity Map
+      </div>
+
+      <div class="row">
+        <span>Buy-side Sweep</span>
+        <span
+          id="buySweep"
+          class="filter-status block"
+        >
+          BLOCK
+        </span>
+      </div>
+
+      <div class="row">
+        <span>Sell-side Sweep</span>
+        <span
+          id="sellSweep"
+          class="filter-status block"
+        >
+          BLOCK
+        </span>
+      </div>
+
+      <div class="row">
+        <span>Level</span>
+        <b id="liquidityLevel">--</b>
+      </div>
+
+      <div class="row">
+        <span>Status</span>
+        <b id="liquidityStatus">NONE</b>
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         NEWS FILTER
+    ================================================== -->
+
+    <div class="card filter-card">
+
+      <div class="section-title">
+        News Filter
+      </div>
+
+      <div
+        id="newsHeadline"
+        class="signal wait"
+        style="font-size:22px"
+      >
+        LOADING
+      </div>
+
+      <div class="row">
+        <span>High Impact</span>
+        <b id="newsImpact">--</b>
+      </div>
+
+      <div class="row">
+        <span>Minutes</span>
+        <b id="newsMinutes">--</b>
+      </div>
+
+      <div class="row">
+        <span>Filter</span>
+        <span
+          id="newsFilter"
+          class="filter-status block"
+        >
+          BLOCK
+        </span>
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SESSION FILTER
+    ================================================== -->
+
+    <div class="card filter-card">
+
+      <div class="section-title">
+        Session Filter
+      </div>
+
+      <div
+        id="sessionFilter"
+        class="filter-status block"
+        style="width:100%;font-size:16px"
+      >
+        BLOCK
+      </div>
+
+      <div class="row">
+        <span>Current</span>
+        <b id="currentSession">--</b>
+      </div>
+
+      <div class="row">
+        <span>Preferred</span>
+        <b>London / New York</b>
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         MULTI TIMEFRAME
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        Multi-Timeframe Analysis
+      </div>
+
+      <div class="row">
+        <span>H1</span>
+        <b
+          id="mtfH1"
+          class="mtf-value"
+        >
+          --
+        </b>
+      </div>
+
+      <div class="row">
+        <span>M15</span>
+        <b
+          id="mtfM15"
+          class="mtf-value"
+        >
+          --
+        </b>
+      </div>
+
+      <div class="row">
+        <span>M5</span>
+        <b
+          id="mtfM5"
+          class="mtf-value"
+        >
+          --
+        </b>
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TRADE PLAN
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        🎯 Trade Plan
+      </div>
+
+      <div class="plan">
+
+        <div class="row">
+          <span>Direction</span>
+          <b id="planDirection">
+            WAIT
+          </b>
+        </div>
+
+        <div class="row">
+          <span>Entry</span>
+          <b id="entry">--</b>
+        </div>
+
+        <div class="row">
+          <span>Stop Loss</span>
+          <b id="sl">--</b>
+        </div>
+
+        <div class="row">
+          <span>TP1</span>
+          <b id="tp1">--</b>
+        </div>
+
+        <div class="row">
+          <span>TP2</span>
+          <b id="tp2">--</b>
+        </div>
+
+        <div class="row">
+          <span>TP3</span>
+          <b id="tp3">--</b>
+        </div>
+
+        <div class="row">
+          <span>Risk</span>
+          <b id="riskPips">--</b>
+        </div>
+
+        <div class="row">
+          <span>RR TP2</span>
+          <b id="rrTp2">--</b>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         PRICE POTENTIAL
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        📏 Estimated Price Potential
+      </div>
+
+      <div
+        class="potential"
+        id="potentialRange"
+      >
+        -- pips
+      </div>
+
+      <div
+        class="confidence medium"
+        id="potentialConfidence"
+      >
+        SCANNING
+      </div>
+
+      <p
+        class="muted"
+        style="font-size:11px;margin-bottom:0"
+      >
+        Based on structure, volatility and liquidity.
+        Not a guaranteed target.
+      </p>
+
+    </div>
+
+
+    <!-- =================================================
+         CONFIRMATIONS
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        🔎 Setup Confirmation
+      </div>
+
+      <ul id="confirmationList">
+        <li>
+          Waiting for market data...
+        </li>
+      </ul>
+
+    </div>
+
+
+    <!-- =================================================
+         VALID OPPORTUNITIES
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        🚨 Valid Opportunities
+      </div>
+
+      <div class="row">
+        <span>Setup</span>
+        <b id="validSetup">
+          WAIT
+        </b>
+      </div>
+
+      <div class="row">
+        <span>Score Gate</span>
+        <b id="scoreGate">
+          WAIT
+        </b>
+      </div>
+
+      <div class="row">
+        <span>M5 Confirmation</span>
+        <b id="m5Gate">
+          WAIT
+        </b>
+      </div>
+
+      <div class="row">
+        <span>Risk</span>
+        <b id="riskGate">
+          WAIT
+        </b>
+      </div>
+
+      <div class="row">
+        <span>RR</span>
+        <b id="rrGate">
+          WAIT
+        </b>
+      </div>
+
+    </div>
+
+
+    <div class="footer-status">
+      BOSQUE FOREX AI • XAUUSD • AUTO REFRESH
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
-const $=id=>document.getElementById(id);
-const text=(id,value)=>{if($(id)) $(id).innerText=value??'—';};
-const esc=value=>String(value??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const num=(x,d=2)=>x==null||!Number.isFinite(Number(x))?'—':Number(x).toFixed(d);
-const human=x=>String(x??'Unknown').replaceAll('_',' ').toLowerCase();
-const date=x=>Number.isFinite(Date.parse(x))?new Date(x).toLocaleString('en-MY',{timeZone:'Asia/Kuala_Lumpur'}):'—';
-const row=(label,value)=>'<div class="row"><span>'+esc(label)+'</span><b>'+esc(value)+'</b></div>';
-function table(headers,rows){return '<table><thead><tr>'+headers.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(x=>'<td>'+esc(x)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';}
-function renderResearch(bt,currentVersion){
- text('researchMeta',(bt.version||'Unknown version')+' · '+human(bt.status)+' · '+date(bt.period_start)+' → '+date(bt.period_end));
- text('researchNotice',[(bt.version&&currentVersion&&bt.version!==currentVersion)?'Previous strategy results; they do not validate the current engine.':'Research result; not a profitability guarantee.',bt.cost_model?.status==='CONFIGURED'?'Configured cost model.':'Costs not validated.',bt.news_mode==='HISTORICAL_CALENDAR'?'Historical calendar used.':'Historical news not applied.',bt.reason||''].join(' '));
- const rows=Object.entries(bt.results||{}).map(([name,r])=>[human(name),r.stats?.trades??0,num(r.stats?.win_rate)+'%',num(r.stats?.profit_factor),num(r.stats?.average_r),num(r.stats?.max_drawdown)+' R',r.stats?.unresolved??0]);
- $('researchDetails').innerHTML=rows.length?table(['Sample','Trades','Win rate','PF','Avg R','Drawdown','Unresolved'],rows):'No completed sample available.';
- const notes=['Bars: '+(bt.bars_used??'—'),'Gaps: '+(bt.data_quality?.gaps??'Not measured')];
- for(const [name,f] of Object.entries(bt.walk_forward||{})){if(f.stats)notes.push(name+': '+f.stats.trades+' trades, '+num(f.stats.win_rate)+'%, '+num(f.stats.average_r)+' R');}
- text('researchDiagnostics',notes.join('\n'));
+
+/* =========================================================
+   BOSQUE FOREX AI
+   FRONTEND
+   READS dashboard_data.json
+   NO TWELVE DATA REQUEST FROM BROWSER
+========================================================= */
+
+const DASHBOARD_URL =
+  "./dashboard_data.json";
+
+const REFRESH_MS =
+  60000;
+
+let lastAlertId = "";
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function setText(id,value){
+
+  const element =
+    document.getElementById(id);
+
+  if(!element) return;
+
+  element.innerText =
+    value === null ||
+    value === undefined ||
+    value === ""
+      ? "--"
+      : value;
 }
+
+
+function fmt(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ""
+  ){
+    return "--";
+  }
+
+  const number =
+    Number(value);
+
+  if(!Number.isFinite(number)){
+    return "--";
+  }
+
+  return number.toFixed(2);
+}
+
+
+function setStatus(
+  id,
+  pass,
+  passText="PASS",
+  blockText="BLOCK"
+){
+
+  const element =
+    document.getElementById(id);
+
+  if(!element) return;
+
+  element.innerText =
+    pass ? passText : blockText;
+
+  element.className =
+    "filter-status " +
+    (pass ? "pass" : "block");
+}
+
+
+function setDirectionClass(
+  id,
+  value
+){
+
+  const element =
+    document.getElementById(id);
+
+  if(!element) return;
+
+  element.classList.remove(
+    "buy",
+    "sell",
+    "wait",
+    "neutral"
+  );
+
+  const text =
+    String(value || "").toUpperCase();
+
+  if(
+    text.includes("BUY") ||
+    text.includes("BULLISH")
+  ){
+    element.classList.add("buy");
+  }
+
+  else if(
+    text.includes("SELL") ||
+    text.includes("BEARISH")
+  ){
+    element.classList.add("sell");
+  }
+
+  else if(
+    text.includes("WAIT") ||
+    text.includes("RANGE") ||
+    text.includes("NEUTRAL") ||
+    text === "OFF SESSION"
+  ){
+    element.classList.add("wait");
+  }
+
+  else{
+    element.classList.add("neutral");
+  }
+
+}
+
+
+/* =========================================================
+   LOAD ENGINE DATA
+========================================================= */
+
+async function loadDashboard(){
+
+  const response =
+    await fetch(
+      `${DASHBOARD_URL}?t=${Date.now()}`,
+      {
+        cache:"no-store"
+      }
+    );
+
+  if(!response.ok){
+
+    throw new Error(
+      `Dashboard data unavailable (${response.status})`
+    );
+
+  }
+
+  return await response.json();
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
 function render(data){
- const engine=data.engine||{}, signal=data.signal||{}, p=data.plan||{}, news=data.news||{};
- const age=Date.now()-Date.parse(engine.timestamp||'');
- const healthy=Number.isFinite(age)&&age>=-60000&&age<=15*60000&&engine.status!=='ERROR';
- const close=Date.parse(signal.candle_time||'')+5*60000;
- const active=healthy&&signal.active===true&&Number.isFinite(close)&&Date.now()>=close&&Date.now()-close<=2*60000;
- text('healthBadge',healthy?'● DATA UPDATED':'● OFFLINE / STALE');
- text('versionBadge',engine.version||'Unknown engine');text('sessionBadge',data.session||'Session unknown');
- text('newsBadge',healthy?('News · '+human(news.status)):'News · stale');
- text('finalSignal',active?signal.direction:'WAIT');$('finalSignal').className='signal '+(active?'good':'warning');
- text('score',healthy?data.opportunity?.score:'—');text('engineStatus',healthy?(active?'Paper signal':'Scanning'):'Signals disabled');
- text('opportunityType',healthy?(data.opportunity?.type||'Waiting for setup'):'Latest scan unavailable or stale.');
- text('latestPrice',healthy?num(data.latest_price):'—');text('lastUpdate','Last scan: '+date(engine.timestamp));
- // A blocked or expired candidate must not look like an actionable plan.
- for(const [id,key] of Object.entries({entry:'entry',sl:'sl',tp1:'tp1',tp2:'tp2'}))text(id,active?num(signal[key]??p[key]):'—');
- text('planDirection',active?signal.direction:'—');text('riskPips',active?num(signal.risk_pips??p.risk_pips,1)+' pips':'—');
- text('netRR',active?num(data.risk_engine?.net_rr):'—');
- text('planNote',active?'Paper reference plan. Check current execution price.':'No active plan. Entry checks must pass and the signal must be fresh.');
- $('gateList').innerHTML=Object.entries(data.filters||{}).filter(([k,v])=>typeof v==='boolean'&&!['session_blocking'].includes(k)).map(([k,v])=>row(human(k),healthy?(v?'Pass':'Waiting'):'Stale')).join('')||'No checks reported.';
- $('structureList').innerHTML=['h4','h1','m15'].map(k=>row(k.toUpperCase(),data[k]?.direction||'Unknown')).join('');
- const reasons=healthy?(data.invalidation?.conditions||['Waiting for setup']):['Data is stale or unavailable. Signals disabled.'];
- $('waitReasons').innerHTML=reasons.map(r=>'<li>'+esc(r)+'</li>').join('');
- text('newsStatus',healthy?(news.status==='CLEAR'?'NEWS CLEAR':news.status==='BLOCK'?'NEWS BLOCK':'NEWS UNKNOWN'):'NEWS STALE');
- $('newsEvents').innerHTML=(news.events||[]).map(ev=>row(ev.title,date(ev.date))).join('')||'<p class="muted">No upcoming event listed in this snapshot.</p>';
- text('riskSummary',healthy?[human(data.risk_engine?.status),'Daily limit: '+(data.risk_engine?.daily_loss_limit||'—'),'Weekly limit: '+(data.risk_engine?.weekly_loss_limit||'Not configured'),'Position sizing: broker specification required'].join(' · '):'Risk status is stale.');
- const j=data.journal||{};
- text('journalStatus','Paper simulation · '+(j.cost_status==='NET_CONFIGURED'?'Configured costs':'Costs unconfigured or mixed')+' · Snapshot '+date(engine.timestamp));
- for(const [id,value] of Object.entries({journalTrades:j.trades,journalWinRate:j.win_rate==null?'—':num(j.win_rate)+'%',journalPF:num(j.profit_factor),journalR:num(j.average_r),journalDD:num(j.max_drawdown)+' R',journalUnresolved:j.unresolved}))text(id,value);
- text('journalCI',j.win_rate_95_interval?'95% win-rate interval: '+j.win_rate_95_interval.join('–')+'%. Small samples remain uncertain.':'No closed sample to estimate win rate.');
- const trades=data.journal_recent||[];
- $('journalRecords').innerHTML=trades.length?table(['Time (MY)','Version','Side','Outcome','Pips','R','Exit'],trades.map(t=>[date(t.timestamp),t.strategy_version,t.direction,human(t.result),num(t.result_pips),num(t.result_r),human(t.exit_reason)])):'No paper trades recorded.';
- const s=data.services||{}, tg=s.telegram_health||{};
- $('serviceDetails').innerHTML=row('Engine snapshot',healthy?'Fresh':'Stale / unavailable')+row('Telegram access',human(tg.status))+row('Access checked',date(tg.checked_at))+row('Last signal delivery',human(data.telegram?.last_status||'No signal'))+row('News archive',human(s.news_archive?.status))+row('Observed weeks',s.news_archive?.weeks??0)+row('Journal export',human(s.journal_export?.status));
- renderResearch(data.backtest||{},engine.version);
+
+  const engine =
+    data.engine || {};
+
+  const opportunity =
+    data.opportunity || {};
+
+  const signal =
+    data.signal || {};
+
+  const plan =
+    data.plan || {};
+
+  const potential =
+    data.potential || {};
+
+  const regime =
+    data.regime || {};
+
+  const volatility =
+    data.volatility || {};
+
+  const pd =
+    data.pd || {};
+
+  const liquidity =
+    data.liquidity || {};
+
+  const news =
+    data.news || {};
+
+  const filters =
+    data.filters || {};
+
+  const confirmations =
+    data.confirmations || {};
+
+  const h1 =
+    data.h1 || {};
+
+  const m15 =
+    data.m15 || {};
+
+  const m5 =
+    data.m5 || {};
+
+  const sop =
+    data.sop || {};
+
+
+  /* =====================================================
+     TOP
+  ===================================================== */
+
+  const score =
+    Number(opportunity.score || 0);
+
+  const direction =
+    opportunity.direction ||
+    signal.direction ||
+    "WAIT";
+
+  setText(
+    "score",
+    score
+  );
+
+  setText(
+    "finalSignal",
+    direction
+  );
+
+  setText(
+    "opportunityType",
+    opportunity.type ||
+    "NO VALID SETUP"
+  );
+
+  setText(
+    "session",
+    data.session ||
+    "OFF SESSION"
+  );
+
+  setText(
+    "marketMode",
+    data.market_mode ||
+    regime.type ||
+    "--"
+  );
+
+  setText(
+    "latestPrice",
+    fmt(data.latest_price)
+  );
+
+  setText(
+    "pdZone",
+    pd.zone ||
+    "--"
+  );
+
+
+  setDirectionClass(
+    "finalSignal",
+    direction
+  );
+
+  setDirectionClass(
+    "planDirection",
+    direction
+  );
+
+  setDirectionClass(
+    "score",
+    score >= 70
+      ? direction
+      : "WAIT"
+  );
+
+
+  /* =====================================================
+     ENGINE STATUS
+  ===================================================== */
+
+  setText(
+    "engineStatus",
+    score >= 70
+      ? "OPPORTUNITY FOUND"
+      : "SCANNING"
+  );
+
+
+  /* =====================================================
+     MARKET REGIME
+  ===================================================== */
+
+  setText(
+    "regime",
+    regime.type ||
+    data.market_mode ||
+    "--"
+  );
+
+  setText(
+    "h1Direction",
+    regime.h1_direction ||
+    h1.direction ||
+    "--"
+  );
+
+  setText(
+    "h1Condition",
+    h1.condition ||
+    regime.type ||
+    "--"
+  );
+
+  setText(
+    "volatility",
+    volatility.condition ||
+    "--"
+  );
+
+  setText(
+    "atr",
+    volatility.atr_pips == null
+      ? "--"
+      : `${volatility.atr_pips} pips`
+  );
+
+
+  /* =====================================================
+     LIQUIDITY
+  ===================================================== */
+
+  const buySweep =
+    liquidity.buy_side_sweep === true;
+
+  const sellSweep =
+    liquidity.sell_side_sweep === true;
+
+  setStatus(
+    "buySweep",
+    buySweep,
+    "DETECTED",
+    "BLOCK"
+  );
+
+  setStatus(
+    "sellSweep",
+    sellSweep,
+    "DETECTED",
+    "BLOCK"
+  );
+
+  setText(
+    "liquidityLevel",
+    liquidity.swept_level == null
+      ? "--"
+      : fmt(liquidity.swept_level)
+  );
+
+  setText(
+    "liquidityStatus",
+    liquidity.description ||
+    "NONE"
+  );
+
+
+  /* =====================================================
+     NEWS FILTER
+  ===================================================== */
+
+  const newsAvailable =
+    news.filter === "CONNECTED" &&
+    news.status !== "NOT PROVIDED";
+
+  const newsAllowed =
+    newsAvailable &&
+    news.high_impact !== true;
+
+  if(!newsAvailable){
+
+    setText(
+      "newsHeadline",
+      "NEWS TIMING UNAVAILABLE"
+    );
+
+    document
+      .getElementById("newsHeadline")
+      ?.classList.remove(
+        "buy",
+        "sell"
+      );
+
+    document
+      .getElementById("newsHeadline")
+      ?.classList.add("wait");
+
+  }
+
+  else{
+
+    setText(
+      "newsHeadline",
+      news.high_impact
+        ? "HIGH IMPACT NEWS"
+        : "NEWS CLEAR"
+    );
+
+  }
+
+  setText(
+    "newsImpact",
+    news.high_impact == null
+      ? "NOT PROVIDED"
+      : news.high_impact
+        ? "HIGH IMPACT"
+        : "CLEAR"
+  );
+
+  setText(
+    "newsMinutes",
+    news.minutes_to_news == null
+      ? "NOT PROVIDED"
+      : `${news.minutes_to_news} min`
+  );
+
+  setStatus(
+    "newsFilter",
+    newsAllowed,
+    "PASS",
+    "BLOCK"
+  );
+
+
+  /* =====================================================
+     SESSION
+  ===================================================== */
+
+  const session =
+    data.session ||
+    "OFF SESSION";
+
+  const sessionAllowed =
+    session === "LONDON" ||
+    session === "NEW YORK";
+
+  setStatus(
+    "sessionFilter",
+    sessionAllowed,
+    "PASS",
+    "BLOCK"
+  );
+
+  setText(
+    "currentSession",
+    session
+  );
+
+
+  /* =====================================================
+     MTF
+  ===================================================== */
+
+  setText(
+    "mtfH1",
+    h1.direction ||
+    "--"
+  );
+
+  setText(
+    "mtfM15",
+    m15.setup?.opportunity ||
+    m15.direction ||
+    "--"
+  );
+
+  setText(
+    "mtfM5",
+    m5.confirmation?.reason ||
+    m5.bos ||
+    "--"
+  );
+
+  setDirectionClass(
+    "mtfH1",
+    h1.direction
+  );
+
+  setDirectionClass(
+    "mtfM15",
+    m15.setup?.opportunity ||
+    m15.direction
+  );
+
+  setDirectionClass(
+    "mtfM5",
+    m5.confirmation?.reason ||
+    m5.bos
+  );
+
+
+  /* =====================================================
+     TRADE PLAN
+  ===================================================== */
+
+  setText(
+    "planDirection",
+    plan.direction ||
+    direction
+  );
+
+  setText(
+    "entry",
+    fmt(plan.entry)
+  );
+
+  setText(
+    "sl",
+    fmt(plan.sl)
+  );
+
+  setText(
+    "tp1",
+    plan.tp1 == null
+      ? "--"
+      : `${fmt(plan.tp1)} (${plan.tp1_pips || "--"} pips)`
+  );
+
+  setText(
+    "tp2",
+    plan.tp2 == null
+      ? "--"
+      : `${fmt(plan.tp2)} (${plan.tp2_pips || "--"} pips)`
+  );
+
+  setText(
+    "tp3",
+    plan.tp3 == null
+      ? "--"
+      : `${fmt(plan.tp3)} (${plan.tp3_pips || "--"} pips)`
+  );
+
+  setText(
+    "riskPips",
+    plan.risk_pips == null
+      ? "--"
+      : `${plan.risk_pips} pips`
+  );
+
+  setText(
+    "rrTp2",
+    plan.rr_tp2 == null
+      ? "--"
+      : `1:${plan.rr_tp2}`
+  );
+
+
+  /* =====================================================
+     POTENTIAL
+  ===================================================== */
+
+  if(
+    opportunity.direction === "BUY" ||
+    opportunity.direction === "SELL"
+  ){
+
+    setText(
+      "potentialRange",
+      `${potential.tp1_pips || "--"}–${potential.tp3_pips || "--"} pips`
+    );
+
+  }
+
+  else{
+
+    setText(
+      "potentialRange",
+      "-- pips"
+    );
+
+  }
+
+
+  const riskLevel =
+    plan.risk_level ||
+    "UNKNOWN";
+
+  setText(
+    "potentialConfidence",
+    riskLevel === "LOW"
+      ? "HIGHER RISK CONTROL"
+      : riskLevel === "MEDIUM"
+        ? "NORMAL RISK"
+        : "SCANNING"
+  );
+
+
+  /* =====================================================
+     CONFIRMATIONS
+  ===================================================== */
+
+  const list =
+    document.getElementById(
+      "confirmationList"
+    );
+
+  if(list){
+
+    const items = [
+
+      confirmations.h1_bias
+        ? `H1 bias: ${confirmations.h1_bias}`
+        : null,
+
+      confirmations.m15_setup
+        ? `M15 setup: ${confirmations.m15_setup}`
+        : null,
+
+      confirmations.m5_confirmation
+        ? `M5 confirmation: ${confirmations.m5_confirmation}`
+        : null,
+
+      confirmations.liquidity
+        ? `Liquidity: ${confirmations.liquidity}`
+        : null,
+
+      confirmations.pd_zone
+        ? `PD zone: ${confirmations.pd_zone}`
+        : null
+
+    ].filter(Boolean);
+
+    list.innerHTML =
+      items.length
+        ? items.map(
+            item => `<li>${item}</li>`
+          ).join("")
+        : "<li>Waiting for stronger confirmation...</li>";
+
+  }
+
+
+  /* =====================================================
+     VALID OPPORTUNITIES
+  ===================================================== */
+
+  setStatus(
+    "validSetup",
+    filters.setup === true,
+    "PASS",
+    "WAIT"
+  );
+
+  setStatus(
+    "scoreGate",
+    filters.score === true,
+    "PASS",
+    "WAIT"
+  );
+
+  setStatus(
+    "m5Gate",
+    filters.m5_confirmation === true,
+    "PASS",
+    "WAIT"
+  );
+
+  setStatus(
+    "riskGate",
+    filters.risk === true,
+    "PASS",
+    "WAIT"
+  );
+
+  setStatus(
+    "rrGate",
+    filters.rr === true,
+    "PASS",
+    "WAIT"
+  );
+
+
+  /* =====================================================
+     LAST UPDATE
+  ===================================================== */
+
+  const timestamp =
+    engine.timestamp ||
+    data.timestamp;
+
+  if(timestamp){
+
+    const date =
+      new Date(timestamp);
+
+    setText(
+      "lastUpdate",
+      `Last update: ${date.toLocaleString(
+        "en-MY",
+        {
+          timeZone:"Asia/Kuala_Lumpur"
+        }
+      )}`
+    );
+
+  }
+
 }
-let loading=false;
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
 async function runDashboard(){
- if(loading)return;loading=true;
- try{
-  const response=await fetch('./dashboard_data.json?ts='+Date.now(),{cache:'no-store'});
-  if(!response.ok)throw new Error('Dashboard unavailable');
-  const data=await response.json();
-  try{const r=await fetch('./engine/backtest_results.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){const bt=await r.json();if(bt.status)data.backtest=bt;}}catch(_){}
-  render(data);
- }catch(error){
-  render({engine:{status:'ERROR'}});
-  text('opportunityType','Unable to load current data. Try refresh.');
- }finally{loading=false;}
+
+  try{
+
+    setText(
+      "engineStatus",
+      "UPDATING"
+    );
+
+    const data =
+      await loadDashboard();
+
+    render(data);
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Bosque dashboard error:",
+      error
+    );
+
+    setText(
+      "engineStatus",
+      "ERROR"
+    );
+
+    setText(
+      "opportunityType",
+      "Dashboard data unavailable"
+    );
+
+    setText(
+      "lastUpdate",
+      error.message
+    );
+
+  }
+
 }
-window.addEventListener('load',()=>{
- document.querySelectorAll('[data-open]').forEach(button=>button.addEventListener('click',()=>$(button.dataset.open).showModal()));
- document.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',()=>$(button.dataset.close).close()));
- $('refreshButton').addEventListener('click',runDashboard);
- runDashboard();
-});
-setInterval(runDashboard,60000);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+window.addEventListener(
+  "load",
+  () => {
+
+    runDashboard();
+
+    setInterval(
+      runDashboard,
+      REFRESH_MS
+    );
+
+  }
+);
+
 </script>
+
 </body>
 </html>
