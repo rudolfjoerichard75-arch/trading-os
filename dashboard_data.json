@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-16T00:25:35.904812+08:00"
+    "timestamp": "2026-10-16T00:30:47.730107+08:00"
   },
-  "latest_price": 4145.34,
+  "latest_price": 4147.26,
   "session": "NEW YORK",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4168.92433,
       "low": 4100.20911,
       "width": 68.71522000000004,
-      "location": 0.6567901550777249
+      "location": 0.6847637248341868
     }
   },
   "volatility": {
-    "atr": 4.18,
-    "atr_pips": 41.8,
+    "atr": 4.0,
+    "atr_pips": 40.0,
     "condition": "NORMAL"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-16T00:25:36.273044+08:00",
+      "checked_at": "2026-10-16T00:30:48.243653+08:00",
       "requested_from": "2026-10-15",
       "requested_to": "2026-10-18",
       "events_received": 3,
@@ -79,29 +79,16 @@
     "direction": "BUY",
     "opportunity": "BUY LIQUIDITY SWEEP",
     "score": 60,
-    "timestamp": "2026-10-16T00:25:35.904812+08:00"
+    "timestamp": "2026-10-16T00:30:47.730107+08:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "BUY",
-    "entry": 4145.34,
-    "sl": 4147.03,
-    "risk_pips": 16.9,
-    "tp1": 4151.34,
-    "tp2": 4157.34,
-    "tp3": 4163.34,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 3.55,
-    "rr_tp2": 7.09,
-    "rr_tp3": 10.64,
-    "risk_level": "LOW"
+    "valid": false,
+    "reason": "Risk 1.9 pips outside 15-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BULLISH",
@@ -145,7 +132,7 @@
         "high": 4168.92433,
         "low": 4136.33355,
         "width": 32.59077999999954,
-        "location": 0.27636773345098314
+        "location": 0.3353479112804386
       }
     }
   },
@@ -166,8 +153,8 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": true,
     "session_blocking": false
@@ -180,9 +167,9 @@
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 16.9,
-    "risk_level": "LOW",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 15,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -201,7 +188,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "PREFERRED",
-    "risk": "LOW",
+    "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
@@ -1450,7 +1437,9 @@
   },
   "gate_reasons": {
     "score": "Skor 60/100 < minimum 70",
-    "m5_confirmation": "BOS atau candle + momentum BUY belum sah"
+    "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
+    "risk": "SL 1.9 pips bawah minimum 15 pips",
+    "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
     "limits": {
@@ -1459,10 +1448,12 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 16.9,
+    "risk_distance_pips": 1.9,
     "blocking_reasons": [
       "Skor 60/100 < minimum 70",
-      "BOS atau candle + momentum BUY belum sah"
+      "BOS atau candle + momentum BUY belum sah",
+      "SL 1.9 pips bawah minimum 15 pips",
+      "Belum dikira: risk tidak lulus"
     ]
   },
   "journal": {
@@ -1502,7 +1493,7 @@
     "cancelled": 0,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-16T00:25:35.904812+08:00",
+    "last_updated": "2026-10-16T00:30:47.730107+08:00",
     "execution": "Next available M5 open after signal observed; TP2 exit, SL-first ambiguity, 72 bars maximum; paper only."
   },
   "services": {
@@ -1511,7 +1502,7 @@
     },
     "telegram": {
       "status": "NOT_ATTEMPTED",
-      "checked_at": "2026-10-16T00:25:35.904812+08:00",
+      "checked_at": "2026-10-16T00:30:47.730107+08:00",
       "delivery_tested": false
     }
   }
