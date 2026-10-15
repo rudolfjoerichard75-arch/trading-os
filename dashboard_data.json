@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-15T23:45:39.751411+08:00"
+    "timestamp": "2026-10-15T23:50:40.983063+08:00"
   },
-  "latest_price": 4149.98,
+  "latest_price": 4152.25,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4168.92433,
       "low": 4096.84952,
       "width": 72.07481000000007,
-      "location": 0.7372184539924624
+      "location": 0.7686718841159663
     }
   },
   "volatility": {
-    "atr": 5.55,
-    "atr_pips": 55.5,
+    "atr": 5.54,
+    "atr_pips": 55.4,
     "condition": "NORMAL"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-15T23:45:40.140883+08:00",
+      "checked_at": "2026-10-15T23:50:41.498258+08:00",
       "requested_from": "2026-10-14",
       "requested_to": "2026-10-17",
       "events_received": 4,
@@ -71,24 +71,37 @@
     "type": "BUY PULLBACK",
     "direction": "BUY",
     "valid": true,
-    "score": 45
+    "score": 60
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY PULLBACK",
-    "score": 45,
-    "timestamp": "2026-10-15T23:45:39.751411+08:00"
+    "score": 60,
+    "timestamp": "2026-10-15T23:50:40.983063+08:00"
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 5.9 pips outside 15-80"
+    "valid": true,
+    "direction": "BUY",
+    "entry": 4152.25,
+    "sl": 4149.39,
+    "risk_pips": 28.6,
+    "tp1": 4158.25,
+    "tp2": 4164.25,
+    "tp3": 4170.25,
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180,
+    "rr_tp1": 2.1,
+    "rr_tp2": 4.2,
+    "rr_tp3": 6.3,
+    "risk_level": "LOW"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180
   },
   "h1": {
     "direction": "BULLISH",
@@ -132,29 +145,29 @@
         "high": 4168.92433,
         "low": 4136.33355,
         "width": 32.59077999999954,
-        "location": 0.4188561918432202
+        "location": 0.4884157421209324
       }
     }
   },
   "m5": {
     "direction": "BEARISH",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4159.04176,
     "swing_low": 4150.50087,
     "confirmation": {
-      "confirmed": false,
-      "bos": "BEARISH BOS",
-      "candle": false,
-      "momentum": "NEUTRAL",
-      "reason": "NO CONFIRMATION"
+      "confirmed": true,
+      "bos": null,
+      "candle": true,
+      "momentum": "BULLISH",
+      "reason": "M5 bullish candle + momentum"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": false,
-    "risk": false,
-    "rr": false,
+    "m5_confirmation": true,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": false,
     "session_blocking": false
@@ -162,14 +175,14 @@
   "confirmations": {
     "h1_bias": "BULLISH",
     "m15_setup": "BUY PULLBACK",
-    "m5_confirmation": "NO CONFIRMATION",
+    "m5_confirmation": "M5 bullish candle + momentum",
     "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 28.6,
+    "risk_level": "LOW",
     "min_risk_pips": 15,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -188,10 +201,10 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
-    "risk": "UNKNOWN",
+    "risk": "LOW",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
-    "m5_confirmation": "NO"
+    "m5_confirmation": "YES"
   },
   "expectancy": {
     "status": "PAPER SIMULATION",
@@ -1436,10 +1449,7 @@
     "economic_calendar_url": "https://www.financecalendar.com/"
   },
   "gate_reasons": {
-    "score": "Skor 45/100 < minimum 70",
-    "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
-    "risk": "SL 5.9 pips bawah minimum 15 pips",
-    "rr": "Belum dikira: risk tidak lulus"
+    "score": "Skor 60/100 < minimum 70"
   },
   "diagnostics": {
     "limits": {
@@ -1448,12 +1458,9 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 5.9,
+    "risk_distance_pips": 28.6,
     "blocking_reasons": [
-      "Skor 45/100 < minimum 70",
-      "BOS atau candle + momentum BUY belum sah",
-      "SL 5.9 pips bawah minimum 15 pips",
-      "Belum dikira: risk tidak lulus"
+      "Skor 60/100 < minimum 70"
     ]
   },
   "journal": {
@@ -1493,7 +1500,7 @@
     "cancelled": 0,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-15T23:45:39.751411+08:00",
+    "last_updated": "2026-10-15T23:50:40.983063+08:00",
     "execution": "Next available M5 open after signal observed; TP2 exit, SL-first ambiguity, 72 bars maximum; paper only."
   },
   "services": {
@@ -1502,7 +1509,7 @@
     },
     "telegram": {
       "status": "NOT_ATTEMPTED",
-      "checked_at": "2026-10-15T23:45:39.751411+08:00",
+      "checked_at": "2026-10-15T23:50:40.983063+08:00",
       "delivery_tested": false
     }
   }
