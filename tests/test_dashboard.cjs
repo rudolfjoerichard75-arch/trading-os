@@ -14,7 +14,7 @@ const el=id=>{if(!elements.has(id))elements.set(id,node());return elements.get(i
 const c={document:{getElementById:el,createElement:()=>node(),createTextNode:node},window:{addEventListener(){}},console:{error(){}},Date,setInterval(){}};
 vm.createContext(c);
 for(const m of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))if(m[1].includes('function render('))vm.runInContext(m[1],c);
-const payload=()=>({engine:{timestamp:new Date().toISOString()},opportunity:{direction:'SELL',score:85},signal:{active:false},plan:{valid:false,reason:'Risk 143.0 pips outside 15-80'},filters:{setup:true,score:true,m5_confirmation:true,risk:false,rr:false,news:true},news:{status:'CLEAR',filter:'PASS',high_impact:false,source:'FinanceCalendar',evidence:{checked_at:new Date().toISOString(),events_received:4,usd_high_events:2}},session:'ASIAN'});
+const payload=()=>({engine:{timestamp:new Date().toISOString()},opportunity:{direction:'SELL',score:85},signal:{active:false},plan:{valid:false,reason:'Risk 143.0 pips outside 20-80'},filters:{setup:true,score:true,m5_confirmation:true,risk:false,rr:false,news:true},news:{status:'CLEAR',filter:'PASS',high_impact:false,source:'FinanceCalendar',evidence:{checked_at:new Date().toISOString(),events_received:4,usd_high_events:2}},session:'ASIAN'});
 function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
 (async()=>{
   const d=payload();render(d);

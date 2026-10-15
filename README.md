@@ -2,7 +2,7 @@
 
 The original September 28 V3 setup, score, confirmation, aggregation and trade-plan functions are preserved. `tests/fixtures/v3_original.py` is the immutable regression reference. No V5.3 entry filters are active.
 
-Current risk range: **15–80 pips inclusive**, changed from 25–80 at the owner's request on 2026-10-15. Other V3 entry parameters and functions remain unchanged. Live diagnostics and replay read this same engine setting; older journal/backtest records retain the settings used when generated.
+Current risk range: **20–80 pips inclusive**, changed from 15–80 at the owner's request on 2026-10-16. Other V3 entry parameters and functions remain unchanged. Live diagnostics and replay read this same engine setting; older journal/backtest records retain the settings used when generated.
 
 ## Execution
 

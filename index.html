@@ -740,7 +740,7 @@ function gateReasons(data){
   const opp = data.opportunity || {}, news = data.news || {};
   const limits = data.diagnostics?.limits || {};
   const direction = opp.direction || data.signal?.direction;
-  const minRisk = limits.min_risk_pips ?? data.risk_engine?.min_risk_pips ?? 15;
+  const minRisk = limits.min_risk_pips ?? data.risk_engine?.min_risk_pips ?? 20;
   const maxRisk = limits.max_risk_pips ?? data.risk_engine?.max_risk_pips ?? 80;
   const match = String(plan.reason || "").match(/Risk ([0-9.]+) pips outside/);
   const risk = plan.risk_pips ?? (match ? Number(match[1]) : null);
