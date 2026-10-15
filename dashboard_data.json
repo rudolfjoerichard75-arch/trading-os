@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-15T15:10:35.687071+08:00"
+    "timestamp": "2026-10-15T15:15:32.668961+08:00"
   },
-  "latest_price": 4137.43,
+  "latest_price": 4142.5,
   "session": "LONDON",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4172.82699,
       "low": 4073.81757,
       "width": 99.00941999999941,
-      "location": 0.6425048242884375
+      "location": 0.6936503617534624
     }
   },
   "volatility": {
-    "atr": 3.13,
-    "atr_pips": 31.3,
+    "atr": 3.34,
+    "atr_pips": 33.4,
     "condition": "NORMAL"
   },
   "pd": {
@@ -46,7 +46,7 @@
   "news": {
     "status": "HIGH IMPACT",
     "high_impact": true,
-    "minutes_to_news": -70.6,
+    "minutes_to_news": -75.6,
     "filter": "PASS",
     "event": "UK GDP October 2026",
     "currency": "USD",
@@ -63,37 +63,24 @@
     "type": "BUY PULLBACK",
     "direction": "BUY",
     "valid": true,
-    "score": 65
+    "score": 75
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY PULLBACK",
-    "score": 65,
-    "timestamp": "2026-10-15T15:10:35.687071+08:00"
+    "score": 75,
+    "timestamp": "2026-10-15T15:15:32.668961+08:00"
   },
   "plan": {
-    "valid": true,
-    "direction": "BUY",
-    "entry": 4137.43,
-    "sl": 4132.12,
-    "risk_pips": 53.1,
-    "tp1": 4143.43,
-    "tp2": 4149.43,
-    "tp3": 4155.43,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 1.13,
-    "rr_tp2": 2.26,
-    "rr_tp3": 3.39,
-    "risk_level": "MEDIUM"
+    "valid": false,
+    "reason": "Risk 104.2 pips outside 25-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BULLISH",
@@ -137,43 +124,43 @@
         "high": 4164.02226,
         "low": 4131.92959,
         "width": 32.09267,
-        "location": 0.1714413291259392
+        "location": 0.32923094276669757
       }
     }
   },
   "m5": {
     "direction": "RANGE",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4139.41551,
     "swing_low": 4132.74373,
     "confirmation": {
       "confirmed": true,
-      "bos": null,
+      "bos": "BULLISH BOS",
       "candle": true,
       "momentum": "BULLISH",
-      "reason": "M5 bullish candle + momentum"
+      "reason": "M5 bullish BOS"
     }
   },
   "filters": {
-    "score": false,
+    "score": true,
     "setup": true,
     "m5_confirmation": true,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": true
   },
   "confirmations": {
     "h1_bias": "BULLISH",
     "m15_setup": "BUY PULLBACK",
-    "m5_confirmation": "M5 bullish candle + momentum",
+    "m5_confirmation": "M5 bullish BOS",
     "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 53.1,
-    "risk_level": "MEDIUM",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 25,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -192,7 +179,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "PASS",
-    "risk": "MEDIUM",
+    "risk": "UNKNOWN",
     "fresh_zone": "YES",
     "m15_setup": "YES",
     "m5_confirmation": "YES"
