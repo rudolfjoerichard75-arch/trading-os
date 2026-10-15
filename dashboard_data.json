@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-15T23:30:49.864221+08:00"
+    "timestamp": "2026-10-15T23:35:33.548543+08:00"
   },
-  "latest_price": 4158.82,
+  "latest_price": 4155.0,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4168.92433,
       "low": 4096.84952,
       "width": 72.07481000000007,
-      "location": 0.8597754194565417
+      "location": 0.8067979645038236
     }
   },
   "volatility": {
-    "atr": 5.79,
-    "atr_pips": 57.9,
+    "atr": 5.81,
+    "atr_pips": 58.1,
     "condition": "NORMAL"
   },
   "pd": {
@@ -45,27 +45,27 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-15T23:30:50.192893+08:00",
+      "checked_at": "2026-10-15T23:35:34.104877+08:00",
       "requested_from": "2026-10-14",
       "requested_to": "2026-10-17",
-      "events_received": null,
-      "usd_high_events": 0,
+      "events_received": 4,
+      "usd_high_events": 2,
       "nearby_usd_high_events": 0,
-      "skipped_usd_times": 0
+      "skipped_usd_times": 0,
+      "provider_count": 4
     },
     "block_before_minutes": 30,
     "block_after_minutes": 30,
-    "reason": "Sumber berita gagal disahkan; signal ditahan",
-    "status": "ERROR",
-    "high_impact": null,
+    "reason": "Tiada berita USD high impact dikesan dalam julat masa semakan",
+    "status": "CLEAR",
+    "high_impact": false,
     "minutes_to_news": null,
-    "filter": "BLOCK",
+    "filter": "PASS",
     "event": null,
     "currency": "USD",
     "time": null,
     "source": "FinanceCalendar",
-    "source_url": "https://www.financecalendar.com/",
-    "error": "520 Server Error: <none> for url: https://www.financecalendar.com/wp-json/fc/v1/calendar?from=2026-10-14&to=2026-10-17&impact=high&limit=500"
+    "source_url": "https://www.financecalendar.com/"
   },
   "opportunity": {
     "type": "NO VALID SETUP",
@@ -79,7 +79,7 @@
     "direction": null,
     "opportunity": "NO VALID SETUP",
     "score": 20,
-    "timestamp": "2026-10-15T23:30:49.864221+08:00"
+    "timestamp": "2026-10-15T23:35:33.548543+08:00"
   },
   "plan": {
     "valid": false
@@ -129,15 +129,15 @@
         "high": 4168.92433,
         "low": 4136.33355,
         "width": 32.59077999999954,
-        "location": 0.6898920492237496
+        "location": 0.572731919886533
       }
     }
   },
   "m5": {
-    "direction": "BULLISH",
+    "direction": "RANGE",
     "bos": null,
     "swing_high": 4164.584,
-    "swing_low": 4154.36261,
+    "swing_low": 4150.50087,
     "confirmation": {
       "confirmed": false,
       "bos": null,
@@ -152,7 +152,7 @@
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
-    "news": false,
+    "news": true,
     "session": false,
     "session_blocking": false
   },
@@ -167,7 +167,7 @@
     "status": "INVALID",
     "risk_pips": null,
     "risk_level": null,
-    "min_risk_pips": 25,
+    "min_risk_pips": 15,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
     "consecutive_loss_limit": "NOT CONFIGURED"
@@ -183,7 +183,7 @@
     ]
   },
   "sop": {
-    "news_filter": "BLOCK",
+    "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
     "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
@@ -1437,13 +1437,12 @@
     "score": "Skor 20/100 < minimum 70",
     "m5_confirmation": "Menunggu arah setup M15",
     "risk": "Belum dikira: tiada arah setup",
-    "rr": "Belum dikira: risk tidak lulus",
-    "news": "Sumber berita gagal disahkan; signal ditahan"
+    "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
     "limits": {
       "min_score": 70,
-      "min_risk_pips": 25,
+      "min_risk_pips": 15,
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
@@ -1453,8 +1452,7 @@
       "Skor 20/100 < minimum 70",
       "Menunggu arah setup M15",
       "Belum dikira: tiada arah setup",
-      "Belum dikira: risk tidak lulus",
-      "Sumber berita gagal disahkan; signal ditahan"
+      "Belum dikira: risk tidak lulus"
     ]
   },
   "journal": {
@@ -1494,7 +1492,7 @@
     "cancelled": 0,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-15T23:30:49.864221+08:00",
+    "last_updated": "2026-10-15T23:35:33.548543+08:00",
     "execution": "Next available M5 open after signal observed; TP2 exit, SL-first ambiguity, 72 bars maximum; paper only."
   },
   "services": {
@@ -1503,7 +1501,7 @@
     },
     "telegram": {
       "status": "NOT_ATTEMPTED",
-      "checked_at": "2026-10-15T23:30:49.864221+08:00",
+      "checked_at": "2026-10-15T23:35:33.548543+08:00",
       "delivery_tested": false
     }
   }
