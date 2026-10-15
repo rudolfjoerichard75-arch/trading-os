@@ -7,327 +7,88 @@
 <title>Bosque Forex AI - XAUUSD Trade Intelligence</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
 
-body{
-  margin:0;
-  padding:14px;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  background:#050816;
-  color:#e5e7eb;
-}
-
-.card{
-  background:#111833;
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 8px 30px rgba(0,0,0,.20);
-}
-
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-}
-
-.header h2{
-  margin:0 0 4px;
-  font-size:21px;
-}
-
-.header p{
-  margin:0;
-  color:#94a3b8;
-  font-size:13px;
-}
-
-.live{
-  padding:7px 11px;
-  border-radius:999px;
-  background:rgba(34,197,94,.12);
-  color:#22c55e;
-  font-size:11px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.dashboard{
-  display:grid;
-  grid-template-columns:minmax(0,1.7fr) minmax(330px,.9fr);
-  gap:14px;
-  align-items:start;
-}
-
-.chart-card{
-  padding:8px;
-}
-
-.chart-container{
-  width:100%;
-  height:calc(100vh - 110px);
-  min-height:620px;
-  overflow:hidden;
-  border-radius:12px;
-}
-
-.chart-container > div{
-  height:100%;
-}
-
-.signal-panel{
-  max-height:calc(100vh - 110px);
-  overflow-y:auto;
-  padding-right:2px;
-}
-
-.status-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  font-size:12px;
-}
-
-.badge{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:999px;
-  background:#1f2937;
-  font-size:10px;
-  font-weight:800;
-}
-
-.score-label{
-  font-size:11px;
-  color:#94a3b8;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-
-.score{
-  font-size:44px;
-  font-weight:900;
-  line-height:1;
-  margin:8px 0;
-}
-
-.signal{
-  font-size:25px;
-  font-weight:900;
-  margin:5px 0;
-}
-
-.buy{
-  color:#22c55e;
-}
-
-.sell{
-  color:#ff6b7a;
-}
-
-.wait{
-  color:#fbbf24;
-}
-
-.block{
-  color:#ff7180;
-}
-
-.pass{
-  color:#22c55e;
-}
-
-.neutral{
-  color:#cbd5e1;
-}
-
-.muted{
-  color:#94a3b8;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.metric{
-  background:rgba(255,255,255,.035);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:11px;
-  padding:11px;
-}
-
-.metric small{
-  display:block;
-  color:#94a3b8;
-  font-size:10px;
-  margin-bottom:4px;
-  text-transform:uppercase;
-}
-
-.metric b{
-  font-size:14px;
-}
-
-.row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:8px 0;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  font-size:12px;
-}
-
-.row:last-child{
-  border-bottom:0;
-}
-
-.section-title{
-  font-size:17px;
-  font-weight:800;
-  margin-bottom:14px;
-}
-
-.plan{
-  border-left:3px solid #2563eb;
-  padding-left:12px;
-}
-
-.potential{
-  font-size:26px;
-  font-weight:900;
-  margin:4px 0;
-}
-
-.confidence{
-  font-size:11px;
-  font-weight:800;
-}
-
-.high{
-  color:#22c55e;
-}
-
-.medium{
-  color:#fbbf24;
-}
-
-.low{
-  color:#ef4444;
-}
-
-ul{
-  margin:8px 0 0;
-  padding-left:18px;
-  color:#cbd5e1;
-  font-size:12px;
-  line-height:1.7;
-}
-
-.filter-card{
-  padding:16px;
-}
-
-.filter-status{
-  display:inline-block;
-  padding:4px 8px;
-  border:1px solid currentColor;
-  font-size:11px;
-  font-weight:800;
-}
-
-.row > .filter-status{
-  max-width:70%;
-  text-align:right;
-  overflow-wrap:anywhere;
-}
-
-.status-reason{
-  font-size:12px;
-  font-weight:500;
-  line-height:1.5;
-}
-
-#finalSignal .status-reason{
-  display:block;
-}
-
-.news-evidence{
-  margin-top:10px;
-  overflow-wrap:anywhere;
-}
-
-.mtf-value{
-  font-weight:900;
-}
-
-.footer-status{
-  text-align:center;
-  color:#64748b;
-  font-size:10px;
-  margin:18px 0 5px;
-}
-
-#lastUpdate{
-  font-size:11px;
-  color:#64748b;
-  margin-top:8px;
-}
-
-@media(max-width:991px){
-
-  body{
-    padding:10px;
-  }
-
-  .dashboard{
-    grid-template-columns:1fr;
-  }
-
-  .chart-container{
-    height:55vh;
-    min-height:430px;
-  }
-
-  .signal-panel{
-    max-height:none;
-    overflow:visible;
-  }
-
-}
-
-@media(max-width:520px){
-
-  .header{
-    align-items:flex-start;
-  }
-
-  .header h2{
-    font-size:18px;
-  }
-
-  .live{
-    font-size:9px;
-    padding:6px 8px;
-  }
-
-  .grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-}
+*{box-sizing:border-box}
+:root{color-scheme:dark;--bg:#050816;--surface:#111833;--text:#e5e7eb;--muted:#94a3b8;--border:rgba(148,163,184,.14);--blue:#2563eb}
+body{margin:0;padding:24px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body>header,body>.dashboard{max-width:1800px;margin-left:auto;margin-right:auto}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,.14);min-width:0}
+.header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 24px;margin-bottom:20px;background:linear-gradient(115deg,#111833,#0c1229)}
+.brand-eyebrow,.eyebrow{display:block;color:#8da6cf;font-size:10px;font-weight:650;letter-spacing:.16em}
+.header h2{margin:3px 0 2px;font-size:23px;font-weight:700;letter-spacing:-.6px}
+.header p{margin:0;color:var(--muted);font-size:12px}
+.live{display:flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid rgba(34,197,94,.2);border-radius:999px;background:rgba(34,197,94,.07);color:#22c55e;font-size:10px;font-weight:650;letter-spacing:.06em;white-space:nowrap}
+.live-dot{width:6px;height:6px;background:currentColor;border-radius:50%;box-shadow:0 0 0 3px rgba(34,197,94,.08)}
+.dashboard{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(360px,.9fr);gap:20px;align-items:start}
+.dashboard>div:first-child{position:sticky;top:20px;min-width:0}
+.chart-card{padding:8px;overflow:hidden}
+.chart-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 18px}
+.chart-heading strong{display:block;font-size:17px;font-weight:650;margin-top:3px;letter-spacing:-.3px}
+.chart-timeframe{font-size:12px;color:#cbd5e1;font-weight:600;white-space:nowrap}
+.chart-timeframe span{color:var(--muted);font-size:10px;font-weight:400}
+.chart-container{width:100%;height:calc(100vh - 220px);min-height:540px;overflow:hidden;border-radius:12px}
+.chart-container>div{height:100%}
+.signal-panel{min-width:0}
+.status-row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;margin-bottom:22px}
+.status-row>b{font-weight:650;letter-spacing:-.2px}
+.badge{display:inline-block;padding:5px 9px;border:1px solid rgba(148,163,184,.14);border-radius:6px;background:rgba(148,163,184,.06);font-size:9px;font-weight:650;letter-spacing:.06em;text-align:center}
+.intelligence-card{background:linear-gradient(145deg,#141e3e,#111833 65%);border-top:2px solid #2563eb}
+.score-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.13em}
+.score{font-size:54px;font-weight:750;letter-spacing:-2px;line-height:1.15;margin:8px 0 16px;font-variant-numeric:tabular-nums}
+.score::after{content:" / 100";font-size:14px;font-weight:450;letter-spacing:0;color:var(--muted)}
+.signal{font-size:24px;font-weight:700;letter-spacing:-.4px;margin:6px 0}
+.buy,.pass,.high{color:#22c55e}.sell{color:#ff6b7a}.wait,.medium{color:#fbbf24}.block{color:#ff7180}.neutral{color:#cbd5e1}.low{color:#ef4444}.muted{color:var(--muted)}
+#finalSignal .status-reason{display:block;margin-top:10px;padding:10px 12px;background:rgba(251,191,36,.045);border-left:2px solid rgba(251,191,36,.35);border-radius:0 7px 7px 0;color:#c0cada;font-size:12px;font-weight:400;line-height:1.65;letter-spacing:0}
+#opportunityType{font-size:11px;margin-top:10px;letter-spacing:.03em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{background:rgba(5,8,22,.25);border:1px solid rgba(148,163,184,.08);border-radius:10px;padding:12px 13px;min-width:0}
+.metric small{display:block;color:var(--muted);font-size:9px;margin-bottom:5px;text-transform:uppercase;letter-spacing:.09em}
+.metric b{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+#latestPrice{font-size:18px;letter-spacing:-.3px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid rgba(148,163,184,.09);font-size:12px;min-width:0}
+.row:last-child{border-bottom:0;padding-bottom:0}
+.row>span:first-child{color:#a8b6cc;flex-shrink:0;max-width:46%}
+.row>b{font-weight:550;text-align:right;min-width:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:15px;font-weight:650;letter-spacing:-.2px;margin-bottom:12px;line-height:1.5}
+.section-note{color:#8192b0;font-size:8px;font-weight:550;letter-spacing:.1em;text-align:right}
+.plan{border-left:2px solid #2563eb;padding-left:14px}
+.plan .row:first-child{padding-top:4px}
+#entry{font-size:19px;color:#e5e7eb;letter-spacing:-.4px}
+#sl{color:#ff7180}
+#tp1,#tp2,#tp3{color:#a7cdbb}
+.potential{font-size:30px;font-weight:700;letter-spacing:-.7px;margin:4px 0;font-variant-numeric:tabular-nums}
+.confidence{font-size:10px;font-weight:650;letter-spacing:.08em;margin-top:7px}
+ul{margin:8px 0 0;padding-left:17px;color:#b5c3d9;font-size:12px;line-height:1.8}
+li+li{margin-top:5px}
+li::marker{color:#647ca5}
+.filter-card{padding:22px}
+.filter-status{display:inline-block;padding:4px 8px;border:1px solid currentColor;border-radius:5px;font-size:10px;font-weight:650;letter-spacing:.04em}
+.filter-status.pass{border-color:rgba(34,197,94,.23);background:rgba(34,197,94,.06)}
+.filter-status.block{border-color:rgba(255,113,128,.23);background:rgba(255,113,128,.045)}
+.row>.filter-status{max-width:64%;text-align:right;overflow-wrap:anywhere}
+.row:has(.status-reason){align-items:flex-start}
+.row>.filter-status:has(.status-reason){padding:0;border:0;background:none;line-height:1.6}
+.status-reason{font-size:11px;font-weight:400;line-height:1.6;letter-spacing:0;color:#a8b6cc}
+.row .status-reason{display:block;margin-top:3px}
+#planDirection{max-width:64%}
+.news-evidence{margin-top:12px;overflow-wrap:anywhere;font-size:11px;line-height:1.7}
+#newsEvidence{border-top:1px solid var(--border);padding-top:14px}
+#newsEvent{color:#c5d1e5}
+#newsWindow{padding:9px 11px;border-radius:7px;background:rgba(5,8,22,.24)}
+.mtf-value{font-weight:650}
+details summary{cursor:pointer;font-size:13px;font-weight:600;color:#cbd5e1;line-height:1.7;padding:2px 0;min-height:32px}
+details[open] summary{margin-bottom:14px}
+details p{font-size:11px;color:var(--muted);line-height:1.7}
+a{color:#93b4ff;text-underline-offset:3px}
+a:hover{color:#c1d3ff}
+a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5px;border-radius:3px}
+#journalRecent{overflow-wrap:anywhere}
+.footer-status{text-align:center;color:#7c8ca7;font-size:9px;letter-spacing:.1em;margin:24px 0 12px}
+#lastUpdate{font-size:10px;color:#8192b0;margin-top:15px;padding-top:12px;border-top:1px solid rgba(148,163,184,.09);font-variant-numeric:tabular-nums}
+@media(min-width:1600px){.dashboard{grid-template-columns:minmax(0,1.9fr) minmax(420px,1fr)}}
+@media(max-width:991px){body{padding:16px}.dashboard{grid-template-columns:1fr;gap:0}.dashboard>div:first-child{position:static}.chart-container{height:55vh;min-height:380px;max-height:620px}.signal-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}.signal-panel>.card{margin-bottom:0}.intelligence-card,.signal-panel>.card:has(details),.footer-status{grid-column:1/-1}.intelligence-card .grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:600px){body{padding:12px}.header{padding:17px 16px;gap:8px;margin-bottom:14px}.header h2{font-size:19px;letter-spacing:-.5px}.header p{font-size:11px}.brand-eyebrow{font-size:8px;letter-spacing:.12em}.live{font-size:8px;padding:7px 8px;gap:5px;letter-spacing:.03em}.live-dot{width:5px;height:5px}.signal-panel{display:block}.signal-panel>.card{margin-bottom:14px}.card{padding:19px 18px;border-radius:15px}.chart-card{padding:6px}.chart-heading{padding:10px 10px 14px}.chart-heading strong{font-size:15px}.chart-timeframe span{display:none}.chart-container{height:52svh;min-height:360px;max-height:520px;border-radius:10px}.intelligence-card .grid{grid-template-columns:1fr 1fr}.status-row{font-size:13px;margin-bottom:20px}.score{font-size:50px}.section-title{font-size:15px}.row{gap:12px;padding:12px 0}.row>span:first-child{max-width:40%}.row>.filter-status{max-width:60%}.section-note{font-size:8px}.footer-status{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 
@@ -337,18 +98,19 @@ ul{
      HEADER
 ===================================================== -->
 
-<div class="card header">
+<header class="card header">
 
   <div>
+    <div class="brand-eyebrow">XAUUSD · SCALPING V3</div>
     <h2>👑 Bosque Forex AI</h2>
-    <p>XAUUSD Trade Intelligence Engine</p>
+    <p>Trade Intelligence</p>
   </div>
 
   <div class="live">
-    ● AUTO LIVE
+    <span class="live-dot" aria-hidden="true"></span> AUTO REFRESH
   </div>
 
-</div>
+</header>
 
 
 <!-- =====================================================
@@ -364,6 +126,7 @@ ul{
   <div>
 
     <div class="card chart-card">
+      <div class="chart-heading"><div><span class="eyebrow">MARKET OVERVIEW</span><strong>Gold / US Dollar</strong></div><span class="chart-timeframe">M5 <span>· H1 → M15 → M5</span></span></div>
 
       <div class="chart-container">
 
@@ -415,10 +178,10 @@ ul{
 
     <!-- MARKET INTELLIGENCE -->
 
-    <div class="card">
+    <div class="card intelligence-card">
 
       <div class="status-row">
-        <b>🧠 Market Intelligence</b>
+        <b>Market Intelligence</b>
 
         <span
           class="badge"
@@ -482,6 +245,113 @@ ul{
 
       <div id="lastUpdate">
         Last update: --
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         VALID OPPORTUNITIES
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        Valid Opportunities <span class="section-note">ENTRY CHECKLIST</span>
+      </div>
+
+      <div class="row">
+        <span>Setup</span>
+        <b id="validSetup">
+          WAIT (Memuat data engine)
+        </b>
+      </div>
+
+      <div class="row">
+        <span>Score Gate</span>
+        <b id="scoreGate">
+          WAIT (Memuat data engine)
+        </b>
+      </div>
+
+      <div class="row">
+        <span>M5 Confirmation</span>
+        <b id="m5Gate">
+          WAIT (Memuat data engine)
+        </b>
+      </div>
+
+      <div class="row">
+        <span>Risk</span>
+        <b id="riskGate">
+          WAIT (Memuat data engine)
+        </b>
+      </div>
+
+      <div class="row">
+        <span>RR</span>
+        <b id="rrGate">
+          WAIT (Memuat data engine)
+        </b>
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TRADE PLAN
+    ================================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        Trade Plan <span class="section-note">XAUUSD</span>
+      </div>
+
+      <div class="plan">
+
+        <div class="row">
+          <span>Direction</span>
+          <b id="planDirection">
+            WAIT (Memuat data engine)
+          </b>
+        </div>
+
+        <div class="row">
+          <span>Entry</span>
+          <b id="entry">--</b>
+        </div>
+
+        <div class="row">
+          <span>Stop Loss</span>
+          <b id="sl">--</b>
+        </div>
+
+        <div class="row">
+          <span>TP1</span>
+          <b id="tp1">--</b>
+        </div>
+
+        <div class="row">
+          <span>TP2</span>
+          <b id="tp2">--</b>
+        </div>
+
+        <div class="row">
+          <span>TP3</span>
+          <b id="tp3">--</b>
+        </div>
+
+        <div class="row">
+          <span>Risk</span>
+          <b id="riskPips">--</b>
+        </div>
+
+        <div class="row">
+          <span>RR TP2</span>
+          <b id="rrTp2">--</b>
+        </div>
+
       </div>
 
     </div>
@@ -575,7 +445,7 @@ ul{
     <div class="card filter-card">
 
       <div class="section-title">
-        News Filter
+        News Filter <span class="section-note">USD · HIGH IMPACT</span>
       </div>
 
       <div
@@ -689,72 +559,13 @@ ul{
 
 
     <!-- =================================================
-         TRADE PLAN
-    ================================================== -->
-
-    <div class="card">
-
-      <div class="section-title">
-        🎯 Trade Plan
-      </div>
-
-      <div class="plan">
-
-        <div class="row">
-          <span>Direction</span>
-          <b id="planDirection">
-            WAIT (Memuat data engine)
-          </b>
-        </div>
-
-        <div class="row">
-          <span>Entry</span>
-          <b id="entry">--</b>
-        </div>
-
-        <div class="row">
-          <span>Stop Loss</span>
-          <b id="sl">--</b>
-        </div>
-
-        <div class="row">
-          <span>TP1</span>
-          <b id="tp1">--</b>
-        </div>
-
-        <div class="row">
-          <span>TP2</span>
-          <b id="tp2">--</b>
-        </div>
-
-        <div class="row">
-          <span>TP3</span>
-          <b id="tp3">--</b>
-        </div>
-
-        <div class="row">
-          <span>Risk</span>
-          <b id="riskPips">--</b>
-        </div>
-
-        <div class="row">
-          <span>RR TP2</span>
-          <b id="rrTp2">--</b>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
          PRICE POTENTIAL
     ================================================== -->
 
     <div class="card">
 
       <div class="section-title">
-        📏 Estimated Price Potential
+        Estimated Price Potential
       </div>
 
       <div
@@ -789,7 +600,7 @@ ul{
     <div class="card">
 
       <div class="section-title">
-        🔎 Setup Confirmation
+        Setup Confirmation
       </div>
 
       <ul id="confirmationList">
@@ -797,54 +608,6 @@ ul{
           Waiting for market data...
         </li>
       </ul>
-
-    </div>
-
-
-    <!-- =================================================
-         VALID OPPORTUNITIES
-    ================================================== -->
-
-    <div class="card">
-
-      <div class="section-title">
-        🚨 Valid Opportunities
-      </div>
-
-      <div class="row">
-        <span>Setup</span>
-        <b id="validSetup">
-          WAIT (Memuat data engine)
-        </b>
-      </div>
-
-      <div class="row">
-        <span>Score Gate</span>
-        <b id="scoreGate">
-          WAIT (Memuat data engine)
-        </b>
-      </div>
-
-      <div class="row">
-        <span>M5 Confirmation</span>
-        <b id="m5Gate">
-          WAIT (Memuat data engine)
-        </b>
-      </div>
-
-      <div class="row">
-        <span>Risk</span>
-        <b id="riskGate">
-          WAIT (Memuat data engine)
-        </b>
-      </div>
-
-      <div class="row">
-        <span>RR</span>
-        <b id="rrGate">
-          WAIT (Memuat data engine)
-        </b>
-      </div>
 
     </div>
 
