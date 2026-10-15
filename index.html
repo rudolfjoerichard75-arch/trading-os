@@ -823,6 +823,25 @@ ul{
     </div>
 
 
+    <div class="card">
+      <details>
+        <summary>V3 Journal • Forward Test • Backtest</summary>
+        <div class="row"><span>Journal</span><b id="journalStatus">--</b></div>
+        <div class="row"><span>Closed / Open</span><b id="journalCounts">--</b></div>
+        <div class="row"><span>Paper win rate</span><b id="journalWinrate">--</b></div>
+        <div class="row"><span>Expectancy / Profit factor</span><b id="journalStats">--</b></div>
+        <div class="row"><span>Drawdown (R)</span><b id="journalDrawdown">--</b></div>
+        <div class="row"><span>Cost model</span><b id="journalCosts">--</b></div>
+        <div class="row"><span>Backtest</span><b id="backtestStatus">--</b></div>
+        <div class="row"><span>Backtest details</span><b id="backtestDetails">--</b></div>
+        <div class="row"><span>Telegram this scan</span><b id="telegramStatus">--</b></div>
+        <p>Paper simulation • next M5 open • TP2 exit • SL first if ambiguous. No broker execution.</p>
+        <p>Daily loss lock and fresh-zone filter are not part of the original V3 entry rules.</p>
+        <p><a href="./paper_journal.csv" download>Download journal CSV</a> · <a href="./engine/backtest_results.json">Backtest JSON</a></p>
+        <div id="journalRecent"></div>
+      </details>
+    </div>
+
     <div class="footer-status">
       BOSQUE FOREX AI • XAUUSD • AUTO REFRESH
     </div>
@@ -1063,7 +1082,7 @@ function render(data){
 
   setText(
     "finalSignal",
-    direction
+    signal.active === true ? direction : "WAIT"
   );
 
   setText(
@@ -1099,7 +1118,7 @@ function render(data){
 
   setDirectionClass(
     "finalSignal",
-    direction
+    signal.active === true ? direction : "WAIT"
   );
 
   setDirectionClass(
@@ -1121,7 +1140,7 @@ function render(data){
 
   setText(
     "engineStatus",
-    score >= 70
+    signal.active === true
       ? "OPPORTUNITY FOUND"
       : "SCANNING"
   );
@@ -1209,12 +1228,11 @@ function render(data){
   ===================================================== */
 
   const newsAvailable =
-    news.filter === "CONNECTED" &&
-    news.status !== "NOT PROVIDED";
+    ["PASS", "BLOCK"].includes(news.filter) &&
+    !["ERROR", "UNKNOWN", "NOT PROVIDED"].includes(news.status);
 
   const newsAllowed =
-    newsAvailable &&
-    news.high_impact !== true;
+    newsAvailable && news.filter === "PASS";
 
   if(!newsAvailable){
 
@@ -1286,8 +1304,8 @@ function render(data){
   setStatus(
     "sessionFilter",
     sessionAllowed,
-    "PASS",
-    "BLOCK"
+    "PREFERRED",
+    "NON-PREFERRED"
   );
 
   setText(
@@ -1519,6 +1537,29 @@ function render(data){
   );
 
 
+  const journal = data.journal || {};
+  const stats = data.expectancy || {};
+  const bt = data.backtest || {};
+  setText("journalStatus", journal.status || "NOT AVAILABLE");
+  setText("journalCounts", `${stats.trades || 0} / ${stats.open_trades || 0}`);
+  setText("journalWinrate", stats.win_rate == null ? "NO CLOSED TRADES" : `${stats.win_rate}%`);
+  setText("journalStats", `${fmt(stats.expectancy_r)} R / ${fmt(stats.profit_factor)}`);
+  setText("journalDrawdown", fmt(stats.max_drawdown));
+  setText("journalCosts", stats.cost_status || "UNCONFIGURED");
+  setText("backtestStatus", bt.status || "NOT RUN");
+  const resultParts = Object.entries(bt.results || {}).map(([name, result]) => `${name}: ${result.stats?.trades || 0} closed, WR ${result.stats?.win_rate == null ? "N/A" : result.stats.win_rate + "%"}`);
+  setText("backtestDetails", [bt.news_mode, bt.cost_model?.status, ...resultParts, bt.reason].filter(Boolean).join(" • ") || "Awaiting V3 replay");
+  setText("telegramStatus", data.services?.telegram?.status || "NOT VERIFIED");
+  const recent = document.getElementById("journalRecent");
+  if(recent){
+    recent.replaceChildren();
+    for(const trade of (data.journal_recent || []).slice(0,10)){
+      const row = document.createElement("p");
+      row.textContent = `${trade.timestamp} | ${trade.direction} ${trade.opportunity || ""} | ${trade.result} | ${trade.result_pips == null ? "--" : trade.result_pips + " pips"}`;
+      recent.appendChild(row);
+    }
+  }
+
   /* =====================================================
      LAST UPDATE
   ===================================================== */
@@ -1560,10 +1601,13 @@ async function runDashboard(){
       "UPDATING"
     );
 
-    const data =
-      await loadDashboard();
-
+    const data = await loadDashboard();
     render(data);
+    const updated = Date.parse(data.engine?.timestamp || "");
+    if(!Number.isFinite(updated) || Date.now() - updated > 15 * 60 * 1000){
+      setText("engineStatus", "STALE DATA");
+      setText("finalSignal", "WAIT");
+    }
 
   }
 

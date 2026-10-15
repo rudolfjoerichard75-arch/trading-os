@@ -1823,25 +1823,19 @@ def fetch_news_calendar():
 
         if isinstance(data, dict):
 
-            events = data.get(
-                "events",
-                []
-            )
+            if "events" not in data or data.get("error"):
+                raise ValueError("Unrecognized news response")
+            events = data["events"]
 
         elif isinstance(data, list):
 
             events = data
 
         else:
+            raise ValueError("Unrecognized news response")
 
-            events = []
-
-        if not isinstance(
-            events,
-            list
-        ):
-
-            events = []
+        if not isinstance(events, list):
+            raise ValueError("News events must be a list")
 
         us_events = []
 
@@ -2331,6 +2325,7 @@ def main():
             timestamp.isoformat()
     }
 
+    sent = None
     state = load_state()
 
     if valid_signal:
@@ -2734,6 +2729,9 @@ def main():
                 "https://www.financecalendar.com/"
         }
     }
+
+    from bosque_tracking import sync
+    dashboard = sync(dashboard, m5, sent)
 
     save_json_atomic(
         DASHBOARD_FILE,
