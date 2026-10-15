@@ -82,4 +82,83 @@ class V3Tests(unittest.TestCase):
         cal={'coverage_start':'2026-10-01T00:00Z','coverage_end':'2026-10-02T00:00Z','events':[{'time':'2026-10-01T12:00Z','impact':'high','currency':'USD'}]}
         self.assertFalse(b.news_allowed(cal,t.stamp('2026-10-01T11:30Z')))
         with self.assertRaises(ValueError):b.news_allowed(cal,t.stamp('2026-10-03'))
+class DiagnosticsTests(unittest.TestCase):
+    def test_risk_reason_preserves_entry_decision(self):
+        import copy
+        d={'opportunity':{'direction':'BUY','score':80},'plan':{'valid':False,'reason':'Risk 143.0 pips outside 25-80'},'filters':{'setup':True,'score':True,'m5_confirmation':True,'risk':False,'rr':False,'news':True},'signal':{'active':False}}
+        old=copy.deepcopy(d);t.add_diagnostics(d)
+        for key in old:self.assertEqual(old[key],d[key],key)
+        self.assertEqual(d['gate_reasons'],{'risk':'SL 143.0 pips melebihi had 80 pips','rr':'Belum dikira: risk tidak lulus'})
+        self.assertEqual(d['diagnostics']['risk_distance_pips'],143.)
+        d['plan']['reason']='Risk 24.0 pips outside 25-80';t.add_diagnostics(d)
+        self.assertIn('bawah minimum 25',d['gate_reasons']['risk'])
+    def test_each_gate_has_reason_only_when_waiting(self):
+        d={'opportunity':{'score':50},'plan':{},'filters':{},'news':{'filter':'BLOCK','status':'ERROR'}}
+        t.add_diagnostics(d)
+        self.assertEqual(set(d['gate_reasons']),{'setup','score','m5_confirmation','risk','rr','news'})
+        self.assertIn('50/100 < minimum 70',d['gate_reasons']['score'])
+        self.assertEqual(d['gate_reasons']['risk'],'Belum dikira: tiada arah setup')
+        self.assertIn('gagal disahkan',d['gate_reasons']['news'])
+        d['filters']={key:True for key in d['gate_reasons']};t.add_diagnostics(d)
+        self.assertEqual(d['gate_reasons'],{});self.assertEqual(d['diagnostics']['blocking_reasons'],[])
+    def test_missing_swing_and_low_rr(self):
+        d={'opportunity':{'direction':'SELL','score':80},'plan':{},'filters':{}}
+        t.add_diagnostics(d);self.assertEqual(d['gate_reasons']['risk'],'Swing M5 untuk menentukan SL belum tersedia')
+        d['filters']['risk']=True;d['plan']['rr_tp2']=1.5;t.add_diagnostics(d)
+        self.assertEqual(d['gate_reasons']['rr'],'RR TP2 1:1.5 di bawah 1:2')
+
+class NewsGateTests(unittest.TestCase):
+    now=pd.Timestamp('2026-10-15T12:30:00Z').to_pydatetime()
+    def response(self,minutes=15,currency='USD',impact='high',invalid_time=False):
+        from unittest.mock import Mock
+        event={'title':'US test event' if currency=='USD' else 'UK GDP','currency':currency,'impact':impact,'time_utc':'bad-time' if invalid_time else (self.now+pd.Timedelta(minutes=minutes)).isoformat()}
+        response=Mock();response.json.return_value={'count':1,'events':[event]}
+        return response
+    def test_news_block_boundaries_and_metadata(self):
+        for minutes,wanted in [(-31,'PASS'),(-30,'BLOCK'),(-15,'BLOCK'),(0,'BLOCK'),(15,'BLOCK'),(30,'BLOCK'),(31,'PASS')]:
+            with self.subTest(minutes=minutes),patch.object(e,'now_my',return_value=self.now),patch.object(e.requests,'get',return_value=self.response(minutes)):
+                result=e.fetch_news_calendar()
+                self.assertEqual(result['filter'],wanted)
+                self.assertEqual(result['evidence']['events_received'],1)
+                self.assertEqual(result['evidence']['usd_high_events'],1)
+                self.assertEqual(result['evidence']['checked_at'],self.now.isoformat())
+                self.assertEqual(result['block_before_minutes'],30)
+                self.assertEqual(result['block_after_minutes'],30)
+    def test_non_us_and_low_impact_do_not_block(self):
+        for currency,impact in [('GBP','high'),('USD','low')]:
+            with self.subTest(currency=currency,impact=impact),patch.object(e,'now_my',return_value=self.now),patch.object(e.requests,'get',return_value=self.response(currency=currency,impact=impact)):
+                result=e.fetch_news_calendar();self.assertEqual(result['filter'],'PASS');self.assertEqual(result['evidence']['usd_high_events'],0)
+    def test_source_timeout_blocks(self):
+        with patch.object(e.requests,'get',side_effect=e.requests.Timeout('test timeout')):
+            result=e.fetch_news_calendar()
+        self.assertEqual(result['filter'],'BLOCK');self.assertEqual(result['status'],'ERROR');self.assertIn('gagal disahkan',result['reason'])
+    def test_unreadable_event_time_is_exposed(self):
+        with patch.object(e,'now_my',return_value=self.now),patch.object(e.requests,'get',return_value=self.response(invalid_time=True)):
+            result=e.fetch_news_calendar()
+        self.assertEqual(result['evidence']['skipped_usd_times'],1)
+    def test_news_gate_controls_telegram_with_other_gates_passed(self):
+        import contextlib,io
+        plan={'valid':True,'direction':'BUY','entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115,'risk_pips':50,'tp1_pips':60,'tp2_pips':100,'tp3_pips':150,'rr_tp2':2}
+        setup={'direction':'BUY','opportunity':'BUY BREAKOUT RETEST','valid':True}
+        for response,expected in [(self.response(15),False),(self.response(-15),False),(self.response(45),True),(e.requests.Timeout('offline'),False)]:
+            with self.subTest(expected=expected),tempfile.TemporaryDirectory() as tmp,contextlib.ExitStack() as stack:
+                root=Path(tmp);directory=root/'engine';directory.mkdir()
+                patches={'ENGINE_DIR':directory,'REPO_DIR':root,'DASHBOARD_FILE':root/'dashboard_data.json','STATE_FILE':directory/'state.json'}
+                for key,value in patches.items():stack.enter_context(patch.object(e,key,value))
+                stack.enter_context(patch.object(e,'now_my',return_value=self.now))
+                stack.enter_context(patch.object(e,'fetch_m5',return_value=bars()))
+                stack.enter_context(patch.object(e,'detect_m15_setup',return_value=setup))
+                stack.enter_context(patch.object(e,'m5_confirmation',return_value={'confirmed':True,'reason':'M5 bullish BOS'}))
+                stack.enter_context(patch.object(e,'calculate_score',return_value=80))
+                stack.enter_context(patch.object(e,'create_trade_plan',return_value=plan))
+                stack.enter_context(patch.object(e.requests,'get',**({'side_effect':response} if isinstance(response,Exception) else {'return_value':response})))
+                send=stack.enter_context(patch.object(e,'send_telegram',return_value=False))
+                stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
+                e.main();result=t.load(root/'dashboard_data.json')
+                for gate in ['setup','score','m5_confirmation','risk','rr']:self.assertTrue(result['filters'][gate],gate)
+                self.assertEqual(result['signal']['active'],expected)
+                self.assertEqual(send.call_count,int(expected))
+                if not expected:self.assertEqual(set(result['gate_reasons']),{'news'})
+
 if __name__=='__main__':unittest.main()
+

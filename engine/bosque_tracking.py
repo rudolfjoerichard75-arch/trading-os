@@ -98,8 +98,76 @@ def stats(trades):
     loss=-sum(r for r in rs if r<0); avg=sum(rs)/len(rs) if rs else None
     return {'status':'PAPER SIMULATION','trades':len(closed),'wins':wins,'losses':sum(t['result']=='LOSS' for t in closed),'win_rate':round(wins/len(closed)*100,2) if closed else None,'average_r':avg,'expectancy_r':avg,'profit_factor':sum(r for r in rs if r>0)/loss if loss else None,'max_drawdown':round(dd,4),'max_consecutive_losses':max_streak,'total_pips':round(sum(t['result_pips'] for t in closed),3),'open_trades':sum(t['result'] in ('OPEN','PENDING') for t in trades),'unresolved':sum(t['result']=='DATA_GAP' for t in trades),'cancelled':sum(t['result']=='CANCELLED' for t in trades),'cost_status':'NET_CONFIGURED' if closed and all(t.get('cost_pips') is not None for t in closed) else 'GROSS_OR_UNCONFIGURED'}
 
+def add_diagnostics(dashboard):
+    """Explanations only; never changes a gate, plan or entry decision."""
+    import re
+    import bosque_engine as e
+    gates = dashboard.get('filters', {})
+    plan = dashboard.get('plan', {})
+    opp = dashboard.get('opportunity', {})
+    direction = opp.get('direction') or dashboard.get('signal', {}).get('direction')
+    limits = {'min_score': e.MIN_SCORE, 'min_risk_pips': e.MIN_RISK_PIPS,
+              'max_risk_pips': e.MAX_RISK_PIPS, 'min_rr': e.MIN_RR}
+    reasons = {}
+    if gates.get('setup') is not True:
+        reasons['setup'] = 'Tiada setup M15 V3 yang sah'
+    if gates.get('score') is not True:
+        value = opp.get('score', dashboard.get('signal', {}).get('score'))
+        reasons['score'] = ('Skor belum tersedia' if value is None else
+            f'Skor {value}/100 < minimum {e.MIN_SCORE}' if value < e.MIN_SCORE else
+            'Score gate belum disahkan oleh engine')
+    if gates.get('m5_confirmation') is not True:
+        reasons['m5_confirmation'] = (f'BOS atau candle + momentum {direction} belum sah'
+            if direction in ('BUY', 'SELL') else 'Menunggu arah setup M15')
+
+    # V3 intentionally returns only a reason when risk is outside its range.
+    # Read that existing result without recalculating or inventing a trade plan.
+    risk_value = plan.get('risk_pips')
+    plan_reason = str(plan.get('reason', ''))
+    match = re.search(r'Risk ([0-9.]+) pips outside', plan_reason)
+    if match:
+        risk_value = float(match.group(1))
+    if gates.get('risk') is not True:
+        if risk_value is not None and risk_value > e.MAX_RISK_PIPS:
+            reasons['risk'] = f'SL {risk_value:.1f} pips melebihi had {e.MAX_RISK_PIPS} pips'
+        elif risk_value is not None and risk_value < e.MIN_RISK_PIPS:
+            reasons['risk'] = f'SL {risk_value:.1f} pips bawah minimum {e.MIN_RISK_PIPS} pips'
+        elif plan_reason:
+            reasons['risk'] = plan_reason
+        elif direction not in ('BUY', 'SELL'):
+            reasons['risk'] = 'Belum dikira: tiada arah setup'
+        elif dashboard.get('m5', {}).get('swing_low' if direction == 'BUY' else 'swing_high') is None:
+            reasons['risk'] = 'Swing M5 untuk menentukan SL belum tersedia'
+        else:
+            reasons['risk'] = 'Trade plan belum sah'
+    if gates.get('rr') is not True:
+        rr = plan.get('rr_tp2')
+        if plan_reason == 'TP2 RR below minimum':
+            reasons['rr'] = f'RR TP2 di bawah minimum 1:{e.MIN_RR:g}'
+        elif gates.get('risk') is not True:
+            reasons['rr'] = 'Belum dikira: risk tidak lulus'
+        elif isinstance(rr, (int, float)):
+            reasons['rr'] = f'RR TP2 1:{rr:g} di bawah 1:{e.MIN_RR:g}'
+        else:
+            reasons['rr'] = 'RR TP2 belum tersedia'
+    news = dashboard.get('news', {})
+    if gates.get('news') is not True:
+        reasons['news'] = (news.get('reason') or
+            ('Data berita gagal disahkan; signal ditahan' if news.get('status') in ('ERROR', 'UNKNOWN') else
+             'Berita USD high impact dalam tetingkap sekatan' if news.get('filter') == 'BLOCK' else
+             'Status news belum tersedia'))
+    dashboard['gate_reasons'] = reasons
+    dashboard['diagnostics'] = {
+        'limits': limits,
+        'risk_distance_pips': risk_value,
+        'blocking_reasons': [reasons[k] for k in
+            ['setup', 'score', 'm5_confirmation', 'risk', 'rr', 'news'] if k in reasons]
+    }
+    return dashboard
+
 def sync(dashboard, frame, sent=None):
     import bosque_engine as e
+    add_diagnostics(dashboard)
     directory=e.ENGINE_DIR; at=dashboard['engine']['timestamp']; df=bars(frame)
     path=directory/'trade_journal.json'; journal=load(path,{'trades':[]})
     journal.setdefault('trades',[]); current=[t for t in journal['trades'] if t.get('strategy_version')==VERSION]
@@ -131,3 +199,4 @@ def sync(dashboard, frame, sent=None):
         writer=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');writer.writeheader();writer.writerows(journal['trades'])
     tmp.replace(target)
     return dashboard
+

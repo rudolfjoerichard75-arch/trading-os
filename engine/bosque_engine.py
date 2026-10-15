@@ -1768,6 +1768,9 @@ def fetch_news_calendar():
         "%Y-%m-%d"
     )
 
+    checked_at = now.isoformat()
+    evidence = {"checked_at": checked_at, "requested_from": date_from, "requested_to": date_to, "events_received": None, "usd_high_events": 0, "nearby_usd_high_events": 0, "skipped_usd_times": 0}
+
     params = {
         "from": date_from,
         "to": date_to,
@@ -1803,6 +1806,8 @@ def fetch_news_calendar():
         if not isinstance(events, list):
             raise ValueError("News events must be a list")
 
+        evidence["events_received"] = len(events)
+        evidence["provider_count"] = data.get("count") if isinstance(data, dict) else len(events)
         us_events = []
 
         for event in events:
@@ -1829,6 +1834,7 @@ def fetch_news_calendar():
             ):
                 continue
 
+            evidence["usd_high_events"] += 1
             event_time = (
                 parse_event_time(
                     event
@@ -1836,6 +1842,7 @@ def fetch_news_calendar():
             )
 
             if event_time is None:
+                evidence["skipped_usd_times"] += 1
                 continue
 
             event_time_my = (
@@ -1860,9 +1867,14 @@ def fetch_news_calendar():
                     "minutes": minutes
                 })
 
+        evidence["nearby_usd_high_events"] = len(us_events)
         if not us_events:
 
             return {
+                "evidence": evidence,
+                "block_before_minutes": NEWS_BLOCK_BEFORE_MINUTES,
+                "block_after_minutes": NEWS_BLOCK_AFTER_MINUTES,
+                "reason": "Tiada berita USD high impact dikesan dalam julat masa semakan",
                 "status": "CLEAR",
                 "high_impact": False,
                 "minutes_to_news": None,
@@ -1907,6 +1919,10 @@ def fetch_news_calendar():
             filter_status = "PASS"
 
         return {
+            "evidence": evidence,
+            "reason": "Berita USD high impact dalam tetingkap sekatan" if filter_status == "BLOCK" else "Berita USD high impact di luar tetingkap sekatan",
+            "block_before_minutes": NEWS_BLOCK_BEFORE_MINUTES,
+            "block_after_minutes": NEWS_BLOCK_AFTER_MINUTES,
             "status":
                 "HIGH IMPACT",
             "high_impact": True,
@@ -1956,6 +1972,10 @@ def fetch_news_calendar():
         # do NOT allow a live signal.
 
         return {
+            "evidence": evidence,
+            "block_before_minutes": NEWS_BLOCK_BEFORE_MINUTES,
+            "block_after_minutes": NEWS_BLOCK_AFTER_MINUTES,
+            "reason": "Sumber berita gagal disahkan; signal ditahan",
             "status":
                 "ERROR",
             "high_impact":
@@ -2721,3 +2741,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+

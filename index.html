@@ -248,6 +248,27 @@ ul{
   font-weight:800;
 }
 
+.row > .filter-status{
+  max-width:70%;
+  text-align:right;
+  overflow-wrap:anywhere;
+}
+
+.status-reason{
+  font-size:12px;
+  font-weight:500;
+  line-height:1.5;
+}
+
+#finalSignal .status-reason{
+  display:block;
+}
+
+.news-evidence{
+  margin-top:10px;
+  overflow-wrap:anywhere;
+}
+
 .mtf-value{
   font-weight:900;
 }
@@ -422,7 +443,7 @@ ul{
         class="signal wait"
         id="finalSignal"
       >
-        WAIT
+        WAIT (Memuat data engine)
       </div>
 
       <div
@@ -585,6 +606,11 @@ ul{
         </span>
       </div>
 
+      <div class="muted news-evidence" id="newsEvidence">Menunggu semakan sumber berita...</div>
+      <div class="muted news-evidence" id="newsEvent">--</div>
+      <div class="muted news-evidence" id="newsWindow">--</div>
+      <div class="muted news-evidence">Sumber: <a href="https://www.financecalendar.com/" target="_blank" rel="noopener" style="color:inherit">FinanceCalendar</a>. PASS berdasarkan acara yang dibekalkan sumber; liputan berita tidak dijamin lengkap.</div>
+
     </div>
 
 
@@ -677,7 +703,7 @@ ul{
         <div class="row">
           <span>Direction</span>
           <b id="planDirection">
-            WAIT
+            WAIT (Memuat data engine)
           </b>
         </div>
 
@@ -788,35 +814,35 @@ ul{
       <div class="row">
         <span>Setup</span>
         <b id="validSetup">
-          WAIT
+          WAIT (Memuat data engine)
         </b>
       </div>
 
       <div class="row">
         <span>Score Gate</span>
         <b id="scoreGate">
-          WAIT
+          WAIT (Memuat data engine)
         </b>
       </div>
 
       <div class="row">
         <span>M5 Confirmation</span>
         <b id="m5Gate">
-          WAIT
+          WAIT (Memuat data engine)
         </b>
       </div>
 
       <div class="row">
         <span>Risk</span>
         <b id="riskGate">
-          WAIT
+          WAIT (Memuat data engine)
         </b>
       </div>
 
       <div class="row">
         <span>RR</span>
         <b id="rrGate">
-          WAIT
+          WAIT (Memuat data engine)
         </b>
       </div>
 
@@ -928,6 +954,61 @@ function setStatus(
   element.className =
     "filter-status " +
     (pass ? "pass" : "block");
+}
+
+
+function setExplanation(id, value, reason){
+  const element = document.getElementById(id);
+  if(!element) return;
+  element.replaceChildren(document.createTextNode(value));
+  if(reason){
+    const detail = document.createElement("span");
+    detail.className = "status-reason";
+    detail.textContent = ` (${reason})`;
+    element.appendChild(detail);
+  }
+}
+
+
+// Read explanations from the engine. Fallbacks support an older JSON snapshot
+// while the next scheduled V3 run publishes the new diagnostic fields.
+function gateReasons(data){
+  const gates = data.filters || {}, plan = data.plan || {};
+  const opp = data.opportunity || {}, news = data.news || {};
+  const limits = data.diagnostics?.limits || {};
+  const direction = opp.direction || data.signal?.direction;
+  const minRisk = limits.min_risk_pips ?? data.risk_engine?.min_risk_pips ?? 25;
+  const maxRisk = limits.max_risk_pips ?? data.risk_engine?.max_risk_pips ?? 80;
+  const match = String(plan.reason || "").match(/Risk ([0-9.]+) pips outside/);
+  const risk = plan.risk_pips ?? (match ? Number(match[1]) : null);
+  const score = opp.score ?? data.signal?.score;
+  const hasDirection = ["BUY", "SELL"].includes(direction);
+  const fallback = {
+    setup: "Tiada setup M15 V3 yang sah",
+    score: score == null ? "Skor belum tersedia" : score < (limits.min_score ?? 70)
+      ? `Skor ${score}/100 < minimum ${limits.min_score ?? 70}` : "Score gate belum disahkan oleh engine",
+    m5_confirmation: hasDirection ? `BOS atau candle + momentum ${direction} belum sah` : "Menunggu arah setup M15",
+    risk: risk != null && risk > maxRisk ? `SL ${Number(risk).toFixed(1)} pips melebihi had ${maxRisk} pips`
+      : risk != null && risk < minRisk ? `SL ${Number(risk).toFixed(1)} pips bawah minimum ${minRisk} pips`
+      : !hasDirection ? "Belum dikira: tiada arah setup"
+      : plan.reason || "Trade plan belum sah; semak swing M5",
+    rr: gates.risk !== true ? "Belum dikira: risk tidak lulus"
+      : plan.rr_tp2 == null ? "RR TP2 belum tersedia" : `RR TP2 1:${plan.rr_tp2} di bawah 1:${limits.min_rr ?? 2}`,
+    news: news.reason || (["ERROR", "UNKNOWN"].includes(news.status)
+      ? "Data berita gagal disahkan; signal ditahan"
+      : news.filter === "BLOCK" ? "Berita USD high impact dalam tetingkap sekatan" : "Status news belum tersedia")
+  };
+  const result = {};
+  for(const key of Object.keys(fallback)){
+    if(gates[key] !== true) result[key] = data.gate_reasons?.[key] || fallback[key];
+  }
+  return result;
+}
+
+
+function newsTime(value){
+  const time = Date.parse(value || "");
+  return Number.isFinite(time) ? new Date(time).toLocaleString("en-GB", {timeZone:"Asia/Kuala_Lumpur"}) + " MYT" : "Belum tersedia";
 }
 
 
@@ -1075,14 +1156,18 @@ function render(data){
     signal.direction ||
     "WAIT";
 
+  const reasons = gateReasons(data);
+  const waitReason = Object.values(reasons).join("; ") || "Menunggu pengesahan engine";
+
   setText(
     "score",
     score
   );
 
-  setText(
+  setExplanation(
     "finalSignal",
-    signal.active === true ? direction : "WAIT"
+    signal.active === true ? direction : "WAIT",
+    signal.active === true ? null : waitReason
   );
 
   setText(
@@ -1288,6 +1373,17 @@ function render(data){
     "BLOCK"
   );
 
+  if(!newsAllowed) setExplanation("newsFilter", "BLOCK", news.reason || reasons.news || "Data berita belum disahkan");
+  const evidence = news.evidence || {};
+  const count = evidence.events_received == null ? "Jumlah acara belum tersedia"
+    : `${evidence.events_received} acara diterima; ${evidence.usd_high_events ?? 0} USD high impact`;
+  setText("newsEvidence", `${news.source || "Sumber belum tersedia"} • Disemak: ${newsTime(evidence.checked_at)} • ${count}`);
+  const newsDetail = news.event ? `${news.event} • ${newsTime(news.time)}`
+    : newsAllowed ? "Tiada acara USD high impact berdekatan dikesan oleh sumber"
+    : "Acara berita belum dapat disahkan";
+  setText("newsEvent", newsDetail);
+  setText("newsWindow", `Sekatan V3: ${news.block_before_minutes ?? 30} min sebelum / ${news.block_after_minutes ?? 30} min selepas berita.${evidence.skipped_usd_times ? ` ${evidence.skipped_usd_times} acara USD tidak dapat dibaca waktunya; liputan tidak lengkap.` : ""}`);
+
 
   /* =====================================================
      SESSION
@@ -1360,10 +1456,11 @@ function render(data){
      TRADE PLAN
   ===================================================== */
 
-  setText(
+  setExplanation(
     "planDirection",
     plan.direction ||
-    direction
+    direction,
+    ["BUY", "SELL"].includes(plan.direction || direction) ? null : reasons.setup || "Menunggu arah setup M15"
   );
 
   setText(
@@ -1501,40 +1598,11 @@ function render(data){
      VALID OPPORTUNITIES
   ===================================================== */
 
-  setStatus(
-    "validSetup",
-    filters.setup === true,
-    "PASS",
-    "WAIT"
-  );
-
-  setStatus(
-    "scoreGate",
-    filters.score === true,
-    "PASS",
-    "WAIT"
-  );
-
-  setStatus(
-    "m5Gate",
-    filters.m5_confirmation === true,
-    "PASS",
-    "WAIT"
-  );
-
-  setStatus(
-    "riskGate",
-    filters.risk === true,
-    "PASS",
-    "WAIT"
-  );
-
-  setStatus(
-    "rrGate",
-    filters.rr === true,
-    "PASS",
-    "WAIT"
-  );
+  for(const [id, key] of Object.entries({validSetup:"setup", scoreGate:"score", m5Gate:"m5_confirmation", riskGate:"risk", rrGate:"rr"})){
+    const pass = filters[key] === true;
+    setStatus(id, pass, "PASS", "WAIT");
+    if(!pass) setExplanation(id, "WAIT", reasons[key]);
+  }
 
 
   const journal = data.journal || {};
@@ -1606,7 +1674,9 @@ async function runDashboard(){
     const updated = Date.parse(data.engine?.timestamp || "");
     if(!Number.isFinite(updated) || Date.now() - updated > 15 * 60 * 1000){
       setText("engineStatus", "STALE DATA");
-      setText("finalSignal", "WAIT");
+      const reason = Number.isFinite(updated) ? `Data engine lebih 15 minit lama (${Math.floor((Date.now() - updated) / 60000)} minit)` : "Masa kemas kini engine tidak sah";
+      setExplanation("finalSignal", "WAIT", reason);
+      setDirectionClass("finalSignal", "WAIT");
     }
 
   }
@@ -1622,6 +1692,16 @@ async function runDashboard(){
       "engineStatus",
       "ERROR"
     );
+
+    setExplanation("finalSignal", "WAIT", "Data engine gagal dimuat; status terkini tidak dapat disahkan");
+    setDirectionClass("finalSignal", "WAIT");
+    for(const id of ["validSetup", "scoreGate", "m5Gate", "riskGate", "rrGate"]){
+      setStatus(id, false, "PASS", "WAIT");
+      setExplanation(id, "WAIT", "Data engine gagal dimuat");
+    }
+    setStatus("newsFilter", false);
+    setExplanation("newsFilter", "BLOCK", "Status news terkini tidak dapat disahkan");
+    setText("newsHeadline", "NEWS TIMING UNAVAILABLE");
 
     setText(
       "opportunityType",
@@ -1660,3 +1740,4 @@ window.addEventListener(
 
 </body>
 </html>
+
