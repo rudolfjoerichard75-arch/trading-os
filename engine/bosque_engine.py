@@ -1705,53 +1705,19 @@ def make_signal_id(
 # FINANCECALENDAR NEWS
 # =========================================================
 
-def is_us_event(
-    event
-):
-
-    text_parts = [
-        event.get("name", ""),
-        event.get("title", ""),
-        event.get("category", "")
-    ]
-
-    text = " ".join(
-        str(x)
-        for x in text_parts
-    ).upper()
-
-    us_keywords = [
-        "US ",
-        "U.S.",
-        "UNITED STATES",
-        "FOMC",
-        "FEDERAL RESERVE",
-        "FED ",
-        "NONFARM",
-        "NFP",
-        "PAYROLL",
-        "CPI",
-        "PCE",
-        "GDP",
-        "RETAIL SALES",
-        "PRODUCER PRICE",
-        "PPI",
-        "ISM",
-        "JOLTS",
-        "JOBLESS CLAIMS",
-        "UNEMPLOYMENT",
-        "ADP",
-        "CONSUMER CONFIDENCE",
-        "MICHIGAN",
-        "PERSONAL INCOME",
-        "PERSONAL SPENDING",
-        "CORE PCE"
-    ]
-
-    return any(
-        keyword in text
-        for keyword in us_keywords
-    )
+def is_us_event(event):
+    """Use explicit geography; generic GDP/CPI does not establish USD."""
+    import re
+    currency = str(event.get("currency", "")).strip().upper()
+    country = str(event.get("country", "") or event.get("country_code", "")).strip().upper()
+    if currency:
+        return currency == "USD"
+    if country:
+        return country in {"US", "USA", "U.S.", "UNITED STATES", "UNITED STATES OF AMERICA"}
+    title = " ".join(str(event.get(k, "")) for k in ("name", "title")).upper()
+    if re.search(r"\b(UK|U\.K\.|UNITED KINGDOM|EUROZONE|EU|JAPAN|CHINA|CANADA|AUSTRALIA|GERMANY|FRANCE)\b", title):
+        return False
+    return bool(re.search(r"\b(US|USA|UNITED STATES|FOMC|FEDERAL RESERVE)\b|\bU\.S\.", title))
 
 
 def parse_event_time(

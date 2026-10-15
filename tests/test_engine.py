@@ -71,6 +71,13 @@ class V3Tests(unittest.TestCase):
                 e.main()
                 result=t.load(root/'dashboard_data.json')
                 self.assertFalse(result['signal']['active']);self.assertEqual(result['journal']['status'],'ACTIVE');self.assertTrue((directory/'forward_test.json').exists());send.assert_not_called()
+    def test_news_country_is_not_inferred_from_gdp(self):
+        self.assertFalse(e.is_us_event({'title':'UK GDP October 2026'}))
+        self.assertFalse(e.is_us_event({'title':'GDP report'}))
+        self.assertFalse(e.is_us_event({'title':'Canada CPI','currency':'CAD'}))
+        self.assertTrue(e.is_us_event({'title':'US CPI October 2026'}))
+        self.assertTrue(e.is_us_event({'title':'FOMC rate decision'}))
+        self.assertTrue(e.is_us_event({'title':'Retail sales','currency':'USD'}))
     def test_news_history_coverage(self):
         cal={'coverage_start':'2026-10-01T00:00Z','coverage_end':'2026-10-02T00:00Z','events':[{'time':'2026-10-01T12:00Z','impact':'high','currency':'USD'}]}
         self.assertFalse(b.news_allowed(cal,t.stamp('2026-10-01T11:30Z')))
