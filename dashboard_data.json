@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-15T23:15:34.187211+08:00"
+    "timestamp": "2026-10-15T23:20:44.031759+08:00"
   },
-  "latest_price": 4153.43,
+  "latest_price": 4151.21,
   "session": "OFF SESSION",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,16 +17,16 @@
       "high": 4168.92433,
       "low": 4096.84952,
       "width": 72.07481000000007,
-      "location": 0.7849885417665363
+      "location": 0.7542113534534538
     }
   },
   "volatility": {
-    "atr": 5.74,
-    "atr_pips": 57.4,
+    "atr": 5.69,
+    "atr_pips": 56.9,
     "condition": "NORMAL"
   },
   "pd": {
-    "zone": "PREMIUM",
+    "zone": "DISCOUNT",
     "equilibrium": 4152.63,
     "high": 4168.92,
     "low": 4136.33
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-15T23:15:34.492688+08:00",
+      "checked_at": "2026-10-15T23:20:44.841181+08:00",
       "requested_from": "2026-10-14",
       "requested_to": "2026-10-17",
       "events_received": 4,
@@ -59,7 +59,7 @@
     "block_after_minutes": 30,
     "status": "HIGH IMPACT",
     "high_impact": true,
-    "minutes_to_news": -165.6,
+    "minutes_to_news": -170.7,
     "filter": "PASS",
     "event": "US Retail Sales October 2026",
     "currency": "USD",
@@ -73,21 +73,22 @@
     "source_url": "https://www.financecalendar.com/"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 30
+    "type": "BUY PULLBACK",
+    "direction": "BUY",
+    "valid": true,
+    "score": 45
   },
   "signal": {
     "active": false,
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 30,
-    "timestamp": "2026-10-15T23:15:34.187211+08:00"
+    "direction": "BUY",
+    "opportunity": "BUY PULLBACK",
+    "score": 45,
+    "timestamp": "2026-10-15T23:20:44.031759+08:00"
   },
   "plan": {
-    "valid": false
+    "valid": false,
+    "reason": "Risk 20.2 pips outside 25-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -107,12 +108,14 @@
     "swing_high": 4164.584,
     "swing_low": 4144.78133,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "BUY",
+      "opportunity": "BUY PULLBACK",
+      "valid": true,
+      "reason": [
+        "H1 bullish + M15 discount"
+      ],
       "pd": {
-        "zone": "PREMIUM",
+        "zone": "DISCOUNT",
         "equilibrium": 4152.63,
         "high": 4168.92,
         "low": 4136.33
@@ -134,7 +137,7 @@
         "high": 4168.92433,
         "low": 4136.33355,
         "width": 32.59077999999954,
-        "location": 0.524500180725958
+        "location": 0.45643614543746
       }
     }
   },
@@ -148,12 +151,12 @@
       "bos": "BEARISH BOS",
       "candle": false,
       "momentum": "BEARISH",
-      "reason": "NO DIRECTION"
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
+    "setup": true,
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
@@ -163,10 +166,10 @@
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
+    "m15_setup": "BUY PULLBACK",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
-    "pd_zone": "PREMIUM"
+    "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
     "status": "INVALID",
@@ -192,7 +195,7 @@
     "session_filter": "NON-PREFERRED",
     "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
-    "m15_setup": "NO",
+    "m15_setup": "YES",
     "m5_confirmation": "NO"
   },
   "expectancy": {
@@ -1438,10 +1441,9 @@
     "economic_calendar_url": "https://www.financecalendar.com/"
   },
   "gate_reasons": {
-    "setup": "Tiada setup M15 V3 yang sah",
-    "score": "Skor 30/100 < minimum 70",
-    "m5_confirmation": "Menunggu arah setup M15",
-    "risk": "Belum dikira: tiada arah setup",
+    "score": "Skor 45/100 < minimum 70",
+    "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
+    "risk": "SL 20.2 pips bawah minimum 25 pips",
     "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
@@ -1451,12 +1453,11 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": null,
+    "risk_distance_pips": 20.2,
     "blocking_reasons": [
-      "Tiada setup M15 V3 yang sah",
-      "Skor 30/100 < minimum 70",
-      "Menunggu arah setup M15",
-      "Belum dikira: tiada arah setup",
+      "Skor 45/100 < minimum 70",
+      "BOS atau candle + momentum BUY belum sah",
+      "SL 20.2 pips bawah minimum 25 pips",
       "Belum dikira: risk tidak lulus"
     ]
   },
@@ -1497,7 +1498,7 @@
     "cancelled": 0,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-15T23:15:34.187211+08:00",
+    "last_updated": "2026-10-15T23:20:44.031759+08:00",
     "execution": "Next available M5 open after signal observed; TP2 exit, SL-first ambiguity, 72 bars maximum; paper only."
   },
   "services": {
@@ -1506,7 +1507,7 @@
     },
     "telegram": {
       "status": "NOT_ATTEMPTED",
-      "checked_at": "2026-10-15T23:15:34.187211+08:00",
+      "checked_at": "2026-10-15T23:20:44.031759+08:00",
       "delivery_tested": false
     }
   }
