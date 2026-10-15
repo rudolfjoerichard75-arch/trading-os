@@ -101,7 +101,7 @@ def stats(trades):
         equity+=t['result_r']; peak=max(peak,equity); dd=max(dd,peak-equity)
         streak=streak+1 if t['result']=='LOSS' else 0; max_streak=max(max_streak,streak)
     loss=-sum(r for r in rs if r<0); avg=sum(rs)/len(rs) if rs else None
-    return {'status':'PAPER SIMULATION','trades':len(closed),'wins':wins,'losses':sum(t['result']=='LOSS' for t in closed),'win_rate':round(wins/len(closed)*100,2) if closed else None,'average_r':avg,'expectancy_r':avg,'profit_factor':sum(r for r in rs if r>0)/loss if loss else None,'max_drawdown':round(dd,4),'max_consecutive_losses':max_streak,'total_pips':round(sum(t['result_pips'] for t in closed),3),'open_trades':sum(t['result'] in ('OPEN','PENDING') for t in trades),'unresolved':sum(t['result']=='DATA_GAP' for t in trades),'cancelled':sum(t['result'] in ('CANCELLED','NOT_ENTERED') for t in trades),'cost_status':'NET_CONFIGURED' if closed and all(t.get('cost_pips') is not None for t in closed) else 'GROSS_OR_UNCONFIGURED'}
+    return {'status':'PAPER SIMULATION','trades':len(closed),'wins':wins,'losses':sum(t['result']=='LOSS' for t in closed),'win_rate':round(wins/len(closed)*100,2) if closed else None,'average_r':avg,'expectancy_r':avg,'profit_factor':sum(r for r in rs if r>0)/loss if loss else None,'max_drawdown':round(dd,4),'max_consecutive_losses':max_streak,'total_pips':round(sum(t['result_pips'] for t in closed),3),'open_trades':sum(t['result'] in ('OPEN','PENDING') for t in trades),'unresolved':sum(t['result']=='DATA_GAP' for t in trades),'cancelled':sum(t['result'] in ('CANCELLED','NOT_ENTERED') and t.get('review_status')!='REVIEW_REQUIRED' for t in trades),'review_required':sum(t.get('review_status')=='REVIEW_REQUIRED' for t in trades),'cost_status':'NET_CONFIGURED' if closed and all(t.get('cost_pips') is not None for t in closed) else 'GROSS_OR_UNCONFIGURED'}
 
 def add_diagnostics(dashboard):
     """Explanations only; never changes a gate, plan or entry decision."""
@@ -222,13 +222,13 @@ def sync(dashboard, frame, sent=None):
     observations=load(archive,{'version':VERSION,'observations':[]})
     if not observations['observations'] or observations['observations'][-1]['news']!=news:
         observations['observations'].append({'observed_at':at,'news':news});save(archive,observations)
-    fields=['signal_id','timestamp','direction','opportunity','score','entry','planned_entry','sl','tp1','tp2','tp3','result','result_pips','result_r','closed_at','exit_reason','cost_status','telegram_status','next_open','execution_checked_at','signal_policy','signal_path','execution_audit','parameters']
+    fields=['signal_id','timestamp','direction','opportunity','score','entry','planned_entry','sl','tp1','tp2','tp3','result','result_pips','result_r','closed_at','exit_reason','cost_status','telegram_status','next_open','execution_checked_at','signal_policy','signal_path','execution_audit','parameters','review_status','review_reason','historical_replay']
     target=e.REPO_DIR/'paper_journal.csv';tmp=target.with_suffix('.tmp')
     with tmp.open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');writer.writeheader()
         for item in journal['trades']:
             record=dict(item)
-            for key in ['signal_path','execution_audit','parameters']:
+            for key in ['signal_path','execution_audit','parameters','historical_replay']:
                 if key in record: record[key]=json.dumps(record[key],ensure_ascii=False,allow_nan=False)
             writer.writerow(record)
     tmp.replace(target)
