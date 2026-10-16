@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-16T08:40:43.024526+08:00"
+    "timestamp": "2026-10-16T08:45:43.707632+08:00"
   },
-  "latest_price": 4154.53,
+  "latest_price": 4153.42,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4177.80542,
       "low": 4131.92959,
       "width": 45.87582999999995,
-      "location": 0.49263610053485535
+      "location": 0.468399154849094
     }
   },
   "volatility": {
-    "atr": 2.03,
-    "atr_pips": 20.3,
+    "atr": 2.18,
+    "atr_pips": 21.8,
     "condition": "LOW"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-16T08:40:43.455827+08:00",
+      "checked_at": "2026-10-16T08:45:44.264851+08:00",
       "requested_from": "2026-10-15",
       "requested_to": "2026-10-18",
       "events_received": 3,
@@ -79,7 +79,7 @@
     "direction": "BUY",
     "opportunity": "BUY PULLBACK",
     "score": 40,
-    "timestamp": "2026-10-16T08:40:43.024526+08:00",
+    "timestamp": "2026-10-16T08:45:43.707632+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -88,26 +88,13 @@
     }
   },
   "plan": {
-    "valid": true,
-    "direction": "BUY",
-    "entry": 4154.53,
-    "sl": 4152.27,
-    "risk_pips": 22.6,
-    "tp1": 4160.53,
-    "tp2": 4166.53,
-    "tp3": 4172.53,
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180,
-    "rr_tp1": 2.66,
-    "rr_tp2": 5.31,
-    "rr_tp3": 7.97,
-    "risk_level": "LOW"
+    "valid": false,
+    "reason": "Risk 11.8 pips outside 20-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 120,
-    "tp3_pips": 180
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "BULLISH",
@@ -151,7 +138,7 @@
         "high": 4177.80542,
         "low": 4152.04848,
         "width": 25.756939999999304,
-        "location": 0.09633131886005594
+        "location": 0.05316275924081348
       }
     }
   },
@@ -172,8 +159,8 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": false,
     "session_blocking": false
@@ -186,9 +173,9 @@
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 22.6,
-    "risk_level": "LOW",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 20,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -207,7 +194,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
-    "risk": "LOW",
+    "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
@@ -2142,7 +2129,9 @@
   },
   "gate_reasons": {
     "score": "Skor 40/100 < minimum 70",
-    "m5_confirmation": "BOS atau candle + momentum BUY belum sah"
+    "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
+    "risk": "SL 11.8 pips bawah minimum 20 pips",
+    "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
     "limits": {
@@ -2151,10 +2140,12 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 22.6,
+    "risk_distance_pips": 11.8,
     "blocking_reasons": [
       "Skor 40/100 < minimum 70",
-      "BOS atau candle + momentum BUY belum sah"
+      "BOS atau candle + momentum BUY belum sah",
+      "SL 11.8 pips bawah minimum 20 pips",
+      "Belum dikira: risk tidak lulus"
     ]
   },
   "market_data_audit": {
@@ -2276,7 +2267,7 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 25,
+        "bars_observed": 26,
         "observation_start": "2026-10-15T22:35:00+00:00",
         "targets": {
           "tp1": {
@@ -2292,7 +2283,7 @@
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": null,
-        "last_bar": "2026-10-16T00:35:00+00:00"
+        "last_bar": "2026-10-16T00:40:00+00:00"
       },
       "next_open": 4168.07235,
       "execution_checked_at": "2026-10-15T22:35:00+00:00",
@@ -2332,7 +2323,7 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 63,
+        "bars_observed": 64,
         "observation_start": "2026-10-15T19:25:00+00:00",
         "targets": {
           "tp1": {
@@ -2348,7 +2339,7 @@
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": "2026-10-15T23:55:00+00:00",
-        "last_bar": "2026-10-16T00:35:00+00:00"
+        "last_bar": "2026-10-16T00:40:00+00:00"
       },
       "legacy_review_checked": "2026-10-16T05:30:42.934071+08:00",
       "review_status": "REVIEW_REQUIRED",
@@ -2813,7 +2804,7 @@
     "signal_path": {
       "model": "M5_TARGET_PATH_V1",
       "status": "TRACKING",
-      "bars_observed": 25,
+      "bars_observed": 26,
       "observation_start": "2026-10-15T22:35:00+00:00",
       "targets": {
         "tp1": {
@@ -2829,7 +2820,7 @@
       "partial_signal_bar_excluded": true,
       "max_bars": 72,
       "sl_first_at": null,
-      "last_bar": "2026-10-16T00:35:00+00:00"
+      "last_bar": "2026-10-16T00:40:00+00:00"
     },
     "next_open": 4168.07235,
     "execution_checked_at": "2026-10-15T22:35:00+00:00",
@@ -2856,7 +2847,7 @@
     "review_required": 5,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-16T08:40:43.024526+08:00",
+    "last_updated": "2026-10-16T08:45:43.707632+08:00",
     "execution": "Next M5 open after alert; NOT_ENTERED if open beyond SL/TP2. TP2 paper exit; target-path tracking continues separately to TP3/SL/72 bars.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -2866,7 +2857,7 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-16T08:40:43.024526+08:00",
+      "checked_at": "2026-10-16T08:45:43.707632+08:00",
       "delivery_tested": false
     }
   }
