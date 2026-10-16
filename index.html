@@ -623,18 +623,18 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
         <summary>V3 Journal • Forward Test • Backtest</summary>
         <div class="row"><span>Journal</span><b id="journalStatus">--</b></div>
         <div class="row"><span>Closed / Open</span><b id="journalCounts">--</b></div>
-        <div class="row"><span>Records requiring review</span><b id="journalReview">--</b></div>
+        <div class="row"><span>Review needed / Repaired history</span><b id="journalReview">--</b></div>
         <div class="row"><span>No entry / Data gaps</span><b id="journalUnfilled">--</b></div>
         <div class="row"><span>TP3 observed: before SL / after SL / ambiguous</span><b id="signalOutcomes">--</b></div>
         <div class="row"><span>Latest recorded alert plan</span><b id="recordedPlan">--</b></div>
-        <div class="row"><span>Paper win rate (TP2 exit)</span><b id="journalWinrate">--</b></div>
+        <div class="row"><span>Forward paper win rate (TP2)</span><b id="journalWinrate">--</b></div>
         <div class="row"><span>Expectancy / Profit factor</span><b id="journalStats">--</b></div>
         <div class="row"><span>Drawdown (R)</span><b id="journalDrawdown">--</b></div>
         <div class="row"><span>Cost model</span><b id="journalCosts">--</b></div>
         <div class="row"><span>Backtest</span><b id="backtestStatus">--</b></div>
         <div class="row"><span>Backtest details</span><b id="backtestDetails">--</b></div>
         <div class="row"><span>Telegram this scan</span><b id="telegramStatus">--</b></div>
-        <p>Paper simulation: next M5 open, TP2 exit, SL first if ambiguous. NO ENTRY / legacy CANCELLED means no simulated fill; it is excluded from win rate.</p>
+        <p>Paper simulation: next M5 open, TP2 exit, SL first if ambiguous. NO ENTRY means no simulated fill. Repaired historical records and records under review are excluded from forward win rate.</p>
         <p>Target observations continue separately to TP3 for up to 72 M5 bars. TP after SL is not a winning trade. The partial candle at alert time is excluded because M5 OHLC cannot isolate moves before/after the alert.</p>
         <p>Daily loss lock and fresh-zone filter are not part of the original V3 entry rules.</p>
         <p><a href="./paper_journal.csv" download>Download journal CSV</a> · <a href="./engine/backtest_results.json">Backtest JSON</a></p>
@@ -1393,7 +1393,7 @@ function render(data){
   setText("signalDelivery", deliveryLabels[delivery.status] || "Menunggu status alert...");
   setText("journalStatus", journal.status || "NOT AVAILABLE");
   setText("journalCounts", `${stats.trades || 0} / ${stats.open_trades || 0}`);
-  setText("journalReview", stats.review_required || 0);
+  setText("journalReview", `${stats.review_required || 0} / ${stats.reconstructed || 0}`);
   setText("journalUnfilled", `${stats.cancelled || 0} / ${stats.unresolved || 0}`);
   setText("signalOutcomes", `${audit.tp3_observed_before_sl || 0} / ${audit.tp3_after_sl || 0} / ${audit.ambiguous_tp3_sl || 0}`);
   const recorded = data.recorded_signal || data.journal_recent?.[0];
@@ -1419,7 +1419,10 @@ function render(data){
       const unfilled = ["CANCELLED","NOT_ENTERED"].includes(trade.result);
       line(`${newsTime(trade.timestamp)} • ${trade.direction} • ${(trade.opportunity || "").replace(/^(BUY|SELL) /,"")}`,true);
       const cause=trade.execution_audit?.reason || trade.exit_reason;
-      if(trade.review_status==="REVIEW_REQUIRED"){
+      if(trade.review_status==="RESOLVED_TIMEZONE"){
+        line(`REPAIRED HISTORY • ${trade.result} (${trade.exit_reason}) • ${trade.result_pips} pips • Rekod asal: ${trade.original_execution?.result}`);
+        line(`Timestamp feed asal tersasar ${trade.timezone_repair?.offset_hours} jam apabila dibaca sebagai UTC. Kiraan semula sejarah; dikecualikan daripada forward win rate.`);
+      }else if(trade.review_status==="REVIEW_REQUIRED"){
         line(`REVIEW REQUIRED • Keputusan asal ${trade.result}; sejarah UTC semasa memberi hasil berbeza. Dikecualikan daripada forward win rate.`);
         const replay=trade.historical_replay;
         if(replay) line(`Historical paper replay: ${replay.result} (${replay.exit_reason || "masih dipantau"}) • Fill ${fmt(replay.entry)} • ${replay.result_pips==null ? "--" : replay.result_pips+" pips"}. Ini semakan semula, bukan rekod fill broker.`);

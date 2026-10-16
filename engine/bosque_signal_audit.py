@@ -102,3 +102,46 @@ def review_legacy_execution(trade, frame, observed_at):
     trade.update(review_status='REVIEW_REQUIRED',
                  review_reason='CURRENT_UTC_HISTORY_CONTRADICTS_ORIGINAL_EXECUTION',
                  history_observed_at=observed_at,historical_replay=replay)
+
+
+def resolve_legacy_timezone(trade, frame, feed_audit, observed_at):
+    """Repair only when the old timezone mistake reproduces the saved outcome."""
+    import bosque_tracking as t
+    if trade.get('review_status')!='REVIEW_REQUIRED' or not feed_audit or feed_audit.get('status')!='COMPLETED':
+        return
+    zone=feed_audit.get('legacy_meta',{}).get('exchange_timezone')
+    try:
+        if feed_audit.get('clock_offset_evidence',{}).get('count',0)>=3:
+            offset=pd.Timedelta(minutes=feed_audit['legacy_clock_offset_minutes'])
+        elif zone and zone!='UTC':
+            offset=t.stamp(trade['timestamp']).tz_convert(zone).utcoffset()
+        else: return
+    except (ValueError,KeyError):
+        return
+    if not offset: return
+    # Reproduce the actual old bug: provider wall-clock labels were tagged UTC.
+    wrong_frame=frame.copy();wrong_frame['datetime']=wrong_frame.datetime+offset
+    plan={k:trade['planned_entry'] if k=='entry' else trade[k]
+          for k in ['entry','sl','tp1','tp2','tp3']}
+    wrong=t.new_trade({'id':trade['signal_id'],'direction':trade['direction']},plan,
+                      trade['timestamp'],trade.get('cost_pips'))
+    t.advance(wrong,wrong_frame)
+    old_result='NOT_ENTERED' if trade['result']=='CANCELLED' else trade['result']
+    if wrong['result']!=old_result: return
+    if trade.get('entry') is not None and (wrong.get('entry') is None or abs(wrong['entry']-trade['entry'])>1e-6): return
+    if trade.get('result_pips') is not None and wrong.get('result_pips')!=trade['result_pips']: return
+    repaired=trade['historical_replay']
+    if repaired['result'] not in ('WIN','LOSS','BE'): return
+    fields=['result','entry','filled_at','last_bar','bars_held','exit_price','exit_reason',
+            'closed_at','result_pips','result_r','tp1_hit','tp2_hit','tp3_hit',
+            'next_open','execution_checked_at']
+    trade['original_execution']={key:trade.get(key) for key in fields}
+    for key in fields:
+        if key in repaired: trade[key]=repaired[key]
+    trade.update(review_status='RESOLVED_TIMEZONE',
+                 review_reason='LEGACY_EXCHANGE_CLOCK_MISREAD_AS_UTC',
+                 performance_group='HISTORICAL_RECONSTRUCTION',
+                 execution_model='UTC_RECONSTRUCTED_NEXT_M5_OPEN_TP2_V1',
+                 repaired_at=observed_at,
+                 timezone_repair={'provider_zone':zone,'offset_hours':offset.total_seconds()/3600,
+                                  'original_outcome_reproduced':True})

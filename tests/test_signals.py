@@ -89,6 +89,35 @@ class LifecycleTests(unittest.TestCase):
 
 
 class TargetPathTests(unittest.TestCase):
+    def test_clock_offset_requires_multiple_unique_price_matches(self):
+        from bosque_feed_audit import infer_clock_offset
+        frame=pd.concat([row(at=f'2026-10-01T00:{n*5:02}:00Z',o=100+n,h=102+n,l=99+n,c=101+n) for n in range(3)],ignore_index=True)
+        samples=[{'signal_id':str(n),'bar':f'2026-10-01T11:{n*5:02}:00Z','legacy_open':100+n} for n in range(3)]
+        result={'status':'COMPLETED','signal_open_comparisons':samples}
+        infer_clock_offset(result,frame)
+        self.assertEqual(result['legacy_clock_offset_minutes'],660)
+        result={'status':'COMPLETED','signal_open_comparisons':samples[:1]}
+        infer_clock_offset(result,frame)
+        self.assertNotIn('legacy_clock_offset_minutes',result)
+
+    def test_timezone_repair_requires_reproduction_and_preserves_original(self):
+        from bosque_signal_audit import review_legacy_execution,resolve_legacy_timezone
+        legacy=trade();legacy.pop('execution_model')
+        legacy.update(timestamp='2026-10-01T11:00:00Z',result='CANCELLED',exit_reason='NEXT_OPEN_OUTSIDE_PLAN')
+        frame=pd.concat([row(o=94,h=96,l=93,c=95),row(at='2026-10-01T11:00Z',h=111,l=99)],ignore_index=True)
+        review_legacy_execution(legacy,frame,'2026-10-01T12:00Z')
+        # Sydney is +10 before DST on this date, which does not reproduce it.
+        resolve_legacy_timezone(legacy,frame,{'status':'COMPLETED','legacy_meta':{'exchange_timezone':'Australia/Sydney'}},'2026-10-01T12:00Z')
+        self.assertEqual(legacy['review_status'],'REVIEW_REQUIRED')
+        # Use a verified +11 source zone for this fixture.
+        resolve_legacy_timezone(legacy,frame,{'status':'COMPLETED','legacy_meta':{'exchange_timezone':'Pacific/Noumea'}},'2026-10-01T12:00Z')
+        self.assertEqual(legacy['review_status'],'RESOLVED_TIMEZONE')
+        self.assertEqual(legacy['result'],'WIN')
+        self.assertEqual(legacy['original_execution']['result'],'CANCELLED')
+        self.assertEqual(legacy['timezone_repair']['offset_hours'],11)
+        self.assertEqual(t.stats([legacy])['trades'],0)
+        self.assertEqual(t.stats([legacy])['reconstructed'],1)
+
     def test_contradictory_legacy_loss_is_reviewed_not_counted_or_rewritten(self):
         from bosque_signal_audit import review_legacy_execution
         x=trade();x.pop('execution_model')
