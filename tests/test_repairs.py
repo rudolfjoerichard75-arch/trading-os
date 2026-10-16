@@ -173,6 +173,14 @@ class DeliveryTests(unittest.TestCase):
 
 
 class ReplayIntegrityTests(unittest.TestCase):
+    def test_provider_failure_cannot_publish_credentials_in_research_json(self):
+        import bosque_auto_backtest as auto
+        with tempfile.TemporaryDirectory() as temp,patch.object(e,'ENGINE_DIR',Path(temp)),patch.object(auto,'download_history',side_effect=e.requests.Timeout('https://provider.invalid?apikey=fake-secret')),contextlib.redirect_stdout(io.StringIO()) as output:
+            with self.assertRaises(SystemExit):auto.main()
+            result=(Path(temp)/'backtest_results.json').read_text()
+            self.assertNotIn('fake-secret',result+output.getvalue())
+            self.assertEqual(json.loads(result)['status'],'FAILED')
+
     def test_oos_split_does_not_rearm_an_existing_setup(self):
         df=bars(365)
         ev={'active':True,'setup_valid':True,'direction':'BUY','opportunity':'BUY TEST','score':80,

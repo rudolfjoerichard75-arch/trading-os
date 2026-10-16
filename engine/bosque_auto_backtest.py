@@ -59,5 +59,5 @@ def main():
         args=SimpleNamespace(csv=[str(path)],timezone='UTC',spread_pips=cost or 0,slippage_pips=0,commission_pips=0,split=df.iloc[int(len(df)*.8)].datetime.isoformat(),news=news,gross_only=cost is None)
         out=b.run(args);out['automation']={'requests':requests_count,'split_rule':'CHRONOLOGICAL_80_20','history_bars':len(df),'news_fetch':news_fetch};t.save(e.ENGINE_DIR/'backtest_results.json',out)
     except Exception as exc:
-        t.save(e.ENGINE_DIR/'backtest_results.json',{'status':'FAILED','version':t.VERSION,'reason':type(exc).__name__+': '+str(exc),'last_updated':pd.Timestamp.now(tz='UTC').isoformat()});raise
+        t.save(e.ENGINE_DIR/'backtest_results.json',{'status':'FAILED','version':t.VERSION,'reason':type(exc).__name__,'last_updated':pd.Timestamp.now(tz='UTC').isoformat()});print('Research failed: '+type(exc).__name__);raise SystemExit(1) from None
 if __name__=='__main__': main()
