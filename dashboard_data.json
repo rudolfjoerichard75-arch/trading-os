@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-16T21:30:48.723890+08:00"
+    "timestamp": "2026-10-16T21:35:29.951627+08:00"
   },
-  "latest_price": 4158.9,
+  "latest_price": 4158.23,
   "session": "NEW YORK",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4191.46617,
       "low": 4147.48455,
       "width": 43.981619999999566,
-      "location": 0.2594904416890492
+      "location": 0.2443829945327093
     }
   },
   "volatility": {
-    "atr": 5.28,
-    "atr_pips": 52.8,
+    "atr": 5.2,
+    "atr_pips": 52.0,
     "condition": "NORMAL"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-16T21:30:49.316288+08:00",
+      "checked_at": "2026-10-16T21:35:30.384717+08:00",
       "requested_from": "2026-10-15",
       "requested_to": "2026-10-18",
       "events_received": 3,
@@ -79,7 +79,7 @@
     "direction": "BUY",
     "opportunity": "BUY PULLBACK",
     "score": 60,
-    "timestamp": "2026-10-16T21:30:48.723890+08:00",
+    "timestamp": "2026-10-16T21:35:29.951627+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -88,13 +88,26 @@
     }
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 15.3 pips outside 20-80"
+    "valid": true,
+    "direction": "BUY",
+    "entry": 4158.23,
+    "sl": 4160.44,
+    "risk_pips": 22.1,
+    "tp1": 4164.23,
+    "tp2": 4170.23,
+    "tp3": 4176.23,
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180,
+    "rr_tp1": 2.72,
+    "rr_tp2": 5.43,
+    "rr_tp3": 8.15,
+    "risk_level": "LOW"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180
   },
   "h1": {
     "direction": "BULLISH",
@@ -138,7 +151,7 @@
         "high": 4191.46617,
         "low": 4154.57432,
         "width": 36.89184999999998,
-        "location": 0.11718143709248037
+        "location": 0.09917068403997105
       }
     }
   },
@@ -151,7 +164,7 @@
       "confirmed": false,
       "bos": "BEARISH BOS",
       "candle": false,
-      "momentum": "NEUTRAL",
+      "momentum": "BEARISH",
       "reason": "NO CONFIRMATION"
     }
   },
@@ -159,8 +172,8 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": true,
     "session_blocking": false
@@ -173,9 +186,9 @@
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 22.1,
+    "risk_level": "LOW",
     "min_risk_pips": 20,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -194,7 +207,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "PREFERRED",
-    "risk": "UNKNOWN",
+    "risk": "LOW",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
@@ -2204,9 +2217,7 @@
   },
   "gate_reasons": {
     "score": "Skor 60/100 < minimum 70",
-    "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
-    "risk": "SL 15.3 pips bawah minimum 20 pips",
-    "rr": "Belum dikira: risk tidak lulus"
+    "m5_confirmation": "BOS atau candle + momentum BUY belum sah"
   },
   "diagnostics": {
     "limits": {
@@ -2215,12 +2226,10 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 15.3,
+    "risk_distance_pips": 22.1,
     "blocking_reasons": [
       "Skor 60/100 < minimum 70",
-      "BOS atau candle + momentum BUY belum sah",
-      "SL 15.3 pips bawah minimum 20 pips",
-      "Belum dikira: risk tidak lulus"
+      "BOS atau candle + momentum BUY belum sah"
     ]
   },
   "market_data_audit": {
@@ -2380,14 +2389,14 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 24,
+        "bars_observed": 25,
         "observation_start": "2026-10-16T11:30:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": "2026-10-16T11:55:00+00:00",
-        "last_bar": "2026-10-16T13:25:00+00:00"
+        "last_bar": "2026-10-16T13:30:00+00:00"
       },
       "next_open": 4181.36603,
       "execution_checked_at": "2026-10-16T11:30:00+00:00",
@@ -2501,14 +2510,14 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 65,
+        "bars_observed": 66,
         "observation_start": "2026-10-16T08:05:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": "2026-10-16T08:05:00+00:00",
-        "last_bar": "2026-10-16T13:25:00+00:00"
+        "last_bar": "2026-10-16T13:30:00+00:00"
       },
       "next_open": 4182.38641,
       "execution_checked_at": "2026-10-16T08:05:00+00:00",
@@ -3315,14 +3324,14 @@
     "signal_path": {
       "model": "M5_TARGET_PATH_V1",
       "status": "TRACKING",
-      "bars_observed": 24,
+      "bars_observed": 25,
       "observation_start": "2026-10-16T11:30:00+00:00",
       "targets": {},
       "source": "FORWARD_OBSERVED",
       "partial_signal_bar_excluded": true,
       "max_bars": 72,
       "sl_first_at": "2026-10-16T11:55:00+00:00",
-      "last_bar": "2026-10-16T13:25:00+00:00"
+      "last_bar": "2026-10-16T13:30:00+00:00"
     },
     "next_open": 4181.36603,
     "execution_checked_at": "2026-10-16T11:30:00+00:00",
@@ -3350,7 +3359,7 @@
     "reconstructed": 5,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-16T21:30:48.723890+08:00",
+    "last_updated": "2026-10-16T21:35:29.951627+08:00",
     "execution": "Next M5 open after alert; NOT_ENTERED if open beyond SL/TP2. TP2 paper exit; target-path tracking continues separately to TP3/SL/72 bars.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -3360,7 +3369,7 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-16T21:30:48.723890+08:00",
+      "checked_at": "2026-10-16T21:35:29.951627+08:00",
       "delivery_tested": false
     }
   }
