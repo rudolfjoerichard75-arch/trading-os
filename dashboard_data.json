@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-16T19:30:41.579605+08:00"
+    "timestamp": "2026-10-16T19:35:31.172709+08:00"
   },
-  "latest_price": 4181.98,
+  "latest_price": 4178.28,
   "session": "LONDON",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,13 +17,13 @@
       "high": 4191.46617,
       "low": 4144.04708,
       "width": 47.419089999999414,
-      "location": 0.7999759168723
+      "location": 0.7218668683857165
     }
   },
   "volatility": {
-    "atr": 2.49,
-    "atr_pips": 24.9,
-    "condition": "LOW"
+    "atr": 2.69,
+    "atr_pips": 26.9,
+    "condition": "NORMAL"
   },
   "pd": {
     "zone": "DISCOUNT",
@@ -33,9 +33,9 @@
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": true,
-    "swept_level": 4175.53969,
-    "description": "SELL-SIDE LIQUIDITY SWEPT",
+    "sell_side_sweep": false,
+    "swept_level": null,
+    "description": "NONE",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-16T19:30:41.934326+08:00",
+      "checked_at": "2026-10-16T19:35:31.669598+08:00",
       "requested_from": "2026-10-15",
       "requested_to": "2026-10-18",
       "events_received": 3,
@@ -68,18 +68,18 @@
     "source_url": "https://www.financecalendar.com/"
   },
   "opportunity": {
-    "type": "BUY LIQUIDITY SWEEP",
+    "type": "BUY PULLBACK",
     "direction": "BUY",
     "valid": true,
-    "score": 70
+    "score": 40
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
-    "opportunity": "BUY LIQUIDITY SWEEP",
-    "score": 70,
-    "timestamp": "2026-10-16T19:30:41.579605+08:00",
+    "opportunity": "BUY PULLBACK",
+    "score": 40,
+    "timestamp": "2026-10-16T19:35:31.172709+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -88,13 +88,26 @@
     }
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 92.0 pips outside 20-80"
+    "valid": true,
+    "direction": "BUY",
+    "entry": 4178.28,
+    "sl": 4172.74,
+    "risk_pips": 55.4,
+    "tp1": 4184.28,
+    "tp2": 4190.28,
+    "tp3": 4196.28,
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180,
+    "rr_tp1": 1.08,
+    "rr_tp2": 2.17,
+    "rr_tp3": 3.25,
+    "risk_level": "MEDIUM"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 120,
+    "tp3_pips": 180
   },
   "h1": {
     "direction": "BULLISH",
@@ -107,13 +120,13 @@
     "direction": "BEARISH",
     "bos": null,
     "swing_high": 4184.8008,
-    "swing_low": 4175.53969,
+    "swing_low": 4173.27435,
     "setup": {
       "direction": "BUY",
-      "opportunity": "BUY LIQUIDITY SWEEP",
+      "opportunity": "BUY PULLBACK",
       "valid": true,
       "reason": [
-        "M15 sell-side liquidity sweep"
+        "H1 bullish + M15 discount"
       ],
       "pd": {
         "zone": "DISCOUNT",
@@ -123,22 +136,22 @@
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": true,
-        "swept_level": 4175.53969,
-        "description": "SELL-SIDE LIQUIDITY SWEPT"
+        "sell_side_sweep": false,
+        "swept_level": null,
+        "description": "NONE"
       },
       "structure": {
         "direction": "BEARISH",
         "bos": null,
         "swing_high": 4184.8008,
-        "swing_low": 4175.53969
+        "swing_low": 4173.27435
       },
       "range": {
         "is_range": true,
         "high": 4191.46617,
         "low": 4173.27435,
         "width": 18.191820000000007,
-        "location": 0.47861401443067436
+        "location": 0.27501371495543653
       }
     }
   },
@@ -148,34 +161,34 @@
     "swing_high": 4184.8008,
     "swing_low": 4173.27435,
     "confirmation": {
-      "confirmed": true,
+      "confirmed": false,
       "bos": null,
-      "candle": true,
+      "candle": false,
       "momentum": "BULLISH",
-      "reason": "M5 bullish candle + momentum"
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
-    "score": true,
+    "score": false,
     "setup": true,
-    "m5_confirmation": true,
-    "risk": false,
-    "rr": false,
+    "m5_confirmation": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": true,
     "session_blocking": false
   },
   "confirmations": {
     "h1_bias": "BULLISH",
-    "m15_setup": "BUY LIQUIDITY SWEEP",
-    "m5_confirmation": "M5 bullish candle + momentum",
-    "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
+    "m15_setup": "BUY PULLBACK",
+    "m5_confirmation": "NO CONFIRMATION",
+    "liquidity": "NONE",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 55.4,
+    "risk_level": "MEDIUM",
     "min_risk_pips": 20,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -194,10 +207,10 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "PREFERRED",
-    "risk": "UNKNOWN",
+    "risk": "MEDIUM",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "m5_confirmation": "NO"
   },
   "expectancy": {
     "status": "PAPER SIMULATION",
@@ -2203,8 +2216,8 @@
     "economic_calendar_url": "https://www.financecalendar.com/"
   },
   "gate_reasons": {
-    "risk": "SL 92.0 pips melebihi had 80 pips",
-    "rr": "Belum dikira: risk tidak lulus"
+    "score": "Skor 40/100 < minimum 70",
+    "m5_confirmation": "BOS atau candle + momentum BUY belum sah"
   },
   "diagnostics": {
     "limits": {
@@ -2213,10 +2226,10 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 92.0,
+    "risk_distance_pips": 55.4,
     "blocking_reasons": [
-      "SL 92.0 pips melebihi had 80 pips",
-      "Belum dikira: risk tidak lulus"
+      "Skor 40/100 < minimum 70",
+      "BOS atau candle + momentum BUY belum sah"
     ]
   },
   "market_data_audit": {
@@ -2347,13 +2360,13 @@
       "score": 70,
       "session": "LONDON",
       "planned_entry": 4180.42,
-      "entry": null,
+      "entry": 4181.36603,
       "sl": 4172.78,
       "tp1": 4186.42,
       "tp2": 4195.71,
       "tp3": 4203.35,
-      "result": "PENDING",
-      "bars_held": 0,
+      "result": "OPEN",
+      "bars_held": 1,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
       "tp1_hit": false,
@@ -2376,14 +2389,19 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 0,
+        "bars_observed": 1,
         "observation_start": "2026-10-16T11:30:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
-        "sl_first_at": null
-      }
+        "sl_first_at": null,
+        "last_bar": "2026-10-16T11:30:00+00:00"
+      },
+      "next_open": 4181.36603,
+      "execution_checked_at": "2026-10-16T11:30:00+00:00",
+      "filled_at": "2026-10-16T11:30:00+00:00",
+      "last_bar": "2026-10-16T11:30:00+00:00"
     },
     {
       "strategy_version": "SCALPING V3",
@@ -2423,7 +2441,7 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 24,
+        "bars_observed": 25,
         "observation_start": "2026-10-16T09:30:00+00:00",
         "targets": {
           "tp1": {
@@ -2439,7 +2457,7 @@
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": null,
-        "last_bar": "2026-10-16T11:25:00+00:00"
+        "last_bar": "2026-10-16T11:30:00+00:00"
       },
       "next_open": 4184.79742,
       "execution_checked_at": "2026-10-16T09:30:00+00:00",
@@ -2486,14 +2504,14 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 41,
+        "bars_observed": 42,
         "observation_start": "2026-10-16T08:05:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": "2026-10-16T08:05:00+00:00",
-        "last_bar": "2026-10-16T11:25:00+00:00"
+        "last_bar": "2026-10-16T11:30:00+00:00"
       },
       "next_open": 4182.38641,
       "execution_checked_at": "2026-10-16T08:05:00+00:00",
@@ -3271,13 +3289,13 @@
     "score": 70,
     "session": "LONDON",
     "planned_entry": 4180.42,
-    "entry": null,
+    "entry": 4181.36603,
     "sl": 4172.78,
     "tp1": 4186.42,
     "tp2": 4195.71,
     "tp3": 4203.35,
-    "result": "PENDING",
-    "bars_held": 0,
+    "result": "OPEN",
+    "bars_held": 1,
     "cost_pips": null,
     "cost_status": "GROSS_ONLY_UNCONFIGURED",
     "tp1_hit": false,
@@ -3300,14 +3318,19 @@
     "signal_path": {
       "model": "M5_TARGET_PATH_V1",
       "status": "TRACKING",
-      "bars_observed": 0,
+      "bars_observed": 1,
       "observation_start": "2026-10-16T11:30:00+00:00",
       "targets": {},
       "source": "FORWARD_OBSERVED",
       "partial_signal_bar_excluded": true,
       "max_bars": 72,
-      "sl_first_at": null
-    }
+      "sl_first_at": null,
+      "last_bar": "2026-10-16T11:30:00+00:00"
+    },
+    "next_open": 4181.36603,
+    "execution_checked_at": "2026-10-16T11:30:00+00:00",
+    "filled_at": "2026-10-16T11:30:00+00:00",
+    "last_bar": "2026-10-16T11:30:00+00:00"
   },
   "forward_test": {
     "status": "PAPER SIMULATION",
@@ -3328,7 +3351,7 @@
     "reconstructed": 5,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-16T19:30:41.579605+08:00",
+    "last_updated": "2026-10-16T19:35:31.172709+08:00",
     "execution": "Next M5 open after alert; NOT_ENTERED if open beyond SL/TP2. TP2 paper exit; target-path tracking continues separately to TP3/SL/72 bars.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -3338,7 +3361,7 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-16T19:30:41.579605+08:00",
+      "checked_at": "2026-10-16T19:35:31.172709+08:00",
       "delivery_tested": false
     }
   }
