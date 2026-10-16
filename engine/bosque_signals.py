@@ -15,7 +15,13 @@ def select_alert(state, setup_valid, direction, eligible, candle):
     The caller persists attempts before sending and marks successful delivery.
     """
     candle = pd.to_datetime(candle, utc=True).isoformat()
+    seen = state.get('last_seen_bar')
+    if seen and pd.to_datetime(candle) < pd.to_datetime(seen):
+        return {'allowed':False, 'status':'STALE_CANDLE', 'id':None, 'policy':POLICY}
+    state['last_seen_bar'] = candle
     cycle = state.get('signal_cycle')
+    if cycle and cycle.get('last_bar')==candle and cycle.get('direction')!=direction and direction in ('BUY','SELL'):
+        return {'allowed':False, 'status':'SAME_BAR_REEVALUATION', 'id':cycle['id'], 'policy':POLICY}
     if not setup_valid or direction not in ('BUY', 'SELL'):
         if cycle and cycle.get('last_bar') != candle:
             cycle['last_bar'] = candle
@@ -31,6 +37,8 @@ def select_alert(state, setup_valid, direction, eligible, candle):
     cycle.update(last_bar=candle, inactive_bars=0)
     if not eligible:
         status = 'WAIT'
+    elif cycle.get('delivery_pending') or cycle.get('delivery_uncertain'):
+        status = 'DELIVERY_UNKNOWN'
     elif cycle.get('delivered'):
         status = 'DUPLICATE_SUPPRESSED'
     elif cycle.get('last_attempt_bar') == candle:

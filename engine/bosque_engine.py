@@ -165,23 +165,16 @@ def save_json_atomic(
 
 
 def load_state():
-
     if not STATE_FILE.exists():
         return {}
-
-    try:
-
-        with open(
-            STATE_FILE,
-            "r",
-            encoding="utf-8"
-        ) as f:
-
-            return json.load(f)
-
-    except Exception:
-
-        return {}
+    with STATE_FILE.open(encoding='utf-8') as f:
+        state = json.load(f)
+    if not isinstance(state, dict):
+        raise ValueError('Persisted signal state is not an object')
+    cycle = state.get('signal_cycle')
+    if cycle is not None and (not isinstance(cycle, dict) or not cycle.get('id') or cycle.get('direction') not in ('BUY','SELL')):
+        raise ValueError('Persisted signal cycle is invalid')
+    return state
 
 
 def save_state(state):
@@ -301,27 +294,8 @@ def fetch_m5():
             errors="coerce"
         )
 
-    df = df.dropna(
-        subset=[
-            "datetime",
-            "open",
-            "high",
-            "low",
-            "close"
-        ]
-    )
-
-    df = df.sort_values(
-        "datetime"
-    )
-
-    df = df.drop_duplicates(
-        "datetime"
-    )
-
-    df = df.reset_index(
-        drop=True
-    )
+    from bosque_tracking import bars
+    df = bars(df)
 
     meta_keys = ['symbol','interval','currency_base','currency_quote','exchange','exchange_timezone','type']
     df.attrs['provider_meta'] = {k:data.get('meta',{}).get(k) for k in meta_keys}
@@ -334,38 +308,14 @@ def fetch_m5():
 # REMOVE INCOMPLETE CANDLE
 # =========================================================
 
-def remove_incomplete_candle(
-    df
-):
-
+def remove_incomplete_candle(df):
     if df.empty:
         return df
-
-    last_time = df.iloc[-1][
-        "datetime"
-    ]
-
-    if last_time.tzinfo is None:
-
-        last_time = (
-            last_time.replace(
-                tzinfo=timezone.utc
-            )
-        )
-
-    now_utc = datetime.now(
-        timezone.utc
-    )
-
-    elapsed = (
-        now_utc - last_time
-    ).total_seconds()
-
-    if elapsed < 300:
-
-        return df.iloc[:-1].copy()
-
-    return df
+    now = pd.Timestamp(now_my()).tz_convert('UTC')
+    out = df[df.datetime + pd.Timedelta(minutes=5) <= now].copy()
+    out.attrs.update(df.attrs)
+    out.attrs['future_candles'] = int((df.datetime > now).sum())
+    return out
 
 
 # =========================================================
@@ -1711,338 +1661,25 @@ def make_signal_id(
 # =========================================================
 
 def is_us_event(event):
-    """Use explicit geography; generic GDP/CPI does not establish USD."""
-    import re
-    currency = str(event.get("currency", "")).strip().upper()
-    country = str(event.get("country", "") or event.get("country_code", "")).strip().upper()
-    if currency:
-        return currency == "USD"
-    if country:
-        return country in {"US", "USA", "U.S.", "UNITED STATES", "UNITED STATES OF AMERICA"}
-    title = " ".join(str(event.get(k, "")) for k in ("name", "title")).upper()
-    if re.search(r"\b(UK|U\.K\.|UNITED KINGDOM|EUROZONE|EU|JAPAN|CHINA|CANADA|AUSTRALIA|GERMANY|FRANCE)\b", title):
-        return False
-    return bool(re.search(r"\b(US|USA|UNITED STATES|FOMC|FEDERAL RESERVE)\b|\bU\.S\.", title))
+    from bosque_news import geography
+    return geography(event) == 'USD'
 
 
-def parse_event_time(
-    event
-):
-
-    raw_time = (
-        event.get("time_utc")
-        or
-        event.get("time")
-    )
-
-    if not raw_time:
-        return None
-
-    try:
-
-        ts = pd.to_datetime(
-            raw_time,
-            utc=True
-        )
-
-        return ts.to_pydatetime()
-
-    except Exception:
-
-        return None
+def parse_event_time(event):
+    from bosque_news import event_time
+    return event_time(event)
 
 
 def fetch_news_calendar():
-
-    now = now_my()
-
-    date_from = (
-        now - timedelta(
-            days=1
-        )
-    ).strftime(
-        "%Y-%m-%d"
-    )
-
-    date_to = (
-        now +
-        timedelta(
-            days=NEWS_LOOKAHEAD_DAYS
-        )
-    ).strftime(
-        "%Y-%m-%d"
-    )
-
-    checked_at = now.isoformat()
-    evidence = {"checked_at": checked_at, "requested_from": date_from, "requested_to": date_to, "events_received": None, "usd_high_events": 0, "nearby_usd_high_events": 0, "skipped_usd_times": 0}
-
-    params = {
-        "from": date_from,
-        "to": date_to,
-        "impact": "high",
-        "limit": 500
-    }
-
-    try:
-
-        response = requests.get(
-            FINANCECALENDAR_URL,
-            params=params,
-            timeout=15
-        )
-
-        response.raise_for_status()
-
-        data = response.json()
-
-        if isinstance(data, dict):
-
-            if "events" not in data or data.get("error"):
-                raise ValueError("Unrecognized news response")
-            events = data["events"]
-
-        elif isinstance(data, list):
-
-            events = data
-
-        else:
-            raise ValueError("Unrecognized news response")
-
-        if not isinstance(events, list):
-            raise ValueError("News events must be a list")
-
-        evidence["events_received"] = len(events)
-        evidence["provider_count"] = data.get("count") if isinstance(data, dict) else len(events)
-        us_events = []
-
-        for event in events:
-
-            if not isinstance(
-                event,
-                dict
-            ):
-
-                continue
-
-            impact = str(
-                event.get(
-                    "impact",
-                    ""
-                )
-            ).lower()
-
-            if impact != "high":
-                continue
-
-            if not is_us_event(
-                event
-            ):
-                continue
-
-            evidence["usd_high_events"] += 1
-            event_time = (
-                parse_event_time(
-                    event
-                )
-            )
-
-            if event_time is None:
-                evidence["skipped_usd_times"] += 1
-                continue
-
-            event_time_my = (
-                event_time.astimezone(
-                    MY_TZ
-                )
-            )
-
-            minutes = (
-                event_time_my - now
-            ).total_seconds() / 60
-
-            if (
-                -180
-                <= minutes
-                <= 120
-            ):
-
-                us_events.append({
-                    "event": event,
-                    "time": event_time_my,
-                    "minutes": minutes
-                })
-
-        evidence["nearby_usd_high_events"] = len(us_events)
-        if not us_events:
-
-            return {
-                "evidence": evidence,
-                "block_before_minutes": NEWS_BLOCK_BEFORE_MINUTES,
-                "block_after_minutes": NEWS_BLOCK_AFTER_MINUTES,
-                "reason": "Tiada berita USD high impact dikesan dalam julat masa semakan",
-                "status": "CLEAR",
-                "high_impact": False,
-                "minutes_to_news": None,
-                "filter": "PASS",
-                "event": None,
-                "currency": "USD",
-                "time": None,
-                "source":
-                    "FinanceCalendar",
-                "source_url":
-                    "https://www.financecalendar.com/"
-            }
-
-        nearest = min(
-            us_events,
-            key=lambda x:
-                abs(x["minutes"])
-        )
-
-        event = nearest["event"]
-        event_time = nearest["time"]
-        minutes = nearest["minutes"]
-
-        event_name = (
-            event.get("title")
-            or
-            event.get("name")
-            or
-            "USD HIGH IMPACT NEWS"
-        )
-
-        if (
-            -NEWS_BLOCK_BEFORE_MINUTES
-            <= minutes
-            <= NEWS_BLOCK_AFTER_MINUTES
-        ):
-
-            filter_status = "BLOCK"
-
-        else:
-
-            filter_status = "PASS"
-
-        return {
-            "evidence": evidence,
-            "reason": "Berita USD high impact dalam tetingkap sekatan" if filter_status == "BLOCK" else "Berita USD high impact di luar tetingkap sekatan",
-            "block_before_minutes": NEWS_BLOCK_BEFORE_MINUTES,
-            "block_after_minutes": NEWS_BLOCK_AFTER_MINUTES,
-            "status":
-                "HIGH IMPACT",
-            "high_impact": True,
-            "minutes_to_news":
-                round(
-                    minutes,
-                    1
-                ),
-            "filter":
-                filter_status,
-            "event":
-                event_name,
-            "currency":
-                "USD",
-            "time":
-                event_time.isoformat(),
-            "category":
-                event.get(
-                    "category"
-                ),
-            "actual":
-                event.get(
-                    "actual"
-                ),
-            "consensus":
-                event.get(
-                    "consensus"
-                ),
-            "prior":
-                event.get(
-                    "prior"
-                ),
-            "url":
-                event.get(
-                    "url"
-                ),
-            "source":
-                "FinanceCalendar",
-            "source_url":
-                "https://www.financecalendar.com/"
-        }
-
-    except Exception as e:
-
-        # FAIL-SAFE:
-        # If news feed cannot be verified,
-        # do NOT allow a live signal.
-
-        return {
-            "evidence": evidence,
-            "block_before_minutes": NEWS_BLOCK_BEFORE_MINUTES,
-            "block_after_minutes": NEWS_BLOCK_AFTER_MINUTES,
-            "reason": "Sumber berita gagal disahkan; signal ditahan",
-            "status":
-                "ERROR",
-            "high_impact":
-                None,
-            "minutes_to_news":
-                None,
-            "filter":
-                "BLOCK",
-            "event":
-                None,
-            "currency":
-                "USD",
-            "time":
-                None,
-            "source":
-                "FinanceCalendar",
-            "source_url":
-                "https://www.financecalendar.com/",
-            "error":
-                str(e)
-        }
+    from bosque_news import fetch_calendar
+    return fetch_calendar(now_my(), requests.get, FINANCECALENDAR_URL,
+                          NEWS_BLOCK_BEFORE_MINUTES, NEWS_BLOCK_AFTER_MINUTES,
+                          NEWS_LOOKAHEAD_DAYS)
 
 
-# =========================================================
-# TELEGRAM
-# =========================================================
-
-def send_telegram(
-    message
-):
-
-    if not TELEGRAM_BOT_TOKEN:
-        return False
-
-    if not TELEGRAM_CHAT_ID:
-        return False
-
-    url = (
-        "https://api.telegram.org/"
-        f"bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    )
-
-    payload = {
-        "chat_id":
-            TELEGRAM_CHAT_ID,
-        "text":
-            message
-    }
-
-    try:
-
-        r = requests.post(
-            url,
-            json=payload,
-            timeout=20
-        )
-
-        return r.ok
-
-    except Exception:
-
-        return False
+def send_telegram(message):
+    from bosque_delivery import deliver
+    return deliver(message, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)
 
 
 def format_telegram(
@@ -2104,6 +1741,9 @@ def main():
     m5 = remove_incomplete_candle(
         m5
     )
+
+    from bosque_health import market_health
+    data_health = market_health(m5, now_my())
 
     if len(m5) < 100:
 
@@ -2297,7 +1937,8 @@ def main():
         m5_ok,
         risk_ok,
         rr_ok,
-        news_ok
+        news_ok,
+        data_health["allowed"]
     ])
 
     # =====================================================
@@ -2319,8 +1960,15 @@ def main():
     from bosque_signals import select_alert, mark_delivered
     sent = None
     state = load_state()
-    delivery = select_alert(state, setup_ok, setup["direction"], valid_signal,
-                            m5.iloc[-1]["datetime"])
+    if data_health['allowed']:
+        delivery = select_alert(state, setup_ok, setup["direction"], valid_signal,
+                                m5.iloc[-1]["datetime"])
+    else:
+        delivery = {'allowed':False, 'status':'DATA_BLOCKED', 'id':None,
+                    'reason':data_health['reason']}
+    if delivery['allowed']:
+        state['signal_cycle']['delivery_pending'] = True
+        state['signal_cycle']['attempt_at'] = now_my().isoformat()
     # Persist an attempt before network I/O: rerunning the same candle cannot
     # send another alert. A failed send can retry on the next closed M5 bar.
     save_state(state)
@@ -2336,11 +1984,30 @@ def main():
         if delivery["allowed"]:
             message = format_telegram(setup["direction"], setup["opportunity"],
                 score, plan, session, pd_data, volatility)
-            sent = send_telegram(message)
-            delivery["status"] = "SENT" if sent else "FAILED"
+            receipt = send_telegram(message + '\nSignal ID: ' + delivery['id'])
+            if isinstance(receipt, bool):
+                receipt = {'status':'SENT' if receipt else 'FAILED'}
+            delivery.update(receipt)
+            sent = True if receipt['status']=='SENT' else False if receipt['status']=='FAILED' else None
+            cycle = state['signal_cycle']
+            cycle['delivery_pending'] = False
+            cycle['delivery_uncertain'] = receipt['status']=='DELIVERY_UNKNOWN'
+            cycle['last_receipt'] = receipt
+            if receipt['status']=='DELIVERY_UNKNOWN':
+                state.setdefault('uncertain_deliveries',[]).append({
+                    'signal_id':delivery['id'],'attempt_at':cycle.get('attempt_at'),
+                    'reason':receipt.get('reason'),'direction':setup['direction']})
             if sent:
-                mark_delivered(state, timestamp.isoformat())
-                save_state(state)
+                acknowledged = now_my().isoformat()
+                signal['timestamp'] = acknowledged
+                signal['acknowledged_at'] = acknowledged
+                mark_delivered(state, acknowledged)
+                # Recover acknowledged alerts if a later journal write fails.
+                state.setdefault('delivered_alerts', []).append({
+                    'signal':{**signal,'policy':delivery.get('policy')}, 'plan':plan,
+                    'session':session, 'timestamp':acknowledged, 'receipt':receipt,
+                    'source_candle':data_health['last_candle_open']})
+            save_state(state)
     signal["delivery"] = delivery
 
     # =====================================================
@@ -2681,6 +2348,8 @@ def main():
     }
 
     from bosque_tracking import sync
+    dashboard['data_health'] = data_health
+    dashboard['filters']['data'] = data_health['allowed']
     dashboard = sync(dashboard, m5, sent)
 
     save_json_atomic(
@@ -2702,7 +2371,16 @@ def main():
 # RUN
 # =========================================================
 
-if __name__ == "__main__":
+def run_live():
+    try:
+        main()
+    except Exception as exc:
+        from bosque_health import record_failure
+        record_failure(exc)
+        print('Engine scan failed: ' + type(exc).__name__)
+        raise SystemExit(1)
 
-    main()
+
+if __name__ == "__main__":
+    run_live()
 

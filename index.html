@@ -221,6 +221,7 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
       </div>
 
       <p id="signalDelivery" class="muted news-evidence">Menunggu status alert...</p>
+      <p id="dataHealth" class="muted">Memeriksa candle M5...</p>
 
       <div
         class="grid"
@@ -630,11 +631,14 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
         <div class="row"><span>Forward paper win rate (TP2)</span><b id="journalWinrate">--</b></div>
         <div class="row"><span>Expectancy / Profit factor</span><b id="journalStats">--</b></div>
         <div class="row"><span>Drawdown (R)</span><b id="journalDrawdown">--</b></div>
+        <div class="row"><span>New guarded fills: closed / no entry</span><b id="guardedCounts">--</b></div>
+        <div class="row"><span>New guarded fills: win rate</span><b id="guardedWinrate">--</b></div>
+        <div class="row"><span>Old fills outside current limits</span><b id="fillExceptions">--</b></div>
         <div class="row"><span>Cost model</span><b id="journalCosts">--</b></div>
         <div class="row"><span>Backtest</span><b id="backtestStatus">--</b></div>
         <div class="row"><span>Backtest details</span><b id="backtestDetails">--</b></div>
         <div class="row"><span>Telegram this scan</span><b id="telegramStatus">--</b></div>
-        <p>Paper simulation: next M5 open, TP2 exit, SL first if ambiguous. NO ENTRY means no simulated fill. Repaired historical records and records under review are excluded from forward win rate.</p>
+        <p>Paper simulation: next full M5 open after the alert, TP2 exit, SL first if ambiguous. New fills require 20–80 pips risk and RR TP2 ≥ 2. Old outcomes remain unchanged; results for the new fill policy are shown separately. NO ENTRY means no simulated fill. Repaired historical records and records under review are excluded from forward win rate.</p>
         <p>Target observations continue separately to TP3 for up to 72 M5 bars. TP after SL is not a winning trade. The partial candle at alert time is excluded because M5 OHLC cannot isolate moves before/after the alert.</p>
         <p>Daily loss lock and fresh-zone filter are not part of the original V3 entry rules.</p>
         <p><a href="./paper_journal.csv" download>Download journal CSV</a> · <a href="./engine/backtest_results.json">Backtest JSON</a></p>
@@ -776,6 +780,7 @@ function gateReasons(data){
   for(const key of Object.keys(fallback)){
     if(gates[key] !== true) result[key] = data.gate_reasons?.[key] || fallback[key];
   }
+  if(data.data_health?.allowed === false) result.data = data.data_health.reason || "Data M5 belum disahkan";
   return result;
 }
 
@@ -875,8 +880,8 @@ function render(data){
   const opportunity =
     data.opportunity || {};
 
-  const signal =
-    data.signal || {};
+  const signal = {...(data.signal || {}),
+    active: data.signal?.active === true && data.data_health?.allowed !== false};
 
   const plan =
     data.plan || {};
@@ -1151,7 +1156,7 @@ function render(data){
   const evidence = news.evidence || {};
   const count = evidence.events_received == null ? "Jumlah acara belum tersedia"
     : `${evidence.events_received} acara diterima; ${evidence.usd_high_events ?? 0} USD high impact`;
-  setText("newsEvidence", `${news.source || "Sumber belum tersedia"} • Disemak: ${newsTime(evidence.checked_at)} • ${count}`);
+  setText("newsEvidence", `${news.source || "Sumber belum tersedia"} • Disemak: ${newsTime(evidence.checked_at)} • ${count} • Liputan: ${evidence.coverage_status || "Belum disahkan"}`);
   const newsDetail = news.event ? `${news.event} • ${newsTime(news.time)}`
     : newsAllowed ? "Tiada acara USD high impact berdekatan dikesan oleh sumber"
     : "Acara berita belum dapat disahkan";
@@ -1387,10 +1392,17 @@ function render(data){
     SENT: "Alert baru dihantar. Plan asal disimpan dalam journal.",
     DUPLICATE_SUPPRESSED: "Alert berulang ditahan: kitaran setup sama sudah dihantar. Analisis semasa boleh berubah; plan alert asal kekal dalam journal.",
     ALREADY_ATTEMPTED_BAR: "Alert candle ini sudah dicuba; menunggu candle M5 seterusnya.",
-    FAILED: "Telegram gagal dihantar; belum direkod sebagai alert yang diterima.",
+    FAILED: "Telegram menolak penghantaran; boleh dicuba pada candle seterusnya.",
+    DELIVERY_UNKNOWN: "Penghantaran Telegram belum disahkan. Ulangan automatik untuk setup ini ditahan bagi mengelakkan mesej berganda.",
+    DATA_BLOCKED: "Alert ditahan: data pasaran belum disahkan terkini.",
+    STALE_CANDLE: "Alert ditahan: timestamp candle bergerak ke belakang.",
+    SAME_BAR_REEVALUATION: "Alert ditahan: candle yang sama sedang dinilai semula.",
     WAIT: "Menunggu setup yang melepasi semua gate."
   };
   setText("signalDelivery", deliveryLabels[delivery.status] || "Menunggu status alert...");
+  const health=data.data_health || {};
+  setText("dataHealth", health.last_candle_close ? `Candle tutup: ${newsTime(health.last_candle_close)} • ${health.reason}` : health.reason || "Masa candle belum tersedia");
+  if(health.allowed===false) setText("engineStatus", "DATA BLOCKED");
   setText("journalStatus", journal.status || "NOT AVAILABLE");
   setText("journalCounts", `${stats.trades || 0} / ${stats.open_trades || 0}`);
   setText("journalReview", `${stats.review_required || 0} / ${stats.reconstructed || 0}`);
@@ -1402,15 +1414,20 @@ function render(data){
   setText("journalStats", `${fmt(stats.expectancy_r)} R / ${fmt(stats.profit_factor)}`);
   setText("journalDrawdown", fmt(stats.max_drawdown));
   setText("journalCosts", stats.cost_status || "UNCONFIGURED");
+  const guarded=stats.execution_groups?.GUARDED_NEXT_M5_OPEN_TP2_V2 || {};
+  setText("guardedCounts", `${guarded.trades || 0} / ${guarded.cancelled || 0}`);
+  setText("guardedWinrate", guarded.win_rate==null ? "NO CLOSED TRADES" : `${guarded.win_rate}%`);
+  setText("fillExceptions", stats.historical_fill_exceptions || 0);
   const bt = data.backtest || {};
   setText("backtestStatus", bt.status || "NOT RUN");
   const resultParts = Object.entries(bt.results || {}).map(([name, result]) => `${name}: ${result.stats?.trades || 0} closed, WR ${result.stats?.win_rate == null ? "N/A" : result.stats.win_rate + "%"}, ${result.repeated_candidates_suppressed ?? "?"} repeated scans suppressed`);
-  setText("backtestDetails", [bt.news_mode, bt.cost_model?.status, bt.signal_policy, ...resultParts, bt.reason].filter(Boolean).join(" • ") || "Awaiting V3 replay");
-  setText("telegramStatus", data.services?.telegram?.status || "NOT VERIFIED");
+  setText("backtestDetails", [bt.news_mode, bt.cost_model?.status, bt.signal_policy, ...resultParts, ...(bt.limitations || []), bt.automation?.news_fetch?.reason, bt.reason].filter(Boolean).join(" • ") || "Awaiting V3 replay");
+  const telegram=data.services?.telegram || {};
+  setText("telegramStatus", `${telegram.status || "NOT VERIFIED"}${telegram.uncertain_deliveries?.length ? ` • ${telegram.uncertain_deliveries.length} penghantaran belum disahkan` : ""}`);
   const recent = document.getElementById("journalRecent");
   if(recent){
     recent.replaceChildren();
-    const why = {OPEN_BEYOND_SL:"Open seterusnya sudah melepasi SL", OPEN_BEYOND_TP2:"Open seterusnya sudah melepasi TP2", NEXT_OPEN_OUTSIDE_PLAN:"Open seterusnya di luar SL–TP2", CURRENT_HISTORY_DIFFERS_FROM_ORIGINAL_RESULT:"Data sejarah semasa berbeza daripada keputusan asal", SL:"SL", SL_AMBIGUOUS:"SL dan TP2 dalam candle sama; SL-first", TP2:"TP2", TIME_EXIT:"Had 72 candle", MISSING_BARS:"Candle hilang"};
+    const why = {FILL_RISK_BELOW_MIN:"Risk pada harga fill di bawah minimum", FILL_RISK_ABOVE_MAX:"Risk pada harga fill melebihi maksimum", FILL_RR_BELOW_MIN:"RR TP2 pada harga fill di bawah minimum", INVALID_FILL_PRICE:"Harga fill tidak sah", OPEN_BEYOND_SL:"Open seterusnya sudah melepasi SL", OPEN_BEYOND_TP2:"Open seterusnya sudah melepasi TP2", NEXT_OPEN_OUTSIDE_PLAN:"Open seterusnya di luar SL–TP2", CURRENT_HISTORY_DIFFERS_FROM_ORIGINAL_RESULT:"Data sejarah semasa berbeza daripada keputusan asal", SL:"SL", SL_AMBIGUOUS:"SL dan TP2 dalam candle sama; SL-first", TP2:"TP2", TIME_EXIT:"Had 72 candle", MISSING_BARS:"Candle hilang"};
     const pathLabels = {TRACKING:"Masih dipantau", TP3_OBSERVED:"TP3 diperhatikan sebelum SL", TP3_AFTER_SL:"TP3 kemudian, selepas SL", AMBIGUOUS_SL_TP3:"TP3 dan SL dalam candle sama; urutan tak pasti", WINDOW_ENDED:"Tamat 72 candle", DATA_GAP:"Candle tidak lengkap"};
     for(const trade of (data.journal_recent || []).slice(0,10)){
       const row = document.createElement("div");
@@ -1432,9 +1449,14 @@ function render(data){
       line(`Plan ${fmt(trade.planned_entry)} • Fill ${trade.entry == null ? "--" : fmt(trade.entry)} • SL ${fmt(trade.sl)} • TP1 ${fmt(trade.tp1)} • TP2 ${fmt(trade.tp2)} • TP3 ${fmt(trade.tp3)}`);
       const nextOpen=trade.next_open ?? trade.execution_audit?.next_open;
       if(nextOpen!=null) line(`Next M5 open: ${fmt(nextOpen)}`);
+      if(trade.fill_audit){
+        const fill=trade.fill_audit;
+        line(`Risk fill: ${fmt(fill.risk_pips)} pips • RR TP2 fill: 1:${fmt(fill.rr_tp2)}${fill.status!=="PASS" ? " • " + fill.reasons.map(x=>why[x] || x).join("; ") : " • PASS"}`);
+        if(!fill.enforced && fill.status!=="PASS") line("Audit rekod lama: keputusan asal dikekalkan. Had fill baharu tidak digunakan secara retroaktif.");
+      }
       const path=trade.signal_path;
       if(path){
-        line(`Signal path: ${pathLabels[path.status] || path.status}${path.source==="RECONSTRUCTED_PROVIDER_HISTORY" ? " • Semakan semula sejarah provider" : ""}`);
+        line(`Signal path: ${pathLabels[path.status] || path.status}${["RECONSTRUCTED_PROVIDER_HISTORY","HISTORICAL_REPLAY"].includes(path.source) ? " • Semakan semula sejarah provider" : ""}`);
         line(["tp1","tp2","tp3"].map(key=>{
           const hit=path.targets?.[key];
           return `${key.toUpperCase()}: ${!hit ? "belum direkod" : newsTime(hit.bar) + (hit.order==="AFTER_SL" ? " (selepas SL)" : hit.order==="SAME_BAR_AS_SL" ? " (candle sama dengan SL)" : " (sebelum SL diperhatikan)")}`;
@@ -1488,9 +1510,15 @@ async function runDashboard(){
     const data = await loadDashboard();
     render(data);
     const updated = Date.parse(data.engine?.timestamp || "");
-    if(!Number.isFinite(updated) || Date.now() - updated > 15 * 60 * 1000){
+    const candleClosed = Date.parse(data.data_health?.last_candle_close || "");
+    if(Number.isFinite(candleClosed) && Date.now()-candleClosed > 10*60*1000){
       setText("engineStatus", "STALE DATA");
-      const reason = Number.isFinite(updated) ? `Data engine lebih 15 minit lama (${Math.floor((Date.now() - updated) / 60000)} minit)` : "Masa kemas kini engine tidak sah";
+      setExplanation("finalSignal", "WAIT", "Candle M5 lebih 10 minit lama selepas penutupan");
+      setDirectionClass("finalSignal", "WAIT");
+    }
+    if(!Number.isFinite(updated) || Date.now() - updated > 15 * 60 * 1000 || updated-Date.now()>60*1000){
+      setText("engineStatus", "STALE DATA");
+      const reason = !Number.isFinite(updated) ? "Masa kemas kini engine tidak sah" : updated-Date.now()>60*1000 ? "Masa engine mendahului masa semasa" : `Data engine lebih 15 minit lama (${Math.floor((Date.now() - updated) / 60000)} minit)`;
       setExplanation("finalSignal", "WAIT", reason);
       setDirectionClass("finalSignal", "WAIT");
     }

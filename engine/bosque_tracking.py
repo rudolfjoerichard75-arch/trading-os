@@ -5,6 +5,8 @@ import csv, json, math, os, hashlib
 from pathlib import Path
 import pandas as pd
 
+from bosque_execution import MODEL, assess, annotate
+
 VERSION = 'SCALPING V3'
 
 def load(path, default=None):
@@ -21,6 +23,7 @@ def stamp(value): return pd.to_datetime(value,utc=True)
 
 def bars(frame):
     df=frame.copy(); df['datetime']=pd.to_datetime(df.datetime,utc=True,errors='raise')
+    if df.datetime.isna().any(): raise ValueError('Missing candle timestamp')
     for col in ['open','high','low','close']: df[col]=pd.to_numeric(df[col],errors='raise')
     if df[['open','high','low','close']].isna().any().any(): raise ValueError('Missing OHLC')
     if not df[['open','high','low','close']].map(math.isfinite).all().all(): raise ValueError('Nonfinite OHLC')
@@ -55,7 +58,7 @@ def new_trade(sig, plan, at, costs=None):
         'tp1':plan['tp1'],'tp2':plan['tp2'],'tp3':plan['tp3'],'result':'PENDING','bars_held':0,
         'cost_pips':costs,'cost_status':'GROSS_ONLY_UNCONFIGURED' if costs is None else 'CONFIGURED',
         'tp1_hit':False,'tp2_hit':False,'tp3_hit':False,'result_pips':None,'result_r':None,'closed_at':None,
-        'execution_model':'NEXT_M5_OPEN_TP2_V1','signal_policy':sig.get('policy') or 'LEGACY_PRICE_ID','parameters':configuration()}
+        'execution_model':MODEL,'signal_policy':sig.get('policy') or 'LEGACY_PRICE_ID','parameters':configuration()}
 
 def advance(trade, df):
     if trade['result'] not in ('PENDING','OPEN'): return
@@ -70,6 +73,10 @@ def advance(trade, df):
             entry=float(r.open)
             trade['next_open']=entry
             trade['execution_checked_at']=r.datetime.isoformat()
+            annotate(trade)
+            if trade.get('execution_model') == MODEL and trade['fill_audit']['status'] != 'PASS':
+                trade.update(result='NOT_ENTERED',exit_reason=trade['fill_audit']['reasons'][0],closed_at=r.datetime.isoformat())
+                return
             if sign*(entry-trade['sl'])<=0 or sign*(trade['tp2']-entry)<=0:
                 reason='OPEN_BEYOND_SL' if sign*(entry-trade['sl'])<=0 else 'OPEN_BEYOND_TP2'
                 trade.update(result='NOT_ENTERED',exit_reason=reason,closed_at=r.datetime.isoformat()); return
@@ -161,12 +168,14 @@ def add_diagnostics(dashboard):
             ('Data berita gagal disahkan; signal ditahan' if news.get('status') in ('ERROR', 'UNKNOWN') else
              'Berita USD high impact dalam tetingkap sekatan' if news.get('filter') == 'BLOCK' else
              'Status news belum tersedia'))
+    if dashboard.get('data_health', {}).get('allowed') is False:
+        reasons['data'] = dashboard['data_health'].get('reason', 'Data M5 belum disahkan')
     dashboard['gate_reasons'] = reasons
     dashboard['diagnostics'] = {
         'limits': limits,
         'risk_distance_pips': risk_value,
         'blocking_reasons': [reasons[k] for k in
-            ['setup', 'score', 'm5_confirmation', 'risk', 'rr', 'news'] if k in reasons]
+            ['data', 'setup', 'score', 'm5_confirmation', 'risk', 'rr', 'news'] if k in reasons]
     }
     return dashboard
 
@@ -175,7 +184,7 @@ def configuration():
     from bosque_signals import POLICY
     return {'min_risk_pips':e.MIN_RISK_PIPS,'max_risk_pips':e.MAX_RISK_PIPS,
             'min_score':e.MIN_SCORE,'min_rr':e.MIN_RR,'signal_policy':POLICY,
-            'execution_model':'NEXT_M5_OPEN_TP2_V1'}
+            'execution_model':MODEL}
 
 
 def sync(dashboard, frame, sent=None):
@@ -193,18 +202,37 @@ def sync(dashboard, frame, sent=None):
         audit_unfilled(t,df)
         review_legacy_execution(t,df,at)
         resolve_legacy_timezone(t,df,dashboard.get('market_data_audit'),at)
+        annotate(t)
     sig=dashboard['signal']; plan=dashboard['plan']
-    if sig.get('active') and sent is True and not any(t.get('signal_id')==sig['id'] for t in current):
-        t=new_trade({**sig,'session':dashboard['session'],'policy':sig.get('delivery',{}).get('policy')},plan,at,cost())
-        t['telegram_status']='SENT'
-        observe(t,df)
+    state=load(directory/'state.json')
+    acknowledged=state.get('delivered_alerts', [])
+    if sig.get('active') and sent is True and not any(x['signal']['id']==sig['id'] for x in acknowledged):
+        acknowledged.append({'signal':{**sig,'policy':sig.get('delivery',{}).get('policy')},
+                             'plan':plan,'session':dashboard['session'],
+                             'timestamp':sig.get('acknowledged_at') or at})
+    for item in acknowledged:
+        saved_sig=item['signal']
+        if any(t.get('signal_id')==saved_sig['id'] for t in current): continue
+        t=new_trade({**saved_sig,'session':item['session']},item['plan'],item['timestamp'],cost())
+        t['telegram_status']='SENT';t['telegram_receipt']=item.get('receipt')
+        t['source_candle']=item.get('source_candle')
+        advance(t,df);observe(t,df);annotate(t)
         journal['trades'].append(t);current.append(t)
     # A bounded snapshot makes future fill/target audits reproducible, using the
     # same provider and UTC candles as the live engine (no extra API request).
     snapshot=directory/'market_snapshot.csv';tmp=snapshot.with_suffix('.tmp')
     df[['datetime','open','high','low','close']].to_csv(tmp,index=False);tmp.replace(snapshot)
     journal.update(version=VERSION,last_updated=at); save(path,journal)
-    summary=stats(current); forward={**summary,'version':VERSION,'last_updated':at,'execution':'Next M5 open after alert; NOT_ENTERED if open beyond SL/TP2. TP2 paper exit; target-path tracking continues separately to TP3/SL/72 bars.', 'signal_policy':'DIRECTION_SETUP_CYCLE_V1'}
+    # Journal is durable before acknowledging the outbox as consumed.
+    if state.get('delivered_alerts'):
+        state['delivered_alerts']=[]
+        save(directory/'state.json',state)
+    summary=stats(current)
+    groups={model:stats([x for x in current if (x.get('execution_model') or 'UNSPECIFIED')==model])
+            for model in sorted({(x.get('execution_model') or 'UNSPECIFIED') for x in current})}
+    summary['execution_groups']=groups
+    summary['historical_fill_exceptions']=sum(x.get('fill_audit',{}).get('status')=='OUTSIDE_LIMITS' and not x.get('fill_audit',{}).get('enforced') for x in current)
+    forward={**summary,'version':VERSION,'last_updated':at,'execution':'New fills: next M5 open after alert, risk 20–80 pips and RR TP2 >= 2 required; otherwise NOT_ENTERED. Old outcomes retained and grouped separately. TP2 exit; separate target paths.', 'signal_policy':'DIRECTION_SETUP_CYCLE_V1'}
     save(directory/'forward_test.json',forward)
     dashboard['journal']={**summary,'status':'ACTIVE','file':'engine/trade_journal.json','recorded_signals':len(current)}
     dashboard['journal_recent']=current[-30:][::-1]; dashboard['signal_audit']=signal_summary(current); dashboard['recorded_signal']=current[-1] if current else None; dashboard['forward_test']=forward; dashboard['expectancy']=summary
@@ -216,20 +244,25 @@ def sync(dashboard, frame, sent=None):
     dashboard['sop']['fresh_zone']='NOT TRACKED'
     dashboard['filters']['session_blocking']=False
     dashboard['services']={'journal':{'status':'ACTIVE'},'telegram':{'status':'SENT' if sent is True else 'FAILED' if sent is False else sig.get('delivery',{}).get('status','NOT_ATTEMPTED'),'checked_at':at,'delivery_tested':sent is True}}
+    dashboard['services']['telegram']['uncertain_deliveries']=state.get('uncertain_deliveries',[])
+    cycle=state.get('signal_cycle') or {}
+    if cycle.get('sent_at'): dashboard['services']['telegram']['last_confirmed_at']=cycle['sent_at']
     save(directory/'telegram_health.json',dashboard['services']['telegram'])
+    dashboard['services']['engine']=dashboard.get('data_health', {'status':'NOT_CHECKED'})
+    save(directory/'engine_health.json',dashboard['services']['engine'])
     # Persist observed news state; not a fabricated historical calendar.
     news=dashboard.get('news',{}); save(directory/'news_cache.json',{'observed_at':at,'news':news})
     archive=directory/'news_archive'/('v3-'+stamp(at).strftime('%Y-%m-%d')+'.json')
     observations=load(archive,{'version':VERSION,'observations':[]})
     if not observations['observations'] or observations['observations'][-1]['news']!=news:
         observations['observations'].append({'observed_at':at,'news':news});save(archive,observations)
-    fields=['signal_id','timestamp','direction','opportunity','score','entry','planned_entry','sl','tp1','tp2','tp3','result','result_pips','result_r','closed_at','exit_reason','cost_status','telegram_status','next_open','execution_checked_at','signal_policy','signal_path','execution_audit','parameters','review_status','review_reason','historical_replay','original_execution','timezone_repair','performance_group']
+    fields=['signal_id','timestamp','direction','opportunity','score','entry','planned_entry','sl','tp1','tp2','tp3','result','result_pips','result_r','closed_at','exit_reason','cost_status','telegram_status','next_open','execution_checked_at','signal_policy','signal_path','execution_audit','parameters','review_status','review_reason','historical_replay','original_execution','timezone_repair','performance_group','execution_model','fill_audit']
     target=e.REPO_DIR/'paper_journal.csv';tmp=target.with_suffix('.tmp')
     with tmp.open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');writer.writeheader()
         for item in journal['trades']:
             record=dict(item)
-            for key in ['signal_path','execution_audit','parameters','historical_replay','original_execution','timezone_repair']:
+            for key in ['signal_path','execution_audit','parameters','historical_replay','original_execution','timezone_repair','fill_audit']:
                 if key in record: record[key]=json.dumps(record[key],ensure_ascii=False,allow_nan=False)
             writer.writerow(record)
     tmp.replace(target)

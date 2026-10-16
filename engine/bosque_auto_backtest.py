@@ -44,8 +44,20 @@ def main():
         df,requests_count=download_history();directory=e.REPO_DIR/'backtest_data';directory.mkdir(exist_ok=True)
         path=directory/'XAUUSD_M5_auto.csv';df.to_csv(path,index=False)
         cost=t.cost();news=os.getenv('HISTORICAL_NEWS_PATH','').strip() or None
+        news_fetch={'status':'SUPPLIED_FILE' if news else 'NOT_ATTEMPTED'}
+        if news is None:
+            from bosque_news import historical_calendar
+            try:
+                calendar=historical_calendar(df.iloc[0].datetime,
+                    df.iloc[-1].datetime+pd.Timedelta(minutes=5),requests.get,e.FINANCECALENDAR_URL)
+                news_path=directory/'news_auto.json';t.save(news_path,calendar);news=str(news_path)
+                news_fetch={'status':'PROVIDER_SCHEDULE','events':calendar['events_count'],
+                            'requests':calendar['requests']}
+            except Exception as exc:
+                news_fetch={'status':'UNVERIFIED','error_type':type(exc).__name__,
+                            'reason':'Provider historical coverage could not be verified; replay explicitly excludes news.'}
         args=SimpleNamespace(csv=[str(path)],timezone='UTC',spread_pips=cost or 0,slippage_pips=0,commission_pips=0,split=df.iloc[int(len(df)*.8)].datetime.isoformat(),news=news,gross_only=cost is None)
-        out=b.run(args);out['automation']={'requests':requests_count,'split_rule':'CHRONOLOGICAL_80_20','history_bars':len(df)};t.save(e.ENGINE_DIR/'backtest_results.json',out)
+        out=b.run(args);out['automation']={'requests':requests_count,'split_rule':'CHRONOLOGICAL_80_20','history_bars':len(df),'news_fetch':news_fetch};t.save(e.ENGINE_DIR/'backtest_results.json',out)
     except Exception as exc:
         t.save(e.ENGINE_DIR/'backtest_results.json',{'status':'FAILED','version':t.VERSION,'reason':type(exc).__name__+': '+str(exc),'last_updated':pd.Timestamp.now(tz='UTC').isoformat()});raise
 if __name__=='__main__': main()

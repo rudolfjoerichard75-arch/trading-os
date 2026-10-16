@@ -45,7 +45,7 @@ class V3Tests(unittest.TestCase):
     def test_sl_first_cost_once_and_no_duplicate_bar(self):
         x=trade(2);t.advance(x,row(h=112,l=94));self.assertEqual(x['result'],'LOSS');self.assertEqual(x['result_pips'],-52);self.assertEqual(x['exit_reason'],'SL_AMBIGUOUS');t.advance(x,row());self.assertEqual(x['bars_held'],1)
     def test_next_open_fill(self):
-        x=trade();t.advance(x,row(o=102,h=110,l=101,c=109));self.assertEqual(x['entry'],102);self.assertEqual(x['result_pips'],80)
+        x=trade();x['execution_model']='NEXT_M5_OPEN_TP2_V1';t.advance(x,row(o=102,h=110,l=101,c=109));self.assertEqual(x['entry'],102);self.assertEqual(x['result_pips'],80)
     def test_time_exit_signed_loss(self):
         x=trade();df=pd.concat([row(at=pd.Timestamp('2026-10-01',tz='UTC')+pd.Timedelta(minutes=i*5),c=99) for i in range(72)],ignore_index=True);t.advance(x,df);self.assertEqual(x['result'],'LOSS');self.assertEqual(x['result_pips'],-10)
     def test_gap_unresolved(self):
@@ -65,7 +65,7 @@ class V3Tests(unittest.TestCase):
         df=bars(362);df.loc[359:,'open']=100;df.loc[359:,'close']=100;df.loc[359:,'high']=111;df.loc[359:,'low']=99
         ev={'active':True,'score':80,'plan':{'entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115},'opportunity':'BUY TEST','direction':'BUY','session':'ASIAN'}
         with patch.object(t,'evaluate',return_value=ev): result=b.replay(df,0)
-        self.assertEqual(result['stats']['trades'],1);self.assertEqual(result['trades'][0]['filled_at'],df.iloc[360].datetime.isoformat())
+        self.assertEqual(result['stats']['trades'],1);self.assertEqual(result['trades'][0]['filled_at'],df.iloc[361].datetime.isoformat())
     def test_malformed_news_fails_closed(self):
         from unittest.mock import Mock
         response=Mock(); response.json.return_value={'message':'unavailable'}
@@ -145,6 +145,7 @@ class NewsGateTests(unittest.TestCase):
         with patch.object(e,'now_my',return_value=self.now),patch.object(e.requests,'get',return_value=self.response(invalid_time=True)):
             result=e.fetch_news_calendar()
         self.assertEqual(result['evidence']['skipped_usd_times'],1)
+        self.assertEqual(result['filter'],'BLOCK')
     def test_news_gate_controls_telegram_with_other_gates_passed(self):
         import contextlib,io
         plan={'valid':True,'direction':'BUY','entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115,'risk_pips':50,'tp1_pips':60,'tp2_pips':100,'tp3_pips':150,'rr_tp2':2}
@@ -155,7 +156,8 @@ class NewsGateTests(unittest.TestCase):
                 patches={'ENGINE_DIR':directory,'REPO_DIR':root,'DASHBOARD_FILE':root/'dashboard_data.json','STATE_FILE':directory/'state.json'}
                 for key,value in patches.items():stack.enter_context(patch.object(e,key,value))
                 stack.enter_context(patch.object(e,'now_my',return_value=self.now))
-                stack.enter_context(patch.object(e,'fetch_m5',return_value=bars()))
+                fresh=bars();fresh['datetime']=pd.date_range(end=pd.Timestamp(self.now).floor('5min')-pd.Timedelta(minutes=5),periods=len(fresh),freq='5min')
+                stack.enter_context(patch.object(e,'fetch_m5',return_value=fresh))
                 stack.enter_context(patch.object(e,'detect_m15_setup',return_value=setup))
                 stack.enter_context(patch.object(e,'m5_confirmation',return_value={'confirmed':True,'reason':'M5 bullish BOS'}))
                 stack.enter_context(patch.object(e,'calculate_score',return_value=80))

@@ -25,6 +25,8 @@ on:
       - engine/bosque_backtest.py
       - engine/bosque_tracking.py
       - engine/bosque_signals.py
+      - engine/bosque_execution.py
+      - engine/bosque_news.py
       - engine/bosque_signal_audit.py
       - engine/bosque_engine.py
       - .github/workflows/bosque-auto-backtest.yml
@@ -81,6 +83,7 @@ jobs:
           path: |
             engine/backtest*.json
             backtest_data/XAUUSD_M5_auto.csv
+            backtest_data/news_auto.json
           retention-days: 90
       - if: steps.replay.outcome == 'failure'
         run: exit 1

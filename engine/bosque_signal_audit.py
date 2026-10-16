@@ -48,7 +48,7 @@ def observe(trade, frame, reconstructed=False):
 
 def audit_unfilled(trade, frame):
     """Enrich old cancelled records without rewriting their original outcome."""
-    if trade.get('result') not in ('CANCELLED', 'NOT_ENTERED') or trade.get('execution_audit'):
+    if trade.get('result') not in ('CANCELLED', 'NOT_ENTERED') or trade.get('execution_audit') or trade.get('fill_audit',{}).get('enforced'):
         return
     at = pd.to_datetime(trade['timestamp'], utc=True).ceil('5min')
     row = frame[frame.datetime == at]
@@ -89,6 +89,7 @@ def review_legacy_execution(trade, frame, observed_at):
           for k in ['entry','sl','tp1','tp2','tp3']}
     replay=t.new_trade({'id':trade['signal_id'],'direction':trade['direction']},
                        plan,trade['timestamp'],trade.get('cost_pips'))
+    replay['execution_model']='NEXT_M5_OPEN_TP2_V1'
     t.advance(replay,frame)
     if replay['result'] in ('DATA_GAP','PENDING'):
         return
@@ -125,6 +126,7 @@ def resolve_legacy_timezone(trade, frame, feed_audit, observed_at):
           for k in ['entry','sl','tp1','tp2','tp3']}
     wrong=t.new_trade({'id':trade['signal_id'],'direction':trade['direction']},plan,
                       trade['timestamp'],trade.get('cost_pips'))
+    wrong['execution_model']='NEXT_M5_OPEN_TP2_V1'
     t.advance(wrong,wrong_frame)
     old_result='NOT_ENTERED' if trade['result']=='CANCELLED' else trade['result']
     if wrong['result']!=old_result: return

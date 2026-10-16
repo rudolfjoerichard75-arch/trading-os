@@ -48,6 +48,23 @@ function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
   assert.match(el('journalRecent').innerText,/TP3 kemudian, selepas SL/);
   assert.match(el('journalRecent').innerText,/MYT/);
   assert.match(el('recordedPlan').innerText,/Entry 100.00.*SL 95.00/);
+  const guarded=payload();
+  guarded.expectancy={historical_fill_exceptions:3,execution_groups:{GUARDED_NEXT_M5_OPEN_TP2_V2:{trades:0,cancelled:2,win_rate:null}}};
+  guarded.journal_recent=[{timestamp:'2026-10-01T00:00:30Z',direction:'BUY',planned_entry:100,sl:95,tp1:106,tp2:110,tp3:115,result:'NOT_ENTERED',exit_reason:'FILL_RR_BELOW_MIN',fill_audit:{status:'OUTSIDE_LIMITS',risk_pips:70,rr_tp2:1.14,reasons:['FILL_RR_BELOW_MIN'],enforced:true}}];
+  render(guarded);
+  assert.equal(el('guardedCounts').innerText,'0 / 2');
+  assert.equal(el('guardedWinrate').innerText,'NO CLOSED TRADES');
+  assert.match(el('journalRecent').innerText,/NO ENTRY.*RR TP2 pada harga fill/);
+  assert.match(el('journalRecent').innerText,/Risk fill: 70.00 pips/);
+  guarded.signal={active:true,delivery:{status:'DELIVERY_UNKNOWN'}};
+  guarded.data_health={allowed:false,status:'BLOCKED',reason:'Candle M5 lama'};
+  render(guarded);
+  assert.match(el('finalSignal').innerText,/^WAIT/);
+  assert.equal(el('engineStatus').innerText,'DATA BLOCKED');
+  assert.match(el('signalDelivery').innerText,/Penghantaran Telegram belum disahkan/);
+  c.fetch=async()=>({ok:true,json:async()=>({...payload(),signal:{active:true},data_health:{allowed:true,last_candle_close:'2000-01-01T00:00:00Z'}})});
+  await vm.runInContext('runDashboard()',c);
+  assert.match(el('finalSignal').innerText,/^WAIT \(Candle M5 lebih 10 minit/);
   // A stale snapshot and a failed refresh cannot leave a live BUY/SELL on screen.
   c.fetch=async()=>({ok:true,json:async()=>({...payload(),signal:{active:true},engine:{timestamp:'2000-01-01T00:00:00Z'}})});
   await vm.runInContext('runDashboard()',c);assert.match(el('finalSignal').innerText,/^WAIT \(Data engine lebih 15 minit/);
