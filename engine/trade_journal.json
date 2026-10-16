@@ -699,16 +699,16 @@
       "tp1": 4159.54,
       "tp2": 4167.17,
       "tp3": 4173.99,
-      "result": "OPEN",
-      "bars_held": 10,
+      "result": "WIN",
+      "bars_held": 11,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
       "tp1_hit": true,
-      "tp2_hit": false,
+      "tp2_hit": true,
       "tp3_hit": false,
-      "result_pips": null,
-      "result_r": null,
-      "closed_at": null,
+      "result_pips": 138.673,
+      "result_r": 2.1098,
+      "closed_at": "2026-10-16T02:55:00+00:00",
       "execution_model": "NEXT_M5_OPEN_TP2_V1",
       "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
       "parameters": {
@@ -723,11 +723,15 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 10,
+        "bars_observed": 11,
         "observation_start": "2026-10-16T02:00:00+00:00",
         "targets": {
           "tp1": {
             "bar": "2026-10-16T02:25:00+00:00",
+            "order": "BEFORE_OBSERVED_SL"
+          },
+          "tp2": {
+            "bar": "2026-10-16T02:50:00+00:00",
             "order": "BEFORE_OBSERVED_SL"
           }
         },
@@ -735,14 +739,16 @@
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": null,
-        "last_bar": "2026-10-16T02:45:00+00:00"
+        "last_bar": "2026-10-16T02:50:00+00:00"
       },
       "next_open": 4153.30269,
       "execution_checked_at": "2026-10-16T02:00:00+00:00",
       "filled_at": "2026-10-16T02:00:00+00:00",
-      "last_bar": "2026-10-16T02:45:00+00:00"
+      "last_bar": "2026-10-16T02:50:00+00:00",
+      "exit_price": 4167.17,
+      "exit_reason": "TP2"
     }
   ],
   "last_processed_candle": "2026-10-14T23:20:00+00:00",
-  "last_updated": "2026-10-16T10:50:39.707433+08:00"
+  "last_updated": "2026-10-16T10:55:34.829852+08:00"
 }
