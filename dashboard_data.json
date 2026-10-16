@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-16T10:05:34.913245+08:00"
+    "timestamp": "2026-10-16T10:10:32.133193+08:00"
   },
-  "latest_price": 4155.06,
+  "latest_price": 4154.74,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4177.80542,
       "low": 4135.71091,
       "width": 42.0945099999999,
-      "location": 0.4596459253237573
+      "location": 0.4520563370377762
     }
   },
   "volatility": {
-    "atr": 4.02,
-    "atr_pips": 40.2,
+    "atr": 4.01,
+    "atr_pips": 40.1,
     "condition": "NORMAL"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-16T10:05:35.339354+08:00",
+      "checked_at": "2026-10-16T10:10:32.531422+08:00",
       "requested_from": "2026-10-15",
       "requested_to": "2026-10-18",
       "events_received": 3,
@@ -79,7 +79,7 @@
     "direction": "BUY",
     "opportunity": "BUY PULLBACK",
     "score": 35,
-    "timestamp": "2026-10-16T10:05:34.913245+08:00",
+    "timestamp": "2026-10-16T10:10:32.133193+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -89,7 +89,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 83.8 pips outside 20-80"
+    "reason": "Risk 80.6 pips outside 20-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -138,7 +138,7 @@
         "high": 4172.48875,
         "low": 4147.48455,
         "width": 25.00420000000031,
-        "location": 0.30294630502074343
+        "location": 0.29016925156571954
       }
     }
   },
@@ -214,7 +214,8 @@
     "open_trades": 1,
     "unresolved": 0,
     "cancelled": 0,
-    "review_required": 5,
+    "review_required": 0,
+    "reconstructed": 5,
     "cost_status": "GROSS_OR_UNCONFIGURED"
   },
   "backtest": {
@@ -2130,7 +2131,7 @@
   "gate_reasons": {
     "score": "Skor 35/100 < minimum 70",
     "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
-    "risk": "SL 83.8 pips melebihi had 80 pips",
+    "risk": "SL 80.6 pips melebihi had 80 pips",
     "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
@@ -2140,11 +2141,11 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 83.8,
+    "risk_distance_pips": 80.6,
     "blocking_reasons": [
       "Skor 35/100 < minimum 70",
       "BOS atau candle + momentum BUY belum sah",
-      "SL 83.8 pips melebihi had 80 pips",
+      "SL 80.6 pips melebihi had 80 pips",
       "Belum dikira: risk tidak lulus"
     ]
   },
@@ -2206,7 +2207,44 @@
         "utc_open": 4161.10185,
         "legacy_open": 4156.93224
       }
-    ]
+    ],
+    "legacy_clock_offset_minutes": 660.0,
+    "clock_offset_evidence": {
+      "method": "UNIQUE_EXACT_OPEN_PRICE_MATCHES",
+      "matches": [
+        {
+          "signal_id": "7cd7d9d1b22333dc",
+          "legacy_label": "2026-10-15T17:50:00+00:00",
+          "matching_utc_bar": "2026-10-15T06:50:00+00:00",
+          "offset_minutes": 660.0
+        },
+        {
+          "signal_id": "48c81fd13ee9a000",
+          "legacy_label": "2026-10-15T17:55:00+00:00",
+          "matching_utc_bar": "2026-10-15T06:55:00+00:00",
+          "offset_minutes": 660.0
+        },
+        {
+          "signal_id": "90600fbaa2bdf1b9",
+          "legacy_label": "2026-10-15T18:25:00+00:00",
+          "matching_utc_bar": "2026-10-15T07:25:00+00:00",
+          "offset_minutes": 660.0
+        },
+        {
+          "signal_id": "5e06e60508198921",
+          "legacy_label": "2026-10-15T18:40:00+00:00",
+          "matching_utc_bar": "2026-10-15T07:40:00+00:00",
+          "offset_minutes": 660.0
+        },
+        {
+          "signal_id": "83553bb3dfac8c30",
+          "legacy_label": "2026-10-15T19:25:00+00:00",
+          "matching_utc_bar": "2026-10-15T08:25:00+00:00",
+          "offset_minutes": 660.0
+        }
+      ],
+      "count": 5
+    }
   },
   "journal": {
     "status": "ACTIVE",
@@ -2223,7 +2261,8 @@
     "open_trades": 1,
     "unresolved": 0,
     "cancelled": 0,
-    "review_required": 5,
+    "review_required": 0,
+    "reconstructed": 5,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "file": "engine/trade_journal.json",
     "recorded_signals": 7
@@ -2244,7 +2283,7 @@
       "tp2": 4167.17,
       "tp3": 4173.99,
       "result": "OPEN",
-      "bars_held": 1,
+      "bars_held": 2,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
       "tp1_hit": false,
@@ -2267,19 +2306,19 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 1,
+        "bars_observed": 2,
         "observation_start": "2026-10-16T02:00:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": null,
-        "last_bar": "2026-10-16T02:00:00+00:00"
+        "last_bar": "2026-10-16T02:05:00+00:00"
       },
       "next_open": 4153.30269,
       "execution_checked_at": "2026-10-16T02:00:00+00:00",
       "filled_at": "2026-10-16T02:00:00+00:00",
-      "last_bar": "2026-10-16T02:00:00+00:00"
+      "last_bar": "2026-10-16T02:05:00+00:00"
     },
     {
       "strategy_version": "SCALPING V3",
@@ -2357,25 +2396,25 @@
       "score": 70,
       "session": "OFF SESSION",
       "planned_entry": 4160.83,
-      "entry": 4156.93224,
+      "entry": 4161.10185,
       "sl": 4156.36,
       "tp1": 4166.83,
       "tp2": 4172.83,
       "tp3": 4178.83,
-      "result": "LOSS",
-      "bars_held": 1,
+      "result": "WIN",
+      "bars_held": 6,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
-      "tp1_hit": false,
+      "tp1_hit": true,
       "tp3_hit": false,
-      "result_pips": -5.722,
-      "result_r": -1.0,
-      "closed_at": "2026-10-15T19:30:00+00:00",
+      "result_pips": 117.281,
+      "result_r": 2.4733,
+      "closed_at": "2026-10-15T19:55:00+00:00",
       "telegram_status": "SENT",
       "filled_at": "2026-10-15T19:25:00+00:00",
-      "last_bar": "2026-10-15T19:25:00+00:00",
-      "exit_price": 4156.36,
-      "exit_reason": "SL",
+      "last_bar": "2026-10-15T19:50:00+00:00",
+      "exit_price": 4172.83,
+      "exit_reason": "TP2",
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "WINDOW_ENDED",
@@ -2398,8 +2437,8 @@
         "last_bar": "2026-10-16T01:20:00+00:00"
       },
       "legacy_review_checked": "2026-10-16T05:30:42.934071+08:00",
-      "review_status": "REVIEW_REQUIRED",
-      "review_reason": "CURRENT_UTC_HISTORY_CONTRADICTS_ORIGINAL_EXECUTION",
+      "review_status": "RESOLVED_TIMEZONE",
+      "review_reason": "LEGACY_EXCHANGE_CLOCK_MISREAD_AS_UTC",
       "history_observed_at": "2026-10-16T05:30:42.934071+08:00",
       "historical_replay": {
         "strategy_version": "SCALPING V3",
@@ -2433,6 +2472,34 @@
         "last_bar": "2026-10-15T19:50:00+00:00",
         "exit_price": 4172.83,
         "exit_reason": "TP2"
+      },
+      "original_execution": {
+        "result": "LOSS",
+        "entry": 4156.93224,
+        "filled_at": "2026-10-15T19:25:00+00:00",
+        "last_bar": "2026-10-15T19:25:00+00:00",
+        "bars_held": 1,
+        "exit_price": 4156.36,
+        "exit_reason": "SL",
+        "closed_at": "2026-10-15T19:30:00+00:00",
+        "result_pips": -5.722,
+        "result_r": -1.0,
+        "tp1_hit": false,
+        "tp2_hit": null,
+        "tp3_hit": false,
+        "next_open": null,
+        "execution_checked_at": null
+      },
+      "tp2_hit": true,
+      "next_open": 4161.10185,
+      "execution_checked_at": "2026-10-15T19:25:00+00:00",
+      "performance_group": "HISTORICAL_RECONSTRUCTION",
+      "execution_model": "UTC_RECONSTRUCTED_NEXT_M5_OPEN_TP2_V1",
+      "repaired_at": "2026-10-16T10:10:32.133193+08:00",
+      "timezone_repair": {
+        "provider_zone": null,
+        "offset_hours": 11.0,
+        "original_outcome_reproduced": true
       }
     },
     {
@@ -2444,22 +2511,22 @@
       "score": 75,
       "session": "OFF SESSION",
       "planned_entry": 4158.26,
-      "entry": null,
+      "entry": 4157.52631,
       "sl": 4151.85,
       "tp1": 4164.26,
       "tp2": 4171.09,
       "tp3": 4177.5,
-      "result": "CANCELLED",
-      "bars_held": 0,
+      "result": "WIN",
+      "bars_held": 14,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
-      "tp1_hit": false,
+      "tp1_hit": true,
       "tp3_hit": false,
-      "result_pips": null,
-      "result_r": null,
-      "closed_at": "2026-10-15T18:40:00+00:00",
+      "result_pips": 135.637,
+      "result_r": 2.3895,
+      "closed_at": "2026-10-15T19:50:00+00:00",
       "telegram_status": "SENT",
-      "exit_reason": "NEXT_OPEN_OUTSIDE_PLAN",
+      "exit_reason": "TP2",
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TP3_OBSERVED",
@@ -2492,8 +2559,8 @@
         "reason": "CURRENT_HISTORY_DIFFERS_FROM_ORIGINAL_RESULT"
       },
       "legacy_review_checked": "2026-10-16T05:30:42.934071+08:00",
-      "review_status": "REVIEW_REQUIRED",
-      "review_reason": "CURRENT_UTC_HISTORY_CONTRADICTS_ORIGINAL_EXECUTION",
+      "review_status": "RESOLVED_TIMEZONE",
+      "review_reason": "LEGACY_EXCHANGE_CLOCK_MISREAD_AS_UTC",
       "history_observed_at": "2026-10-16T05:30:42.934071+08:00",
       "historical_replay": {
         "strategy_version": "SCALPING V3",
@@ -2527,6 +2594,37 @@
         "last_bar": "2026-10-15T19:45:00+00:00",
         "exit_price": 4171.09,
         "exit_reason": "TP2"
+      },
+      "original_execution": {
+        "result": "CANCELLED",
+        "entry": null,
+        "filled_at": null,
+        "last_bar": null,
+        "bars_held": 0,
+        "exit_price": null,
+        "exit_reason": "NEXT_OPEN_OUTSIDE_PLAN",
+        "closed_at": "2026-10-15T18:40:00+00:00",
+        "result_pips": null,
+        "result_r": null,
+        "tp1_hit": false,
+        "tp2_hit": null,
+        "tp3_hit": false,
+        "next_open": null,
+        "execution_checked_at": null
+      },
+      "filled_at": "2026-10-15T18:40:00+00:00",
+      "last_bar": "2026-10-15T19:45:00+00:00",
+      "exit_price": 4171.09,
+      "tp2_hit": true,
+      "next_open": 4157.52631,
+      "execution_checked_at": "2026-10-15T18:40:00+00:00",
+      "performance_group": "HISTORICAL_RECONSTRUCTION",
+      "execution_model": "UTC_RECONSTRUCTED_NEXT_M5_OPEN_TP2_V1",
+      "repaired_at": "2026-10-16T10:10:32.133193+08:00",
+      "timezone_repair": {
+        "provider_zone": null,
+        "offset_hours": 11.0,
+        "original_outcome_reproduced": true
       }
     },
     {
@@ -2538,22 +2636,22 @@
       "score": 70,
       "session": "OFF SESSION",
       "planned_entry": 4155.48,
-      "entry": null,
+      "entry": 4157.72172,
       "sl": 4151.79,
       "tp1": 4161.48,
       "tp2": 4167.48,
       "tp3": 4173.48,
-      "result": "CANCELLED",
-      "bars_held": 0,
+      "result": "WIN",
+      "bars_held": 16,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
-      "tp1_hit": false,
+      "tp1_hit": true,
       "tp3_hit": false,
-      "result_pips": null,
-      "result_r": null,
-      "closed_at": "2026-10-15T18:25:00+00:00",
+      "result_pips": 97.583,
+      "result_r": 1.6451,
+      "closed_at": "2026-10-15T19:45:00+00:00",
       "telegram_status": "SENT",
-      "exit_reason": "NEXT_OPEN_OUTSIDE_PLAN",
+      "exit_reason": "TP2",
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TP3_OBSERVED",
@@ -2586,8 +2684,8 @@
         "reason": "CURRENT_HISTORY_DIFFERS_FROM_ORIGINAL_RESULT"
       },
       "legacy_review_checked": "2026-10-16T05:30:42.934071+08:00",
-      "review_status": "REVIEW_REQUIRED",
-      "review_reason": "CURRENT_UTC_HISTORY_CONTRADICTS_ORIGINAL_EXECUTION",
+      "review_status": "RESOLVED_TIMEZONE",
+      "review_reason": "LEGACY_EXCHANGE_CLOCK_MISREAD_AS_UTC",
       "history_observed_at": "2026-10-16T05:30:42.934071+08:00",
       "historical_replay": {
         "strategy_version": "SCALPING V3",
@@ -2621,6 +2719,37 @@
         "last_bar": "2026-10-15T19:40:00+00:00",
         "exit_price": 4167.48,
         "exit_reason": "TP2"
+      },
+      "original_execution": {
+        "result": "CANCELLED",
+        "entry": null,
+        "filled_at": null,
+        "last_bar": null,
+        "bars_held": 0,
+        "exit_price": null,
+        "exit_reason": "NEXT_OPEN_OUTSIDE_PLAN",
+        "closed_at": "2026-10-15T18:25:00+00:00",
+        "result_pips": null,
+        "result_r": null,
+        "tp1_hit": false,
+        "tp2_hit": null,
+        "tp3_hit": false,
+        "next_open": null,
+        "execution_checked_at": null
+      },
+      "filled_at": "2026-10-15T18:25:00+00:00",
+      "last_bar": "2026-10-15T19:40:00+00:00",
+      "exit_price": 4167.48,
+      "tp2_hit": true,
+      "next_open": 4157.72172,
+      "execution_checked_at": "2026-10-15T18:25:00+00:00",
+      "performance_group": "HISTORICAL_RECONSTRUCTION",
+      "execution_model": "UTC_RECONSTRUCTED_NEXT_M5_OPEN_TP2_V1",
+      "repaired_at": "2026-10-16T10:10:32.133193+08:00",
+      "timezone_repair": {
+        "provider_zone": null,
+        "offset_hours": 11.0,
+        "original_outcome_reproduced": true
       }
     },
     {
@@ -2632,22 +2761,22 @@
       "score": 80,
       "session": "OFF SESSION",
       "planned_entry": 4153.51,
-      "entry": null,
+      "entry": 4154.30967,
       "sl": 4147.67,
       "tp1": 4159.51,
       "tp2": 4165.51,
       "tp3": 4171.51,
-      "result": "CANCELLED",
-      "bars_held": 0,
+      "result": "WIN",
+      "bars_held": 22,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
-      "tp1_hit": false,
+      "tp1_hit": true,
       "tp3_hit": false,
-      "result_pips": null,
-      "result_r": null,
-      "closed_at": "2026-10-15T17:55:00+00:00",
+      "result_pips": 112.003,
+      "result_r": 1.6869,
+      "closed_at": "2026-10-15T19:45:00+00:00",
       "telegram_status": "SENT",
-      "exit_reason": "NEXT_OPEN_OUTSIDE_PLAN",
+      "exit_reason": "TP2",
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TP3_OBSERVED",
@@ -2680,8 +2809,8 @@
         "reason": "CURRENT_HISTORY_DIFFERS_FROM_ORIGINAL_RESULT"
       },
       "legacy_review_checked": "2026-10-16T05:30:42.934071+08:00",
-      "review_status": "REVIEW_REQUIRED",
-      "review_reason": "CURRENT_UTC_HISTORY_CONTRADICTS_ORIGINAL_EXECUTION",
+      "review_status": "RESOLVED_TIMEZONE",
+      "review_reason": "LEGACY_EXCHANGE_CLOCK_MISREAD_AS_UTC",
       "history_observed_at": "2026-10-16T05:30:42.934071+08:00",
       "historical_replay": {
         "strategy_version": "SCALPING V3",
@@ -2715,6 +2844,37 @@
         "last_bar": "2026-10-15T19:40:00+00:00",
         "exit_price": 4165.51,
         "exit_reason": "TP2"
+      },
+      "original_execution": {
+        "result": "CANCELLED",
+        "entry": null,
+        "filled_at": null,
+        "last_bar": null,
+        "bars_held": 0,
+        "exit_price": null,
+        "exit_reason": "NEXT_OPEN_OUTSIDE_PLAN",
+        "closed_at": "2026-10-15T17:55:00+00:00",
+        "result_pips": null,
+        "result_r": null,
+        "tp1_hit": false,
+        "tp2_hit": null,
+        "tp3_hit": false,
+        "next_open": null,
+        "execution_checked_at": null
+      },
+      "filled_at": "2026-10-15T17:55:00+00:00",
+      "last_bar": "2026-10-15T19:40:00+00:00",
+      "exit_price": 4165.51,
+      "tp2_hit": true,
+      "next_open": 4154.30967,
+      "execution_checked_at": "2026-10-15T17:55:00+00:00",
+      "performance_group": "HISTORICAL_RECONSTRUCTION",
+      "execution_model": "UTC_RECONSTRUCTED_NEXT_M5_OPEN_TP2_V1",
+      "repaired_at": "2026-10-16T10:10:32.133193+08:00",
+      "timezone_repair": {
+        "provider_zone": null,
+        "offset_hours": 11.0,
+        "original_outcome_reproduced": true
       }
     },
     {
@@ -2726,22 +2886,22 @@
       "score": 70,
       "session": "OFF SESSION",
       "planned_entry": 4151.99,
-      "entry": null,
+      "entry": 4153.86279,
       "sl": 4145.41,
       "tp1": 4157.99,
       "tp2": 4165.13,
       "tp3": 4171.7,
-      "result": "CANCELLED",
-      "bars_held": 0,
+      "result": "WIN",
+      "bars_held": 23,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
-      "tp1_hit": false,
+      "tp1_hit": true,
       "tp3_hit": false,
-      "result_pips": null,
-      "result_r": null,
-      "closed_at": "2026-10-15T17:50:00+00:00",
+      "result_pips": 112.672,
+      "result_r": 1.333,
+      "closed_at": "2026-10-15T19:45:00+00:00",
       "telegram_status": "SENT",
-      "exit_reason": "NEXT_OPEN_OUTSIDE_PLAN",
+      "exit_reason": "TP2",
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TP3_OBSERVED",
@@ -2774,8 +2934,8 @@
         "reason": "CURRENT_HISTORY_DIFFERS_FROM_ORIGINAL_RESULT"
       },
       "legacy_review_checked": "2026-10-16T05:30:42.934071+08:00",
-      "review_status": "REVIEW_REQUIRED",
-      "review_reason": "CURRENT_UTC_HISTORY_CONTRADICTS_ORIGINAL_EXECUTION",
+      "review_status": "RESOLVED_TIMEZONE",
+      "review_reason": "LEGACY_EXCHANGE_CLOCK_MISREAD_AS_UTC",
       "history_observed_at": "2026-10-16T05:30:42.934071+08:00",
       "historical_replay": {
         "strategy_version": "SCALPING V3",
@@ -2809,6 +2969,37 @@
         "last_bar": "2026-10-15T19:40:00+00:00",
         "exit_price": 4165.13,
         "exit_reason": "TP2"
+      },
+      "original_execution": {
+        "result": "CANCELLED",
+        "entry": null,
+        "filled_at": null,
+        "last_bar": null,
+        "bars_held": 0,
+        "exit_price": null,
+        "exit_reason": "NEXT_OPEN_OUTSIDE_PLAN",
+        "closed_at": "2026-10-15T17:50:00+00:00",
+        "result_pips": null,
+        "result_r": null,
+        "tp1_hit": false,
+        "tp2_hit": null,
+        "tp3_hit": false,
+        "next_open": null,
+        "execution_checked_at": null
+      },
+      "filled_at": "2026-10-15T17:50:00+00:00",
+      "last_bar": "2026-10-15T19:40:00+00:00",
+      "exit_price": 4165.13,
+      "tp2_hit": true,
+      "next_open": 4153.86279,
+      "execution_checked_at": "2026-10-15T17:50:00+00:00",
+      "performance_group": "HISTORICAL_RECONSTRUCTION",
+      "execution_model": "UTC_RECONSTRUCTED_NEXT_M5_OPEN_TP2_V1",
+      "repaired_at": "2026-10-16T10:10:32.133193+08:00",
+      "timezone_repair": {
+        "provider_zone": null,
+        "offset_hours": 11.0,
+        "original_outcome_reproduced": true
       }
     }
   ],
@@ -2837,7 +3028,7 @@
     "tp2": 4167.17,
     "tp3": 4173.99,
     "result": "OPEN",
-    "bars_held": 1,
+    "bars_held": 2,
     "cost_pips": null,
     "cost_status": "GROSS_ONLY_UNCONFIGURED",
     "tp1_hit": false,
@@ -2860,19 +3051,19 @@
     "signal_path": {
       "model": "M5_TARGET_PATH_V1",
       "status": "TRACKING",
-      "bars_observed": 1,
+      "bars_observed": 2,
       "observation_start": "2026-10-16T02:00:00+00:00",
       "targets": {},
       "source": "FORWARD_OBSERVED",
       "partial_signal_bar_excluded": true,
       "max_bars": 72,
       "sl_first_at": null,
-      "last_bar": "2026-10-16T02:00:00+00:00"
+      "last_bar": "2026-10-16T02:05:00+00:00"
     },
     "next_open": 4153.30269,
     "execution_checked_at": "2026-10-16T02:00:00+00:00",
     "filled_at": "2026-10-16T02:00:00+00:00",
-    "last_bar": "2026-10-16T02:00:00+00:00"
+    "last_bar": "2026-10-16T02:05:00+00:00"
   },
   "forward_test": {
     "status": "PAPER SIMULATION",
@@ -2889,10 +3080,11 @@
     "open_trades": 1,
     "unresolved": 0,
     "cancelled": 0,
-    "review_required": 5,
+    "review_required": 0,
+    "reconstructed": 5,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-16T10:05:34.913245+08:00",
+    "last_updated": "2026-10-16T10:10:32.133193+08:00",
     "execution": "Next M5 open after alert; NOT_ENTERED if open beyond SL/TP2. TP2 paper exit; target-path tracking continues separately to TP3/SL/72 bars.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -2902,7 +3094,7 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-16T10:05:34.913245+08:00",
+      "checked_at": "2026-10-16T10:10:32.133193+08:00",
       "delivery_tested": false
     }
   }
