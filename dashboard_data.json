@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-16T16:05:34.382213+08:00"
+    "timestamp": "2026-10-16T16:10:46.431574+08:00"
   },
-  "latest_price": 4182.01,
+  "latest_price": 4183.16,
   "session": "LONDON",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4190.15421,
       "low": 4144.04708,
       "width": 46.107129999999415,
-      "location": 0.8234661320277324
+      "location": 0.8482412589983375
     }
   },
   "volatility": {
-    "atr": 3.59,
-    "atr_pips": 35.9,
+    "atr": 3.67,
+    "atr_pips": 36.7,
     "condition": "NORMAL"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-16T16:05:34.879071+08:00",
+      "checked_at": "2026-10-16T16:10:47.037190+08:00",
       "requested_from": "2026-10-15",
       "requested_to": "2026-10-18",
       "events_received": 3,
@@ -71,15 +71,15 @@
     "type": "SELL LIQUIDITY SWEEP",
     "direction": "SELL",
     "valid": true,
-    "score": 75
+    "score": 50
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "SELL",
     "opportunity": "SELL LIQUIDITY SWEEP",
-    "score": 75,
-    "timestamp": "2026-10-16T16:05:34.382213+08:00",
+    "score": 50,
+    "timestamp": "2026-10-16T16:10:46.431574+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -88,13 +88,26 @@
     }
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 84.1 pips outside 20-80"
+    "valid": true,
+    "direction": "SELL",
+    "entry": 4183.16,
+    "sl": 4190.44,
+    "risk_pips": 72.9,
+    "tp1": 4177.16,
+    "tp2": 4168.58,
+    "tp3": 4161.3,
+    "tp1_pips": 60,
+    "tp2_pips": 145.7,
+    "tp3_pips": 218.6,
+    "rr_tp1": 0.82,
+    "rr_tp2": 2.0,
+    "rr_tp3": 3.0,
+    "risk_level": "MEDIUM"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 145.7,
+    "tp3_pips": 218.6
   },
   "h1": {
     "direction": "BULLISH",
@@ -138,29 +151,29 @@
         "high": 4190.15421,
         "low": 4163.19368,
         "width": 26.96052999999938,
-        "location": 0.6980968104113583
+        "location": 0.7404665264369782
       }
     }
   },
   "m5": {
     "direction": "BULLISH",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4189.71007,
     "swing_low": 4182.32257,
     "confirmation": {
-      "confirmed": true,
-      "bos": "BEARISH BOS",
+      "confirmed": false,
+      "bos": null,
       "candle": false,
-      "momentum": "NEUTRAL",
-      "reason": "M5 bearish BOS"
+      "momentum": "BULLISH",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
-    "score": true,
+    "score": false,
     "setup": true,
-    "m5_confirmation": true,
-    "risk": false,
-    "rr": false,
+    "m5_confirmation": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": true,
     "session_blocking": false
@@ -168,14 +181,14 @@
   "confirmations": {
     "h1_bias": "BULLISH",
     "m15_setup": "SELL LIQUIDITY SWEEP",
-    "m5_confirmation": "M5 bearish BOS",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 72.9,
+    "risk_level": "MEDIUM",
     "min_risk_pips": 20,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -194,24 +207,24 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "PREFERRED",
-    "risk": "UNKNOWN",
+    "risk": "MEDIUM",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "m5_confirmation": "NO"
   },
   "expectancy": {
     "status": "PAPER SIMULATION",
-    "trades": 2,
+    "trades": 3,
     "wins": 2,
-    "losses": 0,
-    "win_rate": 100.0,
-    "average_r": 2.4338499999999996,
-    "expectancy_r": 2.4338499999999996,
-    "profit_factor": null,
-    "max_drawdown": 0.0,
-    "max_consecutive_losses": 0,
-    "total_pips": 265.197,
-    "open_trades": 1,
+    "losses": 1,
+    "win_rate": 66.67,
+    "average_r": 1.289233333333333,
+    "expectancy_r": 1.289233333333333,
+    "profit_factor": 4.867699999999999,
+    "max_drawdown": 1.0,
+    "max_consecutive_losses": 1,
+    "total_pips": 258.333,
+    "open_trades": 0,
     "unresolved": 0,
     "cancelled": 0,
     "review_required": 0,
@@ -2203,8 +2216,8 @@
     "economic_calendar_url": "https://www.financecalendar.com/"
   },
   "gate_reasons": {
-    "risk": "SL 84.1 pips melebihi had 80 pips",
-    "rr": "Belum dikira: risk tidak lulus"
+    "score": "Skor 50/100 < minimum 70",
+    "m5_confirmation": "BOS atau candle + momentum SELL belum sah"
   },
   "diagnostics": {
     "limits": {
@@ -2213,10 +2226,10 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 84.1,
+    "risk_distance_pips": 72.9,
     "blocking_reasons": [
-      "SL 84.1 pips melebihi had 80 pips",
-      "Belum dikira: risk tidak lulus"
+      "Skor 50/100 < minimum 70",
+      "BOS atau candle + momentum SELL belum sah"
     ]
   },
   "market_data_audit": {
@@ -2318,17 +2331,17 @@
   },
   "journal": {
     "status": "ACTIVE",
-    "trades": 2,
+    "trades": 3,
     "wins": 2,
-    "losses": 0,
-    "win_rate": 100.0,
-    "average_r": 2.4338499999999996,
-    "expectancy_r": 2.4338499999999996,
-    "profit_factor": null,
-    "max_drawdown": 0.0,
-    "max_consecutive_losses": 0,
-    "total_pips": 265.197,
-    "open_trades": 1,
+    "losses": 1,
+    "win_rate": 66.67,
+    "average_r": 1.289233333333333,
+    "expectancy_r": 1.289233333333333,
+    "profit_factor": 4.867699999999999,
+    "max_drawdown": 1.0,
+    "max_consecutive_losses": 1,
+    "total_pips": 258.333,
+    "open_trades": 0,
     "unresolved": 0,
     "cancelled": 0,
     "review_required": 0,
@@ -2347,21 +2360,21 @@
       "score": 75,
       "session": "LONDON",
       "planned_entry": 4188.04,
-      "entry": null,
+      "entry": 4182.38641,
       "sl": 4181.7,
       "tp1": 4194.04,
       "tp2": 4200.73,
       "tp3": 4207.08,
-      "result": "PENDING",
-      "bars_held": 0,
+      "result": "LOSS",
+      "bars_held": 1,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
       "tp1_hit": false,
       "tp2_hit": false,
       "tp3_hit": false,
-      "result_pips": null,
-      "result_r": null,
-      "closed_at": null,
+      "result_pips": -6.864,
+      "result_r": -1.0,
+      "closed_at": "2026-10-16T08:10:00+00:00",
       "execution_model": "NEXT_M5_OPEN_TP2_V1",
       "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
       "parameters": {
@@ -2376,14 +2389,21 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 0,
+        "bars_observed": 1,
         "observation_start": "2026-10-16T08:05:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
-        "sl_first_at": null
-      }
+        "sl_first_at": "2026-10-16T08:05:00+00:00",
+        "last_bar": "2026-10-16T08:05:00+00:00"
+      },
+      "next_open": 4182.38641,
+      "execution_checked_at": "2026-10-16T08:05:00+00:00",
+      "filled_at": "2026-10-16T08:05:00+00:00",
+      "last_bar": "2026-10-16T08:05:00+00:00",
+      "exit_price": 4181.7,
+      "exit_reason": "SL"
     },
     {
       "strategy_version": "SCALPING V3",
@@ -3154,21 +3174,21 @@
     "score": 75,
     "session": "LONDON",
     "planned_entry": 4188.04,
-    "entry": null,
+    "entry": 4182.38641,
     "sl": 4181.7,
     "tp1": 4194.04,
     "tp2": 4200.73,
     "tp3": 4207.08,
-    "result": "PENDING",
-    "bars_held": 0,
+    "result": "LOSS",
+    "bars_held": 1,
     "cost_pips": null,
     "cost_status": "GROSS_ONLY_UNCONFIGURED",
     "tp1_hit": false,
     "tp2_hit": false,
     "tp3_hit": false,
-    "result_pips": null,
-    "result_r": null,
-    "closed_at": null,
+    "result_pips": -6.864,
+    "result_r": -1.0,
+    "closed_at": "2026-10-16T08:10:00+00:00",
     "execution_model": "NEXT_M5_OPEN_TP2_V1",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
     "parameters": {
@@ -3183,35 +3203,42 @@
     "signal_path": {
       "model": "M5_TARGET_PATH_V1",
       "status": "TRACKING",
-      "bars_observed": 0,
+      "bars_observed": 1,
       "observation_start": "2026-10-16T08:05:00+00:00",
       "targets": {},
       "source": "FORWARD_OBSERVED",
       "partial_signal_bar_excluded": true,
       "max_bars": 72,
-      "sl_first_at": null
-    }
+      "sl_first_at": "2026-10-16T08:05:00+00:00",
+      "last_bar": "2026-10-16T08:05:00+00:00"
+    },
+    "next_open": 4182.38641,
+    "execution_checked_at": "2026-10-16T08:05:00+00:00",
+    "filled_at": "2026-10-16T08:05:00+00:00",
+    "last_bar": "2026-10-16T08:05:00+00:00",
+    "exit_price": 4181.7,
+    "exit_reason": "SL"
   },
   "forward_test": {
     "status": "PAPER SIMULATION",
-    "trades": 2,
+    "trades": 3,
     "wins": 2,
-    "losses": 0,
-    "win_rate": 100.0,
-    "average_r": 2.4338499999999996,
-    "expectancy_r": 2.4338499999999996,
-    "profit_factor": null,
-    "max_drawdown": 0.0,
-    "max_consecutive_losses": 0,
-    "total_pips": 265.197,
-    "open_trades": 1,
+    "losses": 1,
+    "win_rate": 66.67,
+    "average_r": 1.289233333333333,
+    "expectancy_r": 1.289233333333333,
+    "profit_factor": 4.867699999999999,
+    "max_drawdown": 1.0,
+    "max_consecutive_losses": 1,
+    "total_pips": 258.333,
+    "open_trades": 0,
     "unresolved": 0,
     "cancelled": 0,
     "review_required": 0,
     "reconstructed": 5,
     "cost_status": "GROSS_OR_UNCONFIGURED",
     "version": "SCALPING V3",
-    "last_updated": "2026-10-16T16:05:34.382213+08:00",
+    "last_updated": "2026-10-16T16:10:46.431574+08:00",
     "execution": "Next M5 open after alert; NOT_ENTERED if open beyond SL/TP2. TP2 paper exit; target-path tracking continues separately to TP3/SL/72 bars.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -3221,7 +3248,7 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-16T16:05:34.382213+08:00",
+      "checked_at": "2026-10-16T16:10:46.431574+08:00",
       "delivery_tested": false
     }
   }
