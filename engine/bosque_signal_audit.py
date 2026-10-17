@@ -6,6 +6,9 @@ MAX_BARS = 72
 
 
 def observe(trade, frame, reconstructed=False):
+    # Terminal paths never change; avoid reparsing timestamps on every later bar.
+    if trade.get('signal_path',{}).get('status') not in (None, 'TRACKING'):
+        return
     start = pd.to_datetime(trade['timestamp'], utc=True).ceil('5min')
     path = trade.setdefault('signal_path', {
         'model': MODEL, 'status': 'TRACKING', 'bars_observed': 0,

@@ -173,6 +173,24 @@ class DeliveryTests(unittest.TestCase):
 
 
 class ReplayIntegrityTests(unittest.TestCase):
+    def test_shared_prefix_cache_preserves_oos_results_and_avoids_duplicate_decisions(self):
+        df=bars(370);split=df.iloc[365].datetime
+        def evaluate(frame,at,news):
+            direction='BUY' if at<split else 'SELL'
+            return {'active':True,'setup_valid':True,'direction':direction,'score':80,
+                'plan':{'entry':100,'sl':95 if direction=='BUY' else 105,
+                        'tp1':106 if direction=='BUY' else 94,
+                        'tp2':110 if direction=='BUY' else 90,
+                        'tp3':115 if direction=='BUY' else 85}}
+        with patch.object(t,'evaluate',side_effect=evaluate) as ev:
+            expected=b.replay(df,start=split)
+            unshared_calls=ev.call_count
+            ev.reset_mock();cache={}
+            b.replay(df[df.datetime+pd.Timedelta(minutes=5)<split],evaluation_cache=cache)
+            actual=b.replay(df,start=split,evaluation_cache=cache)
+            self.assertEqual(expected,actual)
+            self.assertEqual(ev.call_count,unshared_calls)
+
     def test_provider_failure_cannot_publish_credentials_in_research_json(self):
         import bosque_auto_backtest as auto
         with tempfile.TemporaryDirectory() as temp,patch.object(e,'ENGINE_DIR',Path(temp)),patch.object(auto,'download_history',side_effect=e.requests.Timeout('https://provider.invalid?apikey=fake-secret')),contextlib.redirect_stdout(io.StringIO()) as output:

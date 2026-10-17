@@ -12,7 +12,7 @@ def news_allowed(calendar, at):
     if not t.stamp(calendar['coverage_start'])<=at<t.stamp(calendar['coverage_end']): raise ValueError('Historical news coverage missing')
     return not any(abs((t.stamp(x['time'])-at).total_seconds())<=1800 for x in calendar['events'] if str(x.get('impact','')).lower()=='high' and x.get('currency')=='USD')
 
-def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds=1):
+def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds=1,evaluation_cache=None):
     if not 0 <= alert_delay_seconds < 300: raise ValueError('Alert delay must be 0..299 seconds')
     df=t.bars(frame); trades=[]; state={}; count=0; candidates=0
     for i in range(len(df)):
@@ -26,7 +26,15 @@ def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds
         window=df.iloc[max(0,i+1-e.OUTPUT_SIZE):i+1]
         from bosque_health import market_health
         if not market_health(window,at)['allowed']: continue
-        ev=t.evaluate(window,at,news_allowed(calendar,at))
+        news_ok=news_allowed(calendar,at)
+        key=(at.isoformat(),news_ok)
+        # This run-local cache is shared only by prefixes of the same validated
+        # dataset/configuration. OOS delivery state still replays every candle.
+        if evaluation_cache is not None and key in evaluation_cache:
+            ev=evaluation_cache[key]
+        else:
+            ev=t.evaluate(window,at,news_ok)
+            if evaluation_cache is not None: evaluation_cache[key]=ev
         eligible=ev.get('active',False)
         candidates+=int(eligible and (start is None or at>=start))
         delivery=select_alert(state,ev.get('setup_valid',eligible),ev.get('direction'),eligible,df.iloc[i].datetime)
@@ -63,9 +71,10 @@ def run(args):
         if not isinstance(calendar.get('events'),list): raise ValueError('Historical events missing')
         if t.stamp(calendar['coverage_start'])>df.iloc[0].datetime or t.stamp(calendar['coverage_end'])<df.iloc[-1].datetime+pd.Timedelta(minutes=5): raise ValueError('Historical news must cover dataset')
     delay=getattr(args,'alert_delay_seconds',1)
+    evaluation_cache={}
     split=t.stamp(args.split) if args.split else None
     if split is not None and not df.iloc[0].datetime<split<df.iloc[-1].datetime: raise ValueError('Split outside dataset')
-    results={'full_sample':replay(df,cost,calendar,alert_delay_seconds=delay)} if split is None else {'development':replay(df[df.datetime+pd.Timedelta(minutes=5)<split],cost,calendar,alert_delay_seconds=delay),'out_of_sample':replay(df,cost,calendar,start=split,alert_delay_seconds=delay)}
+    results={'full_sample':replay(df,cost,calendar,alert_delay_seconds=delay)} if split is None else {'development':replay(df[df.datetime+pd.Timedelta(minutes=5)<split],cost,calendar,alert_delay_seconds=delay,evaluation_cache=evaluation_cache),'out_of_sample':replay(df,cost,calendar,start=split,alert_delay_seconds=delay,evaluation_cache=evaluation_cache)}
     delta=df.datetime.diff().dt.total_seconds()/60
     out={'status':'COMPLETED','version':t.VERSION,'symbol':e.SYMBOL,'parameters':t.configuration(),'signal_policy':POLICY,'bars_used':len(df),'period_start':df.iloc[0].datetime.isoformat(),'period_end':df.iloc[-1].datetime.isoformat(),'source_sha256':hashes,'results':results,'last_updated':pd.Timestamp.now(tz='UTC').isoformat(),'news_mode':'HISTORICAL_CALENDAR' if calendar else 'WITHOUT_NEWS_NOT_LIVE_EQUIVALENT','cost_model':{'status':'GROSS_ONLY_UNCONFIGURED' if cost is None else 'CONFIGURED','round_trip_pips':cost},'data_quality':{'gaps':int((delta>5).sum())},'note':'Unchanged V3 entry rules including partial aggregated bars. Decisions at M5 close; fill next M5 open; TP2 exit; SL first on ambiguous bars; max 72 bars. One alert per directional setup cycle; two closed M5 bars without setup or a direction change rearm alerts. Target path tracked separately after TP2; not additional paper wins. Historical replay is not exact wall-clock live execution.'}
     if any(x['stats']['unresolved'] for x in results.values()): out['status']='COMPLETED_WITH_DATA_GAPS'
