@@ -35,12 +35,38 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for file in dashboard_data.json engine/state.json engine/trade_journal.json engine/forward_test.json engine/news_cache.json engine/telegram_health.json engine/engine_health.json engine/market_snapshot.csv engine/market_data_audit.json paper_journal.csv; do
+          for file in dashboard_data.json engine/state.json engine/trade_journal.json engine/trade_alerts.json engine/forward_test.json engine/news_cache.json engine/telegram_health.json engine/engine_health.json engine/market_snapshot.csv engine/market_data_audit.json paper_journal.csv; do
             if [ -f "$file" ]; then git add "$file"; fi
           done
           if [ -d engine/news_archive ]; then git add engine/news_archive; fi
           if ! git diff --cached --quiet; then
             git commit -m 'Update V3 dashboard and paper journal'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Reserve TP and close alerts
+        run: python engine/bosque_trade_alerts.py reserve
+      - name: Persist reservations before Telegram sends
+        run: |
+          git add engine/trade_alerts.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Reserve V3 trade notifications'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Send TP and close alerts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python engine/bosque_trade_alerts.py dispatch
+      - name: Persist trade alert delivery receipts
+        if: always()
+        run: |
+          for file in engine/trade_alerts.json engine/telegram_health.json dashboard_data.json; do
+            if [ -f "$file" ]; then git add "$file"; fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update V3 trade notification receipts'
             git pull --rebase origin main
             git push origin HEAD:main
           fi

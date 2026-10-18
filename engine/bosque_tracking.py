@@ -250,6 +250,13 @@ def sync(dashboard, frame, sent=None):
     save(directory/'telegram_health.json',dashboard['services']['telegram'])
     dashboard['services']['engine']=dashboard.get('data_health', {'status':'NOT_CHECKED'})
     save(directory/'engine_health.json',dashboard['services']['engine'])
+    # Collect only; Telegram sends happen after the workflow persists a durable
+    # reservation. Backtest/new_trade/advance never send notifications.
+    from bosque_trade_alerts import collect, FILENAME
+    dashboard['services']['trade_alerts']=collect(current,directory/FILENAME,at,
+        dashboard.get('data_health',{}).get('allowed') is True)
+    save(directory/'telegram_health.json', {**dashboard['services']['telegram'],
+        'trade_alerts':dashboard['services']['trade_alerts']})
     # Persist observed news state; not a fabricated historical calendar.
     news=dashboard.get('news',{}); save(directory/'news_cache.json',{'observed_at':at,'news':news})
     archive=directory/'news_archive'/('v3-'+stamp(at).strftime('%Y-%m-%d')+'.json')
