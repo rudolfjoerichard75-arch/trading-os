@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-20T07:20:42.877388+08:00"
+    "timestamp": "2026-10-20T07:25:39.949937+08:00"
   },
-  "latest_price": 4133.94,
+  "latest_price": 4135.83,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4190.12802,
       "low": 4132.82716,
       "width": 57.300860000000284,
-      "location": 0.019350669431499372
+      "location": 0.05232905753946082
     }
   },
   "volatility": {
-    "atr": 1.54,
-    "atr_pips": 15.4,
+    "atr": 1.65,
+    "atr_pips": 16.5,
     "condition": "LOW"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-20T07:20:43.432854+08:00",
+      "checked_at": "2026-10-20T07:25:40.400500+08:00",
       "requested_from": "2026-10-19",
       "requested_to": "2026-10-22",
       "events_received": 4,
@@ -107,7 +107,7 @@
     "direction": "SELL",
     "opportunity": "SELL BREAKOUT RETEST",
     "score": 65,
-    "timestamp": "2026-10-20T07:20:42.877388+08:00",
+    "timestamp": "2026-10-20T07:25:39.949937+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -116,13 +116,26 @@
     }
   },
   "plan": {
-    "valid": false,
-    "reason": "Risk 87.6 pips outside 20-80"
+    "valid": true,
+    "direction": "SELL",
+    "entry": 4135.83,
+    "sl": 4142.72,
+    "risk_pips": 69.0,
+    "tp1": 4129.83,
+    "tp2": 4122.03,
+    "tp3": 4115.13,
+    "tp1_pips": 60,
+    "tp2_pips": 137.9,
+    "tp3_pips": 206.9,
+    "rr_tp1": 0.87,
+    "rr_tp2": 2.0,
+    "rr_tp3": 3.0,
+    "risk_level": "MEDIUM"
   },
   "potential": {
-    "tp1_pips": null,
-    "tp2_pips": null,
-    "tp3_pips": null
+    "tp1_pips": 60,
+    "tp2_pips": 137.9,
+    "tp3_pips": 206.9
   },
   "h1": {
     "direction": "BEARISH",
@@ -166,7 +179,7 @@
         "high": 4149.57325,
         "low": 4132.82716,
         "width": 16.74609000000055,
-        "location": 0.06621306824462274
+        "location": 0.17905672309180862
       }
     }
   },
@@ -187,8 +200,8 @@
     "score": false,
     "setup": true,
     "m5_confirmation": true,
-    "risk": false,
-    "rr": false,
+    "risk": true,
+    "rr": true,
     "news": true,
     "session": false,
     "data": true,
@@ -202,9 +215,9 @@
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
-    "status": "INVALID",
-    "risk_pips": null,
-    "risk_level": null,
+    "status": "VALID",
+    "risk_pips": 69.0,
+    "risk_level": "MEDIUM",
     "min_risk_pips": 20,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -223,7 +236,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
-    "risk": "UNKNOWN",
+    "risk": "MEDIUM",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
     "m5_confirmation": "YES"
@@ -2951,18 +2964,16 @@
   "data_health": {
     "status": "FRESH",
     "allowed": true,
-    "checked_at": "2026-10-19T23:20:43.013976+00:00",
-    "last_candle_open": "2026-10-19T23:15:00+00:00",
-    "last_candle_close": "2026-10-19T23:20:00+00:00",
-    "close_age_minutes": 0.72,
+    "checked_at": "2026-10-19T23:25:40.181652+00:00",
+    "last_candle_open": "2026-10-19T23:20:00+00:00",
+    "last_candle_close": "2026-10-19T23:25:00+00:00",
+    "close_age_minutes": 0.67,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Candle M5 lengkap dan terkini"
   },
   "gate_reasons": {
-    "score": "Skor 65/100 < minimum 70",
-    "risk": "SL 87.6 pips melebihi had 80 pips",
-    "rr": "Belum dikira: risk tidak lulus"
+    "score": "Skor 65/100 < minimum 70"
   },
   "diagnostics": {
     "limits": {
@@ -2971,11 +2982,9 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 87.6,
+    "risk_distance_pips": 69.0,
     "blocking_reasons": [
-      "Skor 65/100 < minimum 70",
-      "SL 87.6 pips melebihi had 80 pips",
-      "Belum dikira: risk tidak lulus"
+      "Skor 65/100 < minimum 70"
     ]
   },
   "market_data_audit": {
@@ -3201,14 +3210,14 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 3,
+        "bars_observed": 4,
         "observation_start": "2026-10-19T23:05:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": null,
-        "last_bar": "2026-10-19T23:15:00+00:00"
+        "last_bar": "2026-10-19T23:20:00+00:00"
       },
       "next_open": 4135.60453,
       "execution_checked_at": "2026-10-19T23:05:00+00:00",
@@ -3244,7 +3253,7 @@
       "tp2": 4125.25,
       "tp3": 4119.25,
       "result": "OPEN",
-      "bars_held": 6,
+      "bars_held": 7,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
       "tp1_hit": false,
@@ -3273,14 +3282,14 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 6,
+        "bars_observed": 7,
         "observation_start": "2026-10-19T22:50:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": null,
-        "last_bar": "2026-10-19T23:15:00+00:00"
+        "last_bar": "2026-10-19T23:20:00+00:00"
       },
       "next_open": 4137.76998,
       "execution_checked_at": "2026-10-19T22:50:00+00:00",
@@ -3298,7 +3307,7 @@
         "enforced": true
       },
       "filled_at": "2026-10-19T22:50:00+00:00",
-      "last_bar": "2026-10-19T23:15:00+00:00"
+      "last_bar": "2026-10-19T23:20:00+00:00"
     },
     {
       "strategy_version": "SCALPING V3",
@@ -3344,14 +3353,14 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 31,
+        "bars_observed": 32,
         "observation_start": "2026-10-19T20:45:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": "2026-10-19T22:00:00+00:00",
-        "last_bar": "2026-10-19T23:15:00+00:00"
+        "last_bar": "2026-10-19T23:20:00+00:00"
       },
       "next_open": 4138.41238,
       "execution_checked_at": "2026-10-19T20:45:00+00:00",
@@ -3388,7 +3397,7 @@
       "tp2": 4126.13,
       "tp3": 4118.17,
       "result": "OPEN",
-      "bars_held": 46,
+      "bars_held": 47,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
       "tp1_hit": true,
@@ -3417,7 +3426,7 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 46,
+        "bars_observed": 47,
         "observation_start": "2026-10-19T19:30:00+00:00",
         "targets": {
           "tp1": {
@@ -3429,7 +3438,7 @@
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": null,
-        "last_bar": "2026-10-19T23:15:00+00:00"
+        "last_bar": "2026-10-19T23:20:00+00:00"
       },
       "next_open": 4142.13675,
       "execution_checked_at": "2026-10-19T19:30:00+00:00",
@@ -3447,7 +3456,7 @@
         "enforced": true
       },
       "filled_at": "2026-10-19T19:30:00+00:00",
-      "last_bar": "2026-10-19T23:15:00+00:00"
+      "last_bar": "2026-10-19T23:20:00+00:00"
     },
     {
       "strategy_version": "SCALPING V3",
@@ -4591,14 +4600,14 @@
     "signal_path": {
       "model": "M5_TARGET_PATH_V1",
       "status": "TRACKING",
-      "bars_observed": 3,
+      "bars_observed": 4,
       "observation_start": "2026-10-19T23:05:00+00:00",
       "targets": {},
       "source": "FORWARD_OBSERVED",
       "partial_signal_bar_excluded": true,
       "max_bars": 72,
       "sl_first_at": null,
-      "last_bar": "2026-10-19T23:15:00+00:00"
+      "last_bar": "2026-10-19T23:20:00+00:00"
     },
     "next_open": 4135.60453,
     "execution_checked_at": "2026-10-19T23:05:00+00:00",
@@ -4698,7 +4707,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-20T07:20:42.877388+08:00",
+    "last_updated": "2026-10-20T07:25:39.949937+08:00",
     "execution": "New fills: next M5 open after alert, risk 20–80 pips and RR TP2 >= 2 required; otherwise NOT_ENTERED. Old outcomes retained and grouped separately. TP2 exit; separate target paths.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -4708,7 +4717,7 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-20T07:20:42.877388+08:00",
+      "checked_at": "2026-10-20T07:25:39.949937+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": [],
       "last_confirmed_at": "2026-10-20T07:00:58.679028+08:00"
@@ -4716,10 +4725,10 @@
     "engine": {
       "status": "FRESH",
       "allowed": true,
-      "checked_at": "2026-10-19T23:20:43.013976+00:00",
-      "last_candle_open": "2026-10-19T23:15:00+00:00",
-      "last_candle_close": "2026-10-19T23:20:00+00:00",
-      "close_age_minutes": 0.72,
+      "checked_at": "2026-10-19T23:25:40.181652+00:00",
+      "last_candle_open": "2026-10-19T23:20:00+00:00",
+      "last_candle_close": "2026-10-19T23:25:00+00:00",
+      "close_age_minutes": 0.67,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Candle M5 lengkap dan terkini"
