@@ -4,25 +4,25 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-20T22:45:39.822110+08:00"
+    "timestamp": "2026-10-20T22:50:36.453561+08:00"
   },
-  "latest_price": 4150.32,
+  "latest_price": 4144.85,
   "session": "NEW YORK",
-  "market_mode": "NEUTRAL",
+  "market_mode": "RANGING",
   "regime": {
-    "type": "NEUTRAL",
+    "type": "RANGING",
     "h1_direction": "RANGE",
     "range": {
-      "is_range": false,
+      "is_range": true,
       "high": 4155.90064,
       "low": 4111.84211,
       "width": 44.058530000000246,
-      "location": 0.8732529206035755
+      "location": 0.7491902249121892
     }
   },
   "volatility": {
-    "atr": 7.68,
-    "atr_pips": 76.8,
+    "atr": 7.76,
+    "atr_pips": 77.6,
     "condition": "HIGH"
   },
   "pd": {
@@ -45,7 +45,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-20T22:45:40.283790+08:00",
+      "checked_at": "2026-10-20T22:50:36.834548+08:00",
       "requested_from": "2026-10-19",
       "requested_to": "2026-10-22",
       "events_received": 4,
@@ -99,15 +99,15 @@
     "type": "BUY BREAKOUT RETEST",
     "direction": "BUY",
     "valid": true,
-    "score": 55
+    "score": 25
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY BREAKOUT RETEST",
-    "score": 55,
-    "timestamp": "2026-10-20T22:45:39.822110+08:00",
+    "score": 25,
+    "timestamp": "2026-10-20T22:50:36.453561+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -117,7 +117,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 301.8 pips outside 20-80"
+    "reason": "Risk 247.3 pips outside 20-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -126,10 +126,10 @@
   },
   "h1": {
     "direction": "RANGE",
-    "bos": "BULLISH BOS",
+    "bos": null,
     "swing_high": 4147.13857,
     "swing_low": 4111.84211,
-    "condition": "NEUTRAL"
+    "condition": "RANGING"
   },
   "m15": {
     "direction": "BULLISH",
@@ -162,11 +162,11 @@
         "swing_low": 4113.42836
       },
       "range": {
-        "is_range": false,
+        "is_range": true,
         "high": 4155.90064,
         "low": 4111.84211,
         "width": 44.058530000000246,
-        "location": 0.8732529206035755
+        "location": 0.7491902249121892
       }
     }
   },
@@ -176,17 +176,17 @@
     "swing_high": 4155.90064,
     "swing_low": 4121.67175,
     "confirmation": {
-      "confirmed": true,
+      "confirmed": false,
       "bos": null,
-      "candle": true,
-      "momentum": "BULLISH",
-      "reason": "M5 bullish candle + momentum"
+      "candle": false,
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": true,
+    "m5_confirmation": false,
     "risk": false,
     "rr": false,
     "news": true,
@@ -197,7 +197,7 @@
   "confirmations": {
     "h1_bias": "RANGE",
     "m15_setup": "BUY BREAKOUT RETEST",
-    "m5_confirmation": "M5 bullish candle + momentum",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
     "pd_zone": "PREMIUM"
   },
@@ -226,7 +226,7 @@
     "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "m5_confirmation": "NO"
   },
   "expectancy": {
     "status": "PAPER SIMULATION",
@@ -2951,17 +2951,18 @@
   "data_health": {
     "status": "FRESH",
     "allowed": true,
-    "checked_at": "2026-10-20T14:45:40.069907+00:00",
-    "last_candle_open": "2026-10-20T14:40:00+00:00",
-    "last_candle_close": "2026-10-20T14:45:00+00:00",
-    "close_age_minutes": 0.67,
+    "checked_at": "2026-10-20T14:50:36.662004+00:00",
+    "last_candle_open": "2026-10-20T14:45:00+00:00",
+    "last_candle_close": "2026-10-20T14:50:00+00:00",
+    "close_age_minutes": 0.61,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Candle M5 lengkap dan terkini"
   },
   "gate_reasons": {
-    "score": "Skor 55/100 < minimum 70",
-    "risk": "SL 301.8 pips melebihi had 80 pips",
+    "score": "Skor 25/100 < minimum 70",
+    "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
+    "risk": "SL 247.3 pips melebihi had 80 pips",
     "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
@@ -2971,10 +2972,11 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 301.8,
+    "risk_distance_pips": 247.3,
     "blocking_reasons": [
-      "Skor 55/100 < minimum 70",
-      "SL 301.8 pips melebihi had 80 pips",
+      "Skor 25/100 < minimum 70",
+      "BOS atau candle + momentum BUY belum sah",
+      "SL 247.3 pips melebihi had 80 pips",
       "Belum dikira: risk tidak lulus"
     ]
   },
@@ -4849,7 +4851,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-20T22:45:39.822110+08:00",
+    "last_updated": "2026-10-20T22:50:36.453561+08:00",
     "execution": "New fills: next M5 open after alert, risk 20–80 pips and RR TP2 >= 2 required; otherwise NOT_ENTERED. Old outcomes retained and grouped separately. TP2 exit; separate target paths.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -4859,17 +4861,17 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-20T22:45:39.822110+08:00",
+      "checked_at": "2026-10-20T22:50:36.453561+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "FRESH",
       "allowed": true,
-      "checked_at": "2026-10-20T14:45:40.069907+00:00",
-      "last_candle_open": "2026-10-20T14:40:00+00:00",
-      "last_candle_close": "2026-10-20T14:45:00+00:00",
-      "close_age_minutes": 0.67,
+      "checked_at": "2026-10-20T14:50:36.662004+00:00",
+      "last_candle_open": "2026-10-20T14:45:00+00:00",
+      "last_candle_close": "2026-10-20T14:50:00+00:00",
+      "close_age_minutes": 0.61,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Candle M5 lengkap dan terkini"
