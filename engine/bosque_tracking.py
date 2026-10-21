@@ -190,6 +190,8 @@ def configuration():
 def sync(dashboard, frame, sent=None):
     import bosque_engine as e
     add_diagnostics(dashboard)
+    from bosque_execution import entry_window
+    dashboard["entry_window"] = entry_window(dashboard.get("plan", {}))
     directory=e.ENGINE_DIR; at=dashboard['engine']['timestamp']; df=bars(frame)
     from bosque_feed_audit import audit_once
     dashboard['market_data_audit']=audit_once(directory,frame,at)
@@ -222,6 +224,11 @@ def sync(dashboard, frame, sent=None):
     # same provider and UTC candles as the live engine (no extra API request).
     snapshot=directory/'market_snapshot.csv';tmp=snapshot.with_suffix('.tmp')
     df[['datetime','open','high','low','close']].to_csv(tmp,index=False);tmp.replace(snapshot)
+    for item in current:
+        item["entry_window"] = entry_window(item)
+        item["signal_monitor"] = {"status": (item.get("signal_path") or {}).get("status", "UNAVAILABLE"),
+                                  "basis": "PRICE_LEVEL_OBSERVATION", "paper_result": item.get("result"),
+                                  "broker_position": "UNKNOWN"}
     journal.update(version=VERSION,last_updated=at); save(path,journal)
     # Journal is durable before acknowledging the outbox as consumed.
     if state.get('delivered_alerts'):

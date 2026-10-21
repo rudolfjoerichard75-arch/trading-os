@@ -1692,6 +1692,8 @@ def format_telegram(
     volatility
 ):
 
+    from bosque_execution import entry_window_text
+    window_text = entry_window_text({**plan, "direction": direction})
     return (
         "👑 BOSQUE FOREX AI\n\n"
         f"🚨 {direction} "
@@ -1720,6 +1722,7 @@ def format_telegram(
         f"{pd_data['zone']}\n"
         f"🌡 ATR: "
         f"{volatility.get('atr_pips')} pips\n\n"
+        f"{window_text}\n\n"
         "⚠️ Manual confirmation required."
     )
 

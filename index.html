@@ -365,6 +365,8 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
           <span>RR TP2</span>
           <b id="rrTp2">--</b>
         </div>
+        <div class="row"><span>Julat entry risk/RR</span><b id="entryWindow">--</b></div>
+        <p class="small">Julat berdasarkan SL/TP2 asal sebelum kos. Bukan zon teknikal atau arahan entry; semak setup semasa.</p>
 
       </div>
 
@@ -1295,6 +1297,9 @@ function render(data){
   );
 
 
+  const ew = data.entry_window;
+  setText("entryWindow", ew?.status === "AVAILABLE" ? `${fmt(ew.low)} – ${fmt(ew.high)}` : ew?.status === "EMPTY" ? "Tiada julat sah" : "--");
+
   /* =====================================================
      POTENTIAL
   ===================================================== */
@@ -1461,6 +1466,9 @@ function render(data){
         line(`Risk fill: ${fmt(fill.risk_pips)} pips • RR TP2 fill: 1:${fmt(fill.rr_tp2)}${fill.status!=="PASS" ? " • " + fill.reasons.map(x=>why[x] || x).join("; ") : " • PASS"}`);
         if(!fill.enforced && fill.status!=="PASS") line("Audit rekod lama: keputusan asal dikekalkan. Had fill baharu tidak digunakan secara retroaktif.");
       }
+      const ew=trade.entry_window;
+      if(ew?.status === "AVAILABLE") line(`Julat entry risk/RR: ${fmt(ew.low)}–${fmt(ew.high)} • SL/TP2 asal, sebelum kos; bukan arahan entry.`);
+      if(unfilled) line("Simulasi NO ENTRY. Paras signal dipantau berasingan; sentuhan TP/SL bukan keuntungan/kerugian journal atau pengesahan posisi MT5.");
       const path=trade.signal_path;
       if(path){
         line(`Signal path: ${pathLabels[path.status] || path.status}${["RECONSTRUCTED_PROVIDER_HISTORY","HISTORICAL_REPLAY"].includes(path.source) ? " • Semakan semula sejarah provider" : ""}`);

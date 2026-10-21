@@ -94,9 +94,60 @@ class TradeAlertsTests(unittest.TestCase):
         y = self.new(); y['signal_id'] = 'rejected'
         self.advance(y, o=102, h=116, l=101, c=102)
         self.assertEqual(y['result'], 'NOT_ENTERED')
-        self.assertEqual([kind for kind, _ in a.candidates(y)], ['NO_ENTRY'])
+        self.assertEqual([kind for kind, _ in a.candidates(y)], ['NO_ENTRY','OBS_TP1','OBS_TP2','OBS_TP3'])
         a.collect([y], self.path, '2026-10-01T00:05:10Z', True)
         self.assertIn('FILL_RR_BELOW_MIN', self.events()['rejected:NO_ENTRY']['text'])
+
+    def test_rejected_observations_are_separate_and_idempotent(self):
+        x=self.new(); self.advance(x,o=102,h=116,l=101,c=102)
+        before=copy.deepcopy(x)
+        a.collect([x],self.path,'2026-10-01T00:05:10Z',True)
+        sender=self.send()
+        self.assertEqual(sender.call_count,4)
+        observed=[c.args[0] for c in sender.call_args_list if 'PARAS TP' in c.args[0]]
+        self.assertEqual(len(observed),3)
+        for text in observed:
+            self.assertIn('PARAS TP',text)
+            self.assertIn('bukan pengesahan keuntungan',text)
+            self.assertNotIn('CLOSE POSITION',text)
+        self.assertEqual(x,before)
+        self.assertEqual(t.stats([x])['trades'],0)
+        a.collect([x],self.path,'2026-10-01T00:05:20Z',True)
+        self.assertEqual(self.send('2026-10-01T00:05:30Z',run='again').call_count,0)
+
+    def test_rejected_sl_ambiguity_suppresses_tp_and_upgrade_history(self):
+        x=self.new(); self.advance(x,o=102,h=116,l=94,c=102)
+        self.assertEqual([k for k,_ in a.candidates(x)],['NO_ENTRY','OBS_SL'])
+        self.assertIn('urutan tidak dapat disahkan',a.message(x,'OBS_SL','2026-10-01T00:05Z'))
+        # Existing deployments have no observation activation field.
+        state=t.load(self.path);state.pop('observation_activated_at');t.save(self.path,state)
+        a.collect([x],self.path,'2026-10-01T00:05:10Z',True)
+        self.assertNotIn('test:OBS_SL',self.events())
+
+    def test_entry_window_inward_rounding_and_no_strategy_changes(self):
+        from bosque_execution import entry_window, assess
+        for direction,sl,tp in [('SELL',4142.67,4124.25),('BUY',4118.68,4139.63)]:
+            tr={'direction':direction,'sl':sl,'tp2':tp}
+            before=copy.deepcopy(tr); w=entry_window(tr)
+            self.assertEqual(w['status'],'AVAILABLE')
+            self.assertEqual(assess(tr,w['low'])['status'],'PASS')
+            self.assertEqual(assess(tr,w['high'])['status'],'PASS')
+            self.assertNotEqual(assess(tr,w['low']-.01)['status'],'PASS')
+            self.assertNotEqual(assess(tr,w['high']+.01)['status'],'PASS')
+            self.assertEqual(tr,before)
+        self.assertEqual(entry_window({'direction':'SELL','sl':4142.67,'tp2':4124.25})['low'],4136.53)
+        self.assertEqual(entry_window({'direction':'BUY','sl':100,'tp2':101})['status'],'EMPTY')
+        self.assertEqual(entry_window({})['status'],'UNAVAILABLE')
+
+    def test_no_entry_text_shows_actual_simulation_numbers_and_window(self):
+        x=self.new('SELL')
+        x.update(planned_entry=4136.53,sl=4142.67,tp2=4124.25,next_open=4135.60453,
+                 exit_reason='FILL_RR_BELOW_MIN')
+        from bosque_execution import annotate
+        annotate(x)
+        text=a.message(x,'NO_ENTRY','2026-10-20T00:00Z')
+        for part in ('4135.60','70.65','1:1.607','4136.53–4140.67','bukan pembatalan signal'):
+            self.assertIn(part,text)
 
     def test_activation_excludes_history_reconstructions_and_unsent_signals(self):
         x = self.new(); self.advance(x)

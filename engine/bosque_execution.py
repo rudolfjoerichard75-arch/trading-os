@@ -1,8 +1,49 @@
 """Paper execution checks, separate from unchanged V3 signal generation."""
 import math
+from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 
 MODEL = 'GUARDED_NEXT_M5_OPEN_TP2_V2'
 LEGACY_MODEL = 'NEXT_M5_OPEN_TP2_V1'
+
+
+def entry_window(trade):
+    """Informational only: inclusive cent prices for frozen SL/TP2, before costs."""
+    import bosque_engine as e
+    limits = trade.get('parameters') or {}
+    try:
+        sl, tp = Decimal(str(trade['sl'])), Decimal(str(trade['tp2']))
+        minimum = Decimal(str(limits.get('min_risk_pips', e.MIN_RISK_PIPS)))
+        maximum = Decimal(str(limits.get('max_risk_pips', e.MAX_RISK_PIPS)))
+        rr = Decimal(str(limits.get('min_rr', e.MIN_RR)))
+        pip = Decimal(str(e.PIP_SIZE))
+        if not all(x.is_finite() for x in (sl,tp,minimum,maximum,rr,pip)):
+            raise ValueError('Nonfinite plan')
+        if minimum <= 0 or maximum < minimum or rr <= 0 or pip <= 0:
+            raise ValueError('Invalid limits')
+        boundary = (tp + rr * sl) / (1 + rr)
+        if trade['direction'] == 'BUY' and tp > sl:
+            low, high = sl + minimum*pip, min(sl+maximum*pip,boundary)
+        elif trade['direction'] == 'SELL' and tp < sl:
+            low, high = max(sl-maximum*pip,boundary), sl-minimum*pip
+        else:
+            raise ValueError('Invalid direction/targets')
+        low=low.quantize(Decimal('.01'),rounding=ROUND_CEILING)
+        high=high.quantize(Decimal('.01'),rounding=ROUND_FLOOR)
+        if low > high: return {'status':'EMPTY'}
+        return {'status':'AVAILABLE','low':float(low),'high':float(high),
+                'min_risk_pips':float(minimum),'max_risk_pips':float(maximum),
+                'min_rr':float(rr),'basis':'FROZEN_SL_TP2_BEFORE_COSTS'}
+    except (KeyError, TypeError, ValueError, ArithmeticError):
+        return {'status':'UNAVAILABLE'}
+
+
+def entry_window_text(trade):
+    w=entry_window(trade)
+    if w['status'] != 'AVAILABLE':
+        return 'Julat entry risk/RR: tiada julat sah' if w['status']=='EMPTY' else 'Julat entry risk/RR: belum tersedia'
+    return (f"Julat entry risk/RR: {w['low']:.2f}–{w['high']:.2f} "
+            f"(risk {w['min_risk_pips']:g}–{w['max_risk_pips']:g} pips; RR TP2 ≥ 1:{w['min_rr']:g}). "
+            'Berdasarkan SL/TP2 asal, sebelum kos. Bukan zon teknikal atau arahan entry; semak setup semasa.')
 
 
 def assess(trade, price):

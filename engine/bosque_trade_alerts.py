@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pandas as pd
 from bosque_tracking import load, save, stamp
+from bosque_execution import entry_window_text
 
 VERSION = 'V3_TRADE_ALERTS_V1'
 FILENAME = 'trade_alerts.json'
@@ -36,7 +37,15 @@ def my_time(value):
 
 def message(trade, kind, event_at):
     direction = trade['direction']
-    if kind.startswith('TP'):
+    if kind.startswith('OBS_'):
+        level=kind[4:]
+        price=trade[level.lower()]
+        title=f'👁 PARAS {level} SIGNAL DISENTUH — {price:.2f}'
+        action=('Pemerhatian harga sahaja. Simulasi kekal NO ENTRY; bukan pengesahan keuntungan, kerugian atau posisi MT5. '
+                'Tiada arahan buka/tutup posisi. Semak fill dan posisi sebenar di MT5.')
+        if level == 'SL' and any(h.get('order')=='SAME_BAR_AS_SL' for h in (trade.get('signal_path') or {}).get('targets',{}).values()):
+            action += '\nTP dan SL disentuh dalam candle sama; urutan tidak dapat disahkan.'
+    elif kind.startswith('TP'):
         price = trade[kind.lower()]
         title = f'🎯 {kind} DISENTUH — {price:.2f}'
         if kind == 'TP2':
@@ -56,7 +65,26 @@ def message(trade, kind, event_at):
         action += f'\nHarga exit simulasi: {trade["exit_price"]:.2f}'
     elif kind == 'NO_ENTRY':
         title = '⛔ ENTRY TIDAK DITERIMA DALAM SIMULASI'
-        action = f'Sebab: {trade.get("exit_reason", "UNKNOWN")}.\nJangan buka entry baharu berdasarkan signal ini. Jika sudah masuk secara manual, semak posisi dan SL asal di MT5.'
+        audit=trade.get('fill_audit') or {}
+        def num(value, digits=2):
+            return '--' if value is None else f'{value:.{digits}f}'
+        limits=audit.get('limits') or trade.get('parameters') or {}
+        reasons={'FILL_RR_BELOW_MIN':'RR pada harga simulasi di bawah minimum',
+                 'FILL_RISK_BELOW_MIN':'Risk pada harga simulasi di bawah minimum',
+                 'FILL_RISK_ABOVE_MAX':'Risk pada harga simulasi melebihi maksimum',
+                 'OPEN_BEYOND_SL':'Harga simulasi sudah melepasi SL',
+                 'OPEN_BEYOND_TP2':'Harga simulasi sudah melepasi TP2'}
+        code=trade.get('exit_reason','UNKNOWN')
+        action=(f"Sebab: {reasons.get(code,code)} ({code}).\n"
+                f"Harga simulasi: {num(audit.get('price',trade.get('next_open')))}\n"
+                f"Risk simulasi: {num(audit.get('risk_pips'))} pips "
+                f"(had {limits.get('min_risk_pips',20)}–{limits.get('max_risk_pips',80)}).\n"
+                f"RR TP2 simulasi: 1:{num(audit.get('rr_tp2'),3)} "
+                f"(minimum 1:{limits.get('min_rr',2):g}).\n"
+                + entry_window_text(trade) + '\n\n'
+                'Ini penolakan paper entry sahaja, bukan pembatalan signal atau posisi MT5. '
+                'Jika sudah masuk manual, semak risk/RR menggunakan fill sebenar. '
+                'Paras signal terus diperhatikan dalam tempoh pemantauan; sentuhan paras bukan keuntungan journal.')
     else:
         title = '⚠️ STATUS POSISI PERLU SEMAKAN MANUAL'
         action = 'Candle M5 hilang; TP/SL dan status posisi tidak dapat disahkan. Semak posisi di MT5. Ini bukan pengesahan close.'
@@ -79,7 +107,17 @@ def candidates(trade):
         return []
     result = trade.get('result')
     if result in ('NOT_ENTERED', 'CANCELLED'):
-        return [('NO_ENTRY', (stamp(trade['closed_at']) + pd.Timedelta(minutes=5)).isoformat())]
+        events=[('NO_ENTRY', (stamp(trade['closed_at']) + pd.Timedelta(minutes=5)).isoformat())]
+        sl=path.get('sl_first_at')
+        for key in ('tp1','tp2','tp3'):
+            hit=path.get('targets',{}).get(key)
+            if hit and hit.get('order')=='BEFORE_OBSERVED_SL' and (not sl or stamp(hit['bar']) < stamp(sl)):
+                events.append(('OBS_'+key.upper(),(stamp(hit['bar'])+pd.Timedelta(minutes=5)).isoformat()))
+        if sl:
+            events.append(('OBS_SL',(stamp(sl)+pd.Timedelta(minutes=5)).isoformat()))
+        if path.get('status')=='DATA_GAP':
+            events.append(('DATA_GAP',path.get('missing_from') or trade['closed_at']))
+        return events
     if result == 'DATA_GAP' or (path.get('status') == 'DATA_GAP' and result in ('PENDING', 'OPEN')):
         # A gap in later target tracking does not reopen a closed paper trade.
         gap = [('DATA_GAP', path.get('missing_from') or trade['closed_at'])]
@@ -103,10 +141,14 @@ def candidates(trade):
 
 def collect(trades, path, at, healthy):
     state = read_state(path, at)
+    # New observation alerts start here; never replay old target touches on upgrade.
+    state.setdefault('observation_activated_at', stamp(at).isoformat())
     for trade in trades:
         if stamp(trade['timestamp']) < stamp(state['activated_at']):
             continue  # Activation is a forward boundary; never replay old alerts.
         for kind, event_at in candidates(trade):
+            if kind.startswith('OBS_') and stamp(event_at) < stamp(state['observation_activated_at']):
+                continue
             if not healthy and kind != 'DATA_GAP':
                 continue
             event_id = trade['signal_id'] + ':' + kind
@@ -141,7 +183,7 @@ def expired(event, at):
 def reserve(path, run_id, at):
     state = read_state(path); selected = 0
     # Sort at equal timestamps by target number, with CLOSE after earlier TPs.
-    rank = {'TP1': 1, 'TP2': 2, 'TP3': 3, 'CLOSE': 4, 'NO_ENTRY': 5, 'DATA_GAP': 6}
+    rank = {'TP1': 1, 'TP2': 2, 'TP3': 3, 'CLOSE': 4, 'NO_ENTRY': 5, 'DATA_GAP': 6, 'OBS_TP1': 1, 'OBS_TP2': 2, 'OBS_TP3': 3, 'OBS_SL': 4}
     events = sorted(state['events'].values(), key=lambda x: (x['event_at'], rank[x['kind']]))
     for event in events:
         if event['status'] == 'SENDING' or (event['status'] == 'RESERVED' and event.get('run_id') != run_id):
