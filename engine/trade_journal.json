@@ -2172,7 +2172,7 @@
       "tp1": 4139.33,
       "tp2": 4145.33,
       "tp3": 4151.33,
-      "result": "PENDING",
+      "result": "NOT_ENTERED",
       "bars_held": 0,
       "cost_pips": null,
       "cost_status": "GROSS_ONLY_UNCONFIGURED",
@@ -2181,7 +2181,7 @@
       "tp3_hit": false,
       "result_pips": null,
       "result_r": null,
-      "closed_at": null,
+      "closed_at": "2026-10-21T17:40:00+00:00",
       "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
       "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
       "parameters": {
@@ -2205,13 +2205,14 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 0,
+        "bars_observed": 1,
         "observation_start": "2026-10-21T17:40:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
-        "sl_first_at": null
+        "sl_first_at": null,
+        "last_bar": "2026-10-21T17:40:00+00:00"
       },
       "entry_window": {
         "status": "AVAILABLE",
@@ -2228,11 +2229,30 @@
       "signal_monitor": {
         "status": "TRACKING",
         "basis": "PRICE_LEVEL_OBSERVATION",
-        "paper_result": "PENDING",
+        "paper_result": "NOT_ENTERED",
         "broker_position": "UNKNOWN"
-      }
+      },
+      "next_open": 4134.60325,
+      "execution_checked_at": "2026-10-21T17:40:00+00:00",
+      "fill_audit": {
+        "status": "OUTSIDE_LIMITS",
+        "price": 4134.60325,
+        "risk_pips": 59.0325,
+        "rr_tp2": 1.8171,
+        "reasons": [
+          "FILL_RR_BELOW_MIN",
+          "FILL_OUTSIDE_ENTRY_ZONE"
+        ],
+        "limits": {
+          "min_risk_pips": 20,
+          "max_risk_pips": 80,
+          "min_rr": 2.0
+        },
+        "enforced": true
+      },
+      "exit_reason": "FILL_RR_BELOW_MIN"
     }
   ],
   "last_processed_candle": "2026-10-14T23:20:00+00:00",
-  "last_updated": "2026-10-22T01:40:43.066650+08:00"
+  "last_updated": "2026-10-22T01:45:47.473180+08:00"
 }
