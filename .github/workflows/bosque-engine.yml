@@ -35,10 +35,11 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for file in dashboard_data.json engine/state.json engine/trade_journal.json engine/trade_alerts.json engine/forward_test.json engine/news_cache.json engine/telegram_health.json engine/engine_health.json engine/market_snapshot.csv engine/market_data_audit.json paper_journal.csv; do
+          for file in dashboard_data.json engine/state.json engine/trade_journal.json engine/trade_alerts.json engine/forward_test.json engine/news_cache.json engine/telegram_health.json engine/engine_health.json engine/market_snapshot.csv engine/market_data_audit.json engine/learning_summary.json paper_journal.csv; do
             if [ -f "$file" ]; then git add "$file"; fi
           done
           if [ -d engine/news_archive ]; then git add engine/news_archive; fi
+          if [ -d engine/learning ]; then git add engine/learning; fi
           if ! git diff --cached --quiet; then
             git commit -m 'Update V3 dashboard and paper journal'
             git pull --rebase origin main

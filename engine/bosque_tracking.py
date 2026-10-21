@@ -52,7 +52,7 @@ def cost():
     return n
 
 def new_trade(sig, plan, at, costs=None):
-    return {'strategy_version':VERSION,'signal_id':sig['id'],'timestamp':stamp(at).isoformat(),
+    return {'strategy_version':VERSION,'signal_id':sig['id'],'learning_id':sig.get('learning_id'),'timestamp':stamp(at).isoformat(),
         'direction':sig['direction'],'opportunity':sig.get('opportunity'),'score':sig.get('score'),
         'session':sig.get('session'),'planned_entry':plan['entry'],'entry':None,'sl':plan['sl'],
         'tp1':plan['tp1'],'tp2':plan['tp2'],'tp3':plan['tp3'],'result':'PENDING','bars_held':0,
@@ -233,6 +233,8 @@ def sync(dashboard, frame, sent=None):
                                   "basis": "PRICE_LEVEL_OBSERVATION", "paper_result": item.get("result"),
                                   "broker_position": "UNKNOWN"}
     journal.update(version=VERSION,last_updated=at); save(path,journal)
+    from bosque_learning import safe_sync
+    dashboard['learning'] = safe_sync(directory, current, dashboard, df)
     # Journal is durable before acknowledging the outbox as consumed.
     if state.get('delivered_alerts'):
         state['delivered_alerts']=[]

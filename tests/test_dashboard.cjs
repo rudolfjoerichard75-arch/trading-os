@@ -18,6 +18,14 @@ const payload=()=>({engine:{timestamp:new Date().toISOString()},opportunity:{dir
 function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
 (async()=>{
   const d=payload();render(d);
+  assert.equal(el('learningStatus').innerText,'BELUM AKTIF');
+  d.learning={status:'COLLECTING',captured_today:4,candidates_today:3,rejected_today:2,gross_research_rows:1,net_research_rows:0};
+  render(d);
+  assert.equal(el('learningStatus').innerText,'MENGUMPUL DATA');
+  assert.equal(el('learningCounts').innerText,'4 / 3 / 2');
+  assert.equal(el('learningLabels').innerText,'1 / 0');
+  assert.match(el('learningNote').innerText,/belum ada model AI terlatih/);
+
   assert.match(el('finalSignal').innerText,/^WAIT \(SL 143\.0 pips/);
   assert.equal(el('riskGate').innerText,'WAIT (SL 143.0 pips melebihi had 80 pips)');
   assert.equal(el('rrGate').innerText,'WAIT (Belum dikira: risk tidak lulus)');
@@ -72,5 +80,6 @@ function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
   await vm.runInContext('runDashboard()',c);assert.match(el('finalSignal').innerText,/^WAIT \(Data engine gagal dimuat/);
   for(const id of ['validSetup','scoreGate','m5Gate','riskGate','rrGate'])assert.equal(el(id).innerText,'WAIT (Data engine gagal dimuat)');
   assert.match(el('newsFilter').innerText,/^BLOCK \(Status news terkini/);
+  assert.equal(el('learningStatus').innerText,'STATUS BELUM DISAHKAN');
   console.log('V3 dashboard reasons, news evidence and stale/error checks passed');
 })().catch(err=>{console.error(err);process.exitCode=1});
