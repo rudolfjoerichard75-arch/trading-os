@@ -56,6 +56,7 @@ OUTPUT_SIZE = 500
 # RISK / SCORING
 # =========================================================
 
+ENTRY_LOGIC_VERSION = "V3_CLOSED_MTF_RETEST_ALIGNED_20261021"
 MIN_SCORE = 70
 
 # XAUUSD
@@ -322,35 +323,22 @@ def remove_incomplete_candle(df):
 # AGGREGATION
 # =========================================================
 
-def aggregate(
-    df,
-    minutes
-):
-
+def aggregate(df, minutes):
+    """Only complete, contiguous UTC groups of closed M5 bars are usable."""
+    if minutes < 5 or minutes % 5:
+        raise ValueError("Timeframe must be a multiple of M5")
     x = df.copy()
-
-    x["datetime"] = pd.to_datetime(
-        x["datetime"]
-    )
-
-    x = x.set_index(
-        "datetime"
-    )
-
-    rule = f"{minutes}min"
-
-    out = x.resample(
-        rule
-    ).agg({
-        "open": "first",
-        "high": "max",
-        "low": "min",
-        "close": "last"
-    })
-
-    out = out.dropna()
-
-    return out.reset_index()
+    x["datetime"] = pd.to_datetime(x["datetime"], utc=True)
+    if x["datetime"].duplicated().any():
+        raise ValueError("Duplicate M5 timestamps")
+    x = x.sort_values("datetime").set_index("datetime")
+    if not (x.index == x.index.floor("5min")).all():
+        raise ValueError("M5 timestamps must be aligned")
+    groups = x.resample(f"{minutes}min")
+    out = groups.agg({"open": "first", "high": "max",
+                      "low": "min", "close": "last"})
+    complete = groups["close"].count() == minutes // 5
+    return out.loc[complete].dropna().reset_index()
 
 
 # =========================================================
@@ -984,6 +972,39 @@ def volatility_analysis(
 # M15 SETUP
 # =========================================================
 
+def breakout_retest(m15, m5):
+    """Require a fresh close across a known swing, then a later M5 rejection.
+
+    Search the last four closed M15 bars. Freeze the pre-break level;
+    a subsequent M5 close through it invalidates that breakout.
+    """
+    if len(m15) < 5 or m5.empty:
+        return None
+    latest = m5.iloc[-1]
+    for i in range(len(m15) - 1, max(0, len(m15) - 5), -1):
+        prior = m15.iloc[:i]
+        structure = analyze_structure(prior)
+        broken = m15.iloc[i]
+        before = float(prior.iloc[-1]["close"])
+        after = float(broken["close"])
+        for direction, key, sign in [("BUY", "swing_high", 1),
+                                      ("SELL", "swing_low", -1)]:
+            level = structure[key]
+            if level is None or not (sign * (before-level) <= 0 < sign * (after-level)):
+                continue
+            close_at = pd.to_datetime(broken["datetime"], utc=True) + pd.Timedelta(minutes=15)
+            post = m5[pd.to_datetime(m5["datetime"], utc=True) >= close_at]
+            if post.empty or (sign * (post["close"] - level) <= 0).any():
+                continue
+            # The latest closed M5 must actually touch and reject the level.
+            touched = float(latest["low"]) <= level <= float(latest["high"])
+            rejected = sign * (float(latest["close"]) - float(latest["open"])) > 0
+            if touched and rejected:
+                return {"direction": direction, "level": float(level),
+                        "break_closed_at": close_at.isoformat()}
+    return None
+
+
 def detect_m15_setup(
     h1,
     m15,
@@ -1135,38 +1156,11 @@ def detect_m15_setup(
             )
 
     if direction is None:
-
-        if (
-            m15_structure["bos"]
-            ==
-            "BULLISH BOS"
-        ):
-
-            direction = "BUY"
-
-            opportunity = (
-                "BUY BREAKOUT RETEST"
-            )
-
-            reason.append(
-                "M15 bullish BOS"
-            )
-
-        elif (
-            m15_structure["bos"]
-            ==
-            "BEARISH BOS"
-        ):
-
-            direction = "SELL"
-
-            opportunity = (
-                "SELL BREAKOUT RETEST"
-            )
-
-            reason.append(
-                "M15 bearish BOS"
-            )
+        retest = breakout_retest(m15, m5)
+        if retest:
+            direction = retest["direction"]
+            opportunity = direction + " BREAKOUT RETEST"
+            reason.append("Closed M15 break + subsequent M5 retest rejection")
 
     return {
         "direction": direction,
@@ -1315,112 +1309,26 @@ def m5_confirmation(
 # SCORE
 # =========================================================
 
-def calculate_score(
-    h1,
-    m15_setup,
-    m5_confirm,
-    session,
-    volatility
-):
-
-    score = 0
-
-    if h1["direction"] in [
-        "BULLISH",
-        "BEARISH"
-    ]:
-
-        score += 15
-
-    if h1["bos"]:
-
-        score += 5
-
-    if m15_setup["valid"]:
-
-        score += 10
-
-    if (
-        m15_setup[
-            "liquidity"
-        ].get(
-            "buy_side_sweep"
-        )
-        or
-        m15_setup[
-            "liquidity"
-        ].get(
-            "sell_side_sweep"
-        )
-    ):
-
-        score += 10
-
-    if (
-        m15_setup[
-            "structure"
-        ].get("bos")
-    ):
-
-        score += 10
-
-    if m5_confirm["confirmed"]:
-
-        score += 15
-
-    if m5_confirm["bos"]:
-
-        score += 10
-
-    if m5_confirm["candle"]:
-
-        score += 10
-
-    zone = m15_setup[
-        "pd"
-    ]["zone"]
-
-    direction = m15_setup[
-        "direction"
-    ]
-
-    if (
-        direction == "BUY"
-        and
-        zone == "DISCOUNT"
-    ):
-
-        score += 5
-
-    elif (
-        direction == "SELL"
-        and
-        zone == "PREMIUM"
-    ):
-
-        score += 5
-
-    if session in [
-        "LONDON",
-        "NEW YORK"
-    ]:
-
-        score += 5
-
-    if (
-        volatility[
-            "condition"
-        ]
-        ==
-        "NORMAL"
-    ):
-
-        score += 5
-
-    return min(
-        score,
-        100
-    )
+def calculate_score(h1, m15_setup, m5_confirm, session, volatility):
+    direction = m15_setup["direction"]
+    if direction not in ("BUY", "SELL"):
+        return 0
+    trend = "BULLISH" if direction == "BUY" else "BEARISH"
+    bos = trend + " BOS"
+    sweep = "sell_side_sweep" if direction == "BUY" else "buy_side_sweep"
+    zone = "DISCOUNT" if direction == "BUY" else "PREMIUM"
+    score = 15 * (h1["direction"] == trend)
+    score += 5 * (h1["bos"] == bos)
+    score += 10 * bool(m15_setup["valid"])
+    score += 10 * bool(m15_setup["liquidity"].get(sweep))
+    score += 10 * (m15_setup["structure"].get("bos") == bos)
+    score += 15 * bool(m5_confirm["confirmed"])
+    score += 10 * (m5_confirm["bos"] == bos)
+    score += 10 * bool(m5_confirm["candle"])
+    score += 5 * (m15_setup["pd"]["zone"] == zone)
+    score += 5 * (session in ("LONDON", "NEW YORK"))
+    score += 5 * (volatility["condition"] == "NORMAL")
+    return min(score, 100)
 
 
 # =========================================================
@@ -2386,4 +2294,3 @@ def run_live():
 
 if __name__ == "__main__":
     run_live()
-

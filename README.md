@@ -1,14 +1,14 @@
 # Bosque Forex AI — SCALPING V3
 
-The original September 28 V3 setup, score, confirmation, aggregation and trade-plan functions are preserved. `tests/fixtures/v3_original.py` is the immutable regression reference. No V5.3 entry filters are active.
+V3 entry logic was refined on 2026-10-21 after the SL audit: complete M15/H1 candles, confirmed breakout retests, and direction-aligned scoring. `tests/fixtures/v3_original.py` remains the immutable historical reference; unchanged functions still have parity tests. No V5.3 entry filters are active.
 
-Current risk range: **20–80 pips inclusive**, changed from 15–80 at the owner's request on 2026-10-16. Other V3 entry parameters and functions remain unchanged. Live diagnostics and replay read this same engine setting; older journal/backtest records retain the settings used when generated.
+Current risk range: **20–80 pips inclusive**, changed from 15–80 at the owner's request on 2026-10-16. Risk/target parameters remain unchanged; the entry refinements below apply to future signals. Live diagnostics and replay read this same engine setting; older journal/backtest records retain the settings used when generated.
 
 ## Execution
 
 cron-job.org dispatches `.github/workflows/bosque-engine.yml` on `main`. The engine workflow has no internal cron. Manual workflow dispatch also works. Secrets: `TWELVEDATA_API_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
 
-`bosque_tracking.py` adds persistent paper journaling, TP/SL outcome tracking, CSV exports, forward statistics, news observations and delivery-attempt status. V3 entry calculations stay unchanged; alert delivery now uses a persistent setup cycle to suppress repeat notifications. Existing journal rows and historical news files are preserved. Only V3 rows enter V3 statistics.
+`bosque_tracking.py` adds persistent paper journaling, TP/SL outcome tracking, CSV exports, forward statistics, news observations and delivery-attempt status. Live and replay share the refined V3 entry calculations; alert delivery uses a persistent setup cycle to suppress repeat notifications. Existing journal rows and historical news files are preserved. Only V3 rows enter V3 statistics.
 
 Set optional repository variable `ROUND_TRIP_COST_PIPS` to measured round-trip spread, slippage and commission in project pips (0.10 price). Without it, statistics are clearly labelled gross/unconfigured, not net validated.
 
@@ -57,8 +57,19 @@ Validation runs on PRs and main. Engine/research workflows test before execution
 
 - **Market data:** validated OHLC, timestamps and duplicates; only fully closed M5 candles enter analysis. Future timestamps, gaps in the last 12 bars, or last-candle close more than 10 minutes old block new alerts with a reason. A failed scan persists an ERROR snapshot without advancing the last successful engine timestamp. Browser freshness checks inspect the candle close as well as the engine timestamp.
 - **News:** unknown high-impact geography, unreadable USD event times, malformed/truncated responses and API failures block alerts. Every response exposes normalized event titles/times and coverage status. A successful empty response means only that the provider listed no events; it is not a guarantee of calendar completeness. The window is 30 minutes before/after any matching USD event. Generic GDP/CPI names do not establish USD.
-- **Backtest:** the same guarded paper-fill policy applies. Default simulated alert delay is 1 second after the M5 decision close; this deliberately excludes the in-progress alert candle so fill starts at the following whole M5 open. It is a declared timing assumption, not measured broker latency. OOS warm-up preserves the delivery cycle across the split. Original V3 partial H1/M15 aggregation is retained, using only data available at the decision time.
+- **Backtest:** the same guarded paper-fill policy applies. Default simulated alert delay is 1 second after the M5 decision close; this deliberately excludes the in-progress alert candle so fill starts at the following whole M5 open. It is a declared timing assumption, not measured broker latency. OOS warm-up preserves the delivery cycle across the split. Only complete, contiguous M5 groups form H1/M15 candles; partial higher-timeframe bars are excluded in live and replay.
 - **Historical news:** automatic research attempts to download the provider schedule for the complete requested period, validates every high-impact event and archives the normalized calendar with the workflow artifact. This is labelled `HISTORICAL_PROVIDER_SCHEDULE_NOT_POINT_IN_TIME`; revisions and unlisted events remain unknown. If coverage cannot be verified, research explicitly reports `WITHOUT_NEWS_NOT_LIVE_EQUIVALENT` with the failure status. Live observed news states are never passed off as a complete historical calendar.
 - **Costs:** `ROUND_TRIP_COST_PIPS` remains unset until measured costs are supplied. No broker spread/commission is invented; results continue to identify gross versus configured-cost accounting. Paper fills are not a broker ledger.
 
-External cron-job.org continues to dispatch `bosque-engine.yml`; there is no second engine schedule. Workflow concurrency prevents overlapping engine jobs. Support changes and the new execution model are covered by focused tests, alongside the immutable original V3 entry-function regression test.
+External cron-job.org continues to dispatch `bosque-engine.yml`; there is no second engine schedule. Workflow concurrency prevents overlapping engine jobs. Support changes and the new execution model are covered by focused tests, alongside historical parity tests for unchanged functions and behavioral tests for refined entry rules.
+
+## Entry refinement — 2026-10-21
+
+`V3_CLOSED_MTF_RETEST_ALIGNED_20261021` identifies new signal parameters and invalidates older backtest configurations. Existing journal outcomes and open-trade SL/TP are not rewritten.
+
+- H1/M15 aggregation requires every constituent M5 bar, on aligned unique UTC timestamps. Incomplete groups, including the leading history boundary, are excluded.
+- BREAKOUT RETEST requires a closed M15 crossing of a previously known swing within the last four closed M15 bars, followed by a later M5 candle touching the frozen level and closing away from it in the trade direction. A close back through the level invalidates the break. The breakout candle itself cannot count as its retest.
+- H1 trend/BOS, M15 sweep/BOS and M5 BOS earn points only in the proposed trade direction. A score of 70 is a rule score, not a win probability. Independent pullback and sweep setups retain their priority.
+- Session remains a preference, not a hard gate. TP1 remains observational; automatic breakeven/partial exits have not been introduced. Risk stays 20–80 pips, with the existing guarded fill and TP2 exit.
+
+Validation covers partial/missing/duplicate candles, both retest directions, premature/failed/expired breaks, opposing score evidence, live/replay consistency and existing journal/alert behavior. This change has no validated win-rate claim; research must use the new configuration.

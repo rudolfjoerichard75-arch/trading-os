@@ -184,11 +184,12 @@ def configuration():
     from bosque_signals import POLICY
     return {'min_risk_pips':e.MIN_RISK_PIPS,'max_risk_pips':e.MAX_RISK_PIPS,
             'min_score':e.MIN_SCORE,'min_rr':e.MIN_RR,'signal_policy':POLICY,
-            'execution_model':MODEL}
+            'execution_model':MODEL,'entry_logic_version':e.ENTRY_LOGIC_VERSION}
 
 
 def sync(dashboard, frame, sent=None):
     import bosque_engine as e
+    dashboard['engine']['entry_logic_version'] = e.ENTRY_LOGIC_VERSION
     add_diagnostics(dashboard)
     from bosque_execution import entry_window
     dashboard["entry_window"] = entry_window(dashboard.get("plan", {}))
@@ -281,4 +282,3 @@ def sync(dashboard, frame, sent=None):
             writer.writerow(record)
     tmp.replace(target)
     return dashboard
-

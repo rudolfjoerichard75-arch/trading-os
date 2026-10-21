@@ -18,11 +18,11 @@ def trade(cost=0):
 def row(at='2026-10-01T00:00:00Z',o=100,h=101,l=99,c=100):
     return pd.DataFrame([{'datetime':t.stamp(at),'open':o,'high':h,'low':l,'close':c}])
 class V3Tests(unittest.TestCase):
-    def test_original_entry_functions_identical(self):
+    def test_unchanged_v3_functions_identical(self):
         old=ast.parse((ROOT/'tests/fixtures/v3_original.py').read_text());new=ast.parse((ROOT/'engine/bosque_engine.py').read_text())
         funcs=lambda tree:{n.name:ast.dump(n,include_attributes=False) for n in tree.body if isinstance(n,ast.FunctionDef)}
         a,z=funcs(old),funcs(new)
-        for name in ['aggregate','find_swing_highs','find_swing_lows','analyze_structure','analyze_range','pd_zone','liquidity_analysis','momentum','candle_confirmation','calculate_atr','volatility_analysis','detect_m15_setup','m5_confirmation','calculate_score','create_trade_plan','make_signal_id','get_session']:
+        for name in ['find_swing_highs','find_swing_lows','analyze_structure','analyze_range','pd_zone','liquidity_analysis','momentum','candle_confirmation','calculate_atr','volatility_analysis','m5_confirmation','create_trade_plan','make_signal_id','get_session']:
             self.assertEqual(a[name],z[name],name)
         assignments=lambda tree:{n.targets[0].id:ast.dump(n.value) for n in tree.body if isinstance(n,ast.Assign) and isinstance(n.targets[0],ast.Name)}
         x,y=assignments(old),assignments(new)
@@ -172,4 +172,3 @@ class NewsGateTests(unittest.TestCase):
                 if not expected:self.assertEqual(set(result['gate_reasons']),{'news'})
 
 if __name__=='__main__':unittest.main()
-
