@@ -4,9 +4,9 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-21T08:40:39.520430+08:00"
+    "timestamp": "2026-10-21T08:45:42.615904+08:00"
   },
-  "latest_price": 4116.95,
+  "latest_price": 4118.38,
   "session": "ASIAN",
   "market_mode": "NEUTRAL",
   "regime": {
@@ -17,12 +17,12 @@
       "high": 4155.90064,
       "low": 4111.84211,
       "width": 44.058530000000246,
-      "location": 0.11589469734919655
+      "location": 0.14843345885576603
     }
   },
   "volatility": {
-    "atr": 2.59,
-    "atr_pips": 25.9,
+    "atr": 2.56,
+    "atr_pips": 25.6,
     "condition": "NORMAL"
   },
   "pd": {
@@ -45,16 +45,30 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-21T08:40:39.938323+08:00",
+      "checked_at": "2026-10-21T08:45:43.204774+08:00",
       "requested_from": "2026-10-20",
       "requested_to": "2026-10-23",
-      "events_received": null,
+      "events_received": 2,
       "usd_high_events": 0,
       "nearby_usd_high_events": 0,
       "skipped_usd_times": 0,
       "unclassified_high_events": 0,
-      "coverage_status": "UNVERIFIED",
-      "events": []
+      "coverage_status": "PROVIDER_RESPONSE_ONLY",
+      "events": [
+        {
+          "title": "UK Labour Market Report October 2026",
+          "geography": "NON_US",
+          "time": "2026-10-20T06:00:00+00:00",
+          "impact": "high"
+        },
+        {
+          "title": "UK CPI Inflation October 2026",
+          "geography": "NON_US",
+          "time": "2026-10-21T06:00:00+00:00",
+          "impact": "high"
+        }
+      ],
+      "provider_count": 2
     },
     "block_before_minutes": 30,
     "block_after_minutes": 30,
@@ -64,25 +78,24 @@
     "event": null,
     "time": null,
     "minutes_to_news": null,
-    "high_impact": null,
-    "status": "ERROR",
-    "filter": "BLOCK",
-    "reason": "Sumber berita gagal disahkan; signal ditahan",
-    "error_type": "HTTPError"
+    "high_impact": false,
+    "status": "CLEAR",
+    "filter": "PASS",
+    "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
   },
   "opportunity": {
     "type": "NO VALID SETUP",
     "direction": null,
     "valid": false,
-    "score": 10
+    "score": 5
   },
   "signal": {
     "active": false,
     "id": null,
     "direction": null,
     "opportunity": "NO VALID SETUP",
-    "score": 10,
-    "timestamp": "2026-10-21T08:40:39.520430+08:00",
+    "score": 5,
+    "timestamp": "2026-10-21T08:45:42.615904+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -100,7 +113,7 @@
   },
   "h1": {
     "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4131.55143,
     "swing_low": 4117.59862,
     "condition": "NEUTRAL"
@@ -138,7 +151,7 @@
         "high": 4131.55143,
         "low": 4112.23877,
         "width": 19.312660000000506,
-        "location": 0.24385506709070962
+        "location": 0.3180866851070785
       }
     }
   },
@@ -151,7 +164,7 @@
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "NEUTRAL",
+      "momentum": "BULLISH",
       "reason": "NO DIRECTION"
     }
   },
@@ -161,7 +174,7 @@
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
-    "news": false,
+    "news": true,
     "session": false,
     "data": true,
     "session_blocking": false
@@ -193,7 +206,7 @@
     ]
   },
   "sop": {
-    "news_filter": "BLOCK",
+    "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
     "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
@@ -2923,21 +2936,20 @@
   "data_health": {
     "status": "FRESH",
     "allowed": true,
-    "checked_at": "2026-10-21T00:40:39.655369+00:00",
-    "last_candle_open": "2026-10-21T00:35:00+00:00",
-    "last_candle_close": "2026-10-21T00:40:00+00:00",
-    "close_age_minutes": 0.66,
+    "checked_at": "2026-10-21T00:45:42.764482+00:00",
+    "last_candle_open": "2026-10-21T00:40:00+00:00",
+    "last_candle_close": "2026-10-21T00:45:00+00:00",
+    "close_age_minutes": 0.71,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Candle M5 lengkap dan terkini"
   },
   "gate_reasons": {
     "setup": "Tiada setup M15 V3 yang sah",
-    "score": "Skor 10/100 < minimum 70",
+    "score": "Skor 5/100 < minimum 70",
     "m5_confirmation": "Menunggu arah setup M15",
     "risk": "Belum dikira: tiada arah setup",
-    "rr": "Belum dikira: risk tidak lulus",
-    "news": "Sumber berita gagal disahkan; signal ditahan"
+    "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
     "limits": {
@@ -2949,11 +2961,10 @@
     "risk_distance_pips": null,
     "blocking_reasons": [
       "Tiada setup M15 V3 yang sah",
-      "Skor 10/100 < minimum 70",
+      "Skor 5/100 < minimum 70",
       "Menunggu arah setup M15",
       "Belum dikira: tiada arah setup",
-      "Belum dikira: risk tidak lulus",
-      "Sumber berita gagal disahkan; signal ditahan"
+      "Belum dikira: risk tidak lulus"
     ]
   },
   "market_data_audit": {
@@ -3179,14 +3190,14 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 27,
+        "bars_observed": 28,
         "observation_start": "2026-10-20T22:25:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": "2026-10-20T22:40:00+00:00",
-        "last_bar": "2026-10-21T00:35:00+00:00"
+        "last_bar": "2026-10-21T00:40:00+00:00"
       },
       "next_open": 4131.43556,
       "execution_checked_at": "2026-10-20T22:25:00+00:00",
@@ -3252,7 +3263,7 @@
       "signal_path": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 43,
+        "bars_observed": 44,
         "observation_start": "2026-10-20T21:05:00+00:00",
         "targets": {
           "tp1": {
@@ -3264,7 +3275,7 @@
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
         "sl_first_at": "2026-10-20T22:55:00+00:00",
-        "last_bar": "2026-10-21T00:35:00+00:00"
+        "last_bar": "2026-10-21T00:40:00+00:00"
       },
       "next_open": 4124.95287,
       "execution_checked_at": "2026-10-20T21:05:00+00:00",
@@ -4857,14 +4868,14 @@
     "signal_path": {
       "model": "M5_TARGET_PATH_V1",
       "status": "TRACKING",
-      "bars_observed": 27,
+      "bars_observed": 28,
       "observation_start": "2026-10-20T22:25:00+00:00",
       "targets": {},
       "source": "FORWARD_OBSERVED",
       "partial_signal_bar_excluded": true,
       "max_bars": 72,
       "sl_first_at": "2026-10-20T22:40:00+00:00",
-      "last_bar": "2026-10-21T00:35:00+00:00"
+      "last_bar": "2026-10-21T00:40:00+00:00"
     },
     "next_open": 4131.43556,
     "execution_checked_at": "2026-10-20T22:25:00+00:00",
@@ -4965,7 +4976,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-21T08:40:39.520430+08:00",
+    "last_updated": "2026-10-21T08:45:42.615904+08:00",
     "execution": "New fills: next M5 open after alert, risk 20–80 pips and RR TP2 >= 2 required; otherwise NOT_ENTERED. Old outcomes retained and grouped separately. TP2 exit; separate target paths.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -4975,17 +4986,17 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-21T08:40:39.520430+08:00",
+      "checked_at": "2026-10-21T08:45:42.615904+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "FRESH",
       "allowed": true,
-      "checked_at": "2026-10-21T00:40:39.655369+00:00",
-      "last_candle_open": "2026-10-21T00:35:00+00:00",
-      "last_candle_close": "2026-10-21T00:40:00+00:00",
-      "close_age_minutes": 0.66,
+      "checked_at": "2026-10-21T00:45:42.764482+00:00",
+      "last_candle_open": "2026-10-21T00:40:00+00:00",
+      "last_candle_close": "2026-10-21T00:45:00+00:00",
+      "close_age_minutes": 0.71,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Candle M5 lengkap dan terkini"
