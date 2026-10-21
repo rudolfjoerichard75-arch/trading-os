@@ -69,7 +69,8 @@ def message(trade, kind, event_at):
         def num(value, digits=2):
             return '--' if value is None else f'{value:.{digits}f}'
         limits=audit.get('limits') or trade.get('parameters') or {}
-        reasons={'FILL_RR_BELOW_MIN':'RR pada harga simulasi di bawah minimum',
+        reasons={'FILL_OUTSIDE_ENTRY_ZONE':'Harga simulasi di luar julat entry maksimum 40 pips',
+                 'FILL_RR_BELOW_MIN':'RR pada harga simulasi di bawah minimum',
                  'FILL_RISK_BELOW_MIN':'Risk pada harga simulasi di bawah minimum',
                  'FILL_RISK_ABOVE_MAX':'Risk pada harga simulasi melebihi maksimum',
                  'OPEN_BEYOND_SL':'Harga simulasi sudah melepasi SL',

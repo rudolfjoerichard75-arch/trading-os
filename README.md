@@ -73,3 +73,9 @@ External cron-job.org continues to dispatch `bosque-engine.yml`; there is no sec
 - Session remains a preference, not a hard gate. TP1 remains observational; automatic breakeven/partial exits have not been introduced. Risk stays 20–80 pips, with the existing guarded fill and TP2 exit.
 
 Validation covers partial/missing/duplicate candles, both retest directions, premature/failed/expired breaks, opposing score evidence, live/replay consistency and existing journal/alert behavior. This change has no validated win-rate claim; research must use the new configuration.
+
+## Entry range display — 2026-10-21
+
+New Telegram signals display `📍 Entry : low-high` to two decimal places. The shared risk/RR window is capped at 40 pips (4.00 price units at PIP_SIZE=0.10): The range is anchored at the planned entry, clamped inward to valid risk/RR bounds: SELL extends upward toward better prices and BUY downward. When no planned price is supplied, it uses the valid lower SELL / upper BUY boundary. Narrower valid windows remain narrower. For example, SELL SL 4119.26 / TP2 4096.27 gives 4111.60–4115.60. This is a risk/RR-derived entry window, not a newly detected supply/demand zone.
+
+Risk, target distances and RR in the signal now describe both ends of the entry range. SL and TP prices remain frozen. New journal parameters record `RISK_RR_DIRECTIONAL_40_PIPS_V1`; paper fills outside the displayed range are NOT_ENTERED with `FILL_OUTSIDE_ENTRY_ZONE`. Existing trades without that policy keep their original fill rules. Backtests with earlier configurations are marked outdated on the next sync. Existing Telegram messages are not edited or resent.

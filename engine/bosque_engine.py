@@ -1600,37 +1600,38 @@ def format_telegram(
     volatility
 ):
 
-    from bosque_execution import entry_window_text
-    window_text = entry_window_text({**plan, "direction": direction})
+    from bosque_execution import entry_window
+    zone = entry_window({**plan, "direction": direction})
+    if zone['status'] != 'AVAILABLE':
+        raise ValueError("No valid entry zone for Telegram signal")
+    low, high = zone['low'], zone['high']
+    sign = 1 if direction == 'BUY' else -1
+    risks = sorted(sign * (price-plan['sl']) / PIP_SIZE for price in (low, high))
+    ratios = sorted(sign * (plan['tp2']-price) / PIP_SIZE / risk
+                    for price, risk in [(price, sign*(price-plan['sl'])/PIP_SIZE)
+                                        for price in (low, high)])
+    def span(values):
+        lo, hi = sorted(values)
+        return f"{lo:.1f}" if abs(hi-lo) < .05 else f"{lo:.1f}–{hi:.1f}"
+    targets = "".join(
+        f"🎯 {key.upper()}: {plan[key]:.2f} "
+        f"({span(sign*(plan[key]-price)/PIP_SIZE for price in (low,high))} pips)\n"
+        for key in ('tp1','tp2','tp3'))
+    label = opportunity if opportunity.startswith(direction + ' ') else direction + ' ' + opportunity
     return (
         "👑 BOSQUE FOREX AI\n\n"
-        f"🚨 {direction} "
-        f"{opportunity}\n"
+        f"🚨 {label}\n"
         f"⭐ Score: {score}/100\n\n"
-        f"📍 Entry: "
-        f"{plan['entry']}\n"
-        f"🛑 SL: "
-        f"{plan['sl']}\n"
-        f"🎯 TP1: "
-        f"{plan['tp1']} "
-        f"({plan['tp1_pips']} pips)\n"
-        f"🎯 TP2: "
-        f"{plan['tp2']} "
-        f"({plan['tp2_pips']} pips)\n"
-        f"🎯 TP3: "
-        f"{plan['tp3']} "
-        f"({plan['tp3_pips']} pips)\n\n"
-        f"💰 Risk: "
-        f"{plan['risk_pips']} pips\n"
-        f"📊 RR TP2: "
-        f"1:{plan['rr_tp2']}\n"
-        f"🌍 Session: "
-        f"{session}\n"
-        f"📐 PD: "
-        f"{pd_data['zone']}\n"
-        f"🌡 ATR: "
-        f"{volatility.get('atr_pips')} pips\n\n"
-        f"{window_text}\n\n"
+        f"📍 Entry : {low:.2f}-{high:.2f}\n"
+        f"↔️ Lebar zon: {zone['width_pips']:.1f} pips (maksimum 40)\n"
+        f"🛑 SL: {plan['sl']:.2f}\n"
+        f"{targets}\n"
+        f"💰 Risk: {span(risks)} pips\n"
+        f"📊 RR TP2: 1:{ratios[0]:.2f} hingga 1:{ratios[-1]:.2f}\n"
+        f"🌍 Session: {session}\n"
+        f"📐 PD: {pd_data['zone']}\n"
+        f"🌡 ATR: {volatility.get('atr_pips')} pips\n\n"
+        "Risk, jarak TP dan RR bergantung pada harga entry dalam julat, sebelum kos.\n"
         "⚠️ Manual confirmation required."
     )
 

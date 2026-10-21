@@ -1,13 +1,15 @@
-"""Paper execution checks, separate from unchanged V3 signal generation."""
+"""Shared entry zone and guarded paper execution checks."""
 import math
 from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 
 MODEL = 'GUARDED_NEXT_M5_OPEN_TP2_V2'
 LEGACY_MODEL = 'NEXT_M5_OPEN_TP2_V1'
+ENTRY_ZONE_MAX_PIPS = 40
+ENTRY_ZONE_POLICY = 'RISK_RR_DIRECTIONAL_40_PIPS_V1'
 
 
 def entry_window(trade):
-    """Informational only: inclusive cent prices for frozen SL/TP2, before costs."""
+    """Inclusive cent prices for frozen SL/TP2, capped at 40 pips before costs."""
     import bosque_engine as e
     limits = trade.get('parameters') or {}
     try:
@@ -30,9 +32,26 @@ def entry_window(trade):
         low=low.quantize(Decimal('.01'),rounding=ROUND_CEILING)
         high=high.quantize(Decimal('.01'),rounding=ROUND_FLOOR)
         if low > high: return {'status':'EMPTY'}
+        # Anchor at the planned entry (never the changing paper fill).
+        anchor = trade.get('planned_entry', trade.get('entry'))
+        if anchor is not None:
+            anchor = Decimal(str(anchor))
+            if not anchor.is_finite(): raise ValueError('Nonfinite entry')
+            anchor = min(high, max(low, anchor))
+            if trade['direction'] == 'SELL':
+                low = anchor.quantize(Decimal('.01'), rounding=ROUND_CEILING)
+            else:
+                high = anchor.quantize(Decimal('.01'), rounding=ROUND_FLOOR)
+        # SELL extends upward toward a better price; BUY downward.
+        width = Decimal(str(ENTRY_ZONE_MAX_PIPS)) * pip
+        if trade['direction'] == 'SELL':
+            high = min(high, low + width).quantize(Decimal('.01'), rounding=ROUND_FLOOR)
+        else:
+            low = max(low, high - width).quantize(Decimal('.01'), rounding=ROUND_CEILING)
         return {'status':'AVAILABLE','low':float(low),'high':float(high),
                 'min_risk_pips':float(minimum),'max_risk_pips':float(maximum),
-                'min_rr':float(rr),'basis':'FROZEN_SL_TP2_BEFORE_COSTS'}
+                'width_pips':float((high-low)/pip),'max_width_pips':ENTRY_ZONE_MAX_PIPS,
+                'policy':ENTRY_ZONE_POLICY,'min_rr':float(rr),'basis':'FROZEN_SL_TP2_BEFORE_COSTS'}
     except (KeyError, TypeError, ValueError, ArithmeticError):
         return {'status':'UNAVAILABLE'}
 
@@ -67,6 +86,10 @@ def assess(trade, price):
         if risk < minimum - 1e-8: reasons.append('FILL_RISK_BELOW_MIN')
         if risk > maximum + 1e-8: reasons.append('FILL_RISK_ABOVE_MAX')
         if rr < min_rr - 1e-8: reasons.append('FILL_RR_BELOW_MIN')
+    if limits.get('entry_zone_policy') == ENTRY_ZONE_POLICY and math.isfinite(price):
+        zone = entry_window(trade)
+        if zone['status'] != 'AVAILABLE' or not (zone['low'] - 1e-8 <= price <= zone['high'] + 1e-8):
+            reasons.append('FILL_OUTSIDE_ENTRY_ZONE')
     return {'status': 'PASS' if not reasons else 'OUTSIDE_LIMITS',
             'price': price, 'risk_pips': round(risk, 4) if math.isfinite(risk) else None,
             'rr_tp2': round(rr, 4) if rr is not None and math.isfinite(rr) else None,

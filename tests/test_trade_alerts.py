@@ -125,9 +125,9 @@ class TradeAlertsTests(unittest.TestCase):
         self.assertNotIn('test:OBS_SL',self.events())
 
     def test_entry_window_inward_rounding_and_no_strategy_changes(self):
-        from bosque_execution import entry_window, assess
+        from bosque_execution import entry_window, assess, ENTRY_ZONE_POLICY
         for direction,sl,tp in [('SELL',4142.67,4124.25),('BUY',4118.68,4139.63)]:
-            tr={'direction':direction,'sl':sl,'tp2':tp}
+            tr={'direction':direction,'sl':sl,'tp2':tp,'parameters':{'entry_zone_policy':ENTRY_ZONE_POLICY}}
             before=copy.deepcopy(tr); w=entry_window(tr)
             self.assertEqual(w['status'],'AVAILABLE')
             self.assertEqual(assess(tr,w['low'])['status'],'PASS')
@@ -146,7 +146,7 @@ class TradeAlertsTests(unittest.TestCase):
         from bosque_execution import annotate
         annotate(x)
         text=a.message(x,'NO_ENTRY','2026-10-20T00:00Z')
-        for part in ('4135.60','70.65','1:1.607','4136.53–4140.67','bukan pembatalan signal'):
+        for part in ('4135.60','70.65','1:1.607','4136.53–4140.53','bukan pembatalan signal'):
             self.assertIn(part,text)
 
     def test_activation_excludes_history_reconstructions_and_unsent_signals(self):

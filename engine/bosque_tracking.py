@@ -182,9 +182,11 @@ def add_diagnostics(dashboard):
 def configuration():
     import bosque_engine as e
     from bosque_signals import POLICY
+    from bosque_execution import ENTRY_ZONE_POLICY, ENTRY_ZONE_MAX_PIPS
     return {'min_risk_pips':e.MIN_RISK_PIPS,'max_risk_pips':e.MAX_RISK_PIPS,
             'min_score':e.MIN_SCORE,'min_rr':e.MIN_RR,'signal_policy':POLICY,
-            'execution_model':MODEL,'entry_logic_version':e.ENTRY_LOGIC_VERSION}
+            'execution_model':MODEL,'entry_logic_version':e.ENTRY_LOGIC_VERSION,
+            'entry_zone_policy':ENTRY_ZONE_POLICY,'entry_zone_max_pips':ENTRY_ZONE_MAX_PIPS}
 
 
 def sync(dashboard, frame, sent=None):
