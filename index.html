@@ -651,6 +651,11 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
         <p>Target observations continue separately to TP3 for up to 72 M5 bars. TP after SL is not a winning trade. The partial candle at alert time is excluded because M5 OHLC cannot isolate moves before/after the alert.</p>
         <p>Daily loss lock and fresh-zone filter are not part of the original V3 entry rules.</p>
         <p><a href="./paper_journal.csv" download>Download journal CSV</a> · <a href="./engine/backtest_results.json">Backtest JSON</a></p>
+        <div class="row"><span>AI Learning Journal</span><b id="learningStatus">BELUM AKTIF</b></div>
+        <div class="row"><span>Snapshot / Calon / Ditolak hari ini</span><b id="learningCounts">--</b></div>
+        <div class="row"><span>Hasil paper / Dengan kos tersedia</span><b id="learningLabels">--</b></div>
+        <p id="learningNote">Pengumpulan data sahaja; belum ada model AI terlatih.</p>
+        <p><a href="./engine/learning_summary.json">Learning summary JSON</a></p>
         <div id="journalRecent"></div>
       </details>
     </div>
@@ -1415,6 +1420,12 @@ function render(data){
   const health=data.data_health || {};
   setText("dataHealth", health.last_candle_close ? `Candle tutup: ${newsTime(health.last_candle_close)} • ${health.reason}` : health.reason || "Masa candle belum tersedia");
   if(health.allowed===false) setText("engineStatus", "DATA BLOCKED");
+  const learning = data.learning || {};
+  const learningStates = {COLLECTING:"MENGUMPUL DATA",DEGRADED:"REKOD TIDAK LENGKAP",ERROR:"RALAT REKOD"};
+  setText("learningStatus", learningStates[learning.status] || "BELUM AKTIF");
+  setText("learningCounts", learning.status ? `${learning.captured_today ?? "--"} / ${learning.candidates_today ?? "--"} / ${learning.rejected_today ?? "--"}` : "--");
+  setText("learningLabels", learning.status ? `${learning.gross_research_rows ?? "--"} / ${learning.net_research_rows ?? "--"}` : "--");
+  setText("learningNote", "Pengumpulan data sahaja; belum ada model AI terlatih. Signal masih dikawal V3.");
   setText("journalStatus", journal.status || "NOT AVAILABLE");
   setText("journalCounts", `${stats.trades || 0} / ${stats.open_trades || 0}`);
   setText("journalReview", `${stats.review_required || 0} / ${stats.reconstructed || 0}`);
@@ -1528,11 +1539,13 @@ async function runDashboard(){
     const candleClosed = Date.parse(data.data_health?.last_candle_close || "");
     if(Number.isFinite(candleClosed) && Date.now()-candleClosed > 10*60*1000){
       setText("engineStatus", "STALE DATA");
+      setText("learningStatus", "DATA LAMA — STATUS BELUM DISAHKAN");
       setExplanation("finalSignal", "WAIT", "Candle M5 lebih 10 minit lama selepas penutupan");
       setDirectionClass("finalSignal", "WAIT");
     }
     if(!Number.isFinite(updated) || Date.now() - updated > 15 * 60 * 1000 || updated-Date.now()>60*1000){
       setText("engineStatus", "STALE DATA");
+      setText("learningStatus", "DATA LAMA — STATUS BELUM DISAHKAN");
       const reason = !Number.isFinite(updated) ? "Masa kemas kini engine tidak sah" : updated-Date.now()>60*1000 ? "Masa engine mendahului masa semasa" : `Data engine lebih 15 minit lama (${Math.floor((Date.now() - updated) / 60000)} minit)`;
       setExplanation("finalSignal", "WAIT", reason);
       setDirectionClass("finalSignal", "WAIT");
@@ -1552,6 +1565,9 @@ async function runDashboard(){
       "ERROR"
     );
 
+    setText("learningStatus", "STATUS BELUM DISAHKAN");
+    setText("learningCounts", "--");
+    setText("learningLabels", "--");
     setExplanation("finalSignal", "WAIT", "Data engine gagal dimuat; status terkini tidak dapat disahkan");
     setDirectionClass("finalSignal", "WAIT");
     for(const id of ["validSetup", "scoreGate", "m5Gate", "riskGate", "rrGate"]){

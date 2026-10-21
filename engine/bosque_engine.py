@@ -1853,12 +1853,26 @@ def main():
         data_health["allowed"]
     ])
 
+    # Freeze learning inputs BEFORE any Telegram delivery or journal result.
+    from bosque_learning import safe_capture
+    learning_capture = safe_capture(ENGINE_DIR, {
+        'direction':setup['direction'], 'opportunity':setup['opportunity'],
+        'score':score, 'session':session, 'h1':h1_structure,
+        'm15':m15_structure, 'm5':m5_structure, 'confirmation':m5_confirm,
+        'pd':pd_data, 'liquidity':liquidity, 'range':setup.get('range'),
+        'volatility':volatility, 'news':news, 'plan':plan,
+        'data_health':data_health,
+        'gates':{'setup':setup_ok,'score':score_ok,'m5_confirmation':m5_ok,
+                 'risk':risk_ok,'rr':rr_ok,'news':news_ok,'data':data_health['allowed']}
+    }, m5, now_my())
+
     # =====================================================
     # SIGNAL
     # =====================================================
 
     signal = {
         "active": False,
+        "learning_id": learning_capture.get("id"),
         "id": None,
         "direction":
             setup["direction"],
@@ -2260,6 +2274,7 @@ def main():
     }
 
     from bosque_tracking import sync
+    dashboard['learning_capture'] = learning_capture
     dashboard['data_health'] = data_health
     dashboard['filters']['data'] = data_health['allowed']
     dashboard = sync(dashboard, m5, sent)
