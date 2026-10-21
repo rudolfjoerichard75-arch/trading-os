@@ -8,32 +8,35 @@
     "min_score": 70,
     "min_rr": 2.0,
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-    "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+    "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+    "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+    "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+    "entry_zone_max_pips": 40
   },
   "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-  "bars_used": 4999,
-  "period_start": "2026-10-03T16:00:00+00:00",
-  "period_end": "2026-10-21T00:30:00+00:00",
+  "bars_used": 5000,
+  "period_start": "2026-10-04T01:35:00+00:00",
+  "period_end": "2026-10-21T10:10:00+00:00",
   "source_sha256": {
-    "XAUUSD_M5_auto.csv": "22091597690a8e3545eb96876bdf97ec0e2b1cc91183bff80cdde7c3266e72a0"
+    "XAUUSD_M5_auto.csv": "ea1686d92c89ecddebb54205e6b59e449cdf5dc128b10ec39c6458b02f999ec7"
   },
   "results": {
     "development": {
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 11,
-        "wins": 5,
-        "losses": 6,
-        "win_rate": 45.45,
-        "average_r": 0.5273454545454545,
-        "expectancy_r": 0.5273454545454545,
-        "profit_factor": 1.9667999999999999,
-        "max_drawdown": 4.0,
-        "max_consecutive_losses": 4,
-        "total_pips": 281.006,
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "average_r": -1.0,
+        "expectancy_r": -1.0,
+        "profit_factor": 0.0,
+        "max_drawdown": 1.0,
+        "max_consecutive_losses": 1,
+        "total_pips": -71.582,
         "open_trades": 0,
         "unresolved": 0,
-        "cancelled": 19,
+        "cancelled": 6,
         "review_required": 0,
         "reconstructed": 0,
         "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -41,28 +44,28 @@
       "trades": [
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "fd508c63ac691b10",
-          "timestamp": "2026-10-05T23:15:01+00:00",
+          "signal_id": "3b8241ab273a8679",
+          "timestamp": "2026-10-05T23:10:01+00:00",
           "direction": "SELL",
-          "opportunity": "SELL PULLBACK",
+          "opportunity": "SELL LIQUIDITY SWEEP",
           "score": 75,
           "session": "ASIAN",
-          "planned_entry": 4138.73,
-          "entry": 4139.26108,
-          "sl": 4145.87,
-          "tp1": 4132.73,
-          "tp2": 4124.44,
-          "tp3": 4117.3,
-          "result": "LOSS",
-          "bars_held": 19,
+          "planned_entry": 4139.69,
+          "entry": null,
+          "sl": 4145.93,
+          "tp1": 4133.69,
+          "tp2": 4127.21,
+          "tp3": 4120.98,
+          "result": "NOT_ENTERED",
+          "bars_held": 0,
           "cost_pips": null,
           "cost_status": "GROSS_ONLY_UNCONFIGURED",
           "tp1_hit": false,
           "tp2_hit": false,
           "tp3_hit": false,
-          "result_pips": -66.089,
-          "result_r": -1.0,
-          "closed_at": "2026-10-06T00:55:00+00:00",
+          "result_pips": null,
+          "result_r": null,
+          "closed_at": "2026-10-05T23:15:00+00:00",
           "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
           "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
           "parameters": {
@@ -71,21 +74,24 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
-          "decision_at": "2026-10-05T23:15:00+00:00",
+          "decision_at": "2026-10-05T23:10:00+00:00",
           "signal_path": {
             "model": "M5_TARGET_PATH_V1",
             "status": "TP3_AFTER_SL",
-            "bars_observed": 40,
-            "observation_start": "2026-10-05T23:20:00+00:00",
+            "bars_observed": 41,
+            "observation_start": "2026-10-05T23:15:00+00:00",
             "targets": {
               "tp1": {
-                "bar": "2026-10-06T01:40:00+00:00",
-                "order": "AFTER_SL"
+                "bar": "2026-10-06T00:05:00+00:00",
+                "order": "BEFORE_OBSERVED_SL"
               },
               "tp2": {
-                "bar": "2026-10-06T02:35:00+00:00",
+                "bar": "2026-10-06T02:25:00+00:00",
                 "order": "AFTER_SL"
               },
               "tp3": {
@@ -99,95 +105,16 @@
             "sl_first_at": "2026-10-06T00:50:00+00:00",
             "last_bar": "2026-10-06T02:35:00+00:00"
           },
-          "next_open": 4139.26108,
-          "execution_checked_at": "2026-10-05T23:20:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4139.26108,
-            "risk_pips": 66.0892,
-            "rr_tp2": 2.2426,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-05T23:20:00+00:00",
-          "last_bar": "2026-10-06T00:50:00+00:00",
-          "exit_price": 4145.87,
-          "exit_reason": "SL"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "89a665a83cd1d0ab",
-          "timestamp": "2026-10-05T23:50:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "ASIAN",
-          "planned_entry": 4135.58,
-          "entry": null,
-          "sl": 4141.43,
-          "tp1": 4129.58,
-          "tp2": 4123.58,
-          "tp3": 4117.58,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-05T23:55:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-05T23:50:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_AFTER_SL",
-            "bars_observed": 33,
-            "observation_start": "2026-10-05T23:55:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-06T01:50:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-06T02:35:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-06T02:35:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-06T00:20:00+00:00",
-            "last_bar": "2026-10-06T02:35:00+00:00"
-          },
-          "next_open": 4134.2285,
-          "execution_checked_at": "2026-10-05T23:55:00+00:00",
+          "next_open": 4138.71666,
+          "execution_checked_at": "2026-10-05T23:15:00+00:00",
           "fill_audit": {
             "status": "OUTSIDE_LIMITS",
-            "price": 4134.2285,
-            "risk_pips": 72.015,
-            "rr_tp2": 1.4787,
+            "price": 4138.71666,
+            "risk_pips": 72.1334,
+            "rr_tp2": 1.5952,
             "reasons": [
-              "FILL_RR_BELOW_MIN"
+              "FILL_RR_BELOW_MIN",
+              "FILL_OUTSIDE_ENTRY_ZONE"
             ],
             "limits": {
               "min_risk_pips": 20,
@@ -200,316 +127,7 @@
         },
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "d5f0ce976a8b9f99",
-          "timestamp": "2026-10-06T02:30:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 75,
-          "session": "ASIAN",
-          "planned_entry": 4126.81,
-          "entry": 4126.94555,
-          "sl": 4131.86,
-          "tp1": 4120.81,
-          "tp2": 4114.81,
-          "tp3": 4108.81,
-          "result": "WIN",
-          "bars_held": 1,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": true,
-          "tp2_hit": true,
-          "tp3_hit": true,
-          "result_pips": 121.355,
-          "result_r": 2.4694,
-          "closed_at": "2026-10-06T02:40:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-06T02:30:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 1,
-            "observation_start": "2026-10-06T02:35:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-06T02:35:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-06T02:35:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-06T02:35:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-06T02:35:00+00:00"
-          },
-          "next_open": 4126.94555,
-          "execution_checked_at": "2026-10-06T02:35:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4126.94555,
-            "risk_pips": 49.1445,
-            "rr_tp2": 2.4694,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-06T02:35:00+00:00",
-          "last_bar": "2026-10-06T02:35:00+00:00",
-          "exit_price": 4114.81,
-          "exit_reason": "TP2"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "406f527278ec8d12",
-          "timestamp": "2026-10-06T09:30:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY BREAKOUT RETEST",
-          "score": 75,
-          "session": "LONDON",
-          "planned_entry": 4156.2,
-          "entry": null,
-          "sl": 4149.57,
-          "tp1": 4162.2,
-          "tp2": 4169.45,
-          "tp3": 4176.08,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-06T09:35:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-06T09:30:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_AFTER_SL",
-            "bars_observed": 30,
-            "observation_start": "2026-10-06T09:35:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-06T11:15:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-06T11:35:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-06T12:00:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-06T10:15:00+00:00",
-            "last_bar": "2026-10-06T12:00:00+00:00"
-          },
-          "next_open": 4156.85789,
-          "execution_checked_at": "2026-10-06T09:35:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4156.85789,
-            "risk_pips": 72.8789,
-            "rr_tp2": 1.7278,
-            "reasons": [
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RR_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "51d939e4a9b688d6",
-          "timestamp": "2026-10-06T10:30:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY LIQUIDITY SWEEP",
-          "score": 70,
-          "session": "LONDON",
-          "planned_entry": 4154.29,
-          "entry": null,
-          "sl": 4148.49,
-          "tp1": 4160.29,
-          "tp2": 4166.29,
-          "tp3": 4172.29,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-06T10:35:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-06T10:30:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 15,
-            "observation_start": "2026-10-06T10:35:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-06T10:45:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-06T11:30:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-06T11:45:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-06T11:45:00+00:00"
-          },
-          "next_open": 4156.04478,
-          "execution_checked_at": "2026-10-06T10:35:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4156.04478,
-            "risk_pips": 75.5478,
-            "rr_tp2": 1.3561,
-            "reasons": [
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RR_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "fbe53c8f1f20c8ec",
-          "timestamp": "2026-10-06T11:10:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL RANGE REVERSAL",
-          "score": 75,
-          "session": "LONDON",
-          "planned_entry": 4156.38,
-          "entry": null,
-          "sl": 4161.29,
-          "tp1": 4150.38,
-          "tp2": 4144.38,
-          "tp3": 4138.38,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-06T11:15:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-06T11:10:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-06T11:15:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-06T14:15:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-06T11:15:00+00:00",
-            "last_bar": "2026-10-06T17:10:00+00:00"
-          },
-          "next_open": 4160.2548,
-          "execution_checked_at": "2026-10-06T11:15:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4160.2548,
-            "risk_pips": 10.352,
-            "rr_tp2": 15.335,
-            "reasons": [
-              "FILL_RISK_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RISK_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "b5b2738f525ccc4d",
+          "signal_id": "0d3d7a97d0a8458b",
           "timestamp": "2026-10-06T23:30:01+00:00",
           "direction": "BUY",
           "opportunity": "BUY PULLBACK",
@@ -539,7 +157,10 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
           "decision_at": "2026-10-06T23:30:00+00:00",
           "signal_path": {
@@ -576,892 +197,7 @@
         },
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "844ebc8fda015fd8",
-          "timestamp": "2026-10-08T02:25:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY BREAKOUT RETEST",
-          "score": 70,
-          "session": "ASIAN",
-          "planned_entry": 4137.13,
-          "entry": null,
-          "sl": 4131.18,
-          "tp1": 4143.13,
-          "tp2": 4149.13,
-          "tp3": 4155.13,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-08T02:30:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-08T02:25:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-08T02:30:00+00:00",
-            "targets": {},
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-08T03:10:00+00:00",
-            "last_bar": "2026-10-08T08:25:00+00:00"
-          },
-          "next_open": 4138.05293,
-          "execution_checked_at": "2026-10-08T02:30:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4138.05293,
-            "risk_pips": 68.7293,
-            "rr_tp2": 1.6117,
-            "reasons": [
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RR_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "da8f4c315aed9a6d",
-          "timestamp": "2026-10-08T16:00:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "NEW YORK",
-          "planned_entry": 4112.0,
-          "entry": null,
-          "sl": 4118.36,
-          "tp1": 4106.0,
-          "tp2": 4099.29,
-          "tp3": 4092.93,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-08T16:05:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-08T16:00:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-08T16:05:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-08T16:05:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-08T16:15:00+00:00",
-            "last_bar": "2026-10-08T22:00:00+00:00"
-          },
-          "next_open": 4109.19493,
-          "execution_checked_at": "2026-10-08T16:05:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4109.19493,
-            "risk_pips": 91.6507,
-            "rr_tp2": 1.0807,
-            "reasons": [
-              "FILL_RISK_ABOVE_MAX",
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RISK_ABOVE_MAX"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "d498886bf6e4de26",
-          "timestamp": "2026-10-08T22:15:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY LIQUIDITY SWEEP",
-          "score": 70,
-          "session": "OFF SESSION",
-          "planned_entry": 4135.76,
-          "entry": 4135.95873,
-          "sl": 4130.61,
-          "tp1": 4141.76,
-          "tp2": 4147.76,
-          "tp3": 4153.76,
-          "result": "WIN",
-          "bars_held": 21,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": true,
-          "tp2_hit": true,
-          "tp3_hit": false,
-          "result_pips": 118.013,
-          "result_r": 2.2064,
-          "closed_at": "2026-10-09T00:05:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-08T22:15:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 35,
-            "observation_start": "2026-10-08T22:20:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-08T23:10:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-09T00:00:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-09T01:10:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-09T01:10:00+00:00"
-          },
-          "next_open": 4135.95873,
-          "execution_checked_at": "2026-10-08T22:20:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4135.95873,
-            "risk_pips": 53.4873,
-            "rr_tp2": 2.2064,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-08T22:20:00+00:00",
-          "last_bar": "2026-10-09T00:00:00+00:00",
-          "exit_price": 4147.76,
-          "exit_reason": "TP2"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "84c91b76bb57b030",
-          "timestamp": "2026-10-09T02:40:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY BREAKOUT RETEST",
-          "score": 70,
-          "session": "ASIAN",
-          "planned_entry": 4176.5,
-          "entry": null,
-          "sl": 4169.57,
-          "tp1": 4182.5,
-          "tp2": 4190.35,
-          "tp3": 4197.28,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-09T02:45:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-09T02:40:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 34,
-            "observation_start": "2026-10-09T02:45:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-09T04:20:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-09T05:15:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-09T05:30:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-09T05:30:00+00:00"
-          },
-          "next_open": 4176.88199,
-          "execution_checked_at": "2026-10-09T02:45:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4176.88199,
-            "risk_pips": 73.1199,
-            "rr_tp2": 1.8419,
-            "reasons": [
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RR_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "cfac7fd5ddb28929",
-          "timestamp": "2026-10-09T04:25:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY BREAKOUT RETEST",
-          "score": 75,
-          "session": "ASIAN",
-          "planned_entry": 4182.37,
-          "entry": 4182.40376,
-          "sl": 4177.27,
-          "tp1": 4188.37,
-          "tp2": 4194.37,
-          "tp3": 4200.37,
-          "result": "LOSS",
-          "bars_held": 6,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": -51.338,
-          "result_r": -1.0,
-          "closed_at": "2026-10-09T05:00:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-09T04:25:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_AFTER_SL",
-            "bars_observed": 14,
-            "observation_start": "2026-10-09T04:30:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-09T05:15:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-09T05:30:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-09T05:35:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-09T04:55:00+00:00",
-            "last_bar": "2026-10-09T05:35:00+00:00"
-          },
-          "next_open": 4182.40376,
-          "execution_checked_at": "2026-10-09T04:30:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4182.40376,
-            "risk_pips": 51.3376,
-            "rr_tp2": 2.3309,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-09T04:30:00+00:00",
-          "last_bar": "2026-10-09T04:55:00+00:00",
-          "exit_price": 4177.27,
-          "exit_reason": "SL"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "c355c1644ea34f8c",
-          "timestamp": "2026-10-09T04:50:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL LIQUIDITY SWEEP",
-          "score": 70,
-          "session": "ASIAN",
-          "planned_entry": 4178.15,
-          "entry": null,
-          "sl": 4185.79,
-          "tp1": 4172.15,
-          "tp2": 4162.87,
-          "tp3": 4155.22,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-09T04:55:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-09T04:50:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-09T04:55:00+00:00",
-            "targets": {},
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-09T05:00:00+00:00",
-            "last_bar": "2026-10-09T10:50:00+00:00"
-          },
-          "next_open": 4177.54736,
-          "execution_checked_at": "2026-10-09T04:55:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4177.54736,
-            "risk_pips": 82.4264,
-            "rr_tp2": 1.7807,
-            "reasons": [
-              "FILL_RISK_ABOVE_MAX",
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RISK_ABOVE_MAX"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "df55d02a3e6c3529",
-          "timestamp": "2026-10-09T09:25:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY PULLBACK",
-          "score": 75,
-          "session": "LONDON",
-          "planned_entry": 4189.42,
-          "entry": 4187.70617,
-          "sl": 4184.89,
-          "tp1": 4195.42,
-          "tp2": 4201.42,
-          "tp3": 4207.42,
-          "result": "LOSS",
-          "bars_held": 2,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": -28.162,
-          "result_r": -1.0,
-          "closed_at": "2026-10-09T09:40:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-09T09:25:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-09T09:30:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-09T13:55:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-09T09:35:00+00:00",
-            "last_bar": "2026-10-09T15:25:00+00:00"
-          },
-          "next_open": 4187.70617,
-          "execution_checked_at": "2026-10-09T09:30:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4187.70617,
-            "risk_pips": 28.1617,
-            "rr_tp2": 4.8697,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-09T09:30:00+00:00",
-          "last_bar": "2026-10-09T09:35:00+00:00",
-          "exit_price": 4184.89,
-          "exit_reason": "SL"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "cb4cea1e76a06bbd",
-          "timestamp": "2026-10-12T09:40:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "LONDON",
-          "planned_entry": 4172.19,
-          "entry": null,
-          "sl": 4179.03,
-          "tp1": 4166.19,
-          "tp2": 4158.51,
-          "tp3": 4151.67,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-12T09:45:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-12T09:40:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-12T09:45:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-12T12:20:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-12T12:30:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-12T10:25:00+00:00",
-            "last_bar": "2026-10-12T15:40:00+00:00"
-          },
-          "next_open": 4171.09476,
-          "execution_checked_at": "2026-10-12T09:45:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4171.09476,
-            "risk_pips": 79.3524,
-            "rr_tp2": 1.5859,
-            "reasons": [
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RR_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "6397901d1dbd1368",
-          "timestamp": "2026-10-12T12:10:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "NEW YORK",
-          "planned_entry": 4168.17,
-          "entry": null,
-          "sl": 4173.49,
-          "tp1": 4162.17,
-          "tp2": 4156.17,
-          "tp3": 4150.17,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-12T12:15:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-12T12:10:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-12T12:15:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-12T12:30:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-12T13:25:00+00:00",
-            "last_bar": "2026-10-12T18:10:00+00:00"
-          },
-          "next_open": 4171.74567,
-          "execution_checked_at": "2026-10-12T12:15:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4171.74567,
-            "risk_pips": 17.4433,
-            "rr_tp2": 8.9293,
-            "reasons": [
-              "FILL_RISK_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RISK_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "59c6377bda176b19",
-          "timestamp": "2026-10-13T12:20:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL LIQUIDITY SWEEP",
-          "score": 70,
-          "session": "NEW YORK",
-          "planned_entry": 4184.51,
-          "entry": 4185.34321,
-          "sl": 4189.59,
-          "tp1": 4178.51,
-          "tp2": 4172.51,
-          "tp3": 4166.51,
-          "result": "LOSS",
-          "bars_held": 2,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": -42.468,
-          "result_r": -1.0,
-          "closed_at": "2026-10-13T12:35:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-13T12:20:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_AFTER_SL",
-            "bars_observed": 20,
-            "observation_start": "2026-10-13T12:25:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-13T12:55:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-13T13:05:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-13T14:00:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-13T12:30:00+00:00",
-            "last_bar": "2026-10-13T14:00:00+00:00"
-          },
-          "next_open": 4185.34321,
-          "execution_checked_at": "2026-10-13T12:25:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4185.34321,
-            "risk_pips": 42.4679,
-            "rr_tp2": 3.0219,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-13T12:25:00+00:00",
-          "last_bar": "2026-10-13T12:30:00+00:00",
-          "exit_price": 4189.59,
-          "exit_reason": "SL"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "0bff9e24cff9d932",
-          "timestamp": "2026-10-13T16:15:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "NEW YORK",
-          "planned_entry": 4159.84,
-          "entry": null,
-          "sl": 4167.71,
-          "tp1": 4153.84,
-          "tp2": 4144.09,
-          "tp3": 4136.21,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-13T16:20:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-13T16:15:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-13T16:20:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-13T16:55:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-13T22:15:00+00:00"
-          },
-          "next_open": 4157.24689,
-          "execution_checked_at": "2026-10-13T16:20:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4157.24689,
-            "risk_pips": 104.6311,
-            "rr_tp2": 1.2575,
-            "reasons": [
-              "FILL_RISK_ABOVE_MAX",
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RISK_ABOVE_MAX"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "1c1f8e781557b628",
-          "timestamp": "2026-10-13T16:55:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "NEW YORK",
-          "planned_entry": 4154.46,
-          "entry": null,
-          "sl": 4159.69,
-          "tp1": 4148.46,
-          "tp2": 4142.46,
-          "tp3": 4136.46,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-13T17:00:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-13T16:55:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-13T17:00:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-13T17:50:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-13T18:05:00+00:00",
-            "last_bar": "2026-10-13T22:55:00+00:00"
-          },
-          "next_open": 4153.44379,
-          "execution_checked_at": "2026-10-13T17:00:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4153.44379,
-            "risk_pips": 62.4621,
-            "rr_tp2": 1.7585,
-            "reasons": [
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RR_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "0932bcaff14ffa8f",
+          "signal_id": "07fc13dd5896bb87",
           "timestamp": "2026-10-13T20:15:01+00:00",
           "direction": "SELL",
           "opportunity": "SELL RANGE REVERSAL",
@@ -1491,7 +227,10 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
           "decision_at": "2026-10-13T20:15:00+00:00",
           "signal_path": {
@@ -1527,7 +266,8 @@
             "risk_pips": 64.5683,
             "rr_tp2": 1.5709,
             "reasons": [
-              "FILL_RR_BELOW_MIN"
+              "FILL_RR_BELOW_MIN",
+              "FILL_OUTSIDE_ENTRY_ZONE"
             ],
             "limits": {
               "min_risk_pips": 20,
@@ -1540,79 +280,7 @@
         },
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "5ea632f2b782f8d7",
-          "timestamp": "2026-10-13T23:25:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "ASIAN",
-          "planned_entry": 4155.62,
-          "entry": 4156.06481,
-          "sl": 4163.33,
-          "tp1": 4149.62,
-          "tp2": 4140.21,
-          "tp3": 4132.5,
-          "result": "LOSS",
-          "bars_held": 8,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": -72.652,
-          "result_r": -1.0,
-          "closed_at": "2026-10-14T00:10:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-13T23:25:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-13T23:30:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-14T01:15:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-14T00:05:00+00:00",
-            "last_bar": "2026-10-14T05:25:00+00:00"
-          },
-          "next_open": 4156.06481,
-          "execution_checked_at": "2026-10-13T23:30:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4156.06481,
-            "risk_pips": 72.6519,
-            "rr_tp2": 2.1823,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-13T23:30:00+00:00",
-          "last_bar": "2026-10-14T00:05:00+00:00",
-          "exit_price": 4163.33,
-          "exit_reason": "SL"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "d3dc6791a65b4741",
+          "signal_id": "d14c8a44e9578175",
           "timestamp": "2026-10-14T03:30:01+00:00",
           "direction": "SELL",
           "opportunity": "SELL RANGE REVERSAL",
@@ -1642,7 +310,10 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
           "decision_at": "2026-10-14T03:30:00+00:00",
           "signal_path": {
@@ -1678,7 +349,8 @@
             "risk_pips": 64.7699,
             "rr_tp2": 1.5784,
             "reasons": [
-              "FILL_RR_BELOW_MIN"
+              "FILL_RR_BELOW_MIN",
+              "FILL_OUTSIDE_ENTRY_ZONE"
             ],
             "limits": {
               "min_risk_pips": 20,
@@ -1691,73 +363,7 @@
         },
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "66955ef4b597b6db",
-          "timestamp": "2026-10-14T22:10:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL RANGE REVERSAL",
-          "score": 75,
-          "session": "OFF SESSION",
-          "planned_entry": 4103.94,
-          "entry": null,
-          "sl": 4106.13,
-          "tp1": 4097.94,
-          "tp2": 4091.94,
-          "tp3": 4085.94,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-14T22:15:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-14T22:10:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-14T22:15:00+00:00",
-            "targets": {},
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-14T22:20:00+00:00",
-            "last_bar": "2026-10-15T04:10:00+00:00"
-          },
-          "next_open": 4105.76604,
-          "execution_checked_at": "2026-10-14T22:15:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4105.76604,
-            "risk_pips": 3.6396,
-            "rr_tp2": 37.9878,
-            "reasons": [
-              "FILL_RISK_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RISK_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "0c0191b44df789cc",
+          "signal_id": "d334c4fe6ad055ca",
           "timestamp": "2026-10-15T17:40:01+00:00",
           "direction": "BUY",
           "opportunity": "BUY PULLBACK",
@@ -1787,7 +393,10 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
           "decision_at": "2026-10-15T17:40:00+00:00",
           "signal_path": {
@@ -1823,7 +432,8 @@
             "risk_pips": 74.6415,
             "rr_tp2": 1.642,
             "reasons": [
-              "FILL_RR_BELOW_MIN"
+              "FILL_RR_BELOW_MIN",
+              "FILL_OUTSIDE_ENTRY_ZONE"
             ],
             "limits": {
               "min_risk_pips": 20,
@@ -1836,28 +446,28 @@
         },
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "6749140c4eb6999d",
+          "signal_id": "7105f4d8e969fbe6",
           "timestamp": "2026-10-15T18:15:01+00:00",
           "direction": "BUY",
           "opportunity": "BUY PULLBACK",
           "score": 70,
           "session": "OFF SESSION",
           "planned_entry": 4155.48,
-          "entry": 4156.60683,
+          "entry": null,
           "sl": 4151.79,
           "tp1": 4161.48,
           "tp2": 4167.48,
           "tp3": 4173.48,
-          "result": "WIN",
-          "bars_held": 17,
+          "result": "NOT_ENTERED",
+          "bars_held": 0,
           "cost_pips": null,
           "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": true,
-          "tp2_hit": true,
+          "tp1_hit": false,
+          "tp2_hit": false,
           "tp3_hit": false,
-          "result_pips": 108.732,
-          "result_r": 2.2573,
-          "closed_at": "2026-10-15T19:45:00+00:00",
+          "result_pips": null,
+          "result_r": null,
+          "closed_at": "2026-10-15T18:20:00+00:00",
           "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
           "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
           "parameters": {
@@ -1866,7 +476,10 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
           "decision_at": "2026-10-15T18:15:00+00:00",
           "signal_path": {
@@ -1897,239 +510,12 @@
           "next_open": 4156.60683,
           "execution_checked_at": "2026-10-15T18:20:00+00:00",
           "fill_audit": {
-            "status": "PASS",
+            "status": "OUTSIDE_LIMITS",
             "price": 4156.60683,
             "risk_pips": 48.1683,
             "rr_tp2": 2.2573,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-15T18:20:00+00:00",
-          "last_bar": "2026-10-15T19:40:00+00:00",
-          "exit_price": 4167.48,
-          "exit_reason": "TP2"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "81b32652bc42ff69",
-          "timestamp": "2026-10-15T22:30:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 75,
-          "session": "OFF SESSION",
-          "planned_entry": 4167.42,
-          "entry": 4168.07235,
-          "sl": 4172.66,
-          "tp1": 4161.42,
-          "tp2": 4155.42,
-          "tp3": 4149.42,
-          "result": "WIN",
-          "bars_held": 18,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": true,
-          "tp2_hit": true,
-          "tp3_hit": false,
-          "result_pips": 126.524,
-          "result_r": 2.7579,
-          "closed_at": "2026-10-16T00:05:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-15T22:30:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 36,
-            "observation_start": "2026-10-15T22:35:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-15T23:30:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-16T00:00:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-16T01:30:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-16T01:30:00+00:00"
-          },
-          "next_open": 4168.07235,
-          "execution_checked_at": "2026-10-15T22:35:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4168.07235,
-            "risk_pips": 45.8765,
-            "rr_tp2": 2.7579,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-15T22:35:00+00:00",
-          "last_bar": "2026-10-16T00:00:00+00:00",
-          "exit_price": 4155.42,
-          "exit_reason": "TP2"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "26d23e40f7ecb0a7",
-          "timestamp": "2026-10-16T01:55:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY RANGE REVERSAL",
-          "score": 70,
-          "session": "ASIAN",
-          "planned_entry": 4153.54,
-          "entry": 4153.30269,
-          "sl": 4146.73,
-          "tp1": 4159.54,
-          "tp2": 4167.17,
-          "tp3": 4173.99,
-          "result": "WIN",
-          "bars_held": 11,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": true,
-          "tp2_hit": true,
-          "tp3_hit": false,
-          "result_pips": 138.673,
-          "result_r": 2.1098,
-          "closed_at": "2026-10-16T02:55:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-16T01:55:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 12,
-            "observation_start": "2026-10-16T02:00:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-16T02:25:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-16T02:50:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-16T02:55:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-16T02:55:00+00:00"
-          },
-          "next_open": 4153.30269,
-          "execution_checked_at": "2026-10-16T02:00:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4153.30269,
-            "risk_pips": 65.7269,
-            "rr_tp2": 2.1098,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-16T02:00:00+00:00",
-          "last_bar": "2026-10-16T02:50:00+00:00",
-          "exit_price": 4167.17,
-          "exit_reason": "TP2"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "e8c8d1687a3f618a",
-          "timestamp": "2026-10-16T08:00:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY BREAKOUT RETEST",
-          "score": 75,
-          "session": "LONDON",
-          "planned_entry": 4188.04,
-          "entry": null,
-          "sl": 4181.7,
-          "tp1": 4194.04,
-          "tp2": 4200.73,
-          "tp3": 4207.08,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-16T08:05:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-16T08:00:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-16T08:05:00+00:00",
-            "targets": {},
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-16T08:05:00+00:00",
-            "last_bar": "2026-10-16T14:00:00+00:00"
-          },
-          "next_open": 4182.38641,
-          "execution_checked_at": "2026-10-16T08:05:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4182.38641,
-            "risk_pips": 6.8641,
-            "rr_tp2": 26.724,
             "reasons": [
-              "FILL_RISK_BELOW_MIN"
+              "FILL_OUTSIDE_ENTRY_ZONE"
             ],
             "limits": {
               "min_risk_pips": 20,
@@ -2138,22 +524,22 @@
             },
             "enforced": true
           },
-          "exit_reason": "FILL_RISK_BELOW_MIN"
+          "exit_reason": "FILL_OUTSIDE_ENTRY_ZONE"
         },
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "eef9065d0434ec8d",
-          "timestamp": "2026-10-16T09:25:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL RANGE REVERSAL",
-          "score": 80,
-          "session": "LONDON",
-          "planned_entry": 4187.69,
+          "signal_id": "5e65cbe3ee341ec9",
+          "timestamp": "2026-10-16T12:25:01+00:00",
+          "direction": "BUY",
+          "opportunity": "BUY RANGE REVERSAL",
+          "score": 75,
+          "session": "NEW YORK",
+          "planned_entry": 4177.74,
           "entry": null,
-          "sl": 4192.01,
-          "tp1": 4181.69,
-          "tp2": 4175.69,
-          "tp3": 4169.69,
+          "sl": 4170.82,
+          "tp1": 4183.74,
+          "tp2": 4191.58,
+          "tp3": 4198.5,
           "result": "NOT_ENTERED",
           "bars_held": 0,
           "cost_pips": null,
@@ -2163,7 +549,7 @@
           "tp3_hit": false,
           "result_pips": null,
           "result_r": null,
-          "closed_at": "2026-10-16T09:30:00+00:00",
+          "closed_at": "2026-10-16T12:30:00+00:00",
           "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
           "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
           "parameters": {
@@ -2172,43 +558,47 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
-          "decision_at": "2026-10-16T09:25:00+00:00",
+          "decision_at": "2026-10-16T12:25:00+00:00",
           "signal_path": {
             "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 42,
-            "observation_start": "2026-10-16T09:30:00+00:00",
+            "status": "TP3_AFTER_SL",
+            "bars_observed": 25,
+            "observation_start": "2026-10-16T12:30:00+00:00",
             "targets": {
               "tp1": {
-                "bar": "2026-10-16T09:30:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
+                "bar": "2026-10-16T13:50:00+00:00",
+                "order": "AFTER_SL"
               },
               "tp2": {
-                "bar": "2026-10-16T10:00:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
+                "bar": "2026-10-16T14:00:00+00:00",
+                "order": "AFTER_SL"
               },
               "tp3": {
-                "bar": "2026-10-16T12:55:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
+                "bar": "2026-10-16T14:30:00+00:00",
+                "order": "AFTER_SL"
               }
             },
             "source": "HISTORICAL_REPLAY",
             "partial_signal_bar_excluded": true,
             "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-16T12:55:00+00:00"
+            "sl_first_at": "2026-10-16T12:50:00+00:00",
+            "last_bar": "2026-10-16T14:30:00+00:00"
           },
-          "next_open": 4184.79742,
-          "execution_checked_at": "2026-10-16T09:30:00+00:00",
+          "next_open": 4177.85951,
+          "execution_checked_at": "2026-10-16T12:30:00+00:00",
           "fill_audit": {
             "status": "OUTSIDE_LIMITS",
-            "price": 4184.79742,
-            "risk_pips": 72.1258,
-            "rr_tp2": 1.2627,
+            "price": 4177.85951,
+            "risk_pips": 70.3951,
+            "rr_tp2": 1.9491,
             "reasons": [
-              "FILL_RR_BELOW_MIN"
+              "FILL_RR_BELOW_MIN",
+              "FILL_OUTSIDE_ENTRY_ZONE"
             ],
             "limits": {
               "min_risk_pips": 20,
@@ -2218,104 +608,28 @@
             "enforced": true
           },
           "exit_reason": "FILL_RR_BELOW_MIN"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "91dc1529e18d0f77",
-          "timestamp": "2026-10-16T11:25:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY LIQUIDITY SWEEP",
-          "score": 70,
-          "session": "LONDON",
-          "planned_entry": 4180.42,
-          "entry": null,
-          "sl": 4172.78,
-          "tp1": 4186.42,
-          "tp2": 4195.71,
-          "tp3": 4203.35,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-16T11:30:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-16T11:25:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-16T11:30:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-16T13:50:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-16T14:20:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-16T11:55:00+00:00",
-            "last_bar": "2026-10-16T17:25:00+00:00"
-          },
-          "next_open": 4181.36603,
-          "execution_checked_at": "2026-10-16T11:30:00+00:00",
-          "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4181.36603,
-            "risk_pips": 85.8603,
-            "rr_tp2": 1.6706,
-            "reasons": [
-              "FILL_RISK_ABOVE_MAX",
-              "FILL_RR_BELOW_MIN"
-            ],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "exit_reason": "FILL_RISK_ABOVE_MAX"
         }
       ],
-      "eligible_signals": 30,
-      "eligible_scan_candidates": 44,
-      "repeated_candidates_suppressed": 14
+      "eligible_signals": 7,
+      "eligible_scan_candidates": 13,
+      "repeated_candidates_suppressed": 6
     },
     "out_of_sample": {
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 5,
-        "wins": 1,
-        "losses": 4,
-        "win_rate": 20.0,
-        "average_r": -0.28478000000000003,
-        "expectancy_r": -0.28478000000000003,
-        "profit_factor": 0.644025,
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0,
+        "average_r": -1.0,
+        "expectancy_r": -1.0,
+        "profit_factor": 0.0,
         "max_drawdown": 2.0,
         "max_consecutive_losses": 2,
-        "total_pips": -34.591,
+        "total_pips": -66.841,
         "open_trades": 0,
         "unresolved": 0,
-        "cancelled": 2,
+        "cancelled": 1,
         "review_required": 0,
         "reconstructed": 0,
         "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -2323,7 +637,7 @@
       "trades": [
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "5be4d984ddac6a3d",
+          "signal_id": "a52f163b83fe22a5",
           "timestamp": "2026-10-19T10:40:01+00:00",
           "direction": "BUY",
           "opportunity": "BUY RANGE REVERSAL",
@@ -2353,7 +667,10 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
           "decision_at": "2026-10-19T10:40:00+00:00",
           "signal_path": {
@@ -2390,178 +707,18 @@
         },
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "1894ad1ab7c90f54",
-          "timestamp": "2026-10-19T20:40:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "OFF SESSION",
-          "planned_entry": 4138.3,
-          "entry": 4138.41238,
-          "sl": 4144.18,
-          "tp1": 4132.3,
-          "tp2": 4126.3,
-          "tp3": 4120.3,
-          "result": "LOSS",
-          "bars_held": 16,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": -57.676,
-          "result_r": -1.0,
-          "closed_at": "2026-10-19T22:05:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-19T20:40:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_AFTER_SL",
-            "bars_observed": 55,
-            "observation_start": "2026-10-19T20:45:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-19T23:50:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-20T01:00:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-20T01:15:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-19T22:00:00+00:00",
-            "last_bar": "2026-10-20T01:15:00+00:00"
-          },
-          "next_open": 4138.41238,
-          "execution_checked_at": "2026-10-19T20:45:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4138.41238,
-            "risk_pips": 57.6762,
-            "rr_tp2": 2.1001,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-19T20:45:00+00:00",
-          "last_bar": "2026-10-19T22:00:00+00:00",
-          "exit_price": 4144.18,
-          "exit_reason": "SL"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "f731796a0aa822ff",
-          "timestamp": "2026-10-19T22:45:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
-          "score": 70,
-          "session": "OFF SESSION",
-          "planned_entry": 4137.25,
-          "entry": 4137.76998,
-          "sl": 4142.63,
-          "tp1": 4131.25,
-          "tp2": 4125.25,
-          "tp3": 4119.25,
-          "result": "WIN",
-          "bars_held": 27,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": true,
-          "tp2_hit": true,
-          "tp3_hit": false,
-          "result_pips": 125.2,
-          "result_r": 2.5761,
-          "closed_at": "2026-10-20T01:05:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-19T22:45:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 30,
-            "observation_start": "2026-10-19T22:50:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-20T00:20:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-20T01:00:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-20T01:15:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-20T01:15:00+00:00"
-          },
-          "next_open": 4137.76998,
-          "execution_checked_at": "2026-10-19T22:50:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4137.76998,
-            "risk_pips": 48.6002,
-            "rr_tp2": 2.5761,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-19T22:50:00+00:00",
-          "last_bar": "2026-10-20T01:00:00+00:00",
-          "exit_price": 4125.25,
-          "exit_reason": "TP2"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "4a0f40df72cd46e3",
-          "timestamp": "2026-10-19T23:00:01+00:00",
-          "direction": "SELL",
-          "opportunity": "SELL BREAKOUT RETEST",
+          "signal_id": "430a69733f45b5bf",
+          "timestamp": "2026-10-21T00:30:01+00:00",
+          "direction": "BUY",
+          "opportunity": "BUY LIQUIDITY SWEEP",
           "score": 75,
           "session": "ASIAN",
-          "planned_entry": 4136.53,
+          "planned_entry": 4118.94,
           "entry": null,
-          "sl": 4142.67,
-          "tp1": 4130.53,
-          "tp2": 4124.25,
-          "tp3": 4118.12,
+          "sl": 4111.74,
+          "tp1": 4124.94,
+          "tp2": 4133.34,
+          "tp3": 4140.54,
           "result": "NOT_ENTERED",
           "bars_held": 0,
           "cost_pips": null,
@@ -2571,7 +728,7 @@
           "tp3_hit": false,
           "result_pips": null,
           "result_r": null,
-          "closed_at": "2026-10-19T23:05:00+00:00",
+          "closed_at": "2026-10-21T00:35:00+00:00",
           "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
           "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
           "parameters": {
@@ -2580,43 +737,39 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
-          "decision_at": "2026-10-19T23:00:00+00:00",
+          "decision_at": "2026-10-21T00:30:00+00:00",
           "signal_path": {
             "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_OBSERVED",
-            "bars_observed": 27,
-            "observation_start": "2026-10-19T23:05:00+00:00",
+            "status": "WINDOW_ENDED",
+            "bars_observed": 72,
+            "observation_start": "2026-10-21T00:35:00+00:00",
             "targets": {
               "tp1": {
-                "bar": "2026-10-20T00:20:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-20T01:00:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-20T01:15:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
+                "bar": "2026-10-21T03:30:00+00:00",
+                "order": "AFTER_SL"
               }
             },
             "source": "HISTORICAL_REPLAY",
             "partial_signal_bar_excluded": true,
             "max_bars": 72,
-            "sl_first_at": null,
-            "last_bar": "2026-10-20T01:15:00+00:00"
+            "sl_first_at": "2026-10-21T01:00:00+00:00",
+            "last_bar": "2026-10-21T06:30:00+00:00"
           },
-          "next_open": 4135.60453,
-          "execution_checked_at": "2026-10-19T23:05:00+00:00",
+          "next_open": 4119.29411,
+          "execution_checked_at": "2026-10-21T00:35:00+00:00",
           "fill_audit": {
             "status": "OUTSIDE_LIMITS",
-            "price": 4135.60453,
-            "risk_pips": 70.6547,
-            "rr_tp2": 1.607,
+            "price": 4119.29411,
+            "risk_pips": 75.5411,
+            "rr_tp2": 1.8594,
             "reasons": [
-              "FILL_RR_BELOW_MIN"
+              "FILL_RR_BELOW_MIN",
+              "FILL_OUTSIDE_ENTRY_ZONE"
             ],
             "limits": {
               "min_risk_pips": 20,
@@ -2629,28 +782,28 @@
         },
         {
           "strategy_version": "SCALPING V3",
-          "signal_id": "066b189c8c71987d",
-          "timestamp": "2026-10-20T08:50:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY PULLBACK",
-          "score": 75,
-          "session": "LONDON",
-          "planned_entry": 4125.66,
-          "entry": 4121.7322,
-          "sl": 4118.68,
-          "tp1": 4131.66,
-          "tp2": 4139.63,
-          "tp3": 4146.61,
+          "signal_id": "2f6e3c2ea46b481c",
+          "timestamp": "2026-10-21T04:30:01+00:00",
+          "direction": "SELL",
+          "opportunity": "SELL LIQUIDITY SWEEP",
+          "score": 70,
+          "session": "ASIAN",
+          "planned_entry": 4116.86,
+          "entry": 4120.13228,
+          "sl": 4123.42,
+          "tp1": 4110.86,
+          "tp2": 4103.75,
+          "tp3": 4097.2,
           "result": "LOSS",
-          "bars_held": 1,
+          "bars_held": 10,
           "cost_pips": null,
           "cost_status": "GROSS_ONLY_UNCONFIGURED",
           "tp1_hit": false,
           "tp2_hit": false,
           "tp3_hit": false,
-          "result_pips": -30.522,
+          "result_pips": -32.877,
           "result_r": -1.0,
-          "closed_at": "2026-10-20T09:00:00+00:00",
+          "closed_at": "2026-10-21T05:25:00+00:00",
           "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
           "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
           "parameters": {
@@ -2659,184 +812,32 @@
             "min_score": 70,
             "min_rr": 2.0,
             "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
+            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
+            "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021",
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
           },
-          "decision_at": "2026-10-20T08:50:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TP3_AFTER_SL",
-            "bars_observed": 67,
-            "observation_start": "2026-10-20T08:55:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-20T13:45:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp2": {
-                "bar": "2026-10-20T14:15:00+00:00",
-                "order": "AFTER_SL"
-              },
-              "tp3": {
-                "bar": "2026-10-20T14:25:00+00:00",
-                "order": "AFTER_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-20T08:55:00+00:00",
-            "last_bar": "2026-10-20T14:25:00+00:00"
-          },
-          "next_open": 4121.7322,
-          "execution_checked_at": "2026-10-20T08:55:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4121.7322,
-            "risk_pips": 30.522,
-            "rr_tp2": 5.8639,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-20T08:55:00+00:00",
-          "last_bar": "2026-10-20T08:55:00+00:00",
-          "exit_price": 4118.68,
-          "exit_reason": "SL"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "35fafe1149b65731",
-          "timestamp": "2026-10-20T21:00:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY BREAKOUT RETEST",
-          "score": 70,
-          "session": "OFF SESSION",
-          "planned_entry": 4125.21,
-          "entry": 4124.95287,
-          "sl": 4121.19,
-          "tp1": 4131.21,
-          "tp2": 4137.21,
-          "tp3": 4143.21,
-          "result": "LOSS",
-          "bars_held": 23,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": true,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": -37.629,
-          "result_r": -1.0,
-          "closed_at": "2026-10-20T23:00:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-20T21:00:00+00:00",
+          "decision_at": "2026-10-21T04:30:00+00:00",
           "signal_path": {
             "model": "M5_TARGET_PATH_V1",
             "status": "TRACKING",
-            "bars_observed": 42,
-            "observation_start": "2026-10-20T21:05:00+00:00",
-            "targets": {
-              "tp1": {
-                "bar": "2026-10-20T22:20:00+00:00",
-                "order": "BEFORE_OBSERVED_SL"
-              }
-            },
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-20T22:55:00+00:00",
-            "last_bar": "2026-10-21T00:30:00+00:00"
-          },
-          "next_open": 4124.95287,
-          "execution_checked_at": "2026-10-20T21:05:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4124.95287,
-            "risk_pips": 37.6287,
-            "rr_tp2": 3.2574,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-20T21:05:00+00:00",
-          "last_bar": "2026-10-20T22:55:00+00:00",
-          "exit_price": 4121.19,
-          "exit_reason": "SL"
-        },
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "24cf7bf2adb4c35a",
-          "timestamp": "2026-10-20T22:20:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY BREAKOUT RETEST",
-          "score": 70,
-          "session": "OFF SESSION",
-          "planned_entry": 4129.33,
-          "entry": null,
-          "sl": 4123.36,
-          "tp1": 4135.33,
-          "tp2": 4141.33,
-          "tp3": 4147.33,
-          "result": "NOT_ENTERED",
-          "bars_held": 0,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": null,
-          "result_r": null,
-          "closed_at": "2026-10-20T22:25:00+00:00",
-          "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "GUARDED_NEXT_M5_OPEN_TP2_V2"
-          },
-          "decision_at": "2026-10-20T22:20:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "TRACKING",
-            "bars_observed": 26,
-            "observation_start": "2026-10-20T22:25:00+00:00",
+            "bars_observed": 68,
+            "observation_start": "2026-10-21T04:35:00+00:00",
             "targets": {},
             "source": "HISTORICAL_REPLAY",
             "partial_signal_bar_excluded": true,
             "max_bars": 72,
-            "sl_first_at": "2026-10-20T22:40:00+00:00",
-            "last_bar": "2026-10-21T00:30:00+00:00"
+            "sl_first_at": "2026-10-21T05:20:00+00:00",
+            "last_bar": "2026-10-21T10:10:00+00:00"
           },
-          "next_open": 4131.43556,
-          "execution_checked_at": "2026-10-20T22:25:00+00:00",
+          "next_open": 4120.13228,
+          "execution_checked_at": "2026-10-21T04:35:00+00:00",
           "fill_audit": {
-            "status": "OUTSIDE_LIMITS",
-            "price": 4131.43556,
-            "risk_pips": 80.7556,
-            "rr_tp2": 1.2252,
-            "reasons": [
-              "FILL_RISK_ABOVE_MAX",
-              "FILL_RR_BELOW_MIN"
-            ],
+            "status": "PASS",
+            "price": 4120.13228,
+            "risk_pips": 32.8772,
+            "rr_tp2": 4.9829,
+            "reasons": [],
             "limits": {
               "min_risk_pips": 20,
               "max_risk_pips": 80,
@@ -2844,15 +845,18 @@
             },
             "enforced": true
           },
-          "exit_reason": "FILL_RISK_ABOVE_MAX"
+          "filled_at": "2026-10-21T04:35:00+00:00",
+          "last_bar": "2026-10-21T05:20:00+00:00",
+          "exit_price": 4123.42,
+          "exit_reason": "SL"
         }
       ],
-      "eligible_signals": 7,
-      "eligible_scan_candidates": 11,
-      "repeated_candidates_suppressed": 4
+      "eligible_signals": 3,
+      "eligible_scan_candidates": 5,
+      "repeated_candidates_suppressed": 2
     }
   },
-  "last_updated": "2026-10-21T00:53:08.891156+00:00",
+  "last_updated": "2026-10-21T10:32:46.167336+00:00",
   "news_mode": "HISTORICAL_PROVIDER_SCHEDULE_NOT_POINT_IN_TIME",
   "cost_model": {
     "status": "GROSS_ONLY_UNCONFIGURED",
@@ -2873,8 +877,8 @@
   "news_source": {
     "source": "FinanceCalendar",
     "source_url": "https://www.financecalendar.com/",
-    "fetched_at": "2026-10-21T00:36:53.961492+00:00",
-    "coverage_start": "2026-10-03T00:00:00+00:00",
+    "fetched_at": "2026-10-21T10:15:57.148891+00:00",
+    "coverage_start": "2026-10-04T00:00:00+00:00",
     "coverage_end": "2026-10-22T00:00:00+00:00",
     "events_count": 2
   },
@@ -2883,19 +887,19 @@
       "model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 11,
-        "wins": 5,
-        "losses": 6,
-        "win_rate": 45.45,
-        "average_r": 0.5273454545454545,
-        "expectancy_r": 0.5273454545454545,
-        "profit_factor": 1.9667999999999999,
-        "max_drawdown": 4.0,
-        "max_consecutive_losses": 4,
-        "total_pips": 281.006,
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "average_r": -1.0,
+        "expectancy_r": -1.0,
+        "profit_factor": 0.0,
+        "max_drawdown": 1.0,
+        "max_consecutive_losses": 1,
+        "total_pips": -71.582,
         "open_trades": 0,
         "unresolved": 0,
-        "cancelled": 19,
+        "cancelled": 6,
         "review_required": 0,
         "reconstructed": 0,
         "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -2905,19 +909,19 @@
       "model": "GUARDED_NEXT_M5_OPEN_TP2_V2",
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 5,
-        "wins": 1,
-        "losses": 4,
-        "win_rate": 20.0,
-        "average_r": -0.28478000000000003,
-        "expectancy_r": -0.28478000000000003,
-        "profit_factor": 0.644025,
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0,
+        "average_r": -1.0,
+        "expectancy_r": -1.0,
+        "profit_factor": 0.0,
         "max_drawdown": 2.0,
         "max_consecutive_losses": 2,
-        "total_pips": -34.591,
+        "total_pips": -66.841,
         "open_trades": 0,
         "unresolved": 0,
-        "cancelled": 2,
+        "cancelled": 1,
         "review_required": 0,
         "reconstructed": 0,
         "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -2927,7 +931,7 @@
   "automation": {
     "requests": 1,
     "split_rule": "CHRONOLOGICAL_80_20",
-    "history_bars": 4999,
+    "history_bars": 5000,
     "news_fetch": {
       "status": "PROVIDER_SCHEDULE",
       "events": 2,
