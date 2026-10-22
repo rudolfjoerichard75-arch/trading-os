@@ -5,7 +5,7 @@ import csv, json, math, os, hashlib
 from pathlib import Path
 import pandas as pd
 
-from bosque_execution import MODEL, assess, annotate
+from bosque_execution import MODEL, ZONE_MODEL, ENTRY_WAIT_MINUTES, assess, annotate
 
 VERSION = 'SCALPING V3'
 
@@ -52,13 +52,49 @@ def cost():
     return n
 
 def new_trade(sig, plan, at, costs=None):
+    params=dict(sig.get('parameters') or configuration())
     return {'strategy_version':VERSION,'signal_id':sig['id'],'learning_id':sig.get('learning_id'),'timestamp':stamp(at).isoformat(),
         'direction':sig['direction'],'opportunity':sig.get('opportunity'),'score':sig.get('score'),
         'session':sig.get('session'),'planned_entry':plan['entry'],'entry':None,'sl':plan['sl'],
         'tp1':plan['tp1'],'tp2':plan['tp2'],'tp3':plan['tp3'],'result':'PENDING','bars_held':0,
         'cost_pips':costs,'cost_status':'GROSS_ONLY_UNCONFIGURED' if costs is None else 'CONFIGURED',
         'tp1_hit':False,'tp2_hit':False,'tp3_hit':False,'result_pips':None,'result_r':None,'closed_at':None,
-        'execution_model':MODEL,'signal_policy':sig.get('policy') or 'LEGACY_PRICE_ID','parameters':configuration()}
+        'execution_model':params.get('execution_model',ZONE_MODEL),
+        'entry_deadline':(stamp(at)+pd.Timedelta(minutes=params.get('entry_wait_minutes',ENTRY_WAIT_MINUTES))).isoformat(),
+        'signal_policy':sig.get('policy') or 'LEGACY_PRICE_ID','parameters':params}
+
+def wait_for_zone(trade, r):
+    """Conservative paper fills at full M5 opens only, within a frozen deadline.
+
+    Returns True if this open can fill. Wick-only touches are observations,
+    never invented fills. A pre-fill SL/TP2 touch retires the original plan.
+    """
+    from bosque_execution import entry_window
+    deadline=stamp(trade['entry_deadline'])
+    opened=r.datetime; closed=opened+pd.Timedelta(minutes=5)
+    def cancel(reason, at):
+        trade.update(result='NOT_ENTERED',exit_reason=reason,closed_at=at.isoformat())
+        return False
+    if opened >= deadline: return cancel('ENTRY_WINDOW_EXPIRED',deadline)
+    zone=entry_window(trade)
+    if zone['status']!='AVAILABLE': return cancel('ENTRY_ZONE_UNAVAILABLE',opened)
+    entry=float(r.open); sign=1 if trade['direction']=='BUY' else -1
+    trade.update(next_open=entry,execution_checked_at=opened.isoformat())
+    annotate(trade)
+    if sign*(entry-trade['sl'])<=0: return cancel('OPEN_BEYOND_SL',opened)
+    if sign*(trade['tp2']-entry)<=0: return cancel('OPEN_BEYOND_TP2',opened)
+    if trade['fill_audit']['status']=='PASS': return True
+    # Close-time observations only; never inspect this candle before its close.
+    trade['last_bar']=opened.isoformat()
+    trade['entry_wait_bars']=trade.get('entry_wait_bars',0)+1
+    if r.low <= zone['high'] and r.high >= zone['low']:
+        trade['wick_zone_touch_observed']=True
+    if closed >= deadline: return cancel('ENTRY_WINDOW_EXPIRED',deadline)
+    if (r.low<=trade['sl'] if sign==1 else r.high>=trade['sl']):
+        return cancel('SL_TOUCHED_BEFORE_FILL',closed)
+    if (r.high>=trade['tp2'] if sign==1 else r.low<=trade['tp2']):
+        return cancel('TP2_TOUCHED_BEFORE_FILL',closed)
+    return False
 
 def advance(trade, df):
     if trade['result'] not in ('PENDING','OPEN'): return
@@ -70,6 +106,11 @@ def advance(trade, df):
         if r.datetime>expected:
             trade.update(result='DATA_GAP',exit_reason='MISSING_BARS',closed_at=r.datetime.isoformat()); return
         if trade['result']=='PENDING':
+            if trade.get('execution_model')==ZONE_MODEL:
+                if not wait_for_zone(trade,r):
+                    if trade['result']!='PENDING': return
+                    last=r.datetime
+                    continue
             entry=float(r.open)
             trade['next_open']=entry
             trade['execution_checked_at']=r.datetime.isoformat()
@@ -86,6 +127,10 @@ def advance(trade, df):
         tphit=r.high>=trade['tp2'] if sign==1 else r.low<=trade['tp2']
         # SL first when both touched: no invented intrabar ordering.
         if not slhit:
+            for key in ('tp1','tp2','tp3'):
+                if (r.high>=trade[key] if sign==1 else r.low<=trade[key]):
+                    trade.setdefault('fill_targets',{}).setdefault(key,
+                        {'bar':r.datetime.isoformat(),'order':'BEFORE_OBSERVED_SL'})
             trade['tp2_hit'] = trade.get('tp2_hit',False) or bool(tphit)
             trade['tp1_hit'] |= bool(r.high>=trade['tp1'] if sign==1 else r.low<=trade['tp1'])
             trade['tp3_hit'] |= bool(r.high>=trade['tp3'] if sign==1 else r.low<=trade['tp3'])
@@ -185,8 +230,24 @@ def configuration():
     from bosque_execution import ENTRY_ZONE_POLICY, ENTRY_ZONE_MAX_PIPS
     return {'min_risk_pips':e.MIN_RISK_PIPS,'max_risk_pips':e.MAX_RISK_PIPS,
             'min_score':e.MIN_SCORE,'min_rr':e.MIN_RR,'signal_policy':POLICY,
-            'execution_model':MODEL,'entry_logic_version':e.ENTRY_LOGIC_VERSION,
+            'execution_model':ZONE_MODEL,'entry_logic_version':e.ENTRY_LOGIC_VERSION,
+            'entry_wait_minutes':ENTRY_WAIT_MINUTES,
+            'range_max_efficiency':e.RANGE_MAX_EFFICIENCY,
+            'range_max_slope_ratio':e.RANGE_MAX_SLOPE_RATIO,
+            'range_max_atr_width':e.RANGE_MAX_ATR_WIDTH,
             'entry_zone_policy':ENTRY_ZONE_POLICY,'entry_zone_max_pips':ENTRY_ZONE_MAX_PIPS}
+
+def version_performance(trades):
+    current_config=configuration()
+    groups={}
+    for item in trades:
+        params=item.get('parameters') or {}
+        key=params.get('entry_logic_version','UNVERSIONED')+' / '+item.get('execution_model','UNSPECIFIED')
+        groups.setdefault(key,[]).append(item)
+    return {'current_version':stats([item for item in trades if item.get('parameters')==current_config
+                                    and item.get('execution_model')==current_config['execution_model']]),
+            'current_parameters':current_config,
+            'version_groups':{key:stats(items) for key,items in groups.items()}}
 
 
 def sync(dashboard, frame, sent=None):
@@ -243,8 +304,9 @@ def sync(dashboard, frame, sent=None):
     groups={model:stats([x for x in current if (x.get('execution_model') or 'UNSPECIFIED')==model])
             for model in sorted({(x.get('execution_model') or 'UNSPECIFIED') for x in current})}
     summary['execution_groups']=groups
+    summary.update(version_performance(current))
     summary['historical_fill_exceptions']=sum(x.get('fill_audit',{}).get('status')=='OUTSIDE_LIMITS' and not x.get('fill_audit',{}).get('enforced') for x in current)
-    forward={**summary,'version':VERSION,'last_updated':at,'execution':'New fills: next M5 open after alert, risk 20–80 pips and RR TP2 >= 2 required; otherwise NOT_ENTERED. Old outcomes retained and grouped separately. TP2 exit; separate target paths.', 'signal_policy':'DIRECTION_SETUP_CYCLE_V1'}
+    forward={**summary,'version':VERSION,'last_updated':at,'execution':'New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.', 'signal_policy':'DIRECTION_SETUP_CYCLE_V1'}
     save(directory/'forward_test.json',forward)
     dashboard['journal']={**summary,'status':'ACTIVE','file':'engine/trade_journal.json','recorded_signals':len(current)}
     dashboard['journal_recent']=current[-30:][::-1]; dashboard['signal_audit']=signal_summary(current); dashboard['recorded_signal']=current[-1] if current else None; dashboard['forward_test']=forward; dashboard['expectancy']=summary
@@ -275,7 +337,7 @@ def sync(dashboard, frame, sent=None):
     observations=load(archive,{'version':VERSION,'observations':[]})
     if not observations['observations'] or observations['observations'][-1]['news']!=news:
         observations['observations'].append({'observed_at':at,'news':news});save(archive,observations)
-    fields=['signal_id','timestamp','direction','opportunity','score','entry','planned_entry','sl','tp1','tp2','tp3','result','result_pips','result_r','closed_at','exit_reason','cost_status','telegram_status','next_open','execution_checked_at','signal_policy','signal_path','execution_audit','parameters','review_status','review_reason','historical_replay','original_execution','timezone_repair','performance_group','execution_model','fill_audit']
+    fields=['signal_id','timestamp','direction','opportunity','score','entry','planned_entry','sl','tp1','tp2','tp3','result','result_pips','result_r','closed_at','exit_reason','cost_status','telegram_status','next_open','execution_checked_at','signal_policy','signal_path','execution_audit','parameters','review_status','review_reason','historical_replay','original_execution','timezone_repair','performance_group','execution_model','fill_audit','entry_deadline','entry_wait_bars','wick_zone_touch_observed','filled_at']
     target=e.REPO_DIR/'paper_journal.csv';tmp=target.with_suffix('.tmp')
     with tmp.open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');writer.writeheader()

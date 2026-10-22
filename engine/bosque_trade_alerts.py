@@ -69,13 +69,21 @@ def message(trade, kind, event_at):
         def num(value, digits=2):
             return '--' if value is None else f'{value:.{digits}f}'
         limits=audit.get('limits') or trade.get('parameters') or {}
-        reasons={'FILL_OUTSIDE_ENTRY_ZONE':'Harga simulasi di luar julat entry maksimum 40 pips',
+        reasons={'ENTRY_WINDOW_EXPIRED':'Tempoh tunggu entry 30 minit tamat; tiada open M5 yang memenuhi syarat',
+                 'ENTRY_ZONE_UNAVAILABLE':'Julat entry tidak tersedia',
+                 'SL_TOUCHED_BEFORE_FILL':'SL disentuh sebelum fill simulasi; pelan dibatalkan',
+                 'TP2_TOUCHED_BEFORE_FILL':'TP2 disentuh sebelum fill simulasi; pelan dibatalkan',
+                 'FILL_OUTSIDE_ENTRY_ZONE':'Harga simulasi di luar julat entry maksimum 40 pips',
                  'FILL_RR_BELOW_MIN':'RR pada harga simulasi di bawah minimum',
                  'FILL_RISK_BELOW_MIN':'Risk pada harga simulasi di bawah minimum',
                  'FILL_RISK_ABOVE_MAX':'Risk pada harga simulasi melebihi maksimum',
                  'OPEN_BEYOND_SL':'Harga simulasi sudah melepasi SL',
                  'OPEN_BEYOND_TP2':'Harga simulasi sudah melepasi TP2'}
         code=trade.get('exit_reason','UNKNOWN')
+        from bosque_execution import ZONE_MODEL
+        no_entry_note = ('Pelan entry simulasi tamat atau dibatalkan; ini bukan pengesahan posisi MT5. '
+                         if trade.get('execution_model')==ZONE_MODEL else
+                         'Ini penolakan paper entry sahaja, bukan pembatalan signal atau posisi MT5. ')
         action=(f"Sebab: {reasons.get(code,code)} ({code}).\n"
                 f"Harga simulasi: {num(audit.get('price',trade.get('next_open')))}\n"
                 f"Risk simulasi: {num(audit.get('risk_pips'))} pips "
@@ -83,7 +91,7 @@ def message(trade, kind, event_at):
                 f"RR TP2 simulasi: 1:{num(audit.get('rr_tp2'),3)} "
                 f"(minimum 1:{limits.get('min_rr',2):g}).\n"
                 + entry_window_text(trade) + '\n\n'
-                'Ini penolakan paper entry sahaja, bukan pembatalan signal atau posisi MT5. '
+                + no_entry_note +
                 'Jika sudah masuk manual, semak risk/RR menggunakan fill sebenar. '
                 'Paras signal terus diperhatikan dalam tempoh pemantauan; sentuhan paras bukan keuntungan journal.')
     else:
@@ -127,8 +135,12 @@ def candidates(trade):
     events = []
     if trade.get('entry') is not None and trade.get('filled_at'):
         for kind in ('TP1', 'TP2', 'TP3'):
-            hit = path.get('targets', {}).get(kind.lower())
+            from bosque_execution import ZONE_MODEL
+            hits = trade.get('fill_targets',{}) if trade.get('execution_model')==ZONE_MODEL and kind!='TP3' else path.get('targets',{})
+            hit = hits.get(kind.lower())
             if not hit or hit.get('order') != 'BEFORE_OBSERVED_SL':
+                continue
+            if stamp(hit['bar']) < stamp(trade['filled_at']):
                 continue
             at = stamp(hit['bar']) + pd.Timedelta(minutes=5)
             # Observed targets after SL/time exit are not actionable successes.

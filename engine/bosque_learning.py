@@ -161,7 +161,8 @@ def sync(directory, trades, dashboard, frame=None):
             outcome_docs[day] = read(root/'outcomes'/(day+'.json'), {'schema':SCHEMA,'records':{}})
         selected = ('signal_id','result','entry','filled_at','sl','tp1','tp2','tp3',
                     'closed_at','exit_reason','result_r','result_pips','cost_pips',
-                    'cost_status','bars_held','fill_audit','tp1_hit','tp2_hit','tp3_hit')
+                    'cost_status','bars_held','fill_audit','tp1_hit','tp2_hit','tp3_hit',
+                    'execution_model','entry_deadline','entry_wait_bars','wick_zone_touch_observed')
         previous = outcome_docs[day]['records'].get(record_id, {})
         outcome_docs[day]['records'][record_id] = {
             'id':record_id, 'updated_at':dashboard['engine']['timestamp'],

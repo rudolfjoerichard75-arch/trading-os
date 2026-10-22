@@ -35,9 +35,10 @@ class EntryZoneTests(unittest.TestCase):
         self.assertIn('FILL_OUTSIDE_ENTRY_ZONE',assess(tr,4116)['reasons'])
         for price in (4111.60,4115.60): self.assertEqual(assess(tr,price)['status'],'PASS')
 
-    def test_paper_rejects_outside_zone_next_open(self):
+    def test_earlier_model_rejects_outside_zone_next_open(self):
         plan=self.sample()
         tr=t.new_trade({'id':'zone','direction':'SELL'},plan,'2026-10-21T00:00Z')
+        tr['execution_model']='GUARDED_NEXT_M5_OPEN_TP2_V2'
         t.advance(tr,row(at='2026-10-21T00:00Z',o=4116,h=4117,l=4115,c=4116))
         self.assertEqual(tr['result'],'NOT_ENTERED')
         self.assertEqual(tr['exit_reason'],'FILL_OUTSIDE_ENTRY_ZONE')
