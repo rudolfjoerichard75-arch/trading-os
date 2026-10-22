@@ -91,3 +91,32 @@ The live engine now freezes an input snapshot **before Telegram delivery**, once
 Only new trades carrying a learning ID may join to a pre-delivery snapshot. Historical/reconstructed rows are not backfilled into training data. NO ENTRY, unresolved/data-gap rows, ambiguous same-bar SL/TP, unhealthy inputs, mismatched settings and fills preceding capture receive no classifier WIN/LOSS label. Unconfigured costs are never treated as a confirmed net result. Rejected or undelivered candidates have no fabricated counterfactual trade outcomes; they are retained for later research, not labeled as losses. This means the observed outcome set is still selected by V3 and is not an unbiased sample of all setups.
 
 Features and results remain separate; future training must explicitly select input fields, split chronologically, group overlapping setups and separate logic versions. `eligible_for_gross_research`/`eligible_for_net_research` are data-quality flags, not authorization to train or deploy. No trained model, automatic optimization, new signal filter or extra Telegram alert is introduced. Risk stays 20–80 pips and entry-zone width stays at most 40 pips. Learning I/O failures surface as ERROR/DEGRADED and never alter V3 signal decisions. Daily files are retained in Git by the existing engine workflow; no silent pruning is applied.
+
+
+### Range and waiting-entry repair (23 October 2026)
+
+Entry version `V3_RANGE_EFFICIENCY_20261023` replaces the price-percentage range
+heuristic with a 20-bar test: net/travel efficiency <= 0.35, absolute fitted
+close drift / high-low width <= 0.50, and width / mean last-14 true range <= 6.
+Flat or insufficient data is not a range. These are predeclared operational
+thresholds, not optimized or proven profitable. Liquidity sweep remains a
+separate fallback setup; changing the range label need not remove that signal.
+
+New paper model `ZONE_WAIT_M5_OPEN_TP2_V3` waits up to 30 minutes from the
+acknowledged alert for a full M5 open in the frozen entry zone, with original
+risk/RR checks. The deadline is exclusive. Entry/SL/TP are never moved. A
+pre-fill SL/TP2 touch retires the plan; gaps remain DATA_GAP. Wick-only zone
+touches are recorded but cannot fill this conservative OHLC model. This is
+not tick execution or a broker limit-order simulation. Waiting does not
+re-evaluate news or the setup; it tracks the original published plan.
+
+Pending rows persist across scans/restarts. Waiting bars do not consume the
+72-bar holding limit. Expired/unfilled rows are not losses or training labels.
+TP alerts for new trades use post-fill TP1/TP2 evidence; earlier price touches
+are not counted as trade successes. Old trades retain their execution rules.
+
+Dashboard headline journal metrics use the exact current configuration;
+`forward_test.json` retains all-history and entry-version/execution groups.
+Backtests with old settings become outdated. Learning records include the
+execution model and deadline. No trained AI or POI/Volume Profile filter is
+activated by this repair.

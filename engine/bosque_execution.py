@@ -3,6 +3,8 @@ import math
 from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 
 MODEL = 'GUARDED_NEXT_M5_OPEN_TP2_V2'
+ZONE_MODEL = 'ZONE_WAIT_M5_OPEN_TP2_V3'
+ENTRY_WAIT_MINUTES = 30
 LEGACY_MODEL = 'NEXT_M5_OPEN_TP2_V1'
 ENTRY_ZONE_MAX_PIPS = 40
 ENTRY_ZONE_POLICY = 'RISK_RR_DIRECTIONAL_40_PIPS_V1'
@@ -103,6 +105,6 @@ def annotate(trade):
     if price is None: price = trade.get('next_open')
     if price is None: return
     audit = assess(trade, float(price))
-    audit['enforced'] = trade.get('execution_model') == MODEL
+    audit['enforced'] = trade.get('execution_model') in (MODEL, ZONE_MODEL)
     if not audit['enforced']: audit['note'] = 'Historical fill audit only; original outcome retained.'
     trade['fill_audit'] = audit

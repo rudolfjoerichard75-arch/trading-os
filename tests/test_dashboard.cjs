@@ -64,6 +64,12 @@ function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
   assert.equal(el('guardedWinrate').innerText,'NO CLOSED TRADES');
   assert.match(el('journalRecent').innerText,/NO ENTRY.*RR TP2 pada harga fill/);
   assert.match(el('journalRecent').innerText,/Risk fill: 70.00 pips/);
+  guarded.expectancy.win_rate=90;
+  guarded.expectancy.current_version={trades:0,open_trades:1,win_rate:null};
+  render(guarded);
+  assert.equal(el('journalWinrate').innerText,'NO CLOSED TRADES');
+  assert.equal(el('journalCounts').innerText,'0 / 1');
+  assert.equal(el('guardedCounts').innerText,'0 / 2');
   guarded.signal={active:true,delivery:{status:'DELIVERY_UNKNOWN'}};
   guarded.data_health={allowed:false,status:'BLOCKED',reason:'Candle M5 lama'};
   render(guarded);

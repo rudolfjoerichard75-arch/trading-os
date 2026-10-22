@@ -56,7 +56,10 @@ OUTPUT_SIZE = 500
 # RISK / SCORING
 # =========================================================
 
-ENTRY_LOGIC_VERSION = "V3_CLOSED_MTF_RETEST_ALIGNED_20261021"
+ENTRY_LOGIC_VERSION = "V3_RANGE_EFFICIENCY_20261023"
+RANGE_MAX_EFFICIENCY = 0.35
+RANGE_MAX_SLOPE_RATIO = 0.50
+RANGE_MAX_ATR_WIDTH = 6.0
 MIN_SCORE = 70
 
 # XAUUSD
@@ -574,16 +577,32 @@ def analyze_range(
         else 0.5
     )
 
-    is_range = (
-        0.20 <= location <= 0.80
-        or
-        width < close * 0.01
-    )
+    # Price level alone cannot distinguish a narrow trend from consolidation.
+    # Require limited directional travel and drift relative to the range,
+    # plus a bounded width relative to the observed candle volatility.
+    closes = x['close'].astype(float)
+    travel = float(closes.diff().abs().sum())
+    efficiency = abs(float(closes.iloc[-1]-closes.iloc[0])) / travel if travel > 0 else 1.0
+    center = (len(x)-1)/2
+    denominator = sum((i-center)**2 for i in range(len(x)))
+    slope = sum((i-center)*(float(value)-float(closes.mean()))
+                for i,value in enumerate(closes)) / denominator if denominator else 0.0
+    slope_ratio = abs(slope)*(len(x)-1)/width if width > 0 else 1.0
+    previous = closes.shift(1)
+    tr = pd.concat([x['high']-x['low'], (x['high']-previous).abs(),
+                    (x['low']-previous).abs()], axis=1).max(axis=1)
+    atr = float(tr.tail(14).mean())
+    atr_width = width/atr if atr > 0 else float('inf')
+    is_range = (width > 0 and travel > 0 and efficiency <= RANGE_MAX_EFFICIENCY
+                and slope_ratio <= RANGE_MAX_SLOPE_RATIO and atr_width <= RANGE_MAX_ATR_WIDTH)
 
     return {
         "is_range": bool(
             is_range
         ),
+        "efficiency": round(efficiency, 4),
+        "slope_ratio": round(slope_ratio, 4),
+        "atr_width": round(atr_width, 4) if math.isfinite(atr_width) else None,
         "high": high,
         "low": low,
         "width": width,
@@ -1624,6 +1643,7 @@ def format_telegram(
         f"⭐ Score: {score}/100\n\n"
         f"📍 Entry : {low:.2f}-{high:.2f}\n"
         f"↔️ Lebar zon: {zone['width_pips']:.1f} pips (maksimum 40)\n"
+        "⏳ Pelan entry luput 30 minit selepas alert; batal jika SL/TP2 disentuh sebelum entry.\n"
         f"🛑 SL: {plan['sl']:.2f}\n"
         f"{targets}\n"
         f"💰 Risk: {span(risks)} pips\n"
@@ -1632,6 +1652,7 @@ def format_telegram(
         f"📐 PD: {pd_data['zone']}\n"
         f"🌡 ATR: {volatility.get('atr_pips')} pips\n\n"
         "Risk, jarak TP dan RR bergantung pada harga entry dalam julat, sebelum kos.\n"
+        "Journal menyemak open M5 dalam tempoh tunggu; sentuhan wick sahaja bukan pengesahan fill.\n"
         "⚠️ Manual confirmation required."
     )
 
@@ -1870,8 +1891,10 @@ def main():
     # SIGNAL
     # =====================================================
 
+    from bosque_tracking import configuration
     signal = {
         "active": False,
+        "parameters": configuration(),
         "learning_id": learning_capture.get("id"),
         "id": None,
         "direction":

@@ -14,7 +14,10 @@ def bars(n=500):
     c=4100+np.sin(np.arange(n)*.13)*7+np.arange(n)*.03
     return pd.DataFrame({'datetime':pd.date_range('2026-10-01',periods=n,freq='5min',tz='UTC'),'open':c-.2,'high':c+.5,'low':c-.5,'close':c})
 def trade(cost=0):
-    return t.new_trade({'id':'test','direction':'BUY','opportunity':'BUY TEST','score':80},{'entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115},'2026-10-01T00:00:00Z',cost)
+    item = t.new_trade({'id':'test','direction':'BUY','opportunity':'BUY TEST','score':80},{'entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115},'2026-10-01T00:00:00Z',cost)
+    # Existing regression fixtures exercise the historical immediate-open model.
+    item['execution_model']='GUARDED_NEXT_M5_OPEN_TP2_V2'
+    return item
 def row(at='2026-10-01T00:00:00Z',o=100,h=101,l=99,c=100):
     return pd.DataFrame([{'datetime':t.stamp(at),'open':o,'high':h,'low':l,'close':c}])
 class V3Tests(unittest.TestCase):
@@ -22,7 +25,7 @@ class V3Tests(unittest.TestCase):
         old=ast.parse((ROOT/'tests/fixtures/v3_original.py').read_text());new=ast.parse((ROOT/'engine/bosque_engine.py').read_text())
         funcs=lambda tree:{n.name:ast.dump(n,include_attributes=False) for n in tree.body if isinstance(n,ast.FunctionDef)}
         a,z=funcs(old),funcs(new)
-        for name in ['find_swing_highs','find_swing_lows','analyze_structure','analyze_range','pd_zone','liquidity_analysis','momentum','candle_confirmation','calculate_atr','volatility_analysis','m5_confirmation','create_trade_plan','make_signal_id','get_session']:
+        for name in ['find_swing_highs','find_swing_lows','analyze_structure','pd_zone','liquidity_analysis','momentum','candle_confirmation','calculate_atr','volatility_analysis','m5_confirmation','create_trade_plan','make_signal_id','get_session']:
             self.assertEqual(a[name],z[name],name)
         assignments=lambda tree:{n.targets[0].id:ast.dump(n.value) for n in tree.body if isinstance(n,ast.Assign) and isinstance(n.targets[0],ast.Name)}
         x,y=assignments(old),assignments(new)

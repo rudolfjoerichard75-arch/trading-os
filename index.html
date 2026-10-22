@@ -632,22 +632,22 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
       <details>
         <summary>V3 Journal • Forward Test • Backtest</summary>
         <div class="row"><span>Journal</span><b id="journalStatus">--</b></div>
-        <div class="row"><span>Closed / Open</span><b id="journalCounts">--</b></div>
+        <div class="row"><span>Current version: closed / pending + open</span><b id="journalCounts">--</b></div>
         <div class="row"><span>Review needed / Repaired history</span><b id="journalReview">--</b></div>
         <div class="row"><span>No entry / Data gaps</span><b id="journalUnfilled">--</b></div>
         <div class="row"><span>TP3 observed: before SL / after SL / ambiguous</span><b id="signalOutcomes">--</b></div>
         <div class="row"><span>Latest recorded alert plan</span><b id="recordedPlan">--</b></div>
-        <div class="row"><span>Forward paper win rate (TP2)</span><b id="journalWinrate">--</b></div>
+        <div class="row"><span>Current version paper win rate (TP2)</span><b id="journalWinrate">--</b></div>
         <div class="row"><span>Expectancy / Profit factor</span><b id="journalStats">--</b></div>
         <div class="row"><span>Drawdown (R)</span><b id="journalDrawdown">--</b></div>
-        <div class="row"><span>New guarded fills: closed / no entry</span><b id="guardedCounts">--</b></div>
-        <div class="row"><span>New guarded fills: win rate</span><b id="guardedWinrate">--</b></div>
+        <div class="row"><span>Earlier guarded fills: closed / no entry</span><b id="guardedCounts">--</b></div>
+        <div class="row"><span>Earlier guarded fills: win rate</span><b id="guardedWinrate">--</b></div>
         <div class="row"><span>Old fills outside current limits</span><b id="fillExceptions">--</b></div>
         <div class="row"><span>Cost model</span><b id="journalCosts">--</b></div>
         <div class="row"><span>Backtest</span><b id="backtestStatus">--</b></div>
         <div class="row"><span>Backtest details</span><b id="backtestDetails">--</b></div>
         <div class="row"><span>Telegram this scan</span><b id="telegramStatus">--</b></div>
-        <p>Paper simulation: next full M5 open after the alert, TP2 exit, SL first if ambiguous. New fills require 20–80 pips risk and RR TP2 ≥ 2. Old outcomes remain unchanged; results for the new fill policy are shown separately. NO ENTRY means no simulated fill. Repaired historical records and records under review are excluded from forward win rate.</p>
+        <p>Current-version statistics use matching entry rules and execution settings. New paper trades wait up to 30 minutes after the alert for a full M5 open inside the entry zone, with risk 20–80 pips and RR TP2 ≥ 2. Wick-only touches do not confirm fills. A pre-fill SL/TP2 touch retires the plan. TP2 full exit; SL first if ambiguous. NO ENTRY is not a trading loss. Earlier records retain their original execution model.</p>
         <p>Target observations continue separately to TP3 for up to 72 M5 bars. TP after SL is not a winning trade. The partial candle at alert time is excluded because M5 OHLC cannot isolate moves before/after the alert.</p>
         <p>Daily loss lock and fresh-zone filter are not part of the original V3 entry rules.</p>
         <p><a href="./paper_journal.csv" download>Download journal CSV</a> · <a href="./engine/backtest_results.json">Backtest JSON</a></p>
@@ -1402,7 +1402,8 @@ function render(data){
 
 
   const journal = data.journal || {};
-  const stats = data.expectancy || {};
+  const allStats = data.expectancy || {};
+  const stats = allStats.current_version || allStats;
   const audit = data.signal_audit || {};
   const delivery = data.signal?.delivery || {};
   const deliveryLabels = {
@@ -1437,10 +1438,10 @@ function render(data){
   setText("journalStats", `${fmt(stats.expectancy_r)} R / ${fmt(stats.profit_factor)}`);
   setText("journalDrawdown", fmt(stats.max_drawdown));
   setText("journalCosts", stats.cost_status || "UNCONFIGURED");
-  const guarded=stats.execution_groups?.GUARDED_NEXT_M5_OPEN_TP2_V2 || {};
+  const guarded=allStats.execution_groups?.GUARDED_NEXT_M5_OPEN_TP2_V2 || {};
   setText("guardedCounts", `${guarded.trades || 0} / ${guarded.cancelled || 0}`);
   setText("guardedWinrate", guarded.win_rate==null ? "NO CLOSED TRADES" : `${guarded.win_rate}%`);
-  setText("fillExceptions", stats.historical_fill_exceptions || 0);
+  setText("fillExceptions", allStats.historical_fill_exceptions || 0);
   const bt = data.backtest || {};
   setText("backtestStatus", bt.status || "NOT RUN");
   const resultParts = Object.entries(bt.results || {}).map(([name, result]) => `${name}: ${result.stats?.trades || 0} closed, WR ${result.stats?.win_rate == null ? "N/A" : result.stats.win_rate + "%"}, ${result.repeated_candidates_suppressed ?? "?"} repeated scans suppressed`);
@@ -1450,7 +1451,7 @@ function render(data){
   const recent = document.getElementById("journalRecent");
   if(recent){
     recent.replaceChildren();
-    const why = {FILL_RISK_BELOW_MIN:"Risk pada harga fill di bawah minimum", FILL_RISK_ABOVE_MAX:"Risk pada harga fill melebihi maksimum", FILL_RR_BELOW_MIN:"RR TP2 pada harga fill di bawah minimum", INVALID_FILL_PRICE:"Harga fill tidak sah", OPEN_BEYOND_SL:"Open seterusnya sudah melepasi SL", OPEN_BEYOND_TP2:"Open seterusnya sudah melepasi TP2", NEXT_OPEN_OUTSIDE_PLAN:"Open seterusnya di luar SL–TP2", CURRENT_HISTORY_DIFFERS_FROM_ORIGINAL_RESULT:"Data sejarah semasa berbeza daripada keputusan asal", SL:"SL", SL_AMBIGUOUS:"SL dan TP2 dalam candle sama; SL-first", TP2:"TP2", TIME_EXIT:"Had 72 candle", MISSING_BARS:"Candle hilang"};
+    const why = {ENTRY_WINDOW_EXPIRED:"Tempoh tunggu entry 30 minit tamat", ENTRY_ZONE_UNAVAILABLE:"Julat entry tidak tersedia", SL_TOUCHED_BEFORE_FILL:"SL disentuh sebelum fill", TP2_TOUCHED_BEFORE_FILL:"TP2 disentuh sebelum fill", FILL_OUTSIDE_ENTRY_ZONE:"Open M5 di luar julat entry", FILL_RISK_BELOW_MIN:"Risk pada harga fill di bawah minimum", FILL_RISK_ABOVE_MAX:"Risk pada harga fill melebihi maksimum", FILL_RR_BELOW_MIN:"RR TP2 pada harga fill di bawah minimum", INVALID_FILL_PRICE:"Harga fill tidak sah", OPEN_BEYOND_SL:"Open seterusnya sudah melepasi SL", OPEN_BEYOND_TP2:"Open seterusnya sudah melepasi TP2", NEXT_OPEN_OUTSIDE_PLAN:"Open seterusnya di luar SL–TP2", CURRENT_HISTORY_DIFFERS_FROM_ORIGINAL_RESULT:"Data sejarah semasa berbeza daripada keputusan asal", SL:"SL", SL_AMBIGUOUS:"SL dan TP2 dalam candle sama; SL-first", TP2:"TP2", TIME_EXIT:"Had 72 candle", MISSING_BARS:"Candle hilang"};
     const pathLabels = {TRACKING:"Masih dipantau", TP3_OBSERVED:"TP3 diperhatikan sebelum SL", TP3_AFTER_SL:"TP3 kemudian, selepas SL", AMBIGUOUS_SL_TP3:"TP3 dan SL dalam candle sama; urutan tak pasti", WINDOW_ENDED:"Tamat 72 candle", DATA_GAP:"Candle tidak lengkap"};
     for(const trade of (data.journal_recent || []).slice(0,10)){
       const row = document.createElement("div");
@@ -1469,9 +1470,10 @@ function render(data){
       }else{
         line(`Paper: ${unfilled ? "NO ENTRY" : trade.result} (${why[cause] || cause || "Menunggu candle seterusnya"})${trade.result_pips == null ? "" : " • " + trade.result_pips + " pips"}`);
       }
+      if(trade.result === "PENDING" && trade.entry_deadline) line(`Menunggu open M5 dalam zone hingga ${newsTime(trade.entry_deadline)}; wick sahaja bukan fill.`);
       line(`Plan ${fmt(trade.planned_entry)} • Fill ${trade.entry == null ? "--" : fmt(trade.entry)} • SL ${fmt(trade.sl)} • TP1 ${fmt(trade.tp1)} • TP2 ${fmt(trade.tp2)} • TP3 ${fmt(trade.tp3)}`);
       const nextOpen=trade.next_open ?? trade.execution_audit?.next_open;
-      if(nextOpen!=null) line(`Next M5 open: ${fmt(nextOpen)}`);
+      if(nextOpen!=null) line(`Latest checked M5 open: ${fmt(nextOpen)}`);
       if(trade.fill_audit){
         const fill=trade.fill_audit;
         line(`Risk fill: ${fmt(fill.risk_pips)} pips • RR TP2 fill: 1:${fmt(fill.rr_tp2)}${fill.status!=="PASS" ? " • " + fill.reasons.map(x=>why[x] || x).join("; ") : " • PASS"}`);
