@@ -4,10 +4,10 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-22T18:20:46.261747+08:00",
+    "timestamp": "2026-10-22T18:25:36.018275+08:00",
     "entry_logic_version": "V3_CLOSED_MTF_RETEST_ALIGNED_20261021"
   },
-  "latest_price": 4085.63,
+  "latest_price": 4091.89,
   "session": "LONDON",
   "market_mode": "TRENDING",
   "regime": {
@@ -22,8 +22,8 @@
     }
   },
   "volatility": {
-    "atr": 3.6,
-    "atr_pips": 36.0,
+    "atr": 3.63,
+    "atr_pips": 36.3,
     "condition": "NORMAL"
   },
   "pd": {
@@ -46,7 +46,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-22T18:20:46.882847+08:00",
+      "checked_at": "2026-10-22T18:25:36.426223+08:00",
       "requested_from": "2026-10-21",
       "requested_to": "2026-10-24",
       "events_received": 1,
@@ -82,16 +82,16 @@
     "type": "SELL PULLBACK",
     "direction": "SELL",
     "valid": true,
-    "score": 65
+    "score": 40
   },
   "signal": {
     "active": false,
-    "learning_id": "2026-10-22-b708dc68ce717107f2c6",
+    "learning_id": "2026-10-22-ec2009fd407501e57a27",
     "id": null,
     "direction": "SELL",
     "opportunity": "SELL PULLBACK",
-    "score": 65,
-    "timestamp": "2026-10-22T18:20:46.261747+08:00",
+    "score": 40,
+    "timestamp": "2026-10-22T18:25:36.018275+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -102,18 +102,18 @@
   "plan": {
     "valid": true,
     "direction": "SELL",
-    "entry": 4085.63,
-    "sl": 4089.19,
-    "risk_pips": 35.6,
-    "tp1": 4079.63,
-    "tp2": 4073.63,
-    "tp3": 4067.63,
+    "entry": 4091.89,
+    "sl": 4089.2,
+    "risk_pips": 26.9,
+    "tp1": 4085.89,
+    "tp2": 4079.89,
+    "tp3": 4073.89,
     "tp1_pips": 60,
     "tp2_pips": 120,
     "tp3_pips": 180,
-    "rr_tp1": 1.69,
-    "rr_tp2": 3.37,
-    "rr_tp3": 5.06,
+    "rr_tp1": 2.23,
+    "rr_tp2": 4.46,
+    "rr_tp3": 6.7,
     "risk_level": "LOW"
   },
   "potential": {
@@ -169,21 +169,21 @@
   },
   "m5": {
     "direction": "RANGE",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4088.47459,
     "swing_low": 4083.56385,
     "confirmation": {
-      "confirmed": true,
-      "bos": null,
-      "candle": true,
-      "momentum": "BEARISH",
-      "reason": "M5 bearish candle + momentum"
+      "confirmed": false,
+      "bos": "BULLISH BOS",
+      "candle": false,
+      "momentum": "NEUTRAL",
+      "reason": "NO CONFIRMATION"
     }
   },
   "filters": {
     "score": false,
     "setup": true,
-    "m5_confirmation": true,
+    "m5_confirmation": false,
     "risk": true,
     "rr": true,
     "news": true,
@@ -194,13 +194,13 @@
   "confirmations": {
     "h1_bias": "BEARISH",
     "m15_setup": "SELL PULLBACK",
-    "m5_confirmation": "M5 bearish candle + momentum",
+    "m5_confirmation": "NO CONFIRMATION",
     "liquidity": "NONE",
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
     "status": "VALID",
-    "risk_pips": 35.6,
+    "risk_pips": 26.9,
     "risk_level": "LOW",
     "min_risk_pips": 20,
     "max_risk_pips": 80,
@@ -223,7 +223,7 @@
     "risk": "LOW",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
-    "m5_confirmation": "YES"
+    "m5_confirmation": "NO"
   },
   "expectancy": {
     "status": "PAPER SIMULATION",
@@ -1338,22 +1338,23 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-10-22-b708dc68ce717107f2c6",
+    "id": "2026-10-22-ec2009fd407501e57a27",
     "file": "engine/learning/features/2026-10-22.json"
   },
   "data_health": {
     "status": "FRESH",
     "allowed": true,
-    "checked_at": "2026-10-22T10:20:46.457064+00:00",
-    "last_candle_open": "2026-10-22T10:15:00+00:00",
-    "last_candle_close": "2026-10-22T10:20:00+00:00",
-    "close_age_minutes": 0.77,
+    "checked_at": "2026-10-22T10:25:36.203282+00:00",
+    "last_candle_open": "2026-10-22T10:20:00+00:00",
+    "last_candle_close": "2026-10-22T10:25:00+00:00",
+    "close_age_minutes": 0.6,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Candle M5 lengkap dan terkini"
   },
   "gate_reasons": {
-    "score": "Skor 65/100 < minimum 70"
+    "score": "Skor 40/100 < minimum 70",
+    "m5_confirmation": "BOS atau candle + momentum SELL belum sah"
   },
   "diagnostics": {
     "limits": {
@@ -1362,18 +1363,19 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 35.6,
+    "risk_distance_pips": 26.9,
     "blocking_reasons": [
-      "Skor 65/100 < minimum 70"
+      "Skor 40/100 < minimum 70",
+      "BOS atau candle + momentum SELL belum sah"
     ]
   },
   "entry_window": {
     "status": "AVAILABLE",
-    "low": 4085.63,
-    "high": 4087.19,
+    "low": 4087.2,
+    "high": 4087.2,
     "min_risk_pips": 20.0,
     "max_risk_pips": 80.0,
-    "width_pips": 15.6,
+    "width_pips": 0.0,
     "max_width_pips": 40,
     "policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
     "min_rr": 2.0,
@@ -1482,11 +1484,11 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-10-22T18:20:46.261747+08:00",
+    "updated_at": "2026-10-22T18:25:36.018275+08:00",
     "day_myt": "2026-10-22",
-    "captured_today": 175,
-    "candidates_today": 34,
-    "rejected_today": 34,
+    "captured_today": 176,
+    "candidates_today": 35,
+    "rejected_today": 35,
     "linked_trades": 0,
     "closed_paper": 0,
     "gross_research_rows": 0,
@@ -1495,7 +1497,7 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-10-22-b708dc68ce717107f2c6",
+      "id": "2026-10-22-ec2009fd407501e57a27",
       "file": "engine/learning/features/2026-10-22.json"
     },
     "features_file": "engine/learning/features/2026-10-22.json",
@@ -4026,7 +4028,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-22T18:20:46.261747+08:00",
+    "last_updated": "2026-10-22T18:25:36.018275+08:00",
     "execution": "New fills: next M5 open after alert, risk 20–80 pips and RR TP2 >= 2 required; otherwise NOT_ENTERED. Old outcomes retained and grouped separately. TP2 exit; separate target paths.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -4036,17 +4038,17 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-22T18:20:46.261747+08:00",
+      "checked_at": "2026-10-22T18:25:36.018275+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "FRESH",
       "allowed": true,
-      "checked_at": "2026-10-22T10:20:46.457064+00:00",
-      "last_candle_open": "2026-10-22T10:15:00+00:00",
-      "last_candle_close": "2026-10-22T10:20:00+00:00",
-      "close_age_minutes": 0.77,
+      "checked_at": "2026-10-22T10:25:36.203282+00:00",
+      "last_candle_open": "2026-10-22T10:20:00+00:00",
+      "last_candle_close": "2026-10-22T10:25:00+00:00",
+      "close_age_minutes": 0.6,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Candle M5 lengkap dan terkini"
