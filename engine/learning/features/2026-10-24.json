@@ -7292,6 +7292,171 @@
       },
       "provenance": "LIVE_PRE_DELIVERY",
       "broker_execution": "UNKNOWN"
+    },
+    "2026-10-24-253f64938c0f663212ce": {
+      "id": "2026-10-24-253f64938c0f663212ce",
+      "schema": "BOSQUE_LEARNING_V1",
+      "captured_at": "2026-10-23T19:40:41.323485+00:00",
+      "source_candle": "2026-10-23T19:35:00+00:00",
+      "parameters": {
+        "min_risk_pips": 20,
+        "max_risk_pips": 80,
+        "min_score": 70,
+        "min_rr": 2.0,
+        "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+        "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+        "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023",
+        "entry_wait_minutes": 30,
+        "range_max_efficiency": 0.35,
+        "range_max_slope_ratio": 0.5,
+        "range_max_atr_width": 6.0,
+        "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+        "entry_zone_max_pips": 40,
+        "round_trip_cost_pips": null
+      },
+      "decision_hash": "5cf1d9fc2b05b9b433df1086a3b74e7305255277623ee3b62c3384bc7883c5cf",
+      "decision": "NO_SETUP",
+      "blocked_by": [
+        "setup",
+        "score",
+        "m5_confirmation",
+        "risk",
+        "rr"
+      ],
+      "features": {
+        "direction": null,
+        "opportunity": "NO VALID SETUP",
+        "score": 0,
+        "session": "OFF SESSION",
+        "h1": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 4034.67662,
+          "swing_low": 3975.82697
+        },
+        "m15": {
+          "direction": "BEARISH",
+          "bos": null,
+          "swing_high": 4002.40144,
+          "swing_low": 3991.05774
+        },
+        "m5": {
+          "direction": "BEARISH",
+          "bos": "BULLISH BOS",
+          "swing_high": 3998.3168,
+          "swing_low": 3993.92923
+        },
+        "confirmation": {
+          "confirmed": false,
+          "bos": "BULLISH BOS",
+          "candle": false,
+          "momentum": "BULLISH",
+          "reason": "NO DIRECTION"
+        },
+        "pd": {
+          "zone": "PREMIUM",
+          "equilibrium": 3991.36,
+          "high": 4006.89,
+          "low": 3975.83
+        },
+        "liquidity": {
+          "buy_side_sweep": false,
+          "sell_side_sweep": false,
+          "swept_level": null,
+          "description": "NONE"
+        },
+        "range": {
+          "is_range": false,
+          "efficiency": 0.0372,
+          "slope_ratio": 0.0772,
+          "atr_width": 6.0498,
+          "high": 4006.89185,
+          "low": 3975.82697,
+          "width": 31.064879999999903,
+          "location": 0.7246398505321826
+        },
+        "volatility": {
+          "atr": 2.45,
+          "atr_pips": 24.5,
+          "condition": "LOW"
+        },
+        "news": {
+          "evidence": {
+            "checked_at": "2026-10-24T03:40:40.562748+08:00",
+            "requested_from": "2026-10-23",
+            "requested_to": "2026-10-26",
+            "events_received": 0,
+            "usd_high_events": 0,
+            "nearby_usd_high_events": 0,
+            "skipped_usd_times": 0,
+            "unclassified_high_events": 0,
+            "coverage_status": "PROVIDER_RESPONSE_ONLY",
+            "events": [],
+            "provider_count": 0
+          },
+          "block_before_minutes": 30,
+          "block_after_minutes": 30,
+          "currency": "USD",
+          "source": "FinanceCalendar",
+          "source_url": "https://www.financecalendar.com/",
+          "event": null,
+          "time": null,
+          "minutes_to_news": null,
+          "high_impact": false,
+          "status": "CLEAR",
+          "filter": "PASS",
+          "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
+        },
+        "gates": {
+          "setup": false,
+          "score": false,
+          "m5_confirmation": false,
+          "risk": false,
+          "rr": false,
+          "news": true,
+          "data": true
+        },
+        "plan": {
+          "valid": false
+        },
+        "data_health": {
+          "status": "FRESH",
+          "allowed": true,
+          "checked_at": "2026-10-23T19:40:40.342176+00:00",
+          "last_candle_open": "2026-10-23T19:35:00+00:00",
+          "last_candle_close": "2026-10-23T19:40:00+00:00",
+          "close_age_minutes": 0.67,
+          "max_close_age_minutes": 10,
+          "recent_gap_count": 0,
+          "reason": "Candle M5 lengkap dan terkini"
+        },
+        "last_m5": {
+          "datetime": "2026-10-23T19:35:00+00:00",
+          "open": 3998.3255,
+          "high": 3999.92266,
+          "low": 3998.15104,
+          "close": 3999.83488
+        },
+        "entry_window": {
+          "status": "UNAVAILABLE"
+        },
+        "distances_price": {
+          "h1": {
+            "swing_high": -34.8417400000003,
+            "swing_low": 24.00790999999981
+          },
+          "m15": {
+            "swing_high": -2.5665600000002087,
+            "swing_low": 8.77713999999969
+          },
+          "m5": {
+            "swing_high": 1.5180799999998271,
+            "swing_low": 5.905649999999696
+          }
+        }
+      },
+      "provenance": "LIVE_PRE_DELIVERY",
+      "broker_execution": "UNKNOWN"
     }
   }
 }
