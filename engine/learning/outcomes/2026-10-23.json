@@ -3027,21 +3027,20 @@
     },
     "2026-10-23-ee6a440b228c4d51a36b": {
       "id": "2026-10-23-ee6a440b228c4d51a36b",
-      "updated_at": "2026-10-23T18:10:46.965172+08:00",
+      "updated_at": "2026-10-23T18:15:34.371019+08:00",
       "basis": "FORWARD_PAPER_TP2_EXIT",
       "broker_execution": "UNKNOWN",
       "classification_label": null,
       "eligible_for_gross_research": false,
       "eligible_for_net_research": false,
       "exclusions": [
-        "PENDING",
-        "NO_POST_CAPTURE_FILL"
+        "OPEN"
       ],
       "paper": {
         "signal_id": "4618851e142e55ef",
-        "result": "PENDING",
-        "entry": null,
-        "filled_at": null,
+        "result": "OPEN",
+        "entry": 4023.27512,
+        "filled_at": "2026-10-23T10:10:00+00:00",
         "sl": 4026.5,
         "tp1": 4015.1,
         "tp2": 4009.1,
@@ -3052,8 +3051,20 @@
         "result_pips": null,
         "cost_pips": null,
         "cost_status": "GROSS_ONLY_UNCONFIGURED",
-        "bars_held": 0,
-        "fill_audit": null,
+        "bars_held": 1,
+        "fill_audit": {
+          "status": "PASS",
+          "price": 4023.27512,
+          "risk_pips": 32.2488,
+          "rr_tp2": 4.3955,
+          "reasons": [],
+          "limits": {
+            "min_risk_pips": 20,
+            "max_risk_pips": 80,
+            "min_rr": 2.0
+          },
+          "enforced": true
+        },
         "tp1_hit": false,
         "tp2_hit": false,
         "tp3_hit": false,
@@ -3071,17 +3082,24 @@
         "message_id": 57,
         "telegram_date": 1792749945
       },
-      "excursions": null,
+      "excursions": {
+        "mfe_pips": 5.872,
+        "mae_pips": 7.078,
+        "through_bar": "2026-10-23T10:10:00+00:00",
+        "basis": "M5_FULL_BARS_INCLUDING_EXIT_BAR",
+        "note": "Exit-bar extremes may occur after exit; not tick-accurate excursions."
+      },
       "price_path_observation": {
         "model": "M5_TARGET_PATH_V1",
         "status": "TRACKING",
-        "bars_observed": 0,
+        "bars_observed": 1,
         "observation_start": "2026-10-23T10:10:00+00:00",
         "targets": {},
         "source": "FORWARD_OBSERVED",
         "partial_signal_bar_excluded": true,
         "max_bars": 72,
-        "sl_first_at": null
+        "sl_first_at": null,
+        "last_bar": "2026-10-23T10:10:00+00:00"
       }
     },
     "2026-10-23-b9e8541e8fe51cdc3223": {
@@ -3097,6 +3115,20 @@
         "policy": "DIRECTION_SETUP_CYCLE_V1"
       },
       "updated_at": "2026-10-23T18:10:46.965172+08:00"
+    },
+    "2026-10-23-9a88a266c429dd1a4c0c": {
+      "id": "2026-10-23-9a88a266c429dd1a4c0c",
+      "classification_label": null,
+      "eligible_for_gross_research": false,
+      "eligible_for_net_research": false,
+      "basis": "CANDIDATE_NOT_A_PAPER_TRADE",
+      "delivery": {
+        "allowed": false,
+        "status": "WAIT",
+        "id": "4618851e142e55ef",
+        "policy": "DIRECTION_SETUP_CYCLE_V1"
+      },
+      "updated_at": "2026-10-23T18:15:34.371019+08:00"
     }
   }
 }
