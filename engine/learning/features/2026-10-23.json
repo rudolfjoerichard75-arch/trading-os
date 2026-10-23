@@ -31193,6 +31193,191 @@
       },
       "provenance": "LIVE_PRE_DELIVERY",
       "broker_execution": "UNKNOWN"
+    },
+    "2026-10-23-1aea4c6ec150517b2b95": {
+      "id": "2026-10-23-1aea4c6ec150517b2b95",
+      "schema": "BOSQUE_LEARNING_V1",
+      "captured_at": "2026-10-23T07:45:43.335707+00:00",
+      "source_candle": "2026-10-23T07:40:00+00:00",
+      "parameters": {
+        "min_risk_pips": 20,
+        "max_risk_pips": 80,
+        "min_score": 70,
+        "min_rr": 2.0,
+        "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+        "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+        "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023",
+        "entry_wait_minutes": 30,
+        "range_max_efficiency": 0.35,
+        "range_max_slope_ratio": 0.5,
+        "range_max_atr_width": 6.0,
+        "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+        "entry_zone_max_pips": 40,
+        "round_trip_cost_pips": null
+      },
+      "decision_hash": "be349b71b3d14afa9fa2b73761c335f408125aa04d874a8b92a81ecbf1ef9b85",
+      "decision": "REJECTED_CANDIDATE",
+      "blocked_by": [
+        "score",
+        "m5_confirmation"
+      ],
+      "features": {
+        "direction": "SELL",
+        "opportunity": "SELL PULLBACK",
+        "score": 40,
+        "session": "LONDON",
+        "h1": {
+          "direction": "BEARISH",
+          "bos": null,
+          "swing_high": 4032.25806,
+          "swing_low": 3987.71783
+        },
+        "m15": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 4028.68423,
+          "swing_low": 4002.24126
+        },
+        "m5": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 4021.87902,
+          "swing_low": 4011.37924
+        },
+        "confirmation": {
+          "confirmed": false,
+          "bos": null,
+          "candle": false,
+          "momentum": "BULLISH",
+          "reason": "NO CONFIRMATION"
+        },
+        "pd": {
+          "zone": "PREMIUM",
+          "equilibrium": 4015.46,
+          "high": 4028.68,
+          "low": 4002.24
+        },
+        "liquidity": {
+          "buy_side_sweep": false,
+          "sell_side_sweep": false,
+          "swept_level": null,
+          "description": "NONE"
+        },
+        "range": {
+          "is_range": true,
+          "efficiency": 0.0236,
+          "slope_ratio": 0.1137,
+          "atr_width": 3.7705,
+          "high": 4028.68423,
+          "low": 4002.24126,
+          "width": 26.44297000000006,
+          "location": 0.6606844843828044
+        },
+        "volatility": {
+          "atr": 3.15,
+          "atr_pips": 31.5,
+          "condition": "NORMAL"
+        },
+        "news": {
+          "evidence": {
+            "checked_at": "2026-10-23T15:45:42.342099+08:00",
+            "requested_from": "2026-10-22",
+            "requested_to": "2026-10-25",
+            "events_received": 0,
+            "usd_high_events": 0,
+            "nearby_usd_high_events": 0,
+            "skipped_usd_times": 0,
+            "unclassified_high_events": 0,
+            "coverage_status": "PROVIDER_RESPONSE_ONLY",
+            "events": [],
+            "provider_count": 0
+          },
+          "block_before_minutes": 30,
+          "block_after_minutes": 30,
+          "currency": "USD",
+          "source": "FinanceCalendar",
+          "source_url": "https://www.financecalendar.com/",
+          "event": null,
+          "time": null,
+          "minutes_to_news": null,
+          "high_impact": false,
+          "status": "CLEAR",
+          "filter": "PASS",
+          "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
+        },
+        "gates": {
+          "setup": true,
+          "score": false,
+          "m5_confirmation": false,
+          "risk": true,
+          "rr": true,
+          "news": true,
+          "data": true
+        },
+        "plan": {
+          "valid": true,
+          "direction": "SELL",
+          "entry": 4019.71,
+          "sl": 4022.51,
+          "risk_pips": 28.0,
+          "tp1": 4013.71,
+          "tp2": 4007.71,
+          "tp3": 4001.71,
+          "tp1_pips": 60,
+          "tp2_pips": 120,
+          "tp3_pips": 180,
+          "rr_tp1": 2.14,
+          "rr_tp2": 4.29,
+          "rr_tp3": 6.43,
+          "risk_level": "LOW"
+        },
+        "data_health": {
+          "status": "FRESH",
+          "allowed": true,
+          "checked_at": "2026-10-23T07:45:41.904993+00:00",
+          "last_candle_open": "2026-10-23T07:40:00+00:00",
+          "last_candle_close": "2026-10-23T07:45:00+00:00",
+          "close_age_minutes": 0.7,
+          "max_close_age_minutes": 10,
+          "recent_gap_count": 0,
+          "reason": "Candle M5 lengkap dan terkini"
+        },
+        "last_m5": {
+          "datetime": "2026-10-23T07:40:00+00:00",
+          "open": 4018.50213,
+          "high": 4020.74705,
+          "low": 4017.83031,
+          "close": 4019.71172
+        },
+        "entry_window": {
+          "status": "AVAILABLE",
+          "low": 4019.71,
+          "high": 4020.51,
+          "min_risk_pips": 20.0,
+          "max_risk_pips": 80.0,
+          "width_pips": 8.0,
+          "max_width_pips": 40,
+          "policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+          "min_rr": 2.0,
+          "basis": "FROZEN_SL_TP2_BEFORE_COSTS"
+        },
+        "distances_price": {
+          "h1": {
+            "swing_high": -12.546340000000328,
+            "swing_low": 31.993889999999737
+          },
+          "m15": {
+            "swing_high": -8.972510000000057,
+            "swing_low": 17.470460000000003
+          },
+          "m5": {
+            "swing_high": -2.1673000000000684,
+            "swing_low": 8.332479999999578
+          }
+        }
+      },
+      "provenance": "LIVE_PRE_DELIVERY",
+      "broker_execution": "UNKNOWN"
     }
   }
 }
