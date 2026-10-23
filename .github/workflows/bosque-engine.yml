@@ -71,3 +71,32 @@ jobs:
             git pull --rebase origin main
             git push origin HEAD:main
           fi
+
+      - name: Reserve direct Web Push alerts
+        env:
+          PUSH_VAPID_PRIVATE_KEY: ${{ secrets.PUSH_VAPID_PRIVATE_KEY }}
+          PUSH_SUBSCRIPTIONS: ${{ secrets.PUSH_SUBSCRIPTIONS }}
+        run: python engine/bosque_push.py reserve
+      - name: Persist push reservations before sending
+        run: |
+          git add push-config.json
+          if [ -f engine/push_state.json ]; then git add engine/push_state.json; fi
+          if ! git diff --cached --quiet; then
+            git commit -m 'Reserve direct Web Push notifications'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Send direct Web Push alerts
+        env:
+          PUSH_VAPID_PRIVATE_KEY: ${{ secrets.PUSH_VAPID_PRIVATE_KEY }}
+          PUSH_SUBSCRIPTIONS: ${{ secrets.PUSH_SUBSCRIPTIONS }}
+        run: python engine/bosque_push.py dispatch
+      - name: Persist Web Push receipts
+        if: always()
+        run: |
+          if [ -f engine/push_state.json ]; then git add engine/push_state.json; fi
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update Web Push notification receipts'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

@@ -120,3 +120,40 @@ Dashboard headline journal metrics use the exact current configuration;
 Backtests with old settings become outdated. Learning records include the
 execution model and deadline. No trained AI or POI/Volume Profile filter is
 activated by this repair.
+
+## Direct iPhone Web Push and manual refresh
+
+The header Refresh button fetches the latest published snapshot; it does not run
+TwelveData or create a new signal. The engine timestamp remains visible.
+
+Web Push runs in the existing engine workflow alongside Telegram. Setup requires
+repository-owner access to **Settings → Secrets and variables → Actions**:
+
+1. On iPhone, add the dashboard to Home Screen and open that icon.
+2. Open **Notifikasi**, select **Sediakan kunci pemilik** once. Copy the generated
+   value to a repository secret named `PUSH_VAPID_PRIVATE_KEY`. Do not commit it.
+   Keep the app open until this value has been saved; the app does not store it.
+3. Select **Aktifkan notifikasi**, grant permission, and copy the JSON to a secret
+   named `PUSH_SUBSCRIPTIONS`. This JSON is an array; preserve other devices if adding one.
+4. The next normal engine workflow publishes only the public key and sends one
+   **Ujian server** notification to each new subscription. This confirms the
+   server-to-phone path when actually received. **Uji paparan telefon** is local
+   only and is not proof that the server is configured.
+
+No user subscription, endpoint, auth key, or private key is committed. Public
+push_state.json contains hashed device IDs and delivery metadata only. Never
+paste either secret in chat or an issue. Remove subscriptions from the secret
+when decommissioning devices. The app's off button also unsubscribes locally.
+
+Delivery reservations are committed before sending. Ambiguous/interrupted sends
+are not automatically retried, so duplicates are avoided at the cost of possibly
+missing one alert. Provider acceptance does not prove phone display. Expired
+subscriptions require re-registration. Focus, connectivity, and iOS settings can
+delay display. Entry pushes mirror newly recorded SENT signals; target alerts use
+the existing closed-M5 event stream. This does not add tick data or MT5 execution.
+Old events before push activation and events older than ten minutes are excluded;
+push TTL is five minutes. Telegram configuration and entry logic are unchanged.
+
+Activation is incomplete until both secrets are saved, the workflow succeeds,
+and the server test is received on the phone. GitHub Pages alone cannot store
+subscriptions; this owner-operated setup deliberately uses private Actions Secrets.

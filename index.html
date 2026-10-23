@@ -100,6 +100,11 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
 @media(max-width:991px){body{padding:16px}.dashboard{grid-template-columns:1fr;gap:0}.dashboard>div:first-child{position:static}.chart-container{height:55vh;min-height:380px;max-height:620px}.signal-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}.signal-panel>.card{margin-bottom:0}.intelligence-card,.signal-panel>.card:has(details),.footer-status{grid-column:1/-1}.intelligence-card .grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:600px){body{padding:12px}.header{padding:17px 16px;gap:8px;margin-bottom:14px}.header h2{font-size:19px;letter-spacing:-.5px}.header p{font-size:11px}.brand-eyebrow{font-size:8px;letter-spacing:.12em}.live{font-size:8px;padding:7px 8px;gap:5px;letter-spacing:.03em}.live-dot{width:5px;height:5px}.signal-panel{display:block}.signal-panel>.card{margin-bottom:14px}.card{padding:19px 18px;border-radius:15px}.chart-card{padding:6px}.chart-heading{padding:10px 10px 14px}.chart-heading strong{font-size:15px}.chart-timeframe span{display:none}.chart-container{height:52svh;min-height:360px;max-height:520px;border-radius:10px}.intelligence-card .grid{grid-template-columns:1fr 1fr}.status-row{font-size:13px;margin-bottom:20px}.score{font-size:50px}.section-title{font-size:15px}.row{gap:12px;padding:12px 0}.row>span:first-child{max-width:40%}.row>.filter-status{max-width:60%}.section-note{font-size:8px}.footer-status{font-size:8px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.header-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
+.action-button{background:#1d3157;color:#e5e7eb;border:1px solid #48648d;border-radius:8px;padding:10px 13px;min-height:44px;cursor:pointer;font:inherit}
+.action-button:disabled{opacity:.55;cursor:wait}.action-button:focus-visible{outline:2px solid #93b4ff;outline-offset:3px}
+.push-panel{max-width:1800px;margin:0 auto 16px}.push-panel p{color:#a8b6cc}.push-panel textarea{width:100%;background:#050816;color:#e5e7eb;border:1px solid #48648d;border-radius:8px;padding:10px}.push-panel label{display:block;margin:12px 0}
+@media(max-width:600px){.header{flex-wrap:wrap}.header-actions{width:100%;justify-content:flex-start}}
 </style>
 </head>
 
@@ -117,11 +122,36 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
     <p>Trade Intelligence</p>
   </div>
 
-  <div class="live">
-    <span class="live-dot" aria-hidden="true"></span> AUTO REFRESH
+  <div class="header-actions">
+    <div class="live"><span class="live-dot" aria-hidden="true"></span> AUTO REFRESH</div>
+    <button type="button" class="action-button" id="refreshButton" onclick="runDashboard()">↻ Refresh</button>
+    <button type="button" class="action-button" onclick="document.getElementById('pushSettings').open = !document.getElementById('pushSettings').open">Notifikasi</button>
   </div>
 
 </header>
+<section class="card push-panel">
+  <span id="refreshStatus" role="status" aria-live="polite">Refresh memuat snapshot engine terkini; tidak menjalankan scan baharu.</span>
+  <details id="pushSettings">
+    <summary>Notifikasi terus ke telefon</summary>
+    <p id="pushStatus" role="status" aria-live="polite">Memeriksa sokongan push…</p>
+    <p>iPhone: buka Bosque melalui ikon Home Screen. Setup pemilik hanya sekali: simpan dua nilai di GitHub Actions Secrets. Jangan hantar nilai rahsia ini dalam chat atau commit ke repo.</p>
+    <div class="header-actions" style="justify-content:flex-start">
+      <button class="action-button" id="preparePush" type="button">1. Sediakan kunci pemilik</button>
+      <button class="action-button" id="enablePush" type="button" disabled>2. Aktifkan notifikasi</button>
+      <button class="action-button" id="localPushTest" type="button" disabled>Uji paparan telefon</button>
+      <button class="action-button" id="disablePush" type="button" disabled>Matikan pada telefon ini</button>
+    </div>
+    <div id="pushSecrets" hidden>
+      <label id="privateKeyLabel" hidden>PUSH_VAPID_PRIVATE_KEY (GitHub Secret, pemilik sahaja)
+        <textarea id="pushPrivateKey" rows="2" readonly spellcheck="false" autocapitalize="off"></textarea>
+      </label>
+      <label>PUSH_SUBSCRIPTIONS (GitHub Secret)
+        <textarea id="pushSubscription" rows="4" readonly spellcheck="false" autocapitalize="off"></textarea>
+      </label>
+      <p><a href="https://github.com/rudolfjoerichard75-arch/trading-os/settings/secrets/actions" target="_blank" rel="noopener">Buka GitHub Actions Secrets</a>. Tambah setiap nilai menggunakan nama tepat di atas, kemudian tunggu scan engine seterusnya. Alert ujian server dihantar sekali untuk pendaftaran baharu. Uji paparan telefon sahaja tidak mengesahkan sambungan server.</p>
+    </div>
+  </details>
+</section>
 
 
 <!-- =====================================================
@@ -1526,8 +1556,13 @@ function render(data){
    REFRESH
 ========================================================= */
 
+let dashboardLoading = false;
 async function runDashboard(){
-
+  if(dashboardLoading) return;
+  dashboardLoading = true;
+  const button = document.getElementById("refreshButton");
+  if(button){button.disabled=true;button.textContent="Memuat…";}
+  setText("refreshStatus", "Memuat snapshot engine terkini…");
   try{
 
     setText(
@@ -1537,6 +1572,7 @@ async function runDashboard(){
 
     const data = await loadDashboard();
     render(data);
+    setText("refreshStatus", "Snapshot dimuat pada " + new Date().toLocaleTimeString("en-MY", {timeZone:"Asia/Kuala_Lumpur"}) + " MYT. Masa data engine ditunjukkan di bawah.");
     const updated = Date.parse(data.engine?.timestamp || "");
     const candleClosed = Date.parse(data.data_health?.last_candle_close || "");
     if(Number.isFinite(candleClosed) && Date.now()-candleClosed > 10*60*1000){
@@ -1567,6 +1603,7 @@ async function runDashboard(){
       "ERROR"
     );
 
+    setText("refreshStatus", "Refresh gagal. Semak sambungan internet dan cuba lagi.");
     setText("learningStatus", "STATUS BELUM DISAHKAN");
     setText("learningCounts", "--");
     setText("learningLabels", "--");
@@ -1592,6 +1629,10 @@ async function runDashboard(){
 
   }
 
+  finally{
+    dashboardLoading=false;
+    if(button){button.disabled=false;button.textContent="↻ Refresh";}
+  }
 }
 
 
@@ -1615,6 +1656,7 @@ window.addEventListener(
 
 </script>
 
+<script src="./push-client.js" defer></script>
 </body>
 </html>
 
