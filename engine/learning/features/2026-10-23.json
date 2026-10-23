@@ -44343,6 +44343,191 @@
       },
       "provenance": "LIVE_PRE_DELIVERY",
       "broker_execution": "UNKNOWN"
+    },
+    "2026-10-23-6156fad84ab1b6e83503": {
+      "id": "2026-10-23-6156fad84ab1b6e83503",
+      "schema": "BOSQUE_LEARNING_V1",
+      "captured_at": "2026-10-23T14:05:46.598159+00:00",
+      "source_candle": "2026-10-23T14:00:00+00:00",
+      "parameters": {
+        "min_risk_pips": 20,
+        "max_risk_pips": 80,
+        "min_score": 70,
+        "min_rr": 2.0,
+        "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+        "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+        "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023",
+        "entry_wait_minutes": 30,
+        "range_max_efficiency": 0.35,
+        "range_max_slope_ratio": 0.5,
+        "range_max_atr_width": 6.0,
+        "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+        "entry_zone_max_pips": 40,
+        "round_trip_cost_pips": null
+      },
+      "decision_hash": "e7bf76935ec9b67adba41d970848710ddb2c6aa4fbd4d158343ac50998ebeff0",
+      "decision": "REJECTED_CANDIDATE",
+      "blocked_by": [
+        "score",
+        "m5_confirmation"
+      ],
+      "features": {
+        "direction": "BUY",
+        "opportunity": "BUY LIQUIDITY SWEEP",
+        "score": 35,
+        "session": "NEW YORK",
+        "h1": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 4028.68423,
+          "swing_low": 4009.10813
+        },
+        "m15": {
+          "direction": "BULLISH",
+          "bos": null,
+          "swing_high": 4034.67662,
+          "swing_low": 4021.85473
+        },
+        "m5": {
+          "direction": "BEARISH",
+          "bos": null,
+          "swing_high": 4025.44079,
+          "swing_low": 4016.87086
+        },
+        "confirmation": {
+          "confirmed": false,
+          "bos": null,
+          "candle": false,
+          "momentum": "NEUTRAL",
+          "reason": "NO CONFIRMATION"
+        },
+        "pd": {
+          "zone": "DISCOUNT",
+          "equilibrium": 4025.77,
+          "high": 4034.68,
+          "low": 4016.87
+        },
+        "liquidity": {
+          "buy_side_sweep": false,
+          "sell_side_sweep": true,
+          "swept_level": 4021.85473,
+          "description": "SELL-SIDE LIQUIDITY SWEPT"
+        },
+        "range": {
+          "is_range": true,
+          "efficiency": 0.0384,
+          "slope_ratio": 0.1104,
+          "atr_width": 2.4144,
+          "high": 4034.67662,
+          "low": 4016.87086,
+          "width": 17.80576000000019,
+          "location": 0.40390412989953417
+        },
+        "volatility": {
+          "atr": 5.06,
+          "atr_pips": 50.6,
+          "condition": "NORMAL"
+        },
+        "news": {
+          "evidence": {
+            "checked_at": "2026-10-23T22:05:45.558942+08:00",
+            "requested_from": "2026-10-22",
+            "requested_to": "2026-10-25",
+            "events_received": 0,
+            "usd_high_events": 0,
+            "nearby_usd_high_events": 0,
+            "skipped_usd_times": 0,
+            "unclassified_high_events": 0,
+            "coverage_status": "PROVIDER_RESPONSE_ONLY",
+            "events": [],
+            "provider_count": 0
+          },
+          "block_before_minutes": 30,
+          "block_after_minutes": 30,
+          "currency": "USD",
+          "source": "FinanceCalendar",
+          "source_url": "https://www.financecalendar.com/",
+          "event": null,
+          "time": null,
+          "minutes_to_news": null,
+          "high_impact": false,
+          "status": "CLEAR",
+          "filter": "PASS",
+          "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
+        },
+        "gates": {
+          "setup": true,
+          "score": false,
+          "m5_confirmation": false,
+          "risk": true,
+          "rr": true,
+          "news": true,
+          "data": true
+        },
+        "plan": {
+          "valid": true,
+          "direction": "BUY",
+          "entry": 4021.1,
+          "sl": 4015.86,
+          "risk_pips": 52.5,
+          "tp1": 4027.1,
+          "tp2": 4033.1,
+          "tp3": 4039.1,
+          "tp1_pips": 60,
+          "tp2_pips": 120,
+          "tp3_pips": 180,
+          "rr_tp1": 1.14,
+          "rr_tp2": 2.29,
+          "rr_tp3": 3.43,
+          "risk_level": "MEDIUM"
+        },
+        "data_health": {
+          "status": "FRESH",
+          "allowed": true,
+          "checked_at": "2026-10-23T14:05:45.131414+00:00",
+          "last_candle_open": "2026-10-23T14:00:00+00:00",
+          "last_candle_close": "2026-10-23T14:05:00+00:00",
+          "close_age_minutes": 0.75,
+          "max_close_age_minutes": 10,
+          "recent_gap_count": 0,
+          "reason": "Candle M5 lengkap dan terkini"
+        },
+        "last_m5": {
+          "datetime": "2026-10-23T14:00:00+00:00",
+          "open": 4024.11554,
+          "high": 4024.83727,
+          "low": 4017.12588,
+          "close": 4021.10401
+        },
+        "entry_window": {
+          "status": "AVAILABLE",
+          "low": 4017.86,
+          "high": 4021.1,
+          "min_risk_pips": 20.0,
+          "max_risk_pips": 80.0,
+          "width_pips": 32.4,
+          "max_width_pips": 40,
+          "policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+          "min_rr": 2.0,
+          "basis": "FROZEN_SL_TP2_BEFORE_COSTS"
+        },
+        "distances_price": {
+          "h1": {
+            "swing_high": -7.5802199999998265,
+            "swing_low": 11.995879999999943
+          },
+          "m15": {
+            "swing_high": -13.572610000000168,
+            "swing_low": -0.7507200000000012
+          },
+          "m5": {
+            "swing_high": -4.33678000000009,
+            "swing_low": 4.233150000000023
+          }
+        }
+      },
+      "provenance": "LIVE_PRE_DELIVERY",
+      "broker_execution": "UNKNOWN"
     }
   }
 }
