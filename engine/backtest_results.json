@@ -19,25 +19,25 @@
   },
   "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
   "bars_used": 4999,
-  "period_start": "2026-10-05T16:00:00+00:00",
-  "period_end": "2026-10-23T00:30:00+00:00",
+  "period_start": "2026-10-06T16:00:00+00:00",
+  "period_end": "2026-10-24T00:30:00+00:00",
   "source_sha256": {
-    "XAUUSD_M5_auto.csv": "5d9f5a9d701b0ef6b8be75705aa597802492b7d8ca149cc0b3bc859f6ed1d9b5"
+    "XAUUSD_M5_auto.csv": "83bd3263ba561fbda2b6b65b5d531808133957b3e5f551dff5f1fd3ab54e39df"
   },
   "results": {
     "development": {
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 3,
+        "trades": 2,
         "wins": 0,
-        "losses": 3,
+        "losses": 2,
         "win_rate": 0.0,
         "average_r": -1.0,
         "expectancy_r": -1.0,
         "profit_factor": 0.0,
-        "max_drawdown": 3.0,
-        "max_consecutive_losses": 3,
-        "total_pips": -169.287,
+        "max_drawdown": 2.0,
+        "max_consecutive_losses": 2,
+        "total_pips": -97.705,
         "open_trades": 0,
         "unresolved": 0,
         "cancelled": 4,
@@ -46,82 +46,6 @@
         "cost_status": "GROSS_OR_UNCONFIGURED"
       },
       "trades": [
-        {
-          "strategy_version": "SCALPING V3",
-          "signal_id": "c28367deccacb7e4",
-          "learning_id": null,
-          "timestamp": "2026-10-06T23:30:01+00:00",
-          "direction": "BUY",
-          "opportunity": "BUY PULLBACK",
-          "score": 75,
-          "session": "ASIAN",
-          "planned_entry": 4169.11,
-          "entry": 4168.6282,
-          "sl": 4161.47,
-          "tp1": 4175.11,
-          "tp2": 4184.4,
-          "tp3": 4192.04,
-          "result": "LOSS",
-          "bars_held": 11,
-          "cost_pips": null,
-          "cost_status": "GROSS_ONLY_UNCONFIGURED",
-          "tp1_hit": false,
-          "tp2_hit": false,
-          "tp3_hit": false,
-          "result_pips": -71.582,
-          "result_r": -1.0,
-          "closed_at": "2026-10-07T00:30:00+00:00",
-          "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-          "entry_deadline": "2026-10-07T00:00:01+00:00",
-          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-          "parameters": {
-            "min_risk_pips": 20,
-            "max_risk_pips": 80,
-            "min_score": 70,
-            "min_rr": 2.0,
-            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-            "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-            "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023",
-            "entry_wait_minutes": 30,
-            "range_max_efficiency": 0.35,
-            "range_max_slope_ratio": 0.5,
-            "range_max_atr_width": 6.0,
-            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
-            "entry_zone_max_pips": 40
-          },
-          "decision_at": "2026-10-06T23:30:00+00:00",
-          "signal_path": {
-            "model": "M5_TARGET_PATH_V1",
-            "status": "WINDOW_ENDED",
-            "bars_observed": 72,
-            "observation_start": "2026-10-06T23:35:00+00:00",
-            "targets": {},
-            "source": "HISTORICAL_REPLAY",
-            "partial_signal_bar_excluded": true,
-            "max_bars": 72,
-            "sl_first_at": "2026-10-07T00:25:00+00:00",
-            "last_bar": "2026-10-07T05:30:00+00:00"
-          },
-          "next_open": 4168.6282,
-          "execution_checked_at": "2026-10-06T23:35:00+00:00",
-          "fill_audit": {
-            "status": "PASS",
-            "price": 4168.6282,
-            "risk_pips": 71.582,
-            "rr_tp2": 2.2033,
-            "reasons": [],
-            "limits": {
-              "min_risk_pips": 20,
-              "max_risk_pips": 80,
-              "min_rr": 2.0
-            },
-            "enforced": true
-          },
-          "filled_at": "2026-10-06T23:35:00+00:00",
-          "last_bar": "2026-10-07T00:25:00+00:00",
-          "exit_price": 4161.47,
-          "exit_reason": "SL"
-        },
         {
           "strategy_version": "SCALPING V3",
           "signal_id": "07fc13dd5896bb87",
@@ -626,15 +550,15 @@
           "decision_at": "2026-10-19T10:40:00+00:00",
           "signal_path": {
             "model": "M5_TARGET_PATH_V1",
-            "status": "TRACKING",
-            "bars_observed": 29,
+            "status": "WINDOW_ENDED",
+            "bars_observed": 72,
             "observation_start": "2026-10-19T10:45:00+00:00",
             "targets": {},
             "source": "HISTORICAL_REPLAY",
             "partial_signal_bar_excluded": true,
             "max_bars": 72,
             "sl_first_at": "2026-10-19T10:45:00+00:00",
-            "last_bar": "2026-10-19T13:05:00+00:00"
+            "last_bar": "2026-10-19T16:40:00+00:00"
           },
           "next_open": 4167.56641,
           "execution_checked_at": "2026-10-19T10:45:00+00:00",
@@ -657,23 +581,23 @@
           "exit_reason": "SL"
         }
       ],
-      "eligible_signals": 7,
+      "eligible_signals": 6,
       "eligible_scan_candidates": 12,
-      "repeated_candidates_suppressed": 5
+      "repeated_candidates_suppressed": 6
     },
     "out_of_sample": {
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 2,
+        "trades": 3,
         "wins": 0,
-        "losses": 2,
+        "losses": 3,
         "win_rate": 0.0,
         "average_r": -1.0,
         "expectancy_r": -1.0,
         "profit_factor": 0.0,
-        "max_drawdown": 2.0,
-        "max_consecutive_losses": 2,
-        "total_pips": -92.203,
+        "max_drawdown": 3.0,
+        "max_consecutive_losses": 3,
+        "total_pips": -124.452,
         "open_trades": 0,
         "unresolved": 0,
         "cancelled": 1,
@@ -924,14 +848,103 @@
           "last_bar": "2026-10-21T18:05:00+00:00",
           "entry_wait_bars": 6,
           "exit_reason": "ENTRY_WINDOW_EXPIRED"
+        },
+        {
+          "strategy_version": "SCALPING V3",
+          "signal_id": "4618851e142e55ef",
+          "learning_id": null,
+          "timestamp": "2026-10-23T10:05:01+00:00",
+          "direction": "SELL",
+          "opportunity": "SELL PULLBACK",
+          "score": 75,
+          "session": "LONDON",
+          "planned_entry": 4021.1,
+          "entry": 4023.27512,
+          "sl": 4026.5,
+          "tp1": 4015.1,
+          "tp2": 4009.1,
+          "tp3": 4003.1,
+          "result": "LOSS",
+          "bars_held": 5,
+          "cost_pips": null,
+          "cost_status": "GROSS_ONLY_UNCONFIGURED",
+          "tp1_hit": false,
+          "tp2_hit": false,
+          "tp3_hit": false,
+          "result_pips": -32.249,
+          "result_r": -1.0,
+          "closed_at": "2026-10-23T10:35:00+00:00",
+          "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+          "entry_deadline": "2026-10-23T10:35:01+00:00",
+          "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+          "parameters": {
+            "min_risk_pips": 20,
+            "max_risk_pips": 80,
+            "min_score": 70,
+            "min_rr": 2.0,
+            "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+            "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+            "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023",
+            "entry_wait_minutes": 30,
+            "range_max_efficiency": 0.35,
+            "range_max_slope_ratio": 0.5,
+            "range_max_atr_width": 6.0,
+            "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+            "entry_zone_max_pips": 40
+          },
+          "decision_at": "2026-10-23T10:05:00+00:00",
+          "signal_path": {
+            "model": "M5_TARGET_PATH_V1",
+            "status": "TP3_AFTER_SL",
+            "bars_observed": 50,
+            "observation_start": "2026-10-23T10:10:00+00:00",
+            "targets": {
+              "tp1": {
+                "bar": "2026-10-23T14:05:00+00:00",
+                "order": "AFTER_SL"
+              },
+              "tp2": {
+                "bar": "2026-10-23T14:10:00+00:00",
+                "order": "AFTER_SL"
+              },
+              "tp3": {
+                "bar": "2026-10-23T14:15:00+00:00",
+                "order": "AFTER_SL"
+              }
+            },
+            "source": "HISTORICAL_REPLAY",
+            "partial_signal_bar_excluded": true,
+            "max_bars": 72,
+            "sl_first_at": "2026-10-23T10:30:00+00:00",
+            "last_bar": "2026-10-23T14:15:00+00:00"
+          },
+          "next_open": 4023.27512,
+          "execution_checked_at": "2026-10-23T10:10:00+00:00",
+          "fill_audit": {
+            "status": "PASS",
+            "price": 4023.27512,
+            "risk_pips": 32.2488,
+            "rr_tp2": 4.3955,
+            "reasons": [],
+            "limits": {
+              "min_risk_pips": 20,
+              "max_risk_pips": 80,
+              "min_rr": 2.0
+            },
+            "enforced": true
+          },
+          "filled_at": "2026-10-23T10:10:00+00:00",
+          "last_bar": "2026-10-23T10:30:00+00:00",
+          "exit_price": 4026.5,
+          "exit_reason": "SL"
         }
       ],
-      "eligible_signals": 3,
-      "eligible_scan_candidates": 6,
+      "eligible_signals": 4,
+      "eligible_scan_candidates": 7,
       "repeated_candidates_suppressed": 3
     }
   },
-  "last_updated": "2026-10-23T00:59:28.813751+00:00",
+  "last_updated": "2026-10-24T01:00:22.065221+00:00",
   "news_mode": "HISTORICAL_PROVIDER_SCHEDULE_NOT_POINT_IN_TIME",
   "cost_model": {
     "status": "GROSS_ONLY_UNCONFIGURED",
@@ -952,35 +965,13 @@
   "news_source": {
     "source": "FinanceCalendar",
     "source_url": "https://www.financecalendar.com/",
-    "fetched_at": "2026-10-23T00:39:07.424907+00:00",
-    "coverage_start": "2026-10-05T00:00:00+00:00",
-    "coverage_end": "2026-10-24T00:00:00+00:00",
+    "fetched_at": "2026-10-24T00:39:51.037206+00:00",
+    "coverage_start": "2026-10-06T00:00:00+00:00",
+    "coverage_end": "2026-10-25T00:00:00+00:00",
     "events_count": 2
   },
   "execution_groups": {
     "development": {
-      "model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "stats": {
-        "status": "PAPER SIMULATION",
-        "trades": 3,
-        "wins": 0,
-        "losses": 3,
-        "win_rate": 0.0,
-        "average_r": -1.0,
-        "expectancy_r": -1.0,
-        "profit_factor": 0.0,
-        "max_drawdown": 3.0,
-        "max_consecutive_losses": 3,
-        "total_pips": -169.287,
-        "open_trades": 0,
-        "unresolved": 0,
-        "cancelled": 4,
-        "review_required": 0,
-        "reconstructed": 0,
-        "cost_status": "GROSS_OR_UNCONFIGURED"
-      }
-    },
-    "out_of_sample": {
       "model": "ZONE_WAIT_M5_OPEN_TP2_V3",
       "stats": {
         "status": "PAPER SIMULATION",
@@ -993,7 +984,29 @@
         "profit_factor": 0.0,
         "max_drawdown": 2.0,
         "max_consecutive_losses": 2,
-        "total_pips": -92.203,
+        "total_pips": -97.705,
+        "open_trades": 0,
+        "unresolved": 0,
+        "cancelled": 4,
+        "review_required": 0,
+        "reconstructed": 0,
+        "cost_status": "GROSS_OR_UNCONFIGURED"
+      }
+    },
+    "out_of_sample": {
+      "model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+      "stats": {
+        "status": "PAPER SIMULATION",
+        "trades": 3,
+        "wins": 0,
+        "losses": 3,
+        "win_rate": 0.0,
+        "average_r": -1.0,
+        "expectancy_r": -1.0,
+        "profit_factor": 0.0,
+        "max_drawdown": 3.0,
+        "max_consecutive_losses": 3,
+        "total_pips": -124.452,
         "open_trades": 0,
         "unresolved": 0,
         "cancelled": 1,
