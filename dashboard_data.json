@@ -4,10 +4,10 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-24T09:10:50.550526+08:00",
+    "timestamp": "2026-10-24T09:15:49.893694+08:00",
     "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023"
   },
-  "latest_price": 3993.65,
+  "latest_price": 3993.71,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -31,8 +31,8 @@
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 3996.76,
-    "high": 4000.71,
+    "equilibrium": 3995.38,
+    "high": 3997.94,
     "low": 3992.81
   },
   "liquidity": {
@@ -49,7 +49,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-24T09:10:51.205576+08:00",
+      "checked_at": "2026-10-24T09:15:50.488669+08:00",
       "requested_from": "2026-10-23",
       "requested_to": "2026-10-26",
       "events_received": 0,
@@ -97,12 +97,12 @@
       "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
       "entry_zone_max_pips": 40
     },
-    "learning_id": "2026-10-24-628d9c1be7070a8a1bfe",
+    "learning_id": "2026-10-24-846f0d059e9eb9fee0b2",
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY LIQUIDITY SWEEP",
     "score": 40,
-    "timestamp": "2026-10-24T09:10:50.550526+08:00",
+    "timestamp": "2026-10-24T09:15:49.893694+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -112,7 +112,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 3.0 pips outside 20-80"
+    "reason": "Risk 3.5 pips outside 20-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -127,9 +127,9 @@
     "condition": "TRENDING"
   },
   "m15": {
-    "direction": "BEARISH",
+    "direction": "RANGE",
     "bos": null,
-    "swing_high": 3993.7979,
+    "swing_high": 3993.79791,
     "swing_low": 3993.5569,
     "setup": {
       "direction": "BUY",
@@ -140,8 +140,8 @@
       ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 3996.76,
-        "high": 4000.71,
+        "equilibrium": 3995.38,
+        "high": 3997.94,
         "low": 3992.81
       },
       "liquidity": {
@@ -151,33 +151,33 @@
         "description": "SELL-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
-        "direction": "BEARISH",
+        "direction": "RANGE",
         "bos": null,
-        "swing_high": 3993.7979,
+        "swing_high": 3993.79791,
         "swing_low": 3993.5569
       },
       "range": {
         "is_range": false,
-        "efficiency": 0.2746,
-        "slope_ratio": 0.2601,
-        "atr_width": 32.3821,
-        "high": 4000.70664,
+        "efficiency": 0.3826,
+        "slope_ratio": 0.269,
+        "atr_width": 21.3934,
+        "high": 3997.9449,
         "low": 3992.8099,
-        "width": 7.8967399999996815,
-        "location": 0.10979847380056461
+        "width": 5.1349999999997635,
+        "location": 0.17444206426483413
       }
     }
   },
   "m5": {
-    "direction": "RANGE",
+    "direction": "BEARISH",
     "bos": null,
-    "swing_high": 3993.79791,
+    "swing_high": 3993.79413,
     "swing_low": 3993.5553,
     "confirmation": {
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "NEUTRAL",
+      "momentum": "BULLISH",
       "reason": "NO CONFIRMATION"
     }
   },
@@ -1491,16 +1491,16 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-10-24-628d9c1be7070a8a1bfe",
+    "id": "2026-10-24-846f0d059e9eb9fee0b2",
     "file": "engine/learning/features/2026-10-24.json"
   },
   "data_health": {
     "status": "FRESH",
     "allowed": true,
-    "checked_at": "2026-10-24T01:10:50.776835+00:00",
-    "last_candle_open": "2026-10-24T01:05:00+00:00",
-    "last_candle_close": "2026-10-24T01:10:00+00:00",
-    "close_age_minutes": 0.85,
+    "checked_at": "2026-10-24T01:15:50.060847+00:00",
+    "last_candle_open": "2026-10-24T01:10:00+00:00",
+    "last_candle_close": "2026-10-24T01:15:00+00:00",
+    "close_age_minutes": 0.83,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Candle M5 lengkap dan terkini"
@@ -1508,7 +1508,7 @@
   "gate_reasons": {
     "score": "Skor 40/100 < minimum 70",
     "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
-    "risk": "SL 3.0 pips bawah minimum 20 pips",
+    "risk": "SL 3.5 pips bawah minimum 20 pips",
     "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
@@ -1518,11 +1518,11 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 3.0,
+    "risk_distance_pips": 3.5,
     "blocking_reasons": [
       "Skor 40/100 < minimum 70",
       "BOS atau candle + momentum BUY belum sah",
-      "SL 3.0 pips bawah minimum 20 pips",
+      "SL 3.5 pips bawah minimum 20 pips",
       "Belum dikira: risk tidak lulus"
     ]
   },
@@ -1632,11 +1632,11 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-10-24T09:10:50.550526+08:00",
+    "updated_at": "2026-10-24T09:15:49.893694+08:00",
     "day_myt": "2026-10-24",
-    "captured_today": 110,
-    "candidates_today": 80,
-    "rejected_today": 80,
+    "captured_today": 111,
+    "candidates_today": 81,
+    "rejected_today": 81,
     "linked_trades": 1,
     "closed_paper": 1,
     "gross_research_rows": 1,
@@ -1645,7 +1645,7 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-10-24-628d9c1be7070a8a1bfe",
+      "id": "2026-10-24-846f0d059e9eb9fee0b2",
       "file": "engine/learning/features/2026-10-24.json"
     },
     "features_file": "engine/learning/features/2026-10-24.json",
@@ -4603,7 +4603,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-24T09:10:50.550526+08:00",
+    "last_updated": "2026-10-24T09:15:49.893694+08:00",
     "execution": "New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -4613,17 +4613,17 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-24T09:10:50.550526+08:00",
+      "checked_at": "2026-10-24T09:15:49.893694+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "FRESH",
       "allowed": true,
-      "checked_at": "2026-10-24T01:10:50.776835+00:00",
-      "last_candle_open": "2026-10-24T01:05:00+00:00",
-      "last_candle_close": "2026-10-24T01:10:00+00:00",
-      "close_age_minutes": 0.85,
+      "checked_at": "2026-10-24T01:15:50.060847+00:00",
+      "last_candle_open": "2026-10-24T01:10:00+00:00",
+      "last_candle_close": "2026-10-24T01:15:00+00:00",
+      "close_age_minutes": 0.83,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Candle M5 lengkap dan terkini"
