@@ -4,10 +4,10 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-25T09:35:49.900246+08:00",
+    "timestamp": "2026-10-25T09:40:50.055472+08:00",
     "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023"
   },
-  "latest_price": 3993.71,
+  "latest_price": 3993.69,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -49,16 +49,17 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-25T09:35:50.465946+08:00",
+      "checked_at": "2026-10-25T09:40:50.602176+08:00",
       "requested_from": "2026-10-24",
       "requested_to": "2026-10-27",
-      "events_received": null,
+      "events_received": 0,
       "usd_high_events": 0,
       "nearby_usd_high_events": 0,
       "skipped_usd_times": 0,
       "unclassified_high_events": 0,
-      "coverage_status": "UNVERIFIED",
-      "events": []
+      "coverage_status": "PROVIDER_RESPONSE_ONLY",
+      "events": [],
+      "provider_count": 0
     },
     "block_before_minutes": 30,
     "block_after_minutes": 30,
@@ -68,11 +69,10 @@
     "event": null,
     "time": null,
     "minutes_to_news": null,
-    "high_impact": null,
-    "status": "ERROR",
-    "filter": "BLOCK",
-    "reason": "Sumber berita gagal disahkan; signal ditahan",
-    "error_type": "HTTPError"
+    "high_impact": false,
+    "status": "CLEAR",
+    "filter": "PASS",
+    "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
   },
   "opportunity": {
     "type": "NO VALID SETUP",
@@ -97,12 +97,12 @@
       "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
       "entry_zone_max_pips": 40
     },
-    "learning_id": "2026-10-25-2d11bae02fafd0d14d1b",
+    "learning_id": "2026-10-25-8193932407cd55fae563",
     "id": null,
     "direction": null,
     "opportunity": "NO VALID SETUP",
     "score": 0,
-    "timestamp": "2026-10-25T09:35:49.900246+08:00",
+    "timestamp": "2026-10-25T09:40:50.055472+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -169,12 +169,12 @@
     "direction": "RANGE",
     "bos": null,
     "swing_high": 3993.7959,
-    "swing_low": 3993.55768,
+    "swing_low": 3993.55679,
     "confirmation": {
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "BULLISH",
+      "momentum": "NEUTRAL",
       "reason": "NO DIRECTION"
     }
   },
@@ -184,7 +184,7 @@
     "m5_confirmation": false,
     "risk": false,
     "rr": false,
-    "news": false,
+    "news": true,
     "session": false,
     "data": true,
     "session_blocking": false
@@ -216,7 +216,7 @@
     ]
   },
   "sop": {
-    "news_filter": "BLOCK",
+    "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
     "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
@@ -1488,16 +1488,16 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-10-25-2d11bae02fafd0d14d1b",
+    "id": "2026-10-25-8193932407cd55fae563",
     "file": "engine/learning/features/2026-10-25.json"
   },
   "data_health": {
     "status": "FRESH",
     "allowed": true,
-    "checked_at": "2026-10-25T01:35:50.043643+00:00",
-    "last_candle_open": "2026-10-25T01:30:00+00:00",
-    "last_candle_close": "2026-10-25T01:35:00+00:00",
-    "close_age_minutes": 0.83,
+    "checked_at": "2026-10-25T01:40:50.182349+00:00",
+    "last_candle_open": "2026-10-25T01:35:00+00:00",
+    "last_candle_close": "2026-10-25T01:40:00+00:00",
+    "close_age_minutes": 0.84,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Candle M5 lengkap dan terkini"
@@ -1507,8 +1507,7 @@
     "score": "Skor 0/100 < minimum 70",
     "m5_confirmation": "Menunggu arah setup M15",
     "risk": "Belum dikira: tiada arah setup",
-    "rr": "Belum dikira: risk tidak lulus",
-    "news": "Sumber berita gagal disahkan; signal ditahan"
+    "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
     "limits": {
@@ -1523,8 +1522,7 @@
       "Skor 0/100 < minimum 70",
       "Menunggu arah setup M15",
       "Belum dikira: tiada arah setup",
-      "Belum dikira: risk tidak lulus",
-      "Sumber berita gagal disahkan; signal ditahan"
+      "Belum dikira: risk tidak lulus"
     ]
   },
   "entry_window": {
@@ -1633,9 +1631,9 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-10-25T09:35:49.900246+08:00",
+    "updated_at": "2026-10-25T09:40:50.055472+08:00",
     "day_myt": "2026-10-25",
-    "captured_today": 115,
+    "captured_today": 116,
     "candidates_today": 50,
     "rejected_today": 50,
     "linked_trades": 1,
@@ -1646,7 +1644,7 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-10-25-2d11bae02fafd0d14d1b",
+      "id": "2026-10-25-8193932407cd55fae563",
       "file": "engine/learning/features/2026-10-25.json"
     },
     "features_file": "engine/learning/features/2026-10-25.json",
@@ -4604,7 +4602,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-25T09:35:49.900246+08:00",
+    "last_updated": "2026-10-25T09:40:50.055472+08:00",
     "execution": "New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -4614,17 +4612,17 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-25T09:35:49.900246+08:00",
+      "checked_at": "2026-10-25T09:40:50.055472+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "FRESH",
       "allowed": true,
-      "checked_at": "2026-10-25T01:35:50.043643+00:00",
-      "last_candle_open": "2026-10-25T01:30:00+00:00",
-      "last_candle_close": "2026-10-25T01:35:00+00:00",
-      "close_age_minutes": 0.83,
+      "checked_at": "2026-10-25T01:40:50.182349+00:00",
+      "last_candle_open": "2026-10-25T01:35:00+00:00",
+      "last_candle_close": "2026-10-25T01:40:00+00:00",
+      "close_age_minutes": 0.84,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Candle M5 lengkap dan terkini"
