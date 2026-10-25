@@ -4,10 +4,10 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-26T07:15:53.406359+08:00",
+    "timestamp": "2026-10-26T07:20:48.999622+08:00",
     "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023"
   },
-  "latest_price": 3998.13,
+  "latest_price": 3996.48,
   "session": "ASIAN",
   "market_mode": "NEUTRAL",
   "regime": {
@@ -25,8 +25,8 @@
     }
   },
   "volatility": {
-    "atr": 4.26,
-    "atr_pips": 42.6,
+    "atr": 4.21,
+    "atr_pips": 42.1,
     "condition": "NORMAL"
   },
   "pd": {
@@ -49,7 +49,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-26T07:15:53.761703+08:00",
+      "checked_at": "2026-10-26T07:20:49.602732+08:00",
       "requested_from": "2026-10-25",
       "requested_to": "2026-10-28",
       "events_received": 3,
@@ -116,12 +116,12 @@
       "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
       "entry_zone_max_pips": 40
     },
-    "learning_id": "2026-10-26-3f6b05b0c6b65562cfc6",
+    "learning_id": "2026-10-26-12005d79dfd2a16f2904",
     "id": null,
     "direction": "SELL",
     "opportunity": "SELL LIQUIDITY SWEEP",
     "score": 30,
-    "timestamp": "2026-10-26T07:15:53.406359+08:00",
+    "timestamp": "2026-10-26T07:20:48.999622+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -130,26 +130,13 @@
     }
   },
   "plan": {
-    "valid": true,
-    "direction": "SELL",
-    "entry": 3998.13,
-    "sl": 4004.71,
-    "risk_pips": 65.8,
-    "tp1": 3992.13,
-    "tp2": 3984.96,
-    "tp3": 3978.37,
-    "tp1_pips": 60,
-    "tp2_pips": 131.7,
-    "tp3_pips": 197.5,
-    "rr_tp1": 0.91,
-    "rr_tp2": 2.0,
-    "rr_tp3": 3.0,
-    "risk_level": "MEDIUM"
+    "valid": false,
+    "reason": "Risk 82.2 pips outside 20-80"
   },
   "potential": {
-    "tp1_pips": 60,
-    "tp2_pips": 131.7,
-    "tp3_pips": 197.5
+    "tp1_pips": null,
+    "tp2_pips": null,
+    "tp3_pips": null
   },
   "h1": {
     "direction": "RANGE",
@@ -209,7 +196,7 @@
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "NEUTRAL",
+      "momentum": "BEARISH",
       "reason": "NO CONFIRMATION"
     }
   },
@@ -217,8 +204,8 @@
     "score": false,
     "setup": true,
     "m5_confirmation": false,
-    "risk": true,
-    "rr": true,
+    "risk": false,
+    "rr": false,
     "news": true,
     "session": false,
     "data": true,
@@ -232,9 +219,9 @@
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
-    "status": "VALID",
-    "risk_pips": 65.8,
-    "risk_level": "MEDIUM",
+    "status": "INVALID",
+    "risk_pips": null,
+    "risk_level": null,
     "min_risk_pips": 20,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -253,7 +240,7 @@
   "sop": {
     "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
-    "risk": "MEDIUM",
+    "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
@@ -1523,23 +1510,25 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-10-26-3f6b05b0c6b65562cfc6",
+    "id": "2026-10-26-12005d79dfd2a16f2904",
     "file": "engine/learning/features/2026-10-26.json"
   },
   "data_health": {
     "status": "FRESH",
     "allowed": true,
-    "checked_at": "2026-10-25T23:15:53.545473+00:00",
-    "last_candle_open": "2026-10-25T23:10:00+00:00",
-    "last_candle_close": "2026-10-25T23:15:00+00:00",
-    "close_age_minutes": 0.89,
+    "checked_at": "2026-10-25T23:20:49.222610+00:00",
+    "last_candle_open": "2026-10-25T23:15:00+00:00",
+    "last_candle_close": "2026-10-25T23:20:00+00:00",
+    "close_age_minutes": 0.82,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Candle M5 lengkap dan terkini"
   },
   "gate_reasons": {
     "score": "Skor 30/100 < minimum 70",
-    "m5_confirmation": "BOS atau candle + momentum SELL belum sah"
+    "m5_confirmation": "BOS atau candle + momentum SELL belum sah",
+    "risk": "SL 82.2 pips melebihi had 80 pips",
+    "rr": "Belum dikira: risk tidak lulus"
   },
   "diagnostics": {
     "limits": {
@@ -1548,23 +1537,16 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 65.8,
+    "risk_distance_pips": 82.2,
     "blocking_reasons": [
       "Skor 30/100 < minimum 70",
-      "BOS atau candle + momentum SELL belum sah"
+      "BOS atau candle + momentum SELL belum sah",
+      "SL 82.2 pips melebihi had 80 pips",
+      "Belum dikira: risk tidak lulus"
     ]
   },
   "entry_window": {
-    "status": "AVAILABLE",
-    "low": 3998.13,
-    "high": 4002.13,
-    "min_risk_pips": 20.0,
-    "max_risk_pips": 80.0,
-    "width_pips": 40.0,
-    "max_width_pips": 40,
-    "policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
-    "min_rr": 2.0,
-    "basis": "FROZEN_SL_TP2_BEFORE_COSTS"
+    "status": "UNAVAILABLE"
   },
   "market_data_audit": {
     "checked_at": "2026-10-16T05:30:42.934071+08:00",
@@ -1669,11 +1651,11 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-10-26T07:15:53.406359+08:00",
+    "updated_at": "2026-10-26T07:20:48.999622+08:00",
     "day_myt": "2026-10-26",
-    "captured_today": 87,
-    "candidates_today": 42,
-    "rejected_today": 42,
+    "captured_today": 88,
+    "candidates_today": 43,
+    "rejected_today": 43,
     "linked_trades": 1,
     "closed_paper": 1,
     "gross_research_rows": 1,
@@ -1682,7 +1664,7 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-10-26-3f6b05b0c6b65562cfc6",
+      "id": "2026-10-26-12005d79dfd2a16f2904",
       "file": "engine/learning/features/2026-10-26.json"
     },
     "features_file": "engine/learning/features/2026-10-26.json",
@@ -4640,7 +4622,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-26T07:15:53.406359+08:00",
+    "last_updated": "2026-10-26T07:20:48.999622+08:00",
     "execution": "New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -4650,17 +4632,17 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-26T07:15:53.406359+08:00",
+      "checked_at": "2026-10-26T07:20:48.999622+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "FRESH",
       "allowed": true,
-      "checked_at": "2026-10-25T23:15:53.545473+00:00",
-      "last_candle_open": "2026-10-25T23:10:00+00:00",
-      "last_candle_close": "2026-10-25T23:15:00+00:00",
-      "close_age_minutes": 0.89,
+      "checked_at": "2026-10-25T23:20:49.222610+00:00",
+      "last_candle_open": "2026-10-25T23:15:00+00:00",
+      "last_candle_close": "2026-10-25T23:20:00+00:00",
+      "close_age_minutes": 0.82,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Candle M5 lengkap dan terkini"
