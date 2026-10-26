@@ -44690,6 +44690,210 @@
       },
       "provenance": "LIVE_PRE_DELIVERY",
       "broker_execution": "UNKNOWN"
+    },
+    "2026-10-26-c8f9865fd3fe13be6b9e": {
+      "id": "2026-10-26-c8f9865fd3fe13be6b9e",
+      "schema": "BOSQUE_LEARNING_V1",
+      "captured_at": "2026-10-26T12:05:48.635908+00:00",
+      "source_candle": "2026-10-26T12:00:00+00:00",
+      "parameters": {
+        "min_risk_pips": 20,
+        "max_risk_pips": 80,
+        "min_score": 70,
+        "min_rr": 2.0,
+        "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+        "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+        "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023",
+        "entry_wait_minutes": 30,
+        "range_max_efficiency": 0.35,
+        "range_max_slope_ratio": 0.5,
+        "range_max_atr_width": 6.0,
+        "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+        "entry_zone_max_pips": 40,
+        "round_trip_cost_pips": null
+      },
+      "decision_hash": "01700552e2400b0c1cccf6f01ba60061a8879fa5ac6dea97a84e3224bbda0cab",
+      "decision": "REJECTED_CANDIDATE",
+      "blocked_by": [
+        "score",
+        "m5_confirmation"
+      ],
+      "features": {
+        "direction": "SELL",
+        "opportunity": "SELL LIQUIDITY SWEEP",
+        "score": 35,
+        "session": "NEW YORK",
+        "h1": {
+          "direction": "BULLISH",
+          "bos": null,
+          "swing_high": 4022.20256,
+          "swing_low": 4003.26123
+        },
+        "m15": {
+          "direction": "BEARISH",
+          "bos": null,
+          "swing_high": 4016.54818,
+          "swing_low": 4010.7351
+        },
+        "m5": {
+          "direction": "BEARISH",
+          "bos": "BULLISH BOS",
+          "swing_high": 4016.54818,
+          "swing_low": 4010.7351
+        },
+        "confirmation": {
+          "confirmed": false,
+          "bos": "BULLISH BOS",
+          "candle": false,
+          "momentum": "BULLISH",
+          "reason": "NO CONFIRMATION"
+        },
+        "pd": {
+          "zone": "PREMIUM",
+          "equilibrium": 4012.73,
+          "high": 4022.2,
+          "low": 4003.26
+        },
+        "liquidity": {
+          "buy_side_sweep": true,
+          "sell_side_sweep": false,
+          "swept_level": 4016.54818,
+          "description": "BUY-SIDE LIQUIDITY SWEPT"
+        },
+        "range": {
+          "is_range": true,
+          "efficiency": 0.2915,
+          "slope_ratio": 0.287,
+          "atr_width": 4.3436,
+          "high": 4022.20256,
+          "low": 4003.26123,
+          "width": 18.941330000000107,
+          "location": 0.6994904792852416
+        },
+        "volatility": {
+          "atr": 2.73,
+          "atr_pips": 27.3,
+          "condition": "NORMAL"
+        },
+        "news": {
+          "evidence": {
+            "checked_at": "2026-10-26T20:05:47.716059+08:00",
+            "requested_from": "2026-10-25",
+            "requested_to": "2026-10-28",
+            "events_received": 3,
+            "usd_high_events": 1,
+            "nearby_usd_high_events": 0,
+            "skipped_usd_times": 0,
+            "unclassified_high_events": 0,
+            "coverage_status": "PROVIDER_RESPONSE_ONLY",
+            "events": [
+              {
+                "title": "Australia CPI: September 2026",
+                "geography": "NON_US",
+                "time": "2026-10-28T00:30:00+00:00",
+                "impact": "high"
+              },
+              {
+                "title": "Bank of Canada Rate Decision October 2026",
+                "geography": "NON_US",
+                "time": "2026-10-28T13:45:00+00:00",
+                "impact": "high"
+              },
+              {
+                "title": "FOMC Rate Decision October 2026",
+                "geography": "USD",
+                "time": "2026-10-28T18:00:00+00:00",
+                "impact": "high"
+              }
+            ],
+            "provider_count": 3
+          },
+          "block_before_minutes": 30,
+          "block_after_minutes": 30,
+          "currency": "USD",
+          "source": "FinanceCalendar",
+          "source_url": "https://www.financecalendar.com/",
+          "event": null,
+          "time": null,
+          "minutes_to_news": null,
+          "high_impact": false,
+          "status": "CLEAR",
+          "filter": "PASS",
+          "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
+        },
+        "gates": {
+          "setup": true,
+          "score": false,
+          "m5_confirmation": false,
+          "risk": true,
+          "rr": true,
+          "news": true,
+          "data": true
+        },
+        "plan": {
+          "valid": true,
+          "direction": "SELL",
+          "entry": 4020.06,
+          "sl": 4017.09,
+          "risk_pips": 29.6,
+          "tp1": 4014.06,
+          "tp2": 4008.06,
+          "tp3": 4002.06,
+          "tp1_pips": 60,
+          "tp2_pips": 120,
+          "tp3_pips": 180,
+          "rr_tp1": 2.02,
+          "rr_tp2": 4.05,
+          "rr_tp3": 6.07,
+          "risk_level": "LOW"
+        },
+        "data_health": {
+          "status": "FRESH",
+          "allowed": true,
+          "checked_at": "2026-10-26T12:05:47.290967+00:00",
+          "last_candle_open": "2026-10-26T12:00:00+00:00",
+          "last_candle_close": "2026-10-26T12:05:00+00:00",
+          "close_age_minutes": 0.79,
+          "max_close_age_minutes": 10,
+          "recent_gap_count": 0,
+          "reason": "Candle M5 lengkap dan terkini"
+        },
+        "last_m5": {
+          "datetime": "2026-10-26T12:00:00+00:00",
+          "open": 4016.92156,
+          "high": 4020.26212,
+          "low": 4014.94518,
+          "close": 4020.05832
+        },
+        "entry_window": {
+          "status": "AVAILABLE",
+          "low": 4015.09,
+          "high": 4015.09,
+          "min_risk_pips": 20.0,
+          "max_risk_pips": 80.0,
+          "width_pips": 0.0,
+          "max_width_pips": 40,
+          "policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+          "min_rr": 2.0,
+          "basis": "FROZEN_SL_TP2_BEFORE_COSTS"
+        },
+        "distances_price": {
+          "h1": {
+            "swing_high": -2.1442400000000816,
+            "swing_low": 16.797090000000026
+          },
+          "m15": {
+            "swing_high": 3.5101400000003196,
+            "swing_low": 9.32322000000022
+          },
+          "m5": {
+            "swing_high": 3.5101400000003196,
+            "swing_low": 9.32322000000022
+          }
+        }
+      },
+      "provenance": "LIVE_PRE_DELIVERY",
+      "broker_execution": "UNKNOWN"
     }
   }
 }
