@@ -18,29 +18,29 @@
     "entry_zone_max_pips": 40
   },
   "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-  "bars_used": 4999,
-  "period_start": "2026-10-06T16:00:00+00:00",
-  "period_end": "2026-10-24T00:30:00+00:00",
+  "bars_used": 5000,
+  "period_start": "2026-10-08T17:35:00+00:00",
+  "period_end": "2026-10-26T02:10:00+00:00",
   "source_sha256": {
-    "XAUUSD_M5_auto.csv": "83bd3263ba561fbda2b6b65b5d531808133957b3e5f551dff5f1fd3ab54e39df"
+    "XAUUSD_M5_auto.csv": "756eda298292232fdc8276b849ced22843d09ac7aa1e389a33b2d1880b02e603"
   },
   "results": {
     "development": {
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 2,
+        "trades": 4,
         "wins": 0,
-        "losses": 2,
+        "losses": 4,
         "win_rate": 0.0,
         "average_r": -1.0,
         "expectancy_r": -1.0,
         "profit_factor": 0.0,
-        "max_drawdown": 2.0,
-        "max_consecutive_losses": 2,
-        "total_pips": -97.705,
+        "max_drawdown": 4.0,
+        "max_consecutive_losses": 4,
+        "total_pips": -189.908,
         "open_trades": 0,
         "unresolved": 0,
-        "cancelled": 4,
+        "cancelled": 5,
         "review_required": 0,
         "reconstructed": 0,
         "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -579,33 +579,7 @@
           "last_bar": "2026-10-19T10:45:00+00:00",
           "exit_price": 4164.17,
           "exit_reason": "SL"
-        }
-      ],
-      "eligible_signals": 6,
-      "eligible_scan_candidates": 12,
-      "repeated_candidates_suppressed": 6
-    },
-    "out_of_sample": {
-      "stats": {
-        "status": "PAPER SIMULATION",
-        "trades": 3,
-        "wins": 0,
-        "losses": 3,
-        "win_rate": 0.0,
-        "average_r": -1.0,
-        "expectancy_r": -1.0,
-        "profit_factor": 0.0,
-        "max_drawdown": 3.0,
-        "max_consecutive_losses": 3,
-        "total_pips": -124.452,
-        "open_trades": 0,
-        "unresolved": 0,
-        "cancelled": 1,
-        "review_required": 0,
-        "reconstructed": 0,
-        "cost_status": "GROSS_OR_UNCONFIGURED"
-      },
-      "trades": [
+        },
         {
           "strategy_version": "SCALPING V3",
           "signal_id": "430a69733f45b5bf",
@@ -848,7 +822,47 @@
           "last_bar": "2026-10-21T18:05:00+00:00",
           "entry_wait_bars": 6,
           "exit_reason": "ENTRY_WINDOW_EXPIRED"
+        }
+      ],
+      "eligible_signals": 9,
+      "gate_audit": {
+        "evaluated_scans": 3640,
+        "unhealthy_scans": 0,
+        "blocked_counts": {
+          "warmup": 5,
+          "score": 3582,
+          "m5_confirmation": 3407,
+          "plan": 3151,
+          "rr": 3151,
+          "setup": 2543,
+          "news": 26
         },
+        "counting": "Non-exclusive: one scan may fail several gates"
+      },
+      "eligible_scan_candidates": 17,
+      "repeated_candidates_suppressed": 8
+    },
+    "out_of_sample": {
+      "stats": {
+        "status": "PAPER SIMULATION",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "average_r": -1.0,
+        "expectancy_r": -1.0,
+        "profit_factor": 0.0,
+        "max_drawdown": 1.0,
+        "max_consecutive_losses": 1,
+        "total_pips": -32.249,
+        "open_trades": 0,
+        "unresolved": 0,
+        "cancelled": 0,
+        "review_required": 0,
+        "reconstructed": 0,
+        "cost_status": "GROSS_OR_UNCONFIGURED"
+      },
+      "trades": [
         {
           "strategy_version": "SCALPING V3",
           "signal_id": "4618851e142e55ef",
@@ -939,12 +953,24 @@
           "exit_reason": "SL"
         }
       ],
-      "eligible_signals": 4,
-      "eligible_scan_candidates": 7,
-      "repeated_candidates_suppressed": 3
+      "eligible_signals": 1,
+      "gate_audit": {
+        "evaluated_scans": 1001,
+        "unhealthy_scans": 0,
+        "blocked_counts": {
+          "score": 995,
+          "setup": 535,
+          "m5_confirmation": 969,
+          "plan": 918,
+          "rr": 918
+        },
+        "counting": "Non-exclusive: one scan may fail several gates"
+      },
+      "eligible_scan_candidates": 2,
+      "repeated_candidates_suppressed": 1
     }
   },
-  "last_updated": "2026-10-24T01:00:22.065221+00:00",
+  "last_updated": "2026-10-26T02:31:17.606299+00:00",
   "news_mode": "HISTORICAL_PROVIDER_SCHEDULE_NOT_POINT_IN_TIME",
   "cost_model": {
     "status": "GROSS_ONLY_UNCONFIGURED",
@@ -965,9 +991,9 @@
   "news_source": {
     "source": "FinanceCalendar",
     "source_url": "https://www.financecalendar.com/",
-    "fetched_at": "2026-10-24T00:39:51.037206+00:00",
-    "coverage_start": "2026-10-06T00:00:00+00:00",
-    "coverage_end": "2026-10-25T00:00:00+00:00",
+    "fetched_at": "2026-10-26T02:15:53.110221+00:00",
+    "coverage_start": "2026-10-08T00:00:00+00:00",
+    "coverage_end": "2026-10-27T00:00:00+00:00",
     "events_count": 2
   },
   "execution_groups": {
@@ -975,19 +1001,19 @@
       "model": "ZONE_WAIT_M5_OPEN_TP2_V3",
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 2,
+        "trades": 4,
         "wins": 0,
-        "losses": 2,
+        "losses": 4,
         "win_rate": 0.0,
         "average_r": -1.0,
         "expectancy_r": -1.0,
         "profit_factor": 0.0,
-        "max_drawdown": 2.0,
-        "max_consecutive_losses": 2,
-        "total_pips": -97.705,
+        "max_drawdown": 4.0,
+        "max_consecutive_losses": 4,
+        "total_pips": -189.908,
         "open_trades": 0,
         "unresolved": 0,
-        "cancelled": 4,
+        "cancelled": 5,
         "review_required": 0,
         "reconstructed": 0,
         "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -997,19 +1023,19 @@
       "model": "ZONE_WAIT_M5_OPEN_TP2_V3",
       "stats": {
         "status": "PAPER SIMULATION",
-        "trades": 3,
+        "trades": 1,
         "wins": 0,
-        "losses": 3,
+        "losses": 1,
         "win_rate": 0.0,
         "average_r": -1.0,
         "expectancy_r": -1.0,
         "profit_factor": 0.0,
-        "max_drawdown": 3.0,
-        "max_consecutive_losses": 3,
-        "total_pips": -124.452,
+        "max_drawdown": 1.0,
+        "max_consecutive_losses": 1,
+        "total_pips": -32.249,
         "open_trades": 0,
         "unresolved": 0,
-        "cancelled": 1,
+        "cancelled": 0,
         "review_required": 0,
         "reconstructed": 0,
         "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -1019,7 +1045,7 @@
   "automation": {
     "requests": 1,
     "split_rule": "CHRONOLOGICAL_80_20",
-    "history_bars": 4999,
+    "history_bars": 5000,
     "news_fetch": {
       "status": "PROVIDER_SCHEDULE",
       "events": 2,
