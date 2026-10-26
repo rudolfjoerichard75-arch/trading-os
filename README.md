@@ -157,3 +157,25 @@ push TTL is five minutes. Telegram configuration and entry logic are unchanged.
 Activation is incomplete until both secrets are saved, the workflow succeeds,
 and the server test is received on the phone. GitHub Pages alone cannot store
 subscriptions; this owner-operated setup deliberately uses private Actions Secrets.
+
+### Offline MT5 import and entry gate audit
+
+`engine/bosque_mt5.py` converts a tab-separated MT5 M1 export to the existing
+replay CSV schema. Supply the **broker server timezone**, not the computer timezone:
+
+```sh
+python engine/bosque_mt5.py --m1 /path/to/export.csv --server-timezone Etc/GMT-3 --output /tmp/m5.csv
+```
+
+`Etc/GMT-3` means UTC+3 and is an example, not a verified HFM setting. The audit
+sidecar explicitly marks the timezone as unverified. Duplicate timestamps,
+invalid OHLC, unordered rows and missing timezone are rejected. Only M5 groups
+containing all five distinct M1 timestamps are retained; gaps are never filled.
+An import does not change the production data feed.
+
+Replay results now include `gate_audit`: evaluated scans, health-blocked scans
+and non-exclusive rejection counts for score, setup, M5 confirmation, plan, RR
+and news. One scan can fail multiple gates. This exposes why there are no
+signals without relaxing entry rules. Historical news must still be supplied
+for meaningful news-filter evaluation. M1-derived M5 replay does not simulate
+Bid/Ask tick fills. Raw broker exports should stay outside this public repository.

@@ -1,5 +1,6 @@
 """Historical replay of unmodified V3 decisions; paper fills, not broker fills."""
 import argparse, hashlib, json
+from collections import Counter
 from pathlib import Path
 import pandas as pd
 import bosque_engine as e
@@ -15,6 +16,7 @@ def news_allowed(calendar, at):
 def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds=1,evaluation_cache=None):
     if not 0 <= alert_delay_seconds < 300: raise ValueError('Alert delay must be 0..299 seconds')
     df=t.bars(frame); trades=[]; state={}; count=0; candidates=0
+    blocked=Counter(); evaluated=0; unhealthy=0
     for i in range(len(df)):
         row=df.iloc[i:i+1]
         for trade in trades:
@@ -25,7 +27,9 @@ def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds
         if i<359: continue
         window=df.iloc[max(0,i+1-e.OUTPUT_SIZE):i+1]
         from bosque_health import market_health
-        if not market_health(window,at)['allowed']: continue
+        if not market_health(window,at)['allowed']:
+            if start is None or at>=start: unhealthy+=1
+            continue
         news_ok=news_allowed(calendar,at)
         key=(at.isoformat(),news_ok)
         # This run-local cache is shared only by prefixes of the same validated
@@ -35,6 +39,9 @@ def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds
         else:
             ev=t.evaluate(window,at,news_ok)
             if evaluation_cache is not None: evaluation_cache[key]=ev
+        if start is None or at>=start:
+            evaluated+=1
+            blocked.update(ev.get('blocked_by',[]))
         eligible=ev.get('active',False)
         candidates+=int(eligible and (start is None or at>=start))
         delivery=select_alert(state,ev.get('setup_valid',eligible),ev.get('direction'),eligible,df.iloc[i].datetime)
@@ -50,6 +57,8 @@ def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds
         item['signal_path']['source']='HISTORICAL_REPLAY'
         trades.append(item)
     return {'stats':t.stats(trades),'trades':trades,'eligible_signals':count,
+            'gate_audit':{'evaluated_scans':evaluated,'unhealthy_scans':unhealthy,
+                          'blocked_counts':dict(blocked),'counting':'Non-exclusive: one scan may fail several gates'},
             'eligible_scan_candidates':candidates,'repeated_candidates_suppressed':candidates-count}
 
 def run(args):

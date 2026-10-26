@@ -33,16 +33,21 @@ def bars(frame):
 
 def evaluate(df, at, news_ok=True):
     import bosque_engine as e
-    if len(df)<100: return {'active':False}
+    if len(df)<100: return {'active':False, 'blocked_by':['warmup']}
     m15=e.aggregate(df,15); h1=e.aggregate(df,60)
-    if len(m15)<50 or len(h1)<30: return {'active':False}
+    if len(m15)<50 or len(h1)<30: return {'active':False, 'blocked_by':['warmup']}
     hs=e.analyze_structure(h1); setup=e.detect_m15_setup(hs,m15,df)
     conf=e.m5_confirmation(df,setup['direction']); vol=e.volatility_analysis(df)
     session=e.get_session(stamp(at).to_pydatetime().astimezone(e.MY_TZ))
     score=e.calculate_score(hs,setup,conf,session,vol)
     plan=e.create_trade_plan(setup['direction'],df,score,vol)
-    active=all([score>=e.MIN_SCORE,setup['valid'],conf['confirmed'],plan.get('valid',False),plan.get('rr_tp2',0)>=e.MIN_RR,news_ok])
-    return {'active':active,'score':score,'plan':plan,'opportunity':setup['opportunity'],'direction':setup['direction'],'session':session,'timestamp':stamp(at).isoformat(),'setup_valid':setup['valid']}
+    gates={'score':score>=e.MIN_SCORE,'setup':bool(setup['valid']),
+           'm5_confirmation':bool(conf['confirmed']),'plan':bool(plan.get('valid',False)),
+           'rr':plan.get('rr_tp2',0)>=e.MIN_RR,'news':bool(news_ok)}
+    active=all(gates.values())
+    return {'active':active,'score':score,'plan':plan,'opportunity':setup['opportunity'],'direction':setup['direction'],'session':session,'timestamp':stamp(at).isoformat(),'setup_valid':setup['valid'],
+            'gates':gates,'blocked_by':[k for k,v in gates.items() if not v],
+            'plan_reason':plan.get('reason')}
 
 def cost():
     raw=os.getenv('ROUND_TRIP_COST_PIPS','').strip()
