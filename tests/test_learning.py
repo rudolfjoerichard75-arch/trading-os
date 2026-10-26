@@ -120,7 +120,7 @@ class LearningTests(unittest.TestCase):
         self.assertIsNone(learning.excursions(tr,frame.iloc[2:]))
 
     def test_main_persists_features_before_send_and_links_ack(self):
-        frame=bars();now=(frame.datetime.iloc[-1]+pd.Timedelta(minutes=5,seconds=30)).to_pydatetime()
+        frame=bars();now=(frame.datetime.iloc[-1]+pd.Timedelta(minutes=2,seconds=30)).to_pydatetime()
         directory=self.root/'engine';directory.mkdir()
         def send(_):
             docs=list((directory/'learning/features').glob('*.json'))

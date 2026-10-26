@@ -40,6 +40,9 @@ def download_history():
     return df.reset_index(drop=True),len(frames)
 
 def main():
+    if e.ENTRY_MODE == "INTRABAR":
+        b.intrabar_unavailable()
+        return
     try:
         df,requests_count=download_history();directory=e.REPO_DIR/'backtest_data';directory.mkdir(exist_ok=True)
         path=directory/'XAUUSD_M5_auto.csv';df.to_csv(path,index=False)

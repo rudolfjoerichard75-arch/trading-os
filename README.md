@@ -1,5 +1,33 @@
 # Bosque Forex AI — SCALPING V3
 
+## Current live entry mode — 27 October 2026
+
+`V3_INTRABAR_SNAPSHOT_20261027` evaluates the **observed, still-forming M5**
+from the existing single Twelve Data request. It no longer waits for that M5
+bar to close. H1/M15 bias/setup aggregation still uses complete closed bars.
+The original score, risk, RR and news gates remain in force. A current M5
+snapshot must actually exist in the provider response; otherwise alerts block.
+This is scan-based intrabar analysis, not tick streaming. No scheduler frequency
+or API quota has been increased. Snapshot receipt time is recorded; the provider
+quote timestamp is not independently verified. Eligibility may disappear by close.
+
+Dashboard and entry Telegram messages label this mode. The browser hides an
+active intrabar candidate after its candle expires, pending a new snapshot.
+Learning stores separate immutable observed revisions with their capture times.
+Only closed M5 bars reach journal accounting, target notifications and the
+market audit CSV. Thus an intrabar signal is **not** a broker fill; the existing
+30-minute guarded M5-open paper model is still clearly labelled separately.
+Delivery deduplication uses distinct sampled M5 periods; it does not resend on
+every intrabar revision. Existing journal plans and outcomes remain unchanged.
+
+Automatic final-OHLC research now reports `AWAITING_INTRABAR_REPLAY` without
+spending provider download quota. Historical completed M5 candles cannot recover
+what was visible mid-candle. Direct `replay()` remains closed-candle research and
+labels its result/trades accordingly; it is not evidence for intrabar performance.
+The sections below describe historical upgrades where they differ from this mode.
+
+## Historical implementation notes
+
 V3 entry logic was refined on 2026-10-21 after the SL audit: complete M15/H1 candles, confirmed breakout retests, and direction-aligned scoring. `tests/fixtures/v3_original.py` remains the immutable historical reference; unchanged functions still have parity tests. No V5.3 entry filters are active.
 
 Current risk range: **20–80 pips inclusive**, changed from 15–80 at the owner's request on 2026-10-16. Risk/target parameters remain unchanged; the entry refinements below apply to future signals. Live diagnostics and replay read this same engine setting; older journal/backtest records retain the settings used when generated.
@@ -55,7 +83,7 @@ Validation runs on PRs and main. Engine/research workflows test before execution
 
 ## October 17 operational audit
 
-- **Market data:** validated OHLC, timestamps and duplicates; only fully closed M5 candles enter analysis. Future timestamps, gaps in the last 12 bars, or last-candle close more than 10 minutes old block new alerts with a reason. A failed scan persists an ERROR snapshot without advancing the last successful engine timestamp. Browser freshness checks inspect the candle close as well as the engine timestamp.
+- **Market data:** validated OHLC, timestamps and duplicates; closed M5 candles enter accounting; current M5 snapshots may enter live analysis. Future timestamps, gaps in the last 12 bars, or last-candle close more than 10 minutes old block new alerts with a reason. A failed scan persists an ERROR snapshot without advancing the last successful engine timestamp. Browser freshness checks inspect the candle close as well as the engine timestamp.
 - **News:** unknown high-impact geography, unreadable USD event times, malformed/truncated responses and API failures block alerts. Every response exposes normalized event titles/times and coverage status. A successful empty response means only that the provider listed no events; it is not a guarantee of calendar completeness. The window is 30 minutes before/after any matching USD event. Generic GDP/CPI names do not establish USD.
 - **Backtest:** the same guarded paper-fill policy applies. Default simulated alert delay is 1 second after the M5 decision close; this deliberately excludes the in-progress alert candle so fill starts at the following whole M5 open. It is a declared timing assumption, not measured broker latency. OOS warm-up preserves the delivery cycle across the split. Only complete, contiguous M5 groups form H1/M15 candles; partial higher-timeframe bars are excluded in live and replay.
 - **Historical news:** automatic research attempts to download the provider schedule for the complete requested period, validates every high-impact event and archives the normalized calendar with the workflow artifact. This is labelled `HISTORICAL_PROVIDER_SCHEDULE_NOT_POINT_IN_TIME`; revisions and unlisted events remain unknown. If coverage cannot be verified, research explicitly reports `WITHOUT_NEWS_NOT_LIVE_EQUIVALENT` with the failure status. Live observed news states are never passed off as a complete historical calendar.

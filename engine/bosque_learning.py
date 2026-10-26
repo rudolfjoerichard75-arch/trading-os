@@ -34,7 +34,7 @@ def digest(obj):
 
 
 def capture(directory, payload, frame, captured_at):
-    """One first-observed snapshot per source M5 candle + configuration.
+    """Freeze closed-bar inputs once per candle/config; intrabar inputs per observation.
 
     A revised decision on a repeated candle cannot overwrite original features
     or be linked to them. Features contain only inputs available at capture.
@@ -44,7 +44,9 @@ def capture(directory, payload, frame, captured_at):
     from bosque_execution import entry_window
     at = pd.to_datetime(captured_at, utc=True)
     df = bars(frame)
-    if df.empty or (df.datetime + pd.Timedelta(minutes=5) > at).any():
+    intrabar = payload.get('entry_timing', {}).get('mode') == 'INTRABAR'
+    cutoff = df.datetime if intrabar else df.datetime + pd.Timedelta(minutes=5)
+    if df.empty or (cutoff > at).any():
         raise ValueError('Unclosed/future input candle')
     source = df.iloc[-1].datetime.isoformat()
     params = configuration()
@@ -53,7 +55,7 @@ def capture(directory, payload, frame, captured_at):
     # Receipt/outcome fields are never accepted into the feature payload.
     allowed = ('direction','opportunity','score','session','h1','m15','m5',
                'confirmation','pd','liquidity','range','volatility','news',
-               'gates','plan','data_health')
+               'gates','plan','data_health','entry_timing')
     features = {key: snapshot.get(key) for key in allowed}
     features['last_m5'] = clean_for_json(df.iloc[-1].to_dict())
     features['entry_window'] = entry_window({**(features['plan'] or {}),
@@ -70,7 +72,9 @@ def capture(directory, payload, frame, captured_at):
     signature['last_m5'] = features['last_m5']
     # Source date keeps repeated scans across midnight in the same daily file.
     day = pd.Timestamp(source).tz_convert('Asia/Kuala_Lumpur').strftime('%Y-%m-%d')
-    record_id = day + '-' + digest({'source': source, 'parameters': params})[:20]
+    identity = {'source':source, 'parameters':params}
+    if intrabar: identity['observed_at'] = at.isoformat()
+    record_id = day + '-' + digest(identity)[:20]
     path = Path(directory)/'learning'/'features'/(day+'.json')
     doc = read(path, {'schema':SCHEMA, 'records':{}})
     previous = doc['records'].get(record_id)

@@ -56,7 +56,9 @@ OUTPUT_SIZE = 500
 # RISK / SCORING
 # =========================================================
 
-ENTRY_LOGIC_VERSION = "V3_RANGE_EFFICIENCY_20261023"
+CLOSED_ENTRY_LOGIC_VERSION = "V3_RANGE_EFFICIENCY_20261023"
+ENTRY_LOGIC_VERSION = "V3_INTRABAR_SNAPSHOT_20261027"
+ENTRY_MODE = "INTRABAR"
 RANGE_MAX_EFFICIENCY = 0.35
 RANGE_MAX_SLOPE_RATIO = 0.50
 RANGE_MAX_ATR_WIDTH = 6.0
@@ -1179,7 +1181,7 @@ def detect_m15_setup(
         if retest:
             direction = retest["direction"]
             opportunity = direction + " BREAKOUT RETEST"
-            reason.append("Closed M15 break + subsequent M5 retest rejection")
+            reason.append("Closed M15 break + observed M5 retest rejection")
 
     return {
         "direction": direction,
@@ -1640,6 +1642,8 @@ def format_telegram(
     return (
         "👑 BOSQUE FOREX AI\n\n"
         f"🚨 {label}\n"
+        "⚡ M5 INTRABAR — snapshot semasa scan, belum candle close.\n"
+        "Setup boleh berubah sebelum candle tamat; bukan pemantauan tick berterusan.\n"
         f"⭐ Score: {score}/100\n\n"
         f"📍 Entry : {low:.2f}-{high:.2f}\n"
         f"↔️ Lebar zon: {zone['width_pips']:.1f} pips (maksimum 40)\n"
@@ -1669,14 +1673,10 @@ def main():
     # FETCH M5
     # =====================================================
 
-    m5 = fetch_m5()
-
-    m5 = remove_incomplete_candle(
-        m5
-    )
-
-    from bosque_health import market_health
-    data_health = market_health(m5, now_my())
+    raw_m5 = fetch_m5()
+    observed_at = now_my()
+    from bosque_intrabar import decision_frames
+    m5, closed_m5, data_health = decision_frames(raw_m5, observed_at)
 
     if len(m5) < 100:
 
@@ -1689,12 +1689,12 @@ def main():
     # =====================================================
 
     m15 = aggregate(
-        m5,
+        closed_m5,
         15
     )
 
     h1 = aggregate(
-        m5,
+        closed_m5,
         60
     )
 
@@ -1864,6 +1864,13 @@ def main():
         >= MIN_RR
     )
 
+    # A scan/news request can straddle a candle boundary. Do not send an expired
+    # intrabar decision as if its forming candle were still current.
+    current_close = data_health.get("current_candle_close")
+    if current_close and pd.Timestamp(now_my()) >= pd.Timestamp(current_close):
+        data_health.update(allowed=False, status="BLOCKED",
+            reason="Snapshot intrabar tamat semasa scan; tunggu snapshot baharu")
+
     valid_signal = all([
         score_ok,
         setup_ok,
@@ -1882,10 +1889,10 @@ def main():
         'm15':m15_structure, 'm5':m5_structure, 'confirmation':m5_confirm,
         'pd':pd_data, 'liquidity':liquidity, 'range':setup.get('range'),
         'volatility':volatility, 'news':news, 'plan':plan,
-        'data_health':data_health,
+        'data_health':data_health, 'entry_timing':{'mode':ENTRY_MODE, 'observed_at':observed_at.isoformat()},
         'gates':{'setup':setup_ok,'score':score_ok,'m5_confirmation':m5_ok,
                  'risk':risk_ok,'rr':rr_ok,'news':news_ok,'data':data_health['allowed']}
-    }, m5, now_my())
+    }, m5, observed_at)
 
     # =====================================================
     # SIGNAL
@@ -1895,6 +1902,9 @@ def main():
     signal = {
         "active": False,
         "parameters": configuration(),
+        "entry_mode": ENTRY_MODE,
+        "observed_at": observed_at.isoformat(),
+        "source_candle": data_health.get("current_candle_open"),
         "learning_id": learning_capture.get("id"),
         "id": None,
         "direction":
@@ -1955,7 +1965,7 @@ def main():
                 state.setdefault('delivered_alerts', []).append({
                     'signal':{**signal,'policy':delivery.get('policy')}, 'plan':plan,
                     'session':session, 'timestamp':acknowledged, 'receipt':receipt,
-                    'source_candle':data_health['last_candle_open']})
+                    'source_candle':data_health.get('current_candle_open')})
             save_state(state)
     signal["delivery"] = delivery
 
@@ -2300,7 +2310,11 @@ def main():
     dashboard['learning_capture'] = learning_capture
     dashboard['data_health'] = data_health
     dashboard['filters']['data'] = data_health['allowed']
-    dashboard = sync(dashboard, m5, sent)
+    dashboard["engine"]["entry_mode"] = ENTRY_MODE
+    dashboard["entry_timing"] = {"mode":ENTRY_MODE, "observed_at":observed_at.isoformat(),
+        "current_candle_close":data_health.get("current_candle_close"),
+        "note":"Signal M5 intrabar pada snapshot scan; boleh berubah sebelum candle tutup. Bukan tick stream."}
+    dashboard = sync(dashboard, closed_m5, sent)
 
     save_json_atomic(
         DASHBOARD_FILE,

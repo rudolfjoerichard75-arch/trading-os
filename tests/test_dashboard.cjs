@@ -82,6 +82,14 @@ function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
   // A stale snapshot and a failed refresh cannot leave a live BUY/SELL on screen.
   c.fetch=async()=>({ok:true,json:async()=>({...payload(),signal:{active:true},engine:{timestamp:'2000-01-01T00:00:00Z'}})});
   await vm.runInContext('runDashboard()',c);assert.match(el('finalSignal').innerText,/^WAIT \(Data engine lebih 15 minit/);
+  const intrabar={...payload(),engine:{timestamp:new Date().toISOString(),entry_mode:'INTRABAR'},signal:{active:true},data_health:{allowed:true},entry_timing:{current_candle_close:new Date(Date.now()+60000).toISOString()}};
+  c.fetch=async()=>({ok:true,json:async()=>intrabar});
+  await vm.runInContext('runDashboard()',c);
+  assert.match(el('entryTimingNote').innerText,/M5 INTRABAR/);
+  assert.equal(el('finalSignal').innerText,'SELL');
+  intrabar.entry_timing.current_candle_close=new Date(Date.now()-1000).toISOString();
+  await vm.runInContext('runDashboard()',c);
+  assert.match(el('finalSignal').innerText,/WAIT.*Snapshot intrabar tamat/);
   c.fetch=async()=>{throw new Error('offline')};
   await vm.runInContext('runDashboard()',c);assert.match(el('finalSignal').innerText,/^WAIT \(Data engine gagal dimuat/);
   for(const id of ['validSetup','scoreGate','m5Gate','riskGate','rrGate'])assert.equal(el(id).innerText,'WAIT (Data engine gagal dimuat)');

@@ -9,7 +9,8 @@ REARM_BARS = 2
 def select_alert(state, setup_valid, direction, eligible, candle):
     """One alert per directional setup cycle, regardless of small price changes.
 
-    Two distinct closed M5 candles without a valid directional setup rearm it.
+    Two distinct observed M5 periods without a valid directional setup rearm it.
+    In intrabar mode these are sampled observations, not close confirmations.
     A direction change starts a new cycle. Score/risk/news fluctuations and
     opportunity-name changes alone do not rearm an already delivered alert.
     The caller persists attempts before sending and marks successful delivery.

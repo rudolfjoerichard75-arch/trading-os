@@ -236,6 +236,7 @@ def configuration():
     return {'min_risk_pips':e.MIN_RISK_PIPS,'max_risk_pips':e.MAX_RISK_PIPS,
             'min_score':e.MIN_SCORE,'min_rr':e.MIN_RR,'signal_policy':POLICY,
             'execution_model':ZONE_MODEL,'entry_logic_version':e.ENTRY_LOGIC_VERSION,
+            'entry_mode':e.ENTRY_MODE,
             'entry_wait_minutes':ENTRY_WAIT_MINUTES,
             'range_max_efficiency':e.RANGE_MAX_EFFICIENCY,
             'range_max_slope_ratio':e.RANGE_MAX_SLOPE_RATIO,
@@ -318,6 +319,9 @@ def sync(dashboard, frame, sent=None):
     bt=load(directory/'backtest_results.json')
     if bt.get('version')==VERSION and bt.get('status','').startswith('COMPLETED') and bt.get('parameters')!=configuration():
         bt={**bt,'status':'OUTDATED_SETTINGS','results':{},'reason':'Awaiting replay with current risk range and signal-cycle policy; previous results retained in backtest JSON.'}
+    if e.ENTRY_MODE == 'INTRABAR':
+        bt={'status':'AWAITING_INTRABAR_REPLAY','version':VERSION,'results':{},
+            'reason':'Final M5 OHLC cannot reconstruct observed intrabar decisions; tick or timestamped snapshots required.'}
     dashboard['backtest']=bt if bt.get('version')==VERSION else {'status':'AWAITING_V3_REPLAY','version':VERSION,'previous_version':bt.get('version')}
     dashboard['sop']['session_filter']='PREFERRED' if dashboard['filters']['session'] else 'NON-PREFERRED'
     dashboard['sop']['fresh_zone']='NOT TRACKED'

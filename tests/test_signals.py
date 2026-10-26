@@ -47,7 +47,7 @@ class LifecycleTests(unittest.TestCase):
         setup = {'direction':'BUY','opportunity':'BUY PULLBACK','valid':True}
         plan = {'valid':True,'direction':'BUY','entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115,
                 'risk_pips':50,'tp1_pips':60,'tp2_pips':100,'tp3_pips':150,'rr_tp2':2}
-        now = (bars().datetime.iloc[-1]+pd.Timedelta(minutes=5,seconds=30)).to_pydatetime()
+        now = (bars().datetime.iloc[-1]+pd.Timedelta(minutes=2,seconds=30)).to_pydatetime()
         with tempfile.TemporaryDirectory() as temp, contextlib.ExitStack() as stack:
             root=Path(temp); directory=root/'engine';directory.mkdir()
             for key,value in {'ENGINE_DIR':directory,'REPO_DIR':root,'DASHBOARD_FILE':root/'dashboard_data.json','STATE_FILE':directory/'state.json'}.items():
@@ -150,7 +150,7 @@ class TargetPathTests(unittest.TestCase):
             d={'engine':{'timestamp':'2026-10-03T00:00:30Z'},'signal':{'active':True,'id':'not-delivered','direction':'BUY','score':80},'plan':{'entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115},'session':'ASIAN','sop':{},'filters':{'session':False},'news':{'filter':'PASS'}}
             t.sync(d,bars(),False)
             self.assertEqual(d['journal']['recorded_signals'],0)
-            self.assertEqual(d['backtest']['status'],'OUTDATED_SETTINGS')
+            self.assertEqual(d['backtest']['status'],'AWAITING_INTRABAR_REPLAY')
             self.assertEqual(d['backtest']['results'],{})
             self.assertEqual(t.load(e.ENGINE_DIR/'backtest_results.json')['status'],'COMPLETED')
 

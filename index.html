@@ -158,6 +158,8 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
      MAIN DASHBOARD
 ===================================================== -->
 
+<div id="entryTimingNote" class="card" style="margin-bottom:16px" aria-live="polite">Mod entry: menunggu status engine.</div>
+
 <div class="dashboard">
 
   <!-- ===================================================
@@ -917,6 +919,9 @@ async function loadDashboard(){
 ========================================================= */
 
 function render(data){
+  setText("entryTimingNote", data.engine?.entry_mode === "INTRABAR"
+    ? "M5 INTRABAR · Signal berdasarkan snapshot semasa scan, tanpa tunggu candle tutup. Boleh berubah sebelum close; bukan tick stream. Journal masih simulasi open M5."
+    : "Mod entry: candle M5 tutup.");
 
   const engine =
     data.engine || {};
@@ -1574,6 +1579,12 @@ async function runDashboard(){
     render(data);
     setText("refreshStatus", "Snapshot dimuat pada " + new Date().toLocaleTimeString("en-MY", {timeZone:"Asia/Kuala_Lumpur"}) + " MYT. Masa data engine ditunjukkan di bawah.");
     const updated = Date.parse(data.engine?.timestamp || "");
+    const intrabarClose = Date.parse(data.entry_timing?.current_candle_close || "");
+    if(data.engine?.entry_mode === "INTRABAR" && (!Number.isFinite(intrabarClose) || Date.now() >= intrabarClose)){
+      setText("engineStatus", "WAIT SNAPSHOT");
+      setExplanation("finalSignal", "WAIT", "Snapshot intrabar tamat; menunggu scan baharu");
+      setDirectionClass("finalSignal", "WAIT");
+    }
     const candleClosed = Date.parse(data.data_health?.last_candle_close || "");
     if(Number.isFinite(candleClosed) && Date.now()-candleClosed > 10*60*1000){
       setText("engineStatus", "STALE DATA");

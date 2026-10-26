@@ -63,7 +63,7 @@ class V3Tests(unittest.TestCase):
             e.ENGINE_DIR.mkdir();t.save(e.ENGINE_DIR/'backtest_results.json',{'version':'V5.3 CANDIDATE','status':'COMPLETED'})
             at='2026-10-02T12:00:01Z';d={'engine':{'timestamp':at},'signal':{'active':True,'id':'test','direction':'BUY','score':80},'plan':{'entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115},'session':'ASIAN','sop':{},'filters':{'session':False},'news':{'filter':'PASS'}}
             t.sync(d,bars(),True);t.sync(d,bars(),None)
-            j=t.load(e.ENGINE_DIR/'trade_journal.json');self.assertEqual(len(j['trades']),1);self.assertEqual(d['backtest']['status'],'AWAITING_V3_REPLAY');self.assertTrue((Path(tmp)/'paper_journal.csv').exists())
+            j=t.load(e.ENGINE_DIR/'trade_journal.json');self.assertEqual(len(j['trades']),1);self.assertEqual(d['backtest']['status'],'AWAITING_INTRABAR_REPLAY');self.assertTrue((Path(tmp)/'paper_journal.csv').exists())
     def test_replay_resolves_signal_on_later_bar(self):
         df=bars(362);df.loc[359:,'open']=100;df.loc[359:,'close']=100;df.loc[359:,'high']=111;df.loc[359:,'low']=99
         ev={'active':True,'score':80,'plan':{'entry':100,'sl':95,'tp1':106,'tp2':110,'tp3':115},'opportunity':'BUY TEST','direction':'BUY','session':'ASIAN'}
@@ -159,7 +159,7 @@ class NewsGateTests(unittest.TestCase):
                 patches={'ENGINE_DIR':directory,'REPO_DIR':root,'DASHBOARD_FILE':root/'dashboard_data.json','STATE_FILE':directory/'state.json'}
                 for key,value in patches.items():stack.enter_context(patch.object(e,key,value))
                 stack.enter_context(patch.object(e,'now_my',return_value=self.now))
-                fresh=bars();fresh['datetime']=pd.date_range(end=pd.Timestamp(self.now).floor('5min')-pd.Timedelta(minutes=5),periods=len(fresh),freq='5min')
+                fresh=bars();fresh['datetime']=pd.date_range(end=pd.Timestamp(self.now).floor('5min'),periods=len(fresh),freq='5min')
                 stack.enter_context(patch.object(e,'fetch_m5',return_value=fresh))
                 stack.enter_context(patch.object(e,'detect_m15_setup',return_value=setup))
                 stack.enter_context(patch.object(e,'m5_confirmation',return_value={'confirmed':True,'reason':'M5 bullish BOS'}))

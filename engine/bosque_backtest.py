@@ -51,17 +51,26 @@ def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds
         if start is not None and at<start: continue
         p=ev['plan'];count+=1
         alert_at=at+pd.Timedelta(seconds=alert_delay_seconds)
-        item=t.new_trade({**ev,'id':delivery['id'],'policy':POLICY},p,alert_at,cost)
+        params={**t.configuration(),'entry_logic_version':e.CLOSED_ENTRY_LOGIC_VERSION,'entry_mode':'CLOSED_CANDLE'}
+        item=t.new_trade({**ev,'id':delivery['id'],'policy':POLICY,'parameters':params},p,alert_at,cost)
         item['decision_at']=at.isoformat()
         observe(item,df.iloc[0:0],reconstructed=True)
         item['signal_path']['source']='HISTORICAL_REPLAY'
         trades.append(item)
-    return {'stats':t.stats(trades),'trades':trades,'eligible_signals':count,
+    return {'entry_mode':'CLOSED_CANDLE_RESEARCH_ONLY','stats':t.stats(trades),'trades':trades,'eligible_signals':count,
             'gate_audit':{'evaluated_scans':evaluated,'unhealthy_scans':unhealthy,
                           'blocked_counts':dict(blocked),'counting':'Non-exclusive: one scan may fail several gates'},
             'eligible_scan_candidates':candidates,'repeated_candidates_suppressed':candidates-count}
 
+def intrabar_unavailable():
+    out={"status":"AWAITING_INTRABAR_REPLAY","version":t.VERSION,"parameters":t.configuration(),
+         "results":{},"reason":"Final M5 OHLC cannot reconstruct intrabar signals. Timestamped snapshots or ticks required.",
+         "last_updated":pd.Timestamp.now(tz="UTC").isoformat()}
+    t.save(e.ENGINE_DIR/"backtest_results.json",out)
+    return out
+
 def run(args):
+    if e.ENTRY_MODE == "INTRABAR": return intrabar_unavailable()
     frames=[]; hashes={}
     for name in args.csv:
         path=Path(name);hashes[path.name]=hashlib.sha256(path.read_bytes()).hexdigest()
