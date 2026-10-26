@@ -158,6 +158,7 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
      MAIN DASHBOARD
 ===================================================== -->
 
+<div id="strategyFocusNote" class="card" style="margin-bottom:12px" aria-live="polite">Fokus strategi: menunggu status engine.</div>
 <div id="entryTimingNote" class="card" style="margin-bottom:16px" aria-live="polite">Mod entry: menunggu status engine.</div>
 
 <div class="dashboard">
@@ -827,6 +828,7 @@ function gateReasons(data){
     if(gates[key] !== true) result[key] = data.gate_reasons?.[key] || fallback[key];
   }
   if(data.data_health?.allowed === false) result.data = data.data_health.reason || "Data M5 belum disahkan";
+  if(gates.strategy_focus === false) result.strategy_focus = data.strategy_focus?.reason || "Di luar setup atau sesi fokus";
   return result;
 }
 
@@ -919,6 +921,9 @@ async function loadDashboard(){
 ========================================================= */
 
 function render(data){
+  setText("strategyFocusNote", data.strategy_focus?.enabled
+    ? "FOKUS: SELL BREAKOUT RETEST · OFF SESSION (01:00–07:00 dan 23:00–00:00 MYT). " + (data.strategy_focus.allowed ? "Setup/sesi lulus; syarat lain masih diperiksa." : data.strategy_focus.reason || "Menunggu setup/sesi fokus.")
+    : "Fokus strategi: mengikut konfigurasi engine semasa.");
   setText("entryTimingNote", data.engine?.entry_mode === "INTRABAR"
     ? "M5 INTRABAR · Signal berdasarkan snapshot semasa scan, tanpa tunggu candle tutup. Boleh berubah sebelum close; bukan tick stream. Journal masih simulasi open M5."
     : "Mod entry: candle M5 tutup.");
@@ -1227,9 +1232,9 @@ function render(data){
 
   setStatus(
     "sessionFilter",
-    sessionAllowed,
-    "PREFERRED",
-    "NON-PREFERRED"
+    data.strategy_focus?.enabled ? data.strategy_focus.session_allowed === true : sessionAllowed,
+    data.strategy_focus?.enabled ? "FOCUS SESSION PASS" : "PREFERRED",
+    data.strategy_focus?.enabled ? "WAIT OFF SESSION" : "NON-PREFERRED"
   );
 
   setText(

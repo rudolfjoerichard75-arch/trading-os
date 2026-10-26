@@ -160,6 +160,7 @@ class NewsGateTests(unittest.TestCase):
                 for key,value in patches.items():stack.enter_context(patch.object(e,key,value))
                 stack.enter_context(patch.object(e,'now_my',return_value=self.now))
                 fresh=bars();fresh['datetime']=pd.date_range(end=pd.Timestamp(self.now).floor('5min'),periods=len(fresh),freq='5min')
+                stack.enter_context(patch.object(e,'FOCUS_ENABLED',False))
                 stack.enter_context(patch.object(e,'fetch_m5',return_value=fresh))
                 stack.enter_context(patch.object(e,'detect_m15_setup',return_value=setup))
                 stack.enter_context(patch.object(e,'m5_confirmation',return_value={'confirmed':True,'reason':'M5 bullish BOS'}))

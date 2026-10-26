@@ -133,6 +133,7 @@ class LearningTests(unittest.TestCase):
             for key,value in {'ENGINE_DIR':directory,'REPO_DIR':self.root,'DASHBOARD_FILE':self.root/'dashboard_data.json','STATE_FILE':directory/'state.json'}.items():
                 stack.enter_context(patch.object(e,key,value))
             stack.enter_context(patch.object(e,'now_my',return_value=now))
+            stack.enter_context(patch.object(e,'FOCUS_ENABLED',False))
             stack.enter_context(patch.object(e,'fetch_m5',return_value=frame))
             stack.enter_context(patch.object(e,'detect_m15_setup',return_value={'direction':'BUY','opportunity':'BUY PULLBACK','valid':True}))
             stack.enter_context(patch.object(e,'m5_confirmation',return_value={'confirmed':True,'reason':'TEST'}))

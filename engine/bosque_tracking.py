@@ -43,7 +43,8 @@ def evaluate(df, at, news_ok=True):
     plan=e.create_trade_plan(setup['direction'],df,score,vol)
     gates={'score':score>=e.MIN_SCORE,'setup':bool(setup['valid']),
            'm5_confirmation':bool(conf['confirmed']),'plan':bool(plan.get('valid',False)),
-           'rr':plan.get('rr_tp2',0)>=e.MIN_RR,'news':bool(news_ok)}
+           'rr':plan.get('rr_tp2',0)>=e.MIN_RR,'news':bool(news_ok),
+           'strategy_focus':e.strategy_focus(setup['direction'],setup['opportunity'],session)['allowed']}
     active=all(gates.values())
     return {'active':active,'score':score,'plan':plan,'opportunity':setup['opportunity'],'direction':setup['direction'],'session':session,'timestamp':stamp(at).isoformat(),'setup_valid':setup['valid'],
             'gates':gates,'blocked_by':[k for k,v in gates.items() if not v],
@@ -220,12 +221,14 @@ def add_diagnostics(dashboard):
              'Status news belum tersedia'))
     if dashboard.get('data_health', {}).get('allowed') is False:
         reasons['data'] = dashboard['data_health'].get('reason', 'Data M5 belum disahkan')
+    if gates.get('strategy_focus') is False:
+        reasons['strategy_focus'] = dashboard.get('strategy_focus',{}).get('reason','Di luar setup atau sesi fokus')
     dashboard['gate_reasons'] = reasons
     dashboard['diagnostics'] = {
         'limits': limits,
         'risk_distance_pips': risk_value,
         'blocking_reasons': [reasons[k] for k in
-            ['data', 'setup', 'score', 'm5_confirmation', 'risk', 'rr', 'news'] if k in reasons]
+            ['data', 'strategy_focus', 'setup', 'score', 'm5_confirmation', 'risk', 'rr', 'news'] if k in reasons]
     }
     return dashboard
 
@@ -237,6 +240,7 @@ def configuration():
             'min_score':e.MIN_SCORE,'min_rr':e.MIN_RR,'signal_policy':POLICY,
             'execution_model':ZONE_MODEL,'entry_logic_version':e.ENTRY_LOGIC_VERSION,
             'entry_mode':e.ENTRY_MODE,
+            'strategy_focus':{'enabled':e.FOCUS_ENABLED,'opportunity':'SELL BREAKOUT RETEST','session':'OFF SESSION'},
             'entry_wait_minutes':ENTRY_WAIT_MINUTES,
             'range_max_efficiency':e.RANGE_MAX_EFFICIENCY,
             'range_max_slope_ratio':e.RANGE_MAX_SLOPE_RATIO,
@@ -325,7 +329,9 @@ def sync(dashboard, frame, sent=None):
     dashboard['backtest']=bt if bt.get('version')==VERSION else {'status':'AWAITING_V3_REPLAY','version':VERSION,'previous_version':bt.get('version')}
     dashboard['sop']['session_filter']='PREFERRED' if dashboard['filters']['session'] else 'NON-PREFERRED'
     dashboard['sop']['fresh_zone']='NOT TRACKED'
-    dashboard['filters']['session_blocking']=False
+    dashboard['filters']['session_blocking']=bool(dashboard.get('strategy_focus',{}).get('enabled'))
+    if dashboard['filters']['session_blocking']:
+        dashboard['sop']['session_filter']='PASS' if dashboard['strategy_focus']['session_allowed'] else 'BLOCK'
     dashboard['services']={'journal':{'status':'ACTIVE'},'telegram':{'status':'SENT' if sent is True else 'FAILED' if sent is False else sig.get('delivery',{}).get('status','NOT_ATTEMPTED'),'checked_at':at,'delivery_tested':sent is True}}
     dashboard['services']['telegram']['uncertain_deliveries']=state.get('uncertain_deliveries',[])
     cycle=state.get('signal_cycle') or {}

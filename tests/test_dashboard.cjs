@@ -90,6 +90,10 @@ function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
   intrabar.entry_timing.current_candle_close=new Date(Date.now()-1000).toISOString();
   await vm.runInContext('runDashboard()',c);
   assert.match(el('finalSignal').innerText,/WAIT.*Snapshot intrabar tamat/);
+  const focused=payload();focused.strategy_focus={enabled:true,allowed:false,reason:'Fokus hanya OFF SESSION'};
+  focused.filters.strategy_focus=false;render(focused);
+  assert.match(el('strategyFocusNote').innerText,/SELL BREAKOUT RETEST/);
+  assert.match(el('finalSignal').innerText,/OFF SESSION/);
   c.fetch=async()=>{throw new Error('offline')};
   await vm.runInContext('runDashboard()',c);assert.match(el('finalSignal').innerText,/^WAIT \(Data engine gagal dimuat/);
   for(const id of ['validSetup','scoreGate','m5Gate','riskGate','rrGate'])assert.equal(el(id).innerText,'WAIT (Data engine gagal dimuat)');

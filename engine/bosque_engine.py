@@ -56,8 +56,9 @@ OUTPUT_SIZE = 500
 # RISK / SCORING
 # =========================================================
 
-CLOSED_ENTRY_LOGIC_VERSION = "V3_RANGE_EFFICIENCY_20261023"
-ENTRY_LOGIC_VERSION = "V3_INTRABAR_SNAPSHOT_20261027"
+CLOSED_ENTRY_LOGIC_VERSION = "V3_SELL_RETEST_OFF_SESSION_CLOSED_RESEARCH_20261027"
+ENTRY_LOGIC_VERSION = "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027"
+FOCUS_ENABLED = True
 ENTRY_MODE = "INTRABAR"
 RANGE_MAX_EFFICIENCY = 0.35
 RANGE_MAX_SLOPE_RATIO = 0.50
@@ -1665,6 +1666,21 @@ def format_telegram(
 # MAIN ENGINE
 # =========================================================
 
+def strategy_focus(direction, opportunity, session):
+    """Explicit allowlist for new alerts; never changes existing journal trades."""
+    setup_ok = direction == "SELL" and opportunity == "SELL BREAKOUT RETEST"
+    session_ok = session == "OFF SESSION"
+    allowed = not FOCUS_ENABLED or (setup_ok and session_ok)
+    reasons = []
+    if FOCUS_ENABLED and not setup_ok: reasons.append("Fokus hanya SELL BREAKOUT RETEST")
+    if FOCUS_ENABLED and not session_ok: reasons.append("Fokus hanya OFF SESSION")
+    return {"enabled":FOCUS_ENABLED,"allowed":allowed,
+            "setup_allowed":setup_ok,"session_allowed":session_ok,
+            "opportunity":"SELL BREAKOUT RETEST","session":"OFF SESSION",
+            "hours_myt":"01:00–07:00 dan 23:00–00:00",
+            "reason":"; ".join(reasons) or "Setup dan sesi fokus lulus"}
+
+
 def main():
 
     timestamp = now_my()
@@ -1871,7 +1887,9 @@ def main():
         data_health.update(allowed=False, status="BLOCKED",
             reason="Snapshot intrabar tamat semasa scan; tunggu snapshot baharu")
 
+    focus = strategy_focus(setup["direction"], setup["opportunity"], session)
     valid_signal = all([
+        focus["allowed"],
         score_ok,
         setup_ok,
         m5_ok,
@@ -1891,7 +1909,7 @@ def main():
         'volatility':volatility, 'news':news, 'plan':plan,
         'data_health':data_health, 'entry_timing':{'mode':ENTRY_MODE, 'observed_at':observed_at.isoformat()},
         'gates':{'setup':setup_ok,'score':score_ok,'m5_confirmation':m5_ok,
-                 'risk':risk_ok,'rr':rr_ok,'news':news_ok,'data':data_health['allowed']}
+                 'risk':risk_ok,'rr':rr_ok,'news':news_ok,'data':data_health['allowed'],'strategy_focus':focus['allowed']}
     }, m5, observed_at)
 
     # =====================================================
@@ -2310,6 +2328,8 @@ def main():
     dashboard['learning_capture'] = learning_capture
     dashboard['data_health'] = data_health
     dashboard['filters']['data'] = data_health['allowed']
+    dashboard['strategy_focus'] = focus
+    dashboard['filters']['strategy_focus'] = focus['allowed']
     dashboard["engine"]["entry_mode"] = ENTRY_MODE
     dashboard["entry_timing"] = {"mode":ENTRY_MODE, "observed_at":observed_at.isoformat(),
         "current_candle_close":data_health.get("current_candle_close"),

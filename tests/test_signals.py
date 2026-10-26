@@ -53,6 +53,7 @@ class LifecycleTests(unittest.TestCase):
             for key,value in {'ENGINE_DIR':directory,'REPO_DIR':root,'DASHBOARD_FILE':root/'dashboard_data.json','STATE_FILE':directory/'state.json'}.items():
                 stack.enter_context(patch.object(e,key,value))
             clock=stack.enter_context(patch.object(e,'now_my',return_value=now))
+            stack.enter_context(patch.object(e,'FOCUS_ENABLED',False))
             fetch=stack.enter_context(patch.object(e,'fetch_m5',return_value=bars()))
             stack.enter_context(patch.object(e,'detect_m15_setup',return_value=setup))
             stack.enter_context(patch.object(e,'m5_confirmation',return_value={'confirmed':True,'reason':'M5 BOS'}))

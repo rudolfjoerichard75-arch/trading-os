@@ -1,5 +1,21 @@
 # Bosque Forex AI — SCALPING V3
 
+## Focused signal profile — 27 October 2026
+
+New alerts now require **SELL BREAKOUT RETEST + OFF SESSION**, in addition to
+all existing intrabar freshness, setup, confirmation, score, risk, RR and news
+gates. No other setup/direction/session sends a new entry alert. Existing trade
+plans, TP/SL monitoring and notifications continue unchanged. This is an allowlist
+on the current setup selector; it does not force a retest or lower score thresholds.
+
+OFF SESSION follows the engine's current MYT clock definition: **01:00 inclusive
+to 07:00 exclusive, and 23:00 inclusive to midnight exclusive**. It is a system
+label, not an exchange closure or a global session standard. The dashboard shows
+the focus and the reason a candidate is blocked. Version
+`V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027` separates new forward results from
+older and broader strategies. Historical rankings are not performance evidence
+for this newly filtered intrabar profile.
+
 ## Current live entry mode — 27 October 2026
 
 `V3_INTRABAR_SNAPSHOT_20261027` evaluates the **observed, still-forming M5**
