@@ -4,10 +4,10 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-26T10:31:02.969101+08:00",
+    "timestamp": "2026-10-26T10:35:37.876346+08:00",
     "entry_logic_version": "V3_RANGE_EFFICIENCY_20261023"
   },
-  "latest_price": 3993.86,
+  "latest_price": 3993.35,
   "session": "ASIAN",
   "market_mode": "RANGING",
   "regime": {
@@ -25,8 +25,8 @@
     }
   },
   "volatility": {
-    "atr": 4.8,
-    "atr_pips": 48.0,
+    "atr": 4.63,
+    "atr_pips": 46.3,
     "condition": "NORMAL"
   },
   "pd": {
@@ -49,7 +49,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-26T10:31:03.539281+08:00",
+      "checked_at": "2026-10-26T10:35:38.204769+08:00",
       "requested_from": "2026-10-25",
       "requested_to": "2026-10-28",
       "events_received": 3,
@@ -116,12 +116,12 @@
       "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
       "entry_zone_max_pips": 40
     },
-    "learning_id": "2026-10-26-03f844e660bc5a9d4201",
+    "learning_id": "2026-10-26-0d1887a5bfb442fbd770",
     "id": null,
     "direction": null,
     "opportunity": "NO VALID SETUP",
     "score": 0,
-    "timestamp": "2026-10-26T10:31:02.969101+08:00",
+    "timestamp": "2026-10-26T10:35:37.876346+08:00",
     "delivery": {
       "allowed": false,
       "status": "WAIT",
@@ -188,12 +188,12 @@
     "direction": "RANGE",
     "bos": null,
     "swing_high": 3995.52501,
-    "swing_low": 3982.74874,
+    "swing_low": 3990.74148,
     "confirmation": {
       "confirmed": false,
       "bos": null,
       "candle": false,
-      "momentum": "NEUTRAL",
+      "momentum": "BEARISH",
       "reason": "NO DIRECTION"
     }
   },
@@ -491,29 +491,29 @@
       "entry_zone_max_pips": 40
     },
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
-    "bars_used": 4999,
-    "period_start": "2026-10-06T16:00:00+00:00",
-    "period_end": "2026-10-24T00:30:00+00:00",
+    "bars_used": 5000,
+    "period_start": "2026-10-08T17:35:00+00:00",
+    "period_end": "2026-10-26T02:10:00+00:00",
     "source_sha256": {
-      "XAUUSD_M5_auto.csv": "83bd3263ba561fbda2b6b65b5d531808133957b3e5f551dff5f1fd3ab54e39df"
+      "XAUUSD_M5_auto.csv": "756eda298292232fdc8276b849ced22843d09ac7aa1e389a33b2d1880b02e603"
     },
     "results": {
       "development": {
         "stats": {
           "status": "PAPER SIMULATION",
-          "trades": 2,
+          "trades": 4,
           "wins": 0,
-          "losses": 2,
+          "losses": 4,
           "win_rate": 0.0,
           "average_r": -1.0,
           "expectancy_r": -1.0,
           "profit_factor": 0.0,
-          "max_drawdown": 2.0,
-          "max_consecutive_losses": 2,
-          "total_pips": -97.705,
+          "max_drawdown": 4.0,
+          "max_consecutive_losses": 4,
+          "total_pips": -189.908,
           "open_trades": 0,
           "unresolved": 0,
-          "cancelled": 4,
+          "cancelled": 5,
           "review_required": 0,
           "reconstructed": 0,
           "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -1052,33 +1052,7 @@
             "last_bar": "2026-10-19T10:45:00+00:00",
             "exit_price": 4164.17,
             "exit_reason": "SL"
-          }
-        ],
-        "eligible_signals": 6,
-        "eligible_scan_candidates": 12,
-        "repeated_candidates_suppressed": 6
-      },
-      "out_of_sample": {
-        "stats": {
-          "status": "PAPER SIMULATION",
-          "trades": 3,
-          "wins": 0,
-          "losses": 3,
-          "win_rate": 0.0,
-          "average_r": -1.0,
-          "expectancy_r": -1.0,
-          "profit_factor": 0.0,
-          "max_drawdown": 3.0,
-          "max_consecutive_losses": 3,
-          "total_pips": -124.452,
-          "open_trades": 0,
-          "unresolved": 0,
-          "cancelled": 1,
-          "review_required": 0,
-          "reconstructed": 0,
-          "cost_status": "GROSS_OR_UNCONFIGURED"
-        },
-        "trades": [
+          },
           {
             "strategy_version": "SCALPING V3",
             "signal_id": "430a69733f45b5bf",
@@ -1321,7 +1295,47 @@
             "last_bar": "2026-10-21T18:05:00+00:00",
             "entry_wait_bars": 6,
             "exit_reason": "ENTRY_WINDOW_EXPIRED"
+          }
+        ],
+        "eligible_signals": 9,
+        "gate_audit": {
+          "evaluated_scans": 3640,
+          "unhealthy_scans": 0,
+          "blocked_counts": {
+            "warmup": 5,
+            "score": 3582,
+            "m5_confirmation": 3407,
+            "plan": 3151,
+            "rr": 3151,
+            "setup": 2543,
+            "news": 26
           },
+          "counting": "Non-exclusive: one scan may fail several gates"
+        },
+        "eligible_scan_candidates": 17,
+        "repeated_candidates_suppressed": 8
+      },
+      "out_of_sample": {
+        "stats": {
+          "status": "PAPER SIMULATION",
+          "trades": 1,
+          "wins": 0,
+          "losses": 1,
+          "win_rate": 0.0,
+          "average_r": -1.0,
+          "expectancy_r": -1.0,
+          "profit_factor": 0.0,
+          "max_drawdown": 1.0,
+          "max_consecutive_losses": 1,
+          "total_pips": -32.249,
+          "open_trades": 0,
+          "unresolved": 0,
+          "cancelled": 0,
+          "review_required": 0,
+          "reconstructed": 0,
+          "cost_status": "GROSS_OR_UNCONFIGURED"
+        },
+        "trades": [
           {
             "strategy_version": "SCALPING V3",
             "signal_id": "4618851e142e55ef",
@@ -1412,12 +1426,24 @@
             "exit_reason": "SL"
           }
         ],
-        "eligible_signals": 4,
-        "eligible_scan_candidates": 7,
-        "repeated_candidates_suppressed": 3
+        "eligible_signals": 1,
+        "gate_audit": {
+          "evaluated_scans": 1001,
+          "unhealthy_scans": 0,
+          "blocked_counts": {
+            "score": 995,
+            "setup": 535,
+            "m5_confirmation": 969,
+            "plan": 918,
+            "rr": 918
+          },
+          "counting": "Non-exclusive: one scan may fail several gates"
+        },
+        "eligible_scan_candidates": 2,
+        "repeated_candidates_suppressed": 1
       }
     },
-    "last_updated": "2026-10-24T01:00:22.065221+00:00",
+    "last_updated": "2026-10-26T02:31:17.606299+00:00",
     "news_mode": "HISTORICAL_PROVIDER_SCHEDULE_NOT_POINT_IN_TIME",
     "cost_model": {
       "status": "GROSS_ONLY_UNCONFIGURED",
@@ -1438,9 +1464,9 @@
     "news_source": {
       "source": "FinanceCalendar",
       "source_url": "https://www.financecalendar.com/",
-      "fetched_at": "2026-10-24T00:39:51.037206+00:00",
-      "coverage_start": "2026-10-06T00:00:00+00:00",
-      "coverage_end": "2026-10-25T00:00:00+00:00",
+      "fetched_at": "2026-10-26T02:15:53.110221+00:00",
+      "coverage_start": "2026-10-08T00:00:00+00:00",
+      "coverage_end": "2026-10-27T00:00:00+00:00",
       "events_count": 2
     },
     "execution_groups": {
@@ -1448,19 +1474,19 @@
         "model": "ZONE_WAIT_M5_OPEN_TP2_V3",
         "stats": {
           "status": "PAPER SIMULATION",
-          "trades": 2,
+          "trades": 4,
           "wins": 0,
-          "losses": 2,
+          "losses": 4,
           "win_rate": 0.0,
           "average_r": -1.0,
           "expectancy_r": -1.0,
           "profit_factor": 0.0,
-          "max_drawdown": 2.0,
-          "max_consecutive_losses": 2,
-          "total_pips": -97.705,
+          "max_drawdown": 4.0,
+          "max_consecutive_losses": 4,
+          "total_pips": -189.908,
           "open_trades": 0,
           "unresolved": 0,
-          "cancelled": 4,
+          "cancelled": 5,
           "review_required": 0,
           "reconstructed": 0,
           "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -1470,19 +1496,19 @@
         "model": "ZONE_WAIT_M5_OPEN_TP2_V3",
         "stats": {
           "status": "PAPER SIMULATION",
-          "trades": 3,
+          "trades": 1,
           "wins": 0,
-          "losses": 3,
+          "losses": 1,
           "win_rate": 0.0,
           "average_r": -1.0,
           "expectancy_r": -1.0,
           "profit_factor": 0.0,
-          "max_drawdown": 3.0,
-          "max_consecutive_losses": 3,
-          "total_pips": -124.452,
+          "max_drawdown": 1.0,
+          "max_consecutive_losses": 1,
+          "total_pips": -32.249,
           "open_trades": 0,
           "unresolved": 0,
-          "cancelled": 1,
+          "cancelled": 0,
           "review_required": 0,
           "reconstructed": 0,
           "cost_status": "GROSS_OR_UNCONFIGURED"
@@ -1492,7 +1518,7 @@
     "automation": {
       "requests": 1,
       "split_rule": "CHRONOLOGICAL_80_20",
-      "history_bars": 4999,
+      "history_bars": 5000,
       "news_fetch": {
         "status": "PROVIDER_SCHEDULE",
         "events": 2,
@@ -1507,16 +1533,16 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-10-26-03f844e660bc5a9d4201",
+    "id": "2026-10-26-0d1887a5bfb442fbd770",
     "file": "engine/learning/features/2026-10-26.json"
   },
   "data_health": {
     "status": "FRESH",
     "allowed": true,
-    "checked_at": "2026-10-26T02:31:03.098774+00:00",
-    "last_candle_open": "2026-10-26T02:25:00+00:00",
-    "last_candle_close": "2026-10-26T02:30:00+00:00",
-    "close_age_minutes": 1.05,
+    "checked_at": "2026-10-26T02:35:38.026406+00:00",
+    "last_candle_open": "2026-10-26T02:30:00+00:00",
+    "last_candle_close": "2026-10-26T02:35:00+00:00",
+    "close_age_minutes": 0.63,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Candle M5 lengkap dan terkini"
@@ -1650,9 +1676,9 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-10-26T10:31:02.969101+08:00",
+    "updated_at": "2026-10-26T10:35:37.876346+08:00",
     "day_myt": "2026-10-26",
-    "captured_today": 126,
+    "captured_today": 127,
     "candidates_today": 50,
     "rejected_today": 50,
     "linked_trades": 1,
@@ -1663,7 +1689,7 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-10-26-03f844e660bc5a9d4201",
+      "id": "2026-10-26-0d1887a5bfb442fbd770",
       "file": "engine/learning/features/2026-10-26.json"
     },
     "features_file": "engine/learning/features/2026-10-26.json",
@@ -4621,7 +4647,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-26T10:31:02.969101+08:00",
+    "last_updated": "2026-10-26T10:35:37.876346+08:00",
     "execution": "New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -4631,17 +4657,17 @@
     },
     "telegram": {
       "status": "WAIT",
-      "checked_at": "2026-10-26T10:31:02.969101+08:00",
+      "checked_at": "2026-10-26T10:35:37.876346+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "FRESH",
       "allowed": true,
-      "checked_at": "2026-10-26T02:31:03.098774+00:00",
-      "last_candle_open": "2026-10-26T02:25:00+00:00",
-      "last_candle_close": "2026-10-26T02:30:00+00:00",
-      "close_age_minutes": 1.05,
+      "checked_at": "2026-10-26T02:35:38.026406+00:00",
+      "last_candle_open": "2026-10-26T02:30:00+00:00",
+      "last_candle_close": "2026-10-26T02:35:00+00:00",
+      "close_age_minutes": 0.63,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Candle M5 lengkap dan terkini"
