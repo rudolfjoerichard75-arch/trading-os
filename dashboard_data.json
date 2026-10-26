@@ -4,11 +4,11 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-27T03:55:49.902039+08:00",
+    "timestamp": "2026-10-27T04:01:00.510885+08:00",
     "entry_mode": "INTRABAR",
-    "entry_logic_version": "V3_INTRABAR_SNAPSHOT_20261027"
+    "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027"
   },
-  "latest_price": 4013.7,
+  "latest_price": 4013.44,
   "session": "OFF SESSION",
   "market_mode": "RANGING",
   "regime": {
@@ -16,18 +16,18 @@
     "h1_direction": "RANGE",
     "range": {
       "is_range": true,
-      "efficiency": 0.0984,
-      "slope_ratio": 0.4515,
-      "atr_width": 3.9724,
+      "efficiency": 0.1933,
+      "slope_ratio": 0.4025,
+      "atr_width": 4.0914,
       "high": 4029.98307,
       "low": 3977.58455,
       "width": 52.39852000000019,
-      "location": 0.6636693173776648
+      "location": 0.6842275316173059
     }
   },
   "volatility": {
-    "atr": 2.13,
-    "atr_pips": 21.3,
+    "atr": 2.14,
+    "atr_pips": 21.4,
     "condition": "LOW"
   },
   "pd": {
@@ -50,7 +50,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-27T03:55:50.378511+08:00",
+      "checked_at": "2026-10-27T04:01:00.874676+08:00",
       "requested_from": "2026-10-26",
       "requested_to": "2026-10-29",
       "events_received": 6,
@@ -127,8 +127,13 @@
       "min_rr": 2.0,
       "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
       "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "entry_logic_version": "V3_INTRABAR_SNAPSHOT_20261027",
+      "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
       "entry_mode": "INTRABAR",
+      "strategy_focus": {
+        "enabled": true,
+        "opportunity": "SELL BREAKOUT RETEST",
+        "session": "OFF SESSION"
+      },
       "entry_wait_minutes": 30,
       "range_max_efficiency": 0.35,
       "range_max_slope_ratio": 0.5,
@@ -137,14 +142,14 @@
       "entry_zone_max_pips": 40
     },
     "entry_mode": "INTRABAR",
-    "observed_at": "2026-10-27T03:55:50.090464+08:00",
+    "observed_at": "2026-10-27T04:01:00.634596+08:00",
     "source_candle": null,
-    "learning_id": "2026-10-27-9ad60270869b4628168b",
+    "learning_id": "2026-10-27-ec85a2d3d2081d978d85",
     "id": null,
     "direction": null,
     "opportunity": "NO VALID SETUP",
     "score": 0,
-    "timestamp": "2026-10-27T03:55:49.902039+08:00",
+    "timestamp": "2026-10-27T04:01:00.510885+08:00",
     "delivery": {
       "allowed": false,
       "status": "DATA_BLOCKED",
@@ -163,7 +168,7 @@
   "h1": {
     "direction": "RANGE",
     "bos": null,
-    "swing_high": 4026.5754,
+    "swing_high": 4029.98307,
     "swing_low": 3988.67217,
     "condition": "RANGING"
   },
@@ -197,13 +202,13 @@
       },
       "range": {
         "is_range": true,
-        "efficiency": 0.2965,
-        "slope_ratio": 0.4111,
-        "atr_width": 4.7628,
+        "efficiency": 0.1968,
+        "slope_ratio": 0.378,
+        "atr_width": 4.8189,
         "high": 4029.98307,
         "low": 4008.6587,
         "width": 21.324370000000272,
-        "location": 0.19602642422729882
+        "location": 0.22407977351735067
       }
     }
   },
@@ -229,7 +234,8 @@
     "news": true,
     "session": false,
     "data": false,
-    "session_blocking": false
+    "strategy_focus": false,
+    "session_blocking": true
   },
   "confirmations": {
     "h1_bias": "RANGE",
@@ -259,7 +265,7 @@
   },
   "sop": {
     "news_filter": "PASS",
-    "session_filter": "NON-PREFERRED",
+    "session_filter": "PASS",
     "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "NO",
@@ -387,8 +393,13 @@
       "min_rr": 2.0,
       "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
       "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "entry_logic_version": "V3_INTRABAR_SNAPSHOT_20261027",
+      "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
       "entry_mode": "INTRABAR",
+      "strategy_focus": {
+        "enabled": true,
+        "opportunity": "SELL BREAKOUT RETEST",
+        "session": "OFF SESSION"
+      },
       "entry_wait_minutes": 30,
       "range_max_efficiency": 0.35,
       "range_max_slope_ratio": 0.5,
@@ -508,28 +519,38 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-10-27-9ad60270869b4628168b",
+    "id": "2026-10-27-ec85a2d3d2081d978d85",
     "file": "engine/learning/features/2026-10-27.json"
   },
   "data_health": {
     "status": "BLOCKED",
     "allowed": false,
-    "checked_at": "2026-10-26T19:55:50.090464+00:00",
-    "last_candle_open": "2026-10-26T19:50:00+00:00",
-    "last_candle_close": "2026-10-26T19:55:00+00:00",
-    "close_age_minutes": 0.83,
+    "checked_at": "2026-10-26T20:01:00.634596+00:00",
+    "last_candle_open": "2026-10-26T19:55:00+00:00",
+    "last_candle_close": "2026-10-26T20:00:00+00:00",
+    "close_age_minutes": 1.01,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
     "entry_mode": "INTRABAR",
-    "observed_at": "2026-10-26T19:55:50.090464+00:00",
+    "observed_at": "2026-10-26T20:01:00.634596+00:00",
     "current_candle_open": null,
     "current_candle_close": null,
     "quote_timestamp_verified": false
   },
+  "strategy_focus": {
+    "enabled": true,
+    "allowed": false,
+    "setup_allowed": false,
+    "session_allowed": true,
+    "opportunity": "SELL BREAKOUT RETEST",
+    "session": "OFF SESSION",
+    "hours_myt": "01:00–07:00 dan 23:00–00:00",
+    "reason": "Fokus hanya SELL BREAKOUT RETEST"
+  },
   "entry_timing": {
     "mode": "INTRABAR",
-    "observed_at": "2026-10-27T03:55:50.090464+08:00",
+    "observed_at": "2026-10-27T04:01:00.634596+08:00",
     "current_candle_close": null,
     "note": "Signal M5 intrabar pada snapshot scan; boleh berubah sebelum candle tutup. Bukan tick stream."
   },
@@ -539,7 +560,8 @@
     "m5_confirmation": "Menunggu arah setup M15",
     "risk": "Belum dikira: tiada arah setup",
     "rr": "Belum dikira: risk tidak lulus",
-    "data": "Snapshot candle M5 semasa belum tersedia daripada provider"
+    "data": "Snapshot candle M5 semasa belum tersedia daripada provider",
+    "strategy_focus": "Fokus hanya SELL BREAKOUT RETEST"
   },
   "diagnostics": {
     "limits": {
@@ -551,6 +573,7 @@
     "risk_distance_pips": null,
     "blocking_reasons": [
       "Snapshot candle M5 semasa belum tersedia daripada provider",
+      "Fokus hanya SELL BREAKOUT RETEST",
       "Tiada setup M15 V3 yang sah",
       "Skor 0/100 < minimum 70",
       "Menunggu arah setup M15",
@@ -664,9 +687,9 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-10-27T03:55:49.902039+08:00",
+    "updated_at": "2026-10-27T04:01:00.510885+08:00",
     "day_myt": "2026-10-27",
-    "captured_today": 47,
+    "captured_today": 48,
     "candidates_today": 0,
     "rejected_today": 0,
     "linked_trades": 1,
@@ -677,7 +700,7 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-10-27-9ad60270869b4628168b",
+      "id": "2026-10-27-ec85a2d3d2081d978d85",
       "file": "engine/learning/features/2026-10-27.json"
     },
     "features_file": "engine/learning/features/2026-10-27.json",
@@ -805,8 +828,13 @@
       "min_rr": 2.0,
       "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
       "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "entry_logic_version": "V3_INTRABAR_SNAPSHOT_20261027",
+      "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
       "entry_mode": "INTRABAR",
+      "strategy_focus": {
+        "enabled": true,
+        "opportunity": "SELL BREAKOUT RETEST",
+        "session": "OFF SESSION"
+      },
       "entry_wait_minutes": 30,
       "range_max_efficiency": 0.35,
       "range_max_slope_ratio": 0.5,
@@ -3529,8 +3557,13 @@
       "min_rr": 2.0,
       "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
       "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "entry_logic_version": "V3_INTRABAR_SNAPSHOT_20261027",
+      "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
       "entry_mode": "INTRABAR",
+      "strategy_focus": {
+        "enabled": true,
+        "opportunity": "SELL BREAKOUT RETEST",
+        "session": "OFF SESSION"
+      },
       "entry_wait_minutes": 30,
       "range_max_efficiency": 0.35,
       "range_max_slope_ratio": 0.5,
@@ -3637,7 +3670,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-27T03:55:49.902039+08:00",
+    "last_updated": "2026-10-27T04:01:00.510885+08:00",
     "execution": "New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.",
     "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
   },
@@ -3647,22 +3680,22 @@
     },
     "telegram": {
       "status": "DATA_BLOCKED",
-      "checked_at": "2026-10-27T03:55:49.902039+08:00",
+      "checked_at": "2026-10-27T04:01:00.510885+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "BLOCKED",
       "allowed": false,
-      "checked_at": "2026-10-26T19:55:50.090464+00:00",
-      "last_candle_open": "2026-10-26T19:50:00+00:00",
-      "last_candle_close": "2026-10-26T19:55:00+00:00",
-      "close_age_minutes": 0.83,
+      "checked_at": "2026-10-26T20:01:00.634596+00:00",
+      "last_candle_open": "2026-10-26T19:55:00+00:00",
+      "last_candle_close": "2026-10-26T20:00:00+00:00",
+      "close_age_minutes": 1.01,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
       "entry_mode": "INTRABAR",
-      "observed_at": "2026-10-26T19:55:50.090464+00:00",
+      "observed_at": "2026-10-26T20:01:00.634596+00:00",
       "current_candle_open": null,
       "current_candle_close": null,
       "quote_timestamp_verified": false
