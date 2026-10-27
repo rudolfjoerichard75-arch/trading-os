@@ -6,14 +6,26 @@
     "max_risk_pips": 80,
     "min_score": 70,
     "min_rr": 2.0,
-    "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+    "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
     "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-    "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
+    "entry_logic_version": "V3_MULTI_SETUP_INTRABAR_20261027",
     "entry_mode": "INTRABAR",
     "strategy_focus": {
-      "enabled": true,
-      "opportunity": "SELL BREAKOUT RETEST",
-      "session": "OFF SESSION"
+      "mode": "PREFERENCE",
+      "priority": "BREAKOUT RETEST",
+      "directions": [
+        "BUY",
+        "SELL"
+      ],
+      "sessions": "ALL"
+    },
+    "gap_rules": {
+      "timeframe": "M15",
+      "retest": "M5",
+      "max_age_minutes": 240,
+      "min_gap_pips": 1,
+      "min_body_ratio": 0.5,
+      "first_retest_only": true
     },
     "entry_wait_minutes": 30,
     "range_max_efficiency": 0.35,
@@ -24,5 +36,5 @@
   },
   "results": {},
   "reason": "Final M5 OHLC cannot reconstruct intrabar signals. Timestamped snapshots or ticks required.",
-  "last_updated": "2026-10-27T01:28:30.245868+00:00"
+  "last_updated": "2026-10-27T04:15:16.355999+00:00"
 }
