@@ -1,24 +1,46 @@
 # Bosque Forex AI — SCALPING V3
 
-## Focused signal profile — 27 October 2026
+## Multi-setup profile — 27 October 2026
 
-New alerts now require **SELL BREAKOUT RETEST + OFF SESSION**, in addition to
-all existing intrabar freshness, setup, confirmation, score, risk, RR and news
-gates. No other setup/direction/session sends a new entry alert. Existing trade
-plans, TP/SL monitoring and notifications continue unchanged. This is an allowlist
-on the current setup selector; it does not force a retest or lower score thresholds.
+`V3_MULTI_SETUP_INTRABAR_20261027` replaces the restrictive SELL/OFF SESSION
+allowlist. BUY and SELL are eligible in every session. Independent candidates
+are evaluated for Breakout Retest, FVG, IFVG, Range Reversal, Liquidity Sweep
+and Pullback. **Breakout Retest gets priority only among candidates passing all
+technical gates**; a failing retest cannot hide an eligible alternative. Other
+eligible candidates are ranked by their unchanged rule score. One selected
+entry alert per scan; news and data checks still apply globally. No score bonus
+or relaxed risk limit was added. The priority expresses owner preference, not
+an inferred probability of profit.
 
-OFF SESSION follows the engine's current MYT clock definition: **01:00 inclusive
-to 07:00 exclusive, and 23:00 inclusive to midnight exclusive**. It is a system
-label, not an exchange closure or a global session standard. The dashboard shows
-the focus and the reason a candidate is blocked. Version
-`V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027` separates new forward results from
-older and broader strategies. Historical rankings are not performance evidence
-for this newly filtered intrabar profile.
+FVG/IFVG use these explicit initial research rules (not optimized parameters):
+
+- Formation: three consecutive completed M15 candles. Bullish gap: candle 3 low
+  above candle 1 high; bearish: candle 3 high below candle 1 low. Minimum gap is
+  one engine pip (0.10 price); middle candle body follows the gap direction and
+  spans at least 50% of its range. Exclude incomplete formation and time gaps.
+- FVG: first subsequent M5 touch and observed rejection through the favorable
+  outer edge with matching candle direction. A previous completed M5 touch
+  retires the original phase. A wick through the far edge is not an inversion.
+- IFVG: a **completed M5 close** beyond the opposite outer edge first inverts
+  the zone. Only a later M5 first retest/rejection in the reversed direction is
+  eligible. The inversion candle cannot also be its retest. Close back through
+  the opposite edge invalidates the inverted phase.
+- Both: expire four hours after formation, require continuous M5 observations,
+  retain the newest qualifying zone per direction/family, and require the normal
+  stop to lie beyond the zone. Risk/score/RR/news limits remain unchanged.
+  M5 rejection can be intrabar and can change before close. No breakout condition
+  is needed for FVG or IFVG. Gap boundaries are evidence, not invented broker fills.
+
+`SETUP_DIRECTION_CYCLE_V2` keeps persistent deduplication per setup family;
+repeated snapshots do not create repeated alerts for the same cycle. Existing
+trade plans and TP/SL monitoring are unchanged. Dashboard shows evaluated
+candidates, selected setup and zone boundaries. Journal/CSV retain setup evidence;
+`strategy_performance` separates new-version paper results by opportunity.
+The former restricted profile is historical and does not gate new alerts.
 
 ## Current live entry mode — 27 October 2026
 
-`V3_INTRABAR_SNAPSHOT_20261027` evaluates the **observed, still-forming M5**
+The current multi-setup engine evaluates the **observed, still-forming M5**
 from the existing single Twelve Data request. It no longer waits for that M5
 bar to close. H1/M15 bias/setup aggregation still uses complete closed bars.
 The original score, risk, RR and news gates remain in force. A current M5

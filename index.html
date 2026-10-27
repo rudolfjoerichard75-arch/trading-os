@@ -159,6 +159,7 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
 ===================================================== -->
 
 <div id="strategyFocusNote" class="card" style="margin-bottom:12px" aria-live="polite">Fokus strategi: menunggu status engine.</div>
+<div id="setupCandidates" class="card" style="margin-bottom:12px">Calon setup: menunggu engine.</div>
 <div id="entryTimingNote" class="card" style="margin-bottom:16px" aria-live="polite">Mod entry: menunggu status engine.</div>
 
 <div class="dashboard">
@@ -689,6 +690,7 @@ a:focus-visible,summary:focus-visible{outline:2px solid #93b4ff;outline-offset:5
         <div class="row"><span>Hasil paper / Dengan kos tersedia</span><b id="learningLabels">--</b></div>
         <p id="learningNote">Pengumpulan data sahaja; belum ada model AI terlatih.</p>
         <p><a href="./engine/learning_summary.json">Learning summary JSON</a></p>
+        <div id="setupPerformance" style="margin-bottom:16px"></div>
         <div id="journalRecent"></div>
       </details>
     </div>
@@ -921,9 +923,13 @@ async function loadDashboard(){
 ========================================================= */
 
 function render(data){
-  setText("strategyFocusNote", data.strategy_focus?.enabled
-    ? "FOKUS: SELL BREAKOUT RETEST · OFF SESSION (01:00–07:00 dan 23:00–00:00 MYT). " + (data.strategy_focus.allowed ? "Setup/sesi lulus; syarat lain masih diperiksa." : data.strategy_focus.reason || "Menunggu setup/sesi fokus.")
+  setText("strategyFocusNote", data.strategy_focus?.mode === "PREFERENCE"
+    ? "UTAMA: BREAKOUT RETEST · FVG, IFVG, Pullback, Liquidity Sweep dan Range Reversal turut aktif. BUY/SELL · semua sesi. Keutamaan hanya antara setup yang lulus."
+    : data.strategy_focus?.enabled ? "FOKUS: SELL BREAKOUT RETEST · OFF SESSION. " + (data.strategy_focus.reason || "")
     : "Fokus strategi: mengikut konfigurasi engine semasa.");
+  setText("setupCandidates", (data.setup_candidates || []).length
+    ? data.setup_candidates.map(x => `${x.selected ? "DIPILIH · " : ""}${x.opportunity} · ${x.score}/100 · ${x.eligible ? "Syarat teknikal lulus" : x.reason || "Menunggu syarat teknikal"}${x.zone?.low != null ? " · Zon " + Number(x.zone.low).toFixed(2) + "–" + Number(x.zone.high).toFixed(2) : ""}`).join(" | ")
+    : "Calon setup: menunggu engine.");
   setText("entryTimingNote", data.engine?.entry_mode === "INTRABAR"
     ? "M5 INTRABAR · Signal berdasarkan snapshot semasa scan, tanpa tunggu candle tutup. Boleh berubah sebelum close; bukan tick stream. Journal masih simulasi open M5."
     : "Mod entry: candle M5 tutup.");
@@ -1488,6 +1494,16 @@ function render(data){
   setText("backtestDetails", [bt.news_mode, bt.cost_model?.status, bt.signal_policy, ...resultParts, ...(bt.limitations || []), bt.automation?.news_fetch?.reason, bt.reason].filter(Boolean).join(" • ") || "Awaiting V3 replay");
   const telegram=data.services?.telegram || {};
   setText("telegramStatus", `${telegram.status || "NOT VERIFIED"}${telegram.uncertain_deliveries?.length ? ` • ${telegram.uncertain_deliveries.length} penghantaran belum disahkan` : ""}`);
+  const bySetup = document.getElementById("setupPerformance");
+  if(bySetup){
+    bySetup.replaceChildren();
+    const title=document.createElement("div");title.textContent="Prestasi setup · versi semasa · simulasi";bySetup.appendChild(title);
+    for(const [name,value] of Object.entries(data.strategy_performance || {})){
+      const row=document.createElement("div");row.className="row";
+      row.textContent=`${name}: ${value.trades || 0} selesai · ${value.open_trades || 0} pending/open · ${value.trades ? Number(value.total_pips || 0).toFixed(1)+" pips ("+(value.cost_status || "kos belum disahkan")+")" : "Belum ada hasil"}`;
+      bySetup.appendChild(row);
+    }
+  }
   const recent = document.getElementById("journalRecent");
   if(recent){
     recent.replaceChildren();

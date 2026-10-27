@@ -55,7 +55,7 @@ def capture(directory, payload, frame, captured_at):
     # Receipt/outcome fields are never accepted into the feature payload.
     allowed = ('direction','opportunity','score','session','h1','m15','m5',
                'confirmation','pd','liquidity','range','volatility','news',
-               'gates','plan','data_health','entry_timing')
+               'gates','plan','data_health','entry_timing','setup_evidence')
     features = {key: snapshot.get(key) for key in allowed}
     features['last_m5'] = clean_for_json(df.iloc[-1].to_dict())
     features['entry_window'] = entry_window({**(features['plan'] or {}),

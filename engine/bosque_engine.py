@@ -56,9 +56,9 @@ OUTPUT_SIZE = 500
 # RISK / SCORING
 # =========================================================
 
-CLOSED_ENTRY_LOGIC_VERSION = "V3_SELL_RETEST_OFF_SESSION_CLOSED_RESEARCH_20261027"
-ENTRY_LOGIC_VERSION = "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027"
-FOCUS_ENABLED = True
+CLOSED_ENTRY_LOGIC_VERSION = "V3_MULTI_SETUP_CLOSED_RESEARCH_20261027"
+ENTRY_LOGIC_VERSION = "V3_MULTI_SETUP_INTRABAR_20261027"
+FOCUS_ENABLED = False
 ENTRY_MODE = "INTRABAR"
 RANGE_MAX_EFFICIENCY = 0.35
 RANGE_MAX_SLOPE_RATIO = 0.50
@@ -1667,18 +1667,11 @@ def format_telegram(
 # =========================================================
 
 def strategy_focus(direction, opportunity, session):
-    """Explicit allowlist for new alerts; never changes existing journal trades."""
-    setup_ok = direction == "SELL" and opportunity == "SELL BREAKOUT RETEST"
-    session_ok = session == "OFF SESSION"
-    allowed = not FOCUS_ENABLED or (setup_ok and session_ok)
-    reasons = []
-    if FOCUS_ENABLED and not setup_ok: reasons.append("Fokus hanya SELL BREAKOUT RETEST")
-    if FOCUS_ENABLED and not session_ok: reasons.append("Fokus hanya OFF SESSION")
-    return {"enabled":FOCUS_ENABLED,"allowed":allowed,
-            "setup_allowed":setup_ok,"session_allowed":session_ok,
-            "opportunity":"SELL BREAKOUT RETEST","session":"OFF SESSION",
-            "hours_myt":"01:00–07:00 dan 23:00–00:00",
-            "reason":"; ".join(reasons) or "Setup dan sesi fokus lulus"}
+    """Retest is a selection preference; other setups and sessions remain eligible."""
+    return {"enabled":False,"allowed":True,"mode":"PREFERENCE",
+            "priority":"BREAKOUT RETEST","directions":["BUY","SELL"],
+            "sessions":"ALL","session_allowed":True,"setup_allowed":True,
+            "reason":"Breakout Retest diutamakan antara setup yang lulus; setup lain aktif"}
 
 
 def main():
@@ -1798,43 +1791,12 @@ def main():
     # M15 SETUP
     # =====================================================
 
-    setup = detect_m15_setup(
-        h1_structure,
-        m15,
-        m5
-    )
-
-    # =====================================================
-    # M5 CONFIRMATION
-    # =====================================================
-
-    m5_confirm = m5_confirmation(
-        m5,
-        setup["direction"]
-    )
-
-    # =====================================================
-    # SCORE
-    # =====================================================
-
-    score = calculate_score(
-        h1_structure,
-        setup,
-        m5_confirm,
-        session,
-        volatility
-    )
-
-    # =====================================================
-    # TRADE PLAN
-    # =====================================================
-
-    plan = create_trade_plan(
-        setup["direction"],
-        m5,
-        score,
-        volatility
-    )
+    from bosque_setups import select as select_setup
+    selection = select_setup(h1_structure, m15, m5, session, volatility)
+    setup = selection['setup']
+    m5_confirm = selection['confirmation']
+    score = selection['score']
+    plan = selection['plan']
 
     # =====================================================
     # HARD GATES
@@ -1907,7 +1869,7 @@ def main():
         'm15':m15_structure, 'm5':m5_structure, 'confirmation':m5_confirm,
         'pd':pd_data, 'liquidity':liquidity, 'range':setup.get('range'),
         'volatility':volatility, 'news':news, 'plan':plan,
-        'data_health':data_health, 'entry_timing':{'mode':ENTRY_MODE, 'observed_at':observed_at.isoformat()},
+        'setup_evidence':setup.get('zone'), 'data_health':data_health, 'entry_timing':{'mode':ENTRY_MODE, 'observed_at':observed_at.isoformat()},
         'gates':{'setup':setup_ok,'score':score_ok,'m5_confirmation':m5_ok,
                  'risk':risk_ok,'rr':rr_ok,'news':news_ok,'data':data_health['allowed'],'strategy_focus':focus['allowed']}
     }, m5, observed_at)
@@ -1923,6 +1885,7 @@ def main():
         "entry_mode": ENTRY_MODE,
         "observed_at": observed_at.isoformat(),
         "source_candle": data_health.get("current_candle_open"),
+        "setup_evidence": setup.get("zone"),
         "learning_id": learning_capture.get("id"),
         "id": None,
         "direction":
@@ -1934,12 +1897,12 @@ def main():
             timestamp.isoformat()
     }
 
-    from bosque_signals import select_alert, mark_delivered
+    from bosque_signals import select_candidate_alerts, mark_delivered
     sent = None
     state = load_state()
     if data_health['allowed']:
-        delivery = select_alert(state, setup_ok, setup["direction"], valid_signal,
-                                m5.iloc[-1]["datetime"])
+        delivery = select_candidate_alerts(state, selection["candidates"], setup["opportunity"],
+                                           valid_signal, m5.iloc[-1]["datetime"])
     else:
         delivery = {'allowed':False, 'status':'DATA_BLOCKED', 'id':None,
                     'reason':data_health['reason']}
@@ -1961,6 +1924,9 @@ def main():
         if delivery["allowed"]:
             message = format_telegram(setup["direction"], setup["opportunity"],
                 score, plan, session, pd_data, volatility)
+            zone = setup.get('zone') or {}
+            if zone.get('kind') in ('FVG','IFVG'):
+                message += f"\nZon {zone['kind']} M15: {zone['low']:.2f}–{zone['high']:.2f}"
             receipt = send_telegram(message + '\nSignal ID: ' + delivery['id'])
             if isinstance(receipt, bool):
                 receipt = {'status':'SENT' if receipt else 'FAILED'}
@@ -2329,6 +2295,10 @@ def main():
     dashboard['data_health'] = data_health
     dashboard['filters']['data'] = data_health['allowed']
     dashboard['strategy_focus'] = focus
+    dashboard['setup_candidates'] = [{
+        'opportunity':x['setup']['opportunity'],'direction':x['setup']['direction'],
+        'score':x['score'],'eligible':x['eligible'],'selected':x['setup']['opportunity']==setup['opportunity'],
+        'reason':x['plan'].get('reason'),'blocked_by':x.get('blocked_by',[]),'zone':x['setup'].get('zone')} for x in selection['candidates']]
     dashboard['filters']['strategy_focus'] = focus['allowed']
     dashboard["engine"]["entry_mode"] = ENTRY_MODE
     dashboard["entry_timing"] = {"mode":ENTRY_MODE, "observed_at":observed_at.isoformat(),

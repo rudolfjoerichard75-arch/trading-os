@@ -94,6 +94,13 @@ function render(data){c.payload=data;vm.runInContext('render(payload)',c)}
   focused.filters.strategy_focus=false;render(focused);
   assert.match(el('strategyFocusNote').innerText,/SELL BREAKOUT RETEST/);
   assert.match(el('finalSignal').innerText,/OFF SESSION/);
+  const multi=payload();multi.strategy_focus={mode:'PREFERENCE',enabled:false};
+  multi.setup_candidates=[{opportunity:'BUY FVG',score:80,eligible:true,selected:true,zone:{low:100,high:102}}];
+  multi.strategy_performance={'BUY FVG':{trades:0,open_trades:1}};
+  render(multi);
+  assert.match(el('strategyFocusNote').innerText,/semua sesi/);
+  assert.match(el('setupCandidates').innerText,/DIPILIH.*BUY FVG.*100.00–102.00/);
+  assert.match(el('setupPerformance').innerText,/BUY FVG: 0 selesai.*1 pending\/open.*Belum ada hasil/);
   c.fetch=async()=>{throw new Error('offline')};
   await vm.runInContext('runDashboard()',c);assert.match(el('finalSignal').innerText,/^WAIT \(Data engine gagal dimuat/);
   for(const id of ['validSetup','scoreGate','m5Gate','riskGate','rrGate'])assert.equal(el(id).innerText,'WAIT (Data engine gagal dimuat)');

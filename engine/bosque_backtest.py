@@ -51,7 +51,7 @@ def replay(frame,cost=None,calendar=None,start=None,end=None,alert_delay_seconds
         if start is not None and at<start: continue
         p=ev['plan'];count+=1
         alert_at=at+pd.Timedelta(seconds=alert_delay_seconds)
-        params={**t.configuration(),'entry_logic_version':e.CLOSED_ENTRY_LOGIC_VERSION,'entry_mode':'CLOSED_CANDLE'}
+        params={**t.configuration(),'entry_logic_version':e.CLOSED_ENTRY_LOGIC_VERSION,'entry_mode':'CLOSED_CANDLE','signal_policy':POLICY}
         item=t.new_trade({**ev,'id':delivery['id'],'policy':POLICY,'parameters':params},p,alert_at,cost)
         item['decision_at']=at.isoformat()
         observe(item,df.iloc[0:0],reconstructed=True)

@@ -36,11 +36,12 @@ def evaluate(df, at, news_ok=True):
     if len(df)<100: return {'active':False, 'blocked_by':['warmup']}
     m15=e.aggregate(df,15); h1=e.aggregate(df,60)
     if len(m15)<50 or len(h1)<30: return {'active':False, 'blocked_by':['warmup']}
-    hs=e.analyze_structure(h1); setup=e.detect_m15_setup(hs,m15,df)
-    conf=e.m5_confirmation(df,setup['direction']); vol=e.volatility_analysis(df)
+    hs=e.analyze_structure(h1)
+    vol=e.volatility_analysis(df)
     session=e.get_session(stamp(at).to_pydatetime().astimezone(e.MY_TZ))
-    score=e.calculate_score(hs,setup,conf,session,vol)
-    plan=e.create_trade_plan(setup['direction'],df,score,vol)
+    from bosque_setups import select
+    selection=select(hs,m15,df,session,vol)
+    setup=selection['setup'];conf=selection['confirmation'];score=selection['score'];plan=selection['plan']
     gates={'score':score>=e.MIN_SCORE,'setup':bool(setup['valid']),
            'm5_confirmation':bool(conf['confirmed']),'plan':bool(plan.get('valid',False)),
            'rr':plan.get('rr_tp2',0)>=e.MIN_RR,'news':bool(news_ok),
@@ -61,6 +62,7 @@ def new_trade(sig, plan, at, costs=None):
     params=dict(sig.get('parameters') or configuration())
     return {'strategy_version':VERSION,'signal_id':sig['id'],'learning_id':sig.get('learning_id'),'timestamp':stamp(at).isoformat(),
         'direction':sig['direction'],'opportunity':sig.get('opportunity'),'score':sig.get('score'),
+        'setup_evidence':sig.get('setup_evidence'),
         'session':sig.get('session'),'planned_entry':plan['entry'],'entry':None,'sl':plan['sl'],
         'tp1':plan['tp1'],'tp2':plan['tp2'],'tp3':plan['tp3'],'result':'PENDING','bars_held':0,
         'cost_pips':costs,'cost_status':'GROSS_ONLY_UNCONFIGURED' if costs is None else 'CONFIGURED',
@@ -234,13 +236,14 @@ def add_diagnostics(dashboard):
 
 def configuration():
     import bosque_engine as e
-    from bosque_signals import POLICY
+    from bosque_signals import MULTI_POLICY as POLICY
     from bosque_execution import ENTRY_ZONE_POLICY, ENTRY_ZONE_MAX_PIPS
     return {'min_risk_pips':e.MIN_RISK_PIPS,'max_risk_pips':e.MAX_RISK_PIPS,
             'min_score':e.MIN_SCORE,'min_rr':e.MIN_RR,'signal_policy':POLICY,
             'execution_model':ZONE_MODEL,'entry_logic_version':e.ENTRY_LOGIC_VERSION,
             'entry_mode':e.ENTRY_MODE,
-            'strategy_focus':{'enabled':e.FOCUS_ENABLED,'opportunity':'SELL BREAKOUT RETEST','session':'OFF SESSION'},
+            'strategy_focus':{'mode':'PREFERENCE','priority':'BREAKOUT RETEST','directions':['BUY','SELL'],'sessions':'ALL'},
+            'gap_rules':{'timeframe':'M15','retest':'M5','max_age_minutes':240,'min_gap_pips':1,'min_body_ratio':0.5,'first_retest_only':True},
             'entry_wait_minutes':ENTRY_WAIT_MINUTES,
             'range_max_efficiency':e.RANGE_MAX_EFFICIENCY,
             'range_max_slope_ratio':e.RANGE_MAX_SLOPE_RATIO,
@@ -316,9 +319,12 @@ def sync(dashboard, frame, sent=None):
     summary['execution_groups']=groups
     summary.update(version_performance(current))
     summary['historical_fill_exceptions']=sum(x.get('fill_audit',{}).get('status')=='OUTSIDE_LIMITS' and not x.get('fill_audit',{}).get('enforced') for x in current)
-    forward={**summary,'version':VERSION,'last_updated':at,'execution':'New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.', 'signal_policy':'DIRECTION_SETUP_CYCLE_V1'}
+    forward={**summary,'version':VERSION,'last_updated':at,'execution':'New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.', 'signal_policy':'SETUP_DIRECTION_CYCLE_V2'}
     save(directory/'forward_test.json',forward)
     dashboard['journal']={**summary,'status':'ACTIVE','file':'engine/trade_journal.json','recorded_signals':len(current)}
+    from bosque_setups import FAMILIES
+    dashboard['strategy_performance']={name:stats([x for x in current if x.get('opportunity')==name and (x.get('parameters') or {}).get('entry_logic_version')==e.ENTRY_LOGIC_VERSION])
+        for name in [side+' '+family for family in FAMILIES for side in ('BUY','SELL')]}
     dashboard['journal_recent']=current[-30:][::-1]; dashboard['signal_audit']=signal_summary(current); dashboard['recorded_signal']=current[-1] if current else None; dashboard['forward_test']=forward; dashboard['expectancy']=summary
     bt=load(directory/'backtest_results.json')
     if bt.get('version')==VERSION and bt.get('status','').startswith('COMPLETED') and bt.get('parameters')!=configuration():
@@ -352,13 +358,13 @@ def sync(dashboard, frame, sent=None):
     observations=load(archive,{'version':VERSION,'observations':[]})
     if not observations['observations'] or observations['observations'][-1]['news']!=news:
         observations['observations'].append({'observed_at':at,'news':news});save(archive,observations)
-    fields=['signal_id','timestamp','direction','opportunity','score','entry','planned_entry','sl','tp1','tp2','tp3','result','result_pips','result_r','closed_at','exit_reason','cost_status','telegram_status','next_open','execution_checked_at','signal_policy','signal_path','execution_audit','parameters','review_status','review_reason','historical_replay','original_execution','timezone_repair','performance_group','execution_model','fill_audit','entry_deadline','entry_wait_bars','wick_zone_touch_observed','filled_at']
+    fields=['signal_id','timestamp','direction','opportunity','setup_evidence','score','entry','planned_entry','sl','tp1','tp2','tp3','result','result_pips','result_r','closed_at','exit_reason','cost_status','telegram_status','next_open','execution_checked_at','signal_policy','signal_path','execution_audit','parameters','review_status','review_reason','historical_replay','original_execution','timezone_repair','performance_group','execution_model','fill_audit','entry_deadline','entry_wait_bars','wick_zone_touch_observed','filled_at']
     target=e.REPO_DIR/'paper_journal.csv';tmp=target.with_suffix('.tmp')
     with tmp.open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');writer.writeheader()
         for item in journal['trades']:
             record=dict(item)
-            for key in ['signal_path','execution_audit','parameters','historical_replay','original_execution','timezone_repair','fill_audit']:
+            for key in ['setup_evidence','signal_path','execution_audit','parameters','historical_replay','original_execution','timezone_repair','fill_audit']:
                 if key in record: record[key]=json.dumps(record[key],ensure_ascii=False,allow_nan=False)
             writer.writerow(record)
     tmp.replace(target)
