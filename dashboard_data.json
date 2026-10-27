@@ -4,11 +4,11 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-27T12:10:58.329095+08:00",
+    "timestamp": "2026-10-27T12:15:43.842402+08:00",
     "entry_mode": "INTRABAR",
-    "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027"
+    "entry_logic_version": "V3_MULTI_SETUP_INTRABAR_20261027"
   },
-  "latest_price": 4022.42,
+  "latest_price": 4022.05,
   "session": "ASIAN",
   "market_mode": "TRENDING",
   "regime": {
@@ -26,21 +26,21 @@
     }
   },
   "volatility": {
-    "atr": 3.56,
-    "atr_pips": 35.6,
+    "atr": 3.49,
+    "atr_pips": 34.9,
     "condition": "NORMAL"
   },
   "pd": {
     "zone": "PREMIUM",
-    "equilibrium": 4012.53,
-    "high": 4021.31,
+    "equilibrium": 4013.3,
+    "high": 4022.85,
     "low": 4003.76
   },
   "liquidity": {
-    "buy_side_sweep": true,
+    "buy_side_sweep": false,
     "sell_side_sweep": false,
-    "swept_level": 4018.32356,
-    "description": "BUY-SIDE LIQUIDITY SWEPT",
+    "swept_level": null,
+    "description": "NONE",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -50,7 +50,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-27T12:10:59.039475+08:00",
+      "checked_at": "2026-10-27T12:15:44.148646+08:00",
       "requested_from": "2026-10-26",
       "requested_to": "2026-10-29",
       "events_received": 6,
@@ -113,10 +113,10 @@
     "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
   },
   "opportunity": {
-    "type": "SELL LIQUIDITY SWEEP",
+    "type": "SELL PULLBACK",
     "direction": "SELL",
     "valid": true,
-    "score": 45
+    "score": 35
   },
   "signal": {
     "active": false,
@@ -125,14 +125,26 @@
       "max_risk_pips": 80,
       "min_score": 70,
       "min_rr": 2.0,
-      "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+      "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
       "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
+      "entry_logic_version": "V3_MULTI_SETUP_INTRABAR_20261027",
       "entry_mode": "INTRABAR",
       "strategy_focus": {
-        "enabled": true,
-        "opportunity": "SELL BREAKOUT RETEST",
-        "session": "OFF SESSION"
+        "mode": "PREFERENCE",
+        "priority": "BREAKOUT RETEST",
+        "directions": [
+          "BUY",
+          "SELL"
+        ],
+        "sessions": "ALL"
+      },
+      "gap_rules": {
+        "timeframe": "M15",
+        "retest": "M5",
+        "max_age_minutes": 240,
+        "min_gap_pips": 1,
+        "min_body_ratio": 0.5,
+        "first_retest_only": true
       },
       "entry_wait_minutes": 30,
       "range_max_efficiency": 0.35,
@@ -142,14 +154,15 @@
       "entry_zone_max_pips": 40
     },
     "entry_mode": "INTRABAR",
-    "observed_at": "2026-10-27T12:10:58.595120+08:00",
+    "observed_at": "2026-10-27T12:15:43.987079+08:00",
     "source_candle": null,
-    "learning_id": "2026-10-27-d78879546b8d2f350d7f",
+    "setup_evidence": null,
+    "learning_id": "2026-10-27-7228342e9ed7749af71b",
     "id": null,
     "direction": "SELL",
-    "opportunity": "SELL LIQUIDITY SWEEP",
-    "score": 45,
-    "timestamp": "2026-10-27T12:10:58.329095+08:00",
+    "opportunity": "SELL PULLBACK",
+    "score": 35,
+    "timestamp": "2026-10-27T12:15:43.842402+08:00",
     "delivery": {
       "allowed": false,
       "status": "DATA_BLOCKED",
@@ -159,7 +172,7 @@
   },
   "plan": {
     "valid": false,
-    "reason": "Risk 4.0 pips outside 20-80"
+    "reason": "Risk 0.4 pips outside 20-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -175,44 +188,44 @@
   },
   "m15": {
     "direction": "BEARISH",
-    "bos": null,
+    "bos": "BULLISH BOS",
     "swing_high": 4018.32356,
     "swing_low": 4005.60785,
     "setup": {
-      "direction": "SELL",
-      "opportunity": "SELL LIQUIDITY SWEEP",
-      "valid": true,
-      "reason": [
-        "M15 buy-side liquidity sweep"
-      ],
       "pd": {
         "zone": "PREMIUM",
-        "equilibrium": 4012.53,
-        "high": 4021.31,
+        "equilibrium": 4013.3,
+        "high": 4022.85,
         "low": 4003.76
       },
       "liquidity": {
-        "buy_side_sweep": true,
+        "buy_side_sweep": false,
         "sell_side_sweep": false,
-        "swept_level": 4018.32356,
-        "description": "BUY-SIDE LIQUIDITY SWEPT"
+        "swept_level": null,
+        "description": "NONE"
       },
       "structure": {
         "direction": "BEARISH",
-        "bos": null,
+        "bos": "BULLISH BOS",
         "swing_high": 4018.32356,
         "swing_low": 4005.60785
       },
       "range": {
         "is_range": true,
-        "efficiency": 0.0687,
-        "slope_ratio": 0.1235,
-        "atr_width": 2.3948,
-        "high": 4021.31009,
+        "efficiency": 0.1007,
+        "slope_ratio": 0.2151,
+        "atr_width": 2.605,
+        "high": 4022.84979,
         "low": 4003.75719,
-        "width": 17.552900000000136,
-        "location": 0.7338747443442516
-      }
+        "width": 19.092600000000402,
+        "location": 0.9581979405633512
+      },
+      "direction": "SELL",
+      "opportunity": "SELL PULLBACK",
+      "valid": true,
+      "reason": [
+        "H1 direction + M15 premium/discount"
+      ]
     }
   },
   "m5": {
@@ -224,7 +237,7 @@
       "confirmed": false,
       "bos": "BULLISH BOS",
       "candle": false,
-      "momentum": "BULLISH",
+      "momentum": "NEUTRAL",
       "reason": "NO CONFIRMATION"
     }
   },
@@ -237,14 +250,14 @@
     "news": true,
     "session": false,
     "data": false,
-    "strategy_focus": false,
-    "session_blocking": true
+    "strategy_focus": true,
+    "session_blocking": false
   },
   "confirmations": {
     "h1_bias": "BEARISH",
-    "m15_setup": "SELL LIQUIDITY SWEEP",
+    "m15_setup": "SELL PULLBACK",
     "m5_confirmation": "NO CONFIRMATION",
-    "liquidity": "BUY-SIDE LIQUIDITY SWEPT",
+    "liquidity": "NONE",
     "pd_zone": "PREMIUM"
   },
   "risk_engine": {
@@ -268,7 +281,7 @@
   },
   "sop": {
     "news_filter": "PASS",
-    "session_filter": "BLOCK",
+    "session_filter": "NON-PREFERRED",
     "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
@@ -394,14 +407,26 @@
       "max_risk_pips": 80,
       "min_score": 70,
       "min_rr": 2.0,
-      "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+      "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
       "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
+      "entry_logic_version": "V3_MULTI_SETUP_INTRABAR_20261027",
       "entry_mode": "INTRABAR",
       "strategy_focus": {
-        "enabled": true,
-        "opportunity": "SELL BREAKOUT RETEST",
-        "session": "OFF SESSION"
+        "mode": "PREFERENCE",
+        "priority": "BREAKOUT RETEST",
+        "directions": [
+          "BUY",
+          "SELL"
+        ],
+        "sessions": "ALL"
+      },
+      "gap_rules": {
+        "timeframe": "M15",
+        "retest": "M5",
+        "max_age_minutes": 240,
+        "min_gap_pips": 1,
+        "min_body_ratio": 0.5,
+        "first_retest_only": true
       },
       "entry_wait_minutes": 30,
       "range_max_efficiency": 0.35,
@@ -522,48 +547,68 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-10-27-d78879546b8d2f350d7f",
+    "id": "2026-10-27-7228342e9ed7749af71b",
     "file": "engine/learning/features/2026-10-27.json"
   },
   "data_health": {
     "status": "BLOCKED",
     "allowed": false,
-    "checked_at": "2026-10-27T04:10:58.595120+00:00",
-    "last_candle_open": "2026-10-27T04:05:00+00:00",
-    "last_candle_close": "2026-10-27T04:10:00+00:00",
-    "close_age_minutes": 0.98,
+    "checked_at": "2026-10-27T04:15:43.987079+00:00",
+    "last_candle_open": "2026-10-27T04:10:00+00:00",
+    "last_candle_close": "2026-10-27T04:15:00+00:00",
+    "close_age_minutes": 0.73,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
     "entry_mode": "INTRABAR",
-    "observed_at": "2026-10-27T04:10:58.595120+00:00",
+    "observed_at": "2026-10-27T04:15:43.987079+00:00",
     "current_candle_open": null,
     "current_candle_close": null,
     "quote_timestamp_verified": false
   },
   "strategy_focus": {
-    "enabled": true,
-    "allowed": false,
-    "setup_allowed": false,
-    "session_allowed": false,
-    "opportunity": "SELL BREAKOUT RETEST",
-    "session": "OFF SESSION",
-    "hours_myt": "01:00–07:00 dan 23:00–00:00",
-    "reason": "Fokus hanya SELL BREAKOUT RETEST; Fokus hanya OFF SESSION"
+    "enabled": false,
+    "allowed": true,
+    "mode": "PREFERENCE",
+    "priority": "BREAKOUT RETEST",
+    "directions": [
+      "BUY",
+      "SELL"
+    ],
+    "sessions": "ALL",
+    "session_allowed": true,
+    "setup_allowed": true,
+    "reason": "Breakout Retest diutamakan antara setup yang lulus; setup lain aktif"
   },
+  "setup_candidates": [
+    {
+      "opportunity": "SELL PULLBACK",
+      "direction": "SELL",
+      "score": 35,
+      "eligible": false,
+      "selected": true,
+      "reason": "Risk 0.4 pips outside 20-80",
+      "blocked_by": [
+        "m5_confirmation",
+        "score",
+        "risk",
+        "rr"
+      ],
+      "zone": null
+    }
+  ],
   "entry_timing": {
     "mode": "INTRABAR",
-    "observed_at": "2026-10-27T12:10:58.595120+08:00",
+    "observed_at": "2026-10-27T12:15:43.987079+08:00",
     "current_candle_close": null,
     "note": "Signal M5 intrabar pada snapshot scan; boleh berubah sebelum candle tutup. Bukan tick stream."
   },
   "gate_reasons": {
-    "score": "Skor 45/100 < minimum 70",
+    "score": "Skor 35/100 < minimum 70",
     "m5_confirmation": "BOS atau candle + momentum SELL belum sah",
-    "risk": "SL 4.0 pips bawah minimum 20 pips",
+    "risk": "SL 0.4 pips bawah minimum 20 pips",
     "rr": "Belum dikira: risk tidak lulus",
-    "data": "Snapshot candle M5 semasa belum tersedia daripada provider",
-    "strategy_focus": "Fokus hanya SELL BREAKOUT RETEST; Fokus hanya OFF SESSION"
+    "data": "Snapshot candle M5 semasa belum tersedia daripada provider"
   },
   "diagnostics": {
     "limits": {
@@ -572,13 +617,12 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 4.0,
+    "risk_distance_pips": 0.4,
     "blocking_reasons": [
       "Snapshot candle M5 semasa belum tersedia daripada provider",
-      "Fokus hanya SELL BREAKOUT RETEST; Fokus hanya OFF SESSION",
-      "Skor 45/100 < minimum 70",
+      "Skor 35/100 < minimum 70",
       "BOS atau candle + momentum SELL belum sah",
-      "SL 4.0 pips bawah minimum 20 pips",
+      "SL 0.4 pips bawah minimum 20 pips",
       "Belum dikira: risk tidak lulus"
     ]
   },
@@ -688,11 +732,11 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-10-27T12:10:58.329095+08:00",
+    "updated_at": "2026-10-27T12:15:43.842402+08:00",
     "day_myt": "2026-10-27",
-    "captured_today": 146,
-    "candidates_today": 48,
-    "rejected_today": 48,
+    "captured_today": 147,
+    "candidates_today": 49,
+    "rejected_today": 49,
     "linked_trades": 1,
     "closed_paper": 1,
     "gross_research_rows": 1,
@@ -701,7 +745,7 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-10-27-d78879546b8d2f350d7f",
+      "id": "2026-10-27-7228342e9ed7749af71b",
       "file": "engine/learning/features/2026-10-27.json"
     },
     "features_file": "engine/learning/features/2026-10-27.json",
@@ -827,14 +871,26 @@
       "max_risk_pips": 80,
       "min_score": 70,
       "min_rr": 2.0,
-      "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+      "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
       "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
+      "entry_logic_version": "V3_MULTI_SETUP_INTRABAR_20261027",
       "entry_mode": "INTRABAR",
       "strategy_focus": {
-        "enabled": true,
-        "opportunity": "SELL BREAKOUT RETEST",
-        "session": "OFF SESSION"
+        "mode": "PREFERENCE",
+        "priority": "BREAKOUT RETEST",
+        "directions": [
+          "BUY",
+          "SELL"
+        ],
+        "sessions": "ALL"
+      },
+      "gap_rules": {
+        "timeframe": "M15",
+        "retest": "M5",
+        "max_age_minutes": 240,
+        "min_gap_pips": 1,
+        "min_body_ratio": 0.5,
+        "first_retest_only": true
       },
       "entry_wait_minutes": 30,
       "range_max_efficiency": 0.35,
@@ -943,6 +999,236 @@
     "historical_fill_exceptions": 6,
     "file": "engine/trade_journal.json",
     "recorded_signals": 21
+  },
+  "strategy_performance": {
+    "BUY BREAKOUT RETEST": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "SELL BREAKOUT RETEST": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "BUY FVG": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "SELL FVG": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "BUY IFVG": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "SELL IFVG": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "BUY RANGE REVERSAL": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "SELL RANGE REVERSAL": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "BUY LIQUIDITY SWEEP": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "SELL LIQUIDITY SWEEP": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "BUY PULLBACK": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    },
+    "SELL PULLBACK": {
+      "status": "PAPER SIMULATION",
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "average_r": null,
+      "expectancy_r": null,
+      "profit_factor": null,
+      "max_drawdown": 0.0,
+      "max_consecutive_losses": 0,
+      "total_pips": 0,
+      "open_trades": 0,
+      "unresolved": 0,
+      "cancelled": 0,
+      "review_required": 0,
+      "reconstructed": 0,
+      "cost_status": "GROSS_OR_UNCONFIGURED"
+    }
   },
   "journal_recent": [
     {
@@ -3556,14 +3842,26 @@
       "max_risk_pips": 80,
       "min_score": 70,
       "min_rr": 2.0,
-      "signal_policy": "DIRECTION_SETUP_CYCLE_V1",
+      "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
       "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
-      "entry_logic_version": "V3_SELL_RETEST_OFF_SESSION_INTRABAR_20261027",
+      "entry_logic_version": "V3_MULTI_SETUP_INTRABAR_20261027",
       "entry_mode": "INTRABAR",
       "strategy_focus": {
-        "enabled": true,
-        "opportunity": "SELL BREAKOUT RETEST",
-        "session": "OFF SESSION"
+        "mode": "PREFERENCE",
+        "priority": "BREAKOUT RETEST",
+        "directions": [
+          "BUY",
+          "SELL"
+        ],
+        "sessions": "ALL"
+      },
+      "gap_rules": {
+        "timeframe": "M15",
+        "retest": "M5",
+        "max_age_minutes": 240,
+        "min_gap_pips": 1,
+        "min_body_ratio": 0.5,
+        "first_retest_only": true
       },
       "entry_wait_minutes": 30,
       "range_max_efficiency": 0.35,
@@ -3671,9 +3969,9 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-27T12:10:58.329095+08:00",
+    "last_updated": "2026-10-27T12:15:43.842402+08:00",
     "execution": "New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.",
-    "signal_policy": "DIRECTION_SETUP_CYCLE_V1"
+    "signal_policy": "SETUP_DIRECTION_CYCLE_V2"
   },
   "services": {
     "journal": {
@@ -3681,22 +3979,22 @@
     },
     "telegram": {
       "status": "DATA_BLOCKED",
-      "checked_at": "2026-10-27T12:10:58.329095+08:00",
+      "checked_at": "2026-10-27T12:15:43.842402+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "BLOCKED",
       "allowed": false,
-      "checked_at": "2026-10-27T04:10:58.595120+00:00",
-      "last_candle_open": "2026-10-27T04:05:00+00:00",
-      "last_candle_close": "2026-10-27T04:10:00+00:00",
-      "close_age_minutes": 0.98,
+      "checked_at": "2026-10-27T04:15:43.987079+00:00",
+      "last_candle_open": "2026-10-27T04:10:00+00:00",
+      "last_candle_close": "2026-10-27T04:15:00+00:00",
+      "close_age_minutes": 0.73,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
       "entry_mode": "INTRABAR",
-      "observed_at": "2026-10-27T04:10:58.595120+00:00",
+      "observed_at": "2026-10-27T04:15:43.987079+00:00",
       "current_candle_open": null,
       "current_candle_close": null,
       "quote_timestamp_verified": false
