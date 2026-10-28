@@ -10,6 +10,22 @@ def decision_frames(raw, at):
     closed = df[df.datetime + pd.Timedelta(minutes=5) <= now].copy()
     closed.attrs.update(raw.attrs)
     current = df[(df.datetime <= now) & (df.datetime + pd.Timedelta(minutes=5) > now)]
+    expected_open = now.floor('5min')
+    latest_open = df.iloc[-1].datetime if len(df) else None
+    # Candle timestamps describe bars, not the provider's quote/update time.
+    # Preserve evidence without treating receipt time as quote freshness.
+    provider_evidence = {
+        'received_at': now.isoformat(),
+        'expected_current_open': expected_open.isoformat(),
+        'latest_returned_open': latest_open.isoformat() if latest_open is not None else None,
+        'latest_open_age_seconds': round((now-latest_open).total_seconds(), 3) if latest_open is not None else None,
+        'missing_current_intervals': max(0, int((expected_open-latest_open).total_seconds() // 300)) if latest_open is not None else None,
+        'returned_bars': len(df),
+        'current_bar_count': len(current),
+        'provider_meta': {k: raw.attrs.get('provider_meta', {}).get(k) for k in
+                          ('symbol','interval','currency_base','currency_quote','exchange','exchange_timezone','type')},
+        'quote_timestamp_verified': False,
+    }
     health = market_health(closed, now)
     reasons = [] if health['allowed'] else [health['reason']]
     if (df.datetime > now).any(): reasons.append('Timestamp candle mendahului masa semasa')
@@ -25,5 +41,6 @@ def decision_frames(raw, at):
                   entry_mode='INTRABAR', observed_at=now.isoformat(),
                   current_candle_open=current.iloc[-1].datetime.isoformat() if len(current) else None,
                   current_candle_close=(current.iloc[-1].datetime+pd.Timedelta(minutes=5)).isoformat() if len(current) else None,
-                  quote_timestamp_verified=False)
+                  quote_timestamp_verified=False, provider_evidence=provider_evidence)
     return observed, closed, health
+

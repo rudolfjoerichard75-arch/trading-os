@@ -22,6 +22,21 @@ class IntrabarTests(unittest.TestCase):
                          (self.df,self.at+pd.Timedelta(minutes=30)),
                          (self.df.drop(index=498),self.at)]:
             self.assertFalse(decision_frames(frame,at)[2]['allowed'])
+    def test_provider_evidence_does_not_relax_block_or_claim_quote_freshness(self):
+        self.df.attrs['provider_meta']={'symbol':'XAU/USD','interval':'5min','apikey':'secret'}
+        _,_,health=decision_frames(self.df.iloc[:-1],self.at)
+        evidence=health['provider_evidence']
+        self.assertFalse(health['allowed'])
+        self.assertEqual(evidence['expected_current_open'],self.df.iloc[-1].datetime.isoformat())
+        self.assertEqual(evidence['latest_returned_open'],self.df.iloc[-2].datetime.isoformat())
+        self.assertEqual(evidence['missing_current_intervals'],1)
+        self.assertEqual(evidence['current_bar_count'],0)
+        self.assertFalse(evidence['quote_timestamp_verified'])
+        self.assertNotIn('secret',json.dumps(evidence))
+        _,_,current=decision_frames(self.df,self.at)
+        self.assertTrue(current['allowed'])
+        self.assertEqual(current['provider_evidence']['current_bar_count'],1)
+        self.assertFalse(current['provider_evidence']['quote_timestamp_verified'])
     def test_completed_higher_timeframes_ignore_forming_bar(self):
         _,closed,_=decision_frames(self.df,self.at)
         for minutes in (15,60):
@@ -55,3 +70,4 @@ class IntrabarTests(unittest.TestCase):
             self.assertEqual(result['results'],{})
 
 if __name__=='__main__': unittest.main()
+
