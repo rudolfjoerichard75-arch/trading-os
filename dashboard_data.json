@@ -4,11 +4,11 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-10-29T12:51:09.343007+08:00",
+    "timestamp": "2026-10-29T12:55:51.190031+08:00",
     "entry_mode": "INTRABAR",
     "entry_logic_version": "V3_MULTI_SETUP_INTRABAR_20261027"
   },
-  "latest_price": 4039.96,
+  "latest_price": 4039.06,
   "session": "ASIAN",
   "market_mode": "RANGING",
   "regime": {
@@ -26,8 +26,8 @@
     }
   },
   "volatility": {
-    "atr": 2.56,
-    "atr_pips": 25.6,
+    "atr": 2.51,
+    "atr_pips": 25.1,
     "condition": "NORMAL"
   },
   "pd": {
@@ -50,16 +50,66 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-10-29T12:51:09.943155+08:00",
+      "checked_at": "2026-10-29T12:55:51.705627+08:00",
       "requested_from": "2026-10-28",
       "requested_to": "2026-10-31",
-      "events_received": null,
-      "usd_high_events": 0,
+      "events_received": 8,
+      "usd_high_events": 3,
       "nearby_usd_high_events": 0,
       "skipped_usd_times": 0,
       "unclassified_high_events": 0,
-      "coverage_status": "UNVERIFIED",
-      "events": []
+      "coverage_status": "PROVIDER_RESPONSE_ONLY",
+      "events": [
+        {
+          "title": "UK Budget October 2026",
+          "geography": "NON_US",
+          "time": null,
+          "impact": "high"
+        },
+        {
+          "title": "Australia CPI: September 2026",
+          "geography": "NON_US",
+          "time": "2026-10-28T00:30:00+00:00",
+          "impact": "high"
+        },
+        {
+          "title": "Bank of Canada Rate Decision October 2026",
+          "geography": "NON_US",
+          "time": "2026-10-28T13:45:00+00:00",
+          "impact": "high"
+        },
+        {
+          "title": "FOMC Rate Decision October 2026",
+          "geography": "USD",
+          "time": "2026-10-28T18:00:00+00:00",
+          "impact": "high"
+        },
+        {
+          "title": "US Gross Domestic Product October 2026",
+          "geography": "USD",
+          "time": "2026-10-29T12:30:00+00:00",
+          "impact": "high"
+        },
+        {
+          "title": "US Personal Income and Outlays (PCE) October 2026",
+          "geography": "USD",
+          "time": "2026-10-29T12:30:00+00:00",
+          "impact": "high"
+        },
+        {
+          "title": "ECB Rate Decision October 2026",
+          "geography": "NON_US",
+          "time": "2026-10-29T12:45:00+00:00",
+          "impact": "high"
+        },
+        {
+          "title": "Bank of Japan Rate Decision October 2026",
+          "geography": "NON_US",
+          "time": "2026-10-30T03:00:00+00:00",
+          "impact": "high"
+        }
+      ],
+      "provider_count": 8
     },
     "block_before_minutes": 30,
     "block_after_minutes": 30,
@@ -69,11 +119,10 @@
     "event": null,
     "time": null,
     "minutes_to_news": null,
-    "high_impact": null,
-    "status": "ERROR",
-    "filter": "BLOCK",
-    "reason": "Sumber berita gagal disahkan; signal ditahan",
-    "error_type": "HTTPError"
+    "high_impact": false,
+    "status": "CLEAR",
+    "filter": "PASS",
+    "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
   },
   "opportunity": {
     "type": "BUY RANGE REVERSAL",
@@ -117,15 +166,15 @@
       "entry_zone_max_pips": 40
     },
     "entry_mode": "INTRABAR",
-    "observed_at": "2026-10-29T12:51:09.506097+08:00",
+    "observed_at": "2026-10-29T12:55:51.399714+08:00",
     "source_candle": null,
     "setup_evidence": null,
-    "learning_id": "2026-10-29-b4ac260addcd205a85b4",
+    "learning_id": "2026-10-29-4b696eaa7e75b3c7c317",
     "id": null,
     "direction": "BUY",
     "opportunity": "BUY RANGE REVERSAL",
     "score": 30,
-    "timestamp": "2026-10-29T12:51:09.343007+08:00",
+    "timestamp": "2026-10-29T12:55:51.190031+08:00",
     "delivery": {
       "allowed": false,
       "status": "DATA_BLOCKED",
@@ -136,19 +185,19 @@
   "plan": {
     "valid": true,
     "direction": "BUY",
-    "entry": 4039.96,
-    "sl": 4035.33,
-    "risk_pips": 46.4,
-    "tp1": 4045.96,
-    "tp2": 4051.96,
-    "tp3": 4057.96,
+    "entry": 4039.06,
+    "sl": 4035.34,
+    "risk_pips": 37.3,
+    "tp1": 4045.06,
+    "tp2": 4051.06,
+    "tp3": 4057.06,
     "tp1_pips": 60,
     "tp2_pips": 120,
     "tp3_pips": 180,
-    "rr_tp1": 1.29,
-    "rr_tp2": 2.59,
-    "rr_tp3": 3.88,
-    "risk_level": "MEDIUM"
+    "rr_tp1": 1.61,
+    "rr_tp2": 3.22,
+    "rr_tp3": 4.83,
+    "risk_level": "LOW"
   },
   "potential": {
     "tp1_pips": 60,
@@ -223,7 +272,7 @@
     "m5_confirmation": false,
     "risk": true,
     "rr": true,
-    "news": false,
+    "news": true,
     "session": false,
     "data": false,
     "strategy_focus": true,
@@ -238,8 +287,8 @@
   },
   "risk_engine": {
     "status": "VALID",
-    "risk_pips": 46.4,
-    "risk_level": "MEDIUM",
+    "risk_pips": 37.3,
+    "risk_level": "LOW",
     "min_risk_pips": 20,
     "max_risk_pips": 80,
     "daily_loss_limit": "NOT CONFIGURED",
@@ -256,9 +305,9 @@
     ]
   },
   "sop": {
-    "news_filter": "BLOCK",
+    "news_filter": "PASS",
     "session_filter": "NON-PREFERRED",
-    "risk": "MEDIUM",
+    "risk": "LOW",
     "fresh_zone": "NOT TRACKED",
     "m15_setup": "YES",
     "m5_confirmation": "NO"
@@ -523,29 +572,29 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-10-29-b4ac260addcd205a85b4",
+    "id": "2026-10-29-4b696eaa7e75b3c7c317",
     "file": "engine/learning/features/2026-10-29.json"
   },
   "data_health": {
     "status": "BLOCKED",
     "allowed": false,
-    "checked_at": "2026-10-29T04:51:09.506097+00:00",
-    "last_candle_open": "2026-10-29T04:45:00+00:00",
-    "last_candle_close": "2026-10-29T04:50:00+00:00",
-    "close_age_minutes": 1.16,
+    "checked_at": "2026-10-29T04:55:51.399714+00:00",
+    "last_candle_open": "2026-10-29T04:50:00+00:00",
+    "last_candle_close": "2026-10-29T04:55:00+00:00",
+    "close_age_minutes": 0.86,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
     "entry_mode": "INTRABAR",
-    "observed_at": "2026-10-29T04:51:09.506097+00:00",
+    "observed_at": "2026-10-29T04:55:51.399714+00:00",
     "current_candle_open": null,
     "current_candle_close": null,
     "quote_timestamp_verified": false,
     "provider_evidence": {
-      "received_at": "2026-10-29T04:51:09.506097+00:00",
-      "expected_current_open": "2026-10-29T04:50:00+00:00",
-      "latest_returned_open": "2026-10-29T04:45:00+00:00",
-      "latest_open_age_seconds": 369.506,
+      "received_at": "2026-10-29T04:55:51.399714+00:00",
+      "expected_current_open": "2026-10-29T04:55:00+00:00",
+      "latest_returned_open": "2026-10-29T04:50:00+00:00",
+      "latest_open_age_seconds": 351.4,
       "missing_current_intervals": 1,
       "returned_bars": 500,
       "current_bar_count": 0,
@@ -605,14 +654,13 @@
   ],
   "entry_timing": {
     "mode": "INTRABAR",
-    "observed_at": "2026-10-29T12:51:09.506097+08:00",
+    "observed_at": "2026-10-29T12:55:51.399714+08:00",
     "current_candle_close": null,
     "note": "Signal M5 intrabar pada snapshot scan; boleh berubah sebelum candle tutup. Bukan tick stream."
   },
   "gate_reasons": {
     "score": "Skor 30/100 < minimum 70",
     "m5_confirmation": "BOS atau candle + momentum BUY belum sah",
-    "news": "Sumber berita gagal disahkan; signal ditahan",
     "data": "Snapshot candle M5 semasa belum tersedia daripada provider"
   },
   "diagnostics": {
@@ -622,21 +670,20 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": 46.4,
+    "risk_distance_pips": 37.3,
     "blocking_reasons": [
       "Snapshot candle M5 semasa belum tersedia daripada provider",
       "Skor 30/100 < minimum 70",
-      "BOS atau candle + momentum BUY belum sah",
-      "Sumber berita gagal disahkan; signal ditahan"
+      "BOS atau candle + momentum BUY belum sah"
     ]
   },
   "entry_window": {
     "status": "AVAILABLE",
-    "low": 4037.33,
-    "high": 4039.96,
+    "low": 4037.34,
+    "high": 4039.06,
     "min_risk_pips": 20.0,
     "max_risk_pips": 80.0,
-    "width_pips": 26.3,
+    "width_pips": 17.2,
     "max_width_pips": 40,
     "policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
     "min_rr": 2.0,
@@ -745,11 +792,11 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-10-29T12:51:09.343007+08:00",
+    "updated_at": "2026-10-29T12:55:51.190031+08:00",
     "day_myt": "2026-10-29",
-    "captured_today": 154,
-    "candidates_today": 37,
-    "rejected_today": 37,
+    "captured_today": 155,
+    "candidates_today": 38,
+    "rejected_today": 38,
     "linked_trades": 1,
     "closed_paper": 1,
     "gross_research_rows": 1,
@@ -758,7 +805,7 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-10-29-b4ac260addcd205a85b4",
+      "id": "2026-10-29-4b696eaa7e75b3c7c317",
       "file": "engine/learning/features/2026-10-29.json"
     },
     "features_file": "engine/learning/features/2026-10-29.json",
@@ -3982,7 +4029,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-10-29T12:51:09.343007+08:00",
+    "last_updated": "2026-10-29T12:55:51.190031+08:00",
     "execution": "New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.",
     "signal_policy": "SETUP_DIRECTION_CYCLE_V2"
   },
@@ -3992,30 +4039,30 @@
     },
     "telegram": {
       "status": "DATA_BLOCKED",
-      "checked_at": "2026-10-29T12:51:09.343007+08:00",
+      "checked_at": "2026-10-29T12:55:51.190031+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "BLOCKED",
       "allowed": false,
-      "checked_at": "2026-10-29T04:51:09.506097+00:00",
-      "last_candle_open": "2026-10-29T04:45:00+00:00",
-      "last_candle_close": "2026-10-29T04:50:00+00:00",
-      "close_age_minutes": 1.16,
+      "checked_at": "2026-10-29T04:55:51.399714+00:00",
+      "last_candle_open": "2026-10-29T04:50:00+00:00",
+      "last_candle_close": "2026-10-29T04:55:00+00:00",
+      "close_age_minutes": 0.86,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
       "entry_mode": "INTRABAR",
-      "observed_at": "2026-10-29T04:51:09.506097+00:00",
+      "observed_at": "2026-10-29T04:55:51.399714+00:00",
       "current_candle_open": null,
       "current_candle_close": null,
       "quote_timestamp_verified": false,
       "provider_evidence": {
-        "received_at": "2026-10-29T04:51:09.506097+00:00",
-        "expected_current_open": "2026-10-29T04:50:00+00:00",
-        "latest_returned_open": "2026-10-29T04:45:00+00:00",
-        "latest_open_age_seconds": 369.506,
+        "received_at": "2026-10-29T04:55:51.399714+00:00",
+        "expected_current_open": "2026-10-29T04:55:00+00:00",
+        "latest_returned_open": "2026-10-29T04:50:00+00:00",
+        "latest_open_age_seconds": 351.4,
         "missing_current_intervals": 1,
         "returned_bars": 500,
         "current_bar_count": 0,
