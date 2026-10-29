@@ -14202,6 +14202,264 @@
       },
       "provenance": "LIVE_PRE_DELIVERY",
       "broker_execution": "UNKNOWN"
+    },
+    "2026-10-30-4b6ac1968479f0337489": {
+      "id": "2026-10-30-4b6ac1968479f0337489",
+      "schema": "BOSQUE_LEARNING_V1",
+      "captured_at": "2026-10-29T21:01:02.832104+00:00",
+      "source_candle": "2026-10-29T20:55:00+00:00",
+      "parameters": {
+        "min_risk_pips": 20,
+        "max_risk_pips": 80,
+        "min_score": 70,
+        "min_rr": 2.0,
+        "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
+        "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+        "entry_logic_version": "V3_MULTI_SETUP_INTRABAR_20261027",
+        "entry_mode": "INTRABAR",
+        "strategy_focus": {
+          "mode": "PREFERENCE",
+          "priority": "BREAKOUT RETEST",
+          "directions": [
+            "BUY",
+            "SELL"
+          ],
+          "sessions": "ALL"
+        },
+        "gap_rules": {
+          "timeframe": "M15",
+          "retest": "M5",
+          "max_age_minutes": 240,
+          "min_gap_pips": 1,
+          "min_body_ratio": 0.5,
+          "first_retest_only": true
+        },
+        "entry_wait_minutes": 30,
+        "range_max_efficiency": 0.35,
+        "range_max_slope_ratio": 0.5,
+        "range_max_atr_width": 6.0,
+        "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+        "entry_zone_max_pips": 40,
+        "round_trip_cost_pips": null
+      },
+      "decision_hash": "69bebc9dccfa680ca069c283e2b9bbb95564cde455247d968281edf980522975",
+      "decision": "REJECTED_CANDIDATE",
+      "blocked_by": [
+        "score",
+        "data"
+      ],
+      "features": {
+        "direction": "SELL",
+        "opportunity": "SELL PULLBACK",
+        "score": 60,
+        "session": "OFF SESSION",
+        "h1": {
+          "direction": "BEARISH",
+          "bos": null,
+          "swing_high": 4036.48657,
+          "swing_low": 4006.15472
+        },
+        "m15": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 4030.79528,
+          "swing_low": 4006.15472
+        },
+        "m5": {
+          "direction": "RANGE",
+          "bos": "BEARISH BOS",
+          "swing_high": 4028.68423,
+          "swing_low": 4024.63074
+        },
+        "confirmation": {
+          "confirmed": true,
+          "bos": "BEARISH BOS",
+          "candle": false,
+          "momentum": "NEUTRAL",
+          "reason": "M5 bearish BOS"
+        },
+        "pd": {
+          "zone": "PREMIUM",
+          "equilibrium": 4018.47,
+          "high": 4030.8,
+          "low": 4006.15
+        },
+        "liquidity": {
+          "buy_side_sweep": false,
+          "sell_side_sweep": false,
+          "swept_level": null,
+          "description": "NONE"
+        },
+        "range": {
+          "is_range": true,
+          "efficiency": 0.1761,
+          "slope_ratio": 0.3701,
+          "atr_width": 4.4205,
+          "high": 4030.79528,
+          "low": 4006.15472,
+          "width": 24.640559999999823,
+          "location": 0.627916735658614
+        },
+        "volatility": {
+          "atr": 2.89,
+          "atr_pips": 28.9,
+          "condition": "NORMAL"
+        },
+        "news": {
+          "evidence": {
+            "checked_at": "2026-10-30T05:01:03.055514+08:00",
+            "requested_from": "2026-10-29",
+            "requested_to": "2026-11-01",
+            "events_received": 4,
+            "usd_high_events": 2,
+            "nearby_usd_high_events": 0,
+            "skipped_usd_times": 0,
+            "unclassified_high_events": 0,
+            "coverage_status": "PROVIDER_RESPONSE_ONLY",
+            "events": [
+              {
+                "title": "US Gross Domestic Product October 2026",
+                "geography": "USD",
+                "time": "2026-10-29T12:30:00+00:00",
+                "impact": "high"
+              },
+              {
+                "title": "US Personal Income and Outlays (PCE) October 2026",
+                "geography": "USD",
+                "time": "2026-10-29T12:30:00+00:00",
+                "impact": "high"
+              },
+              {
+                "title": "ECB Rate Decision October 2026",
+                "geography": "NON_US",
+                "time": "2026-10-29T12:45:00+00:00",
+                "impact": "high"
+              },
+              {
+                "title": "Bank of Japan Rate Decision October 2026",
+                "geography": "NON_US",
+                "time": "2026-10-30T03:00:00+00:00",
+                "impact": "high"
+              }
+            ],
+            "provider_count": 4
+          },
+          "block_before_minutes": 30,
+          "block_after_minutes": 30,
+          "currency": "USD",
+          "source": "FinanceCalendar",
+          "source_url": "https://www.financecalendar.com/",
+          "event": null,
+          "time": null,
+          "minutes_to_news": null,
+          "high_impact": false,
+          "status": "CLEAR",
+          "filter": "PASS",
+          "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
+        },
+        "gates": {
+          "setup": true,
+          "score": false,
+          "m5_confirmation": true,
+          "risk": true,
+          "rr": true,
+          "news": true,
+          "data": false,
+          "strategy_focus": true
+        },
+        "plan": {
+          "valid": true,
+          "direction": "SELL",
+          "entry": 4021.63,
+          "sl": 4029.26,
+          "risk_pips": 76.4,
+          "tp1": 4015.63,
+          "tp2": 4006.36,
+          "tp3": 3998.72,
+          "tp1_pips": 60,
+          "tp2_pips": 152.7,
+          "tp3_pips": 229.1,
+          "rr_tp1": 0.79,
+          "rr_tp2": 2.0,
+          "rr_tp3": 3.0,
+          "risk_level": "MEDIUM"
+        },
+        "data_health": {
+          "status": "BLOCKED",
+          "allowed": false,
+          "checked_at": "2026-10-29T21:01:02.832104+00:00",
+          "last_candle_open": "2026-10-29T20:55:00+00:00",
+          "last_candle_close": "2026-10-29T21:00:00+00:00",
+          "close_age_minutes": 1.05,
+          "max_close_age_minutes": 10,
+          "recent_gap_count": 0,
+          "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
+          "entry_mode": "INTRABAR",
+          "observed_at": "2026-10-29T21:01:02.832104+00:00",
+          "current_candle_open": null,
+          "current_candle_close": null,
+          "quote_timestamp_verified": false,
+          "provider_evidence": {
+            "received_at": "2026-10-29T21:01:02.832104+00:00",
+            "expected_current_open": "2026-10-29T21:00:00+00:00",
+            "latest_returned_open": "2026-10-29T20:55:00+00:00",
+            "latest_open_age_seconds": 362.832,
+            "missing_current_intervals": 1,
+            "returned_bars": 500,
+            "current_bar_count": 0,
+            "provider_meta": {
+              "symbol": "XAU/USD",
+              "interval": "5min",
+              "currency_base": "Gold Spot",
+              "currency_quote": "US Dollar",
+              "exchange": null,
+              "exchange_timezone": null,
+              "type": "Precious Metal"
+            },
+            "quote_timestamp_verified": false
+          }
+        },
+        "entry_timing": {
+          "mode": "INTRABAR",
+          "observed_at": "2026-10-30T05:01:02.832104+08:00"
+        },
+        "setup_evidence": null,
+        "last_m5": {
+          "datetime": "2026-10-29T20:55:00+00:00",
+          "open": 4019.87061,
+          "high": 4021.71727,
+          "low": 4019.87061,
+          "close": 4021.62694
+        },
+        "entry_window": {
+          "status": "AVAILABLE",
+          "low": 4021.63,
+          "high": 4025.63,
+          "min_risk_pips": 20.0,
+          "max_risk_pips": 80.0,
+          "width_pips": 40.0,
+          "max_width_pips": 40,
+          "policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+          "min_rr": 2.0,
+          "basis": "FROZEN_SL_TP2_BEFORE_COSTS"
+        },
+        "distances_price": {
+          "h1": {
+            "swing_high": -14.859629999999925,
+            "swing_low": 15.472220000000107
+          },
+          "m15": {
+            "swing_high": -9.168339999999716,
+            "swing_low": 15.472220000000107
+          },
+          "m5": {
+            "swing_high": -7.057289999999739,
+            "swing_low": -3.0037999999999556
+          }
+        }
+      },
+      "provenance": "LIVE_PRE_DELIVERY",
+      "broker_execution": "UNKNOWN"
     }
   }
 }
