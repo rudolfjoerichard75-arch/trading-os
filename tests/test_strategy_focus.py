@@ -20,8 +20,6 @@ class FocusTests(unittest.TestCase):
             ('SELL','SELL BREAKOUT RETEST','LONDON','PASS',True),
             ('BUY','BUY BREAKOUT RETEST','OFF SESSION','PASS',True),
             ('SELL','SELL PULLBACK','OFF SESSION','PASS',True),
-            ('BUY','BUY FVG','ASIAN','PASS',True),
-            ('SELL','SELL IFVG','NEW YORK','PASS',True),
             ('SELL','SELL BREAKOUT RETEST','OFF SESSION','BLOCK',False)]:
             with self.subTest(opportunity=opportunity,session=session,news=news),tempfile.TemporaryDirectory() as tmp,contextlib.ExitStack() as stack:
                 root=Path(tmp);directory=root/'engine';directory.mkdir()
@@ -34,7 +32,6 @@ class FocusTests(unittest.TestCase):
                 candidate={'direction':direction,'opportunity':opportunity,'valid':True}
                 if opportunity.endswith((' FVG',' IFVG')):
                     candidate['zone']={'kind':opportunity.split()[-1],'low':98,'high':102,'id':'test-zone'}
-                stack.enter_context(patch('bosque_setups.candidates',return_value=[candidate]))
                 send=stack.enter_context(patch.object(e,'send_telegram',return_value={'status':'SENT','message_id':1}))
                 stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
                 e.main()
@@ -43,7 +40,7 @@ class FocusTests(unittest.TestCase):
                 self.assertEqual(send.call_count,int(expected))
                 self.assertEqual(len(t.load(directory/'trade_journal.json')['trades']),int(expected))
                 if expected:
-                    self.assertIn('MULTI_SETUP',d['signal']['parameters']['entry_logic_version'])
+                    self.assertEqual('V3_20260929_INTRABAR_RESEARCH', d['signal']['parameters']['entry_logic_version'])
                     if 'zone' in candidate:
                         trade=t.load(directory/'trade_journal.json')['trades'][0]
                         self.assertEqual(trade['setup_evidence'],candidate['zone'])

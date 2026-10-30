@@ -42,8 +42,10 @@ class V3Tests(unittest.TestCase):
     def test_adapter_matches_original_direct_decision(self):
         df=bars();at=df.iloc[-1].datetime+pd.Timedelta(minutes=5)
         h1=e.analyze_structure(e.aggregate(df,60));setup=e.detect_m15_setup(h1,e.aggregate(df,15),df);conf=e.m5_confirmation(df,setup['direction']);vol=e.volatility_analysis(df);sess=e.get_session(at.to_pydatetime().astimezone(e.MY_TZ));score=e.calculate_score(h1,setup,conf,sess,vol);plan=e.create_trade_plan(setup['direction'],df,score,vol)
-        result=t.evaluate(df,at)
+        with patch('bosque_setups.select', side_effect=AssertionError('multi-setup selector must not run')):
+            result=t.evaluate(df,at)
         self.assertEqual(result['plan'],plan);self.assertEqual(result['score'],score)
+        self.assertEqual(result['opportunity'], setup['opportunity'])
         self.assertEqual(result['active'],all([score>=e.MIN_SCORE,setup['valid'],conf['confirmed'],plan.get('valid',False),plan.get('rr_tp2',0)>=e.MIN_RR]))
     def test_sl_first_cost_once_and_no_duplicate_bar(self):
         x=trade(2);t.advance(x,row(h=112,l=94));self.assertEqual(x['result'],'LOSS');self.assertEqual(x['result_pips'],-52);self.assertEqual(x['exit_reason'],'SL_AMBIGUOUS');t.advance(x,row());self.assertEqual(x['bars_held'],1)

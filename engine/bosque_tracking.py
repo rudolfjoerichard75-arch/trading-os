@@ -39,9 +39,10 @@ def evaluate(df, at, news_ok=True):
     hs=e.analyze_structure(h1)
     vol=e.volatility_analysis(df)
     session=e.get_session(stamp(at).to_pydatetime().astimezone(e.MY_TZ))
-    from bosque_setups import select
-    selection=select(hs,m15,df,session,vol)
-    setup=selection['setup'];conf=selection['confirmation'];score=selection['score'];plan=selection['plan']
+    setup=e.detect_m15_setup(hs,m15,df)
+    conf=e.m5_confirmation(df,setup['direction'])
+    score=e.calculate_score(hs,setup,conf,session,vol)
+    plan=e.create_trade_plan(setup['direction'],df,score,vol)
     gates={'score':score>=e.MIN_SCORE,'setup':bool(setup['valid']),
            'm5_confirmation':bool(conf['confirmed']),'plan':bool(plan.get('valid',False)),
            'rr':plan.get('rr_tp2',0)>=e.MIN_RR,'news':bool(news_ok),

@@ -56,8 +56,8 @@ OUTPUT_SIZE = 500
 # RISK / SCORING
 # =========================================================
 
-CLOSED_ENTRY_LOGIC_VERSION = "V3_MULTI_SETUP_CLOSED_RESEARCH_20261027"
-ENTRY_LOGIC_VERSION = "V3_MULTI_SETUP_INTRABAR_20261027"
+CLOSED_ENTRY_LOGIC_VERSION = "V3_20260929_CLOSED_RESEARCH"
+ENTRY_LOGIC_VERSION = "V3_20260929_INTRABAR_RESEARCH"
 FOCUS_ENABLED = False
 ENTRY_MODE = "INTRABAR"
 RANGE_MAX_EFFICIENCY = 0.35
@@ -1791,12 +1791,19 @@ def main():
     # M15 SETUP
     # =====================================================
 
-    from bosque_setups import select as select_setup
-    selection = select_setup(h1_structure, m15, m5, session, volatility)
-    setup = selection['setup']
-    m5_confirm = selection['confirmation']
-    score = selection['score']
-    plan = selection['plan']
+    # September 29 strategy: a single V3 setup; no later FVG/IFVG selector.
+    setup = detect_m15_setup(h1_structure, m15, m5)
+    m5_confirm = m5_confirmation(m5, setup["direction"])
+    score = calculate_score(h1_structure, setup, m5_confirm, session, volatility)
+    plan = create_trade_plan(setup["direction"], m5, score, volatility)
+    legacy_gates = {"setup": bool(setup["valid"]),
+                    "m5_confirmation": bool(m5_confirm["confirmed"]),
+                    "score": score >= MIN_SCORE, "risk": bool(plan.get("valid")),
+                    "rr": plan.get("rr_tp2", 0) >= MIN_RR}
+    candidate = {"setup": setup, "confirmation": m5_confirm, "score": score,
+                 "plan": plan, "eligible": all(legacy_gates.values()),
+                 "blocked_by": [k for k, v in legacy_gates.items() if not v]}
+    selection = {**candidate, "candidates": [candidate]}
 
     # =====================================================
     # HARD GATES
@@ -1897,12 +1904,12 @@ def main():
             timestamp.isoformat()
     }
 
-    from bosque_signals import select_candidate_alerts, mark_delivered
+    from bosque_signals import select_alert, mark_delivered
     sent = None
     state = load_state()
     if data_health['allowed']:
-        delivery = select_candidate_alerts(state, selection["candidates"], setup["opportunity"],
-                                           valid_signal, m5.iloc[-1]["datetime"])
+        delivery = select_alert(state, setup_ok, setup["direction"],
+                                valid_signal, m5.iloc[-1]["datetime"])
     else:
         delivery = {'allowed':False, 'status':'DATA_BLOCKED', 'id':None,
                     'reason':data_health['reason']}
