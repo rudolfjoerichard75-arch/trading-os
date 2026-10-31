@@ -36779,6 +36779,232 @@
       },
       "provenance": "LIVE_PRE_DELIVERY",
       "broker_execution": "UNKNOWN"
+    },
+    "2026-10-31-db68067dd0175ba97d91": {
+      "id": "2026-10-31-db68067dd0175ba97d91",
+      "schema": "BOSQUE_LEARNING_V1",
+      "captured_at": "2026-10-31T05:35:41.607374+00:00",
+      "source_candle": "2026-10-31T05:30:00+00:00",
+      "parameters": {
+        "min_risk_pips": 20,
+        "max_risk_pips": 80,
+        "min_score": 70,
+        "min_rr": 2.0,
+        "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
+        "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+        "entry_logic_version": "V3_20260929_INTRABAR_RESEARCH",
+        "entry_mode": "INTRABAR",
+        "strategy_focus": {
+          "mode": "PREFERENCE",
+          "priority": "BREAKOUT RETEST",
+          "directions": [
+            "BUY",
+            "SELL"
+          ],
+          "sessions": "ALL"
+        },
+        "gap_rules": {
+          "timeframe": "M15",
+          "retest": "M5",
+          "max_age_minutes": 240,
+          "min_gap_pips": 1,
+          "min_body_ratio": 0.5,
+          "first_retest_only": true
+        },
+        "entry_wait_minutes": 30,
+        "range_max_efficiency": 0.35,
+        "range_max_slope_ratio": 0.5,
+        "range_max_atr_width": 6.0,
+        "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+        "entry_zone_max_pips": 40,
+        "round_trip_cost_pips": null
+      },
+      "decision_hash": "e96c34ecbb72dc64ebc30c176d4f2f49269a020742af5b87157979ba828c403e",
+      "decision": "REJECTED_CANDIDATE",
+      "blocked_by": [
+        "score",
+        "risk",
+        "rr",
+        "data"
+      ],
+      "features": {
+        "direction": "BUY",
+        "opportunity": "BUY LIQUIDITY SWEEP",
+        "score": 50,
+        "session": "ASIAN",
+        "h1": {
+          "direction": "BEARISH",
+          "bos": null,
+          "swing_high": 3875.53503,
+          "swing_low": 3871.18522
+        },
+        "m15": {
+          "direction": "BEARISH",
+          "bos": null,
+          "swing_high": 3875.53017,
+          "swing_low": 3875.28701
+        },
+        "m5": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 3875.53203,
+          "swing_low": 3875.2861
+        },
+        "confirmation": {
+          "confirmed": true,
+          "bos": null,
+          "candle": true,
+          "momentum": "BULLISH",
+          "reason": "M5 bullish candle + momentum"
+        },
+        "pd": {
+          "zone": "DISCOUNT",
+          "equilibrium": 3875.41,
+          "high": 3875.53,
+          "low": 3875.29
+        },
+        "liquidity": {
+          "buy_side_sweep": false,
+          "sell_side_sweep": true,
+          "swept_level": 3875.28701,
+          "description": "SELL-SIDE LIQUIDITY SWEPT"
+        },
+        "range": {
+          "is_range": true,
+          "efficiency": 0.0635,
+          "slope_ratio": 0.1261,
+          "atr_width": 1.0727,
+          "high": 3875.53472,
+          "low": 3875.2861,
+          "width": 0.24862000000030093,
+          "location": 0.47984876518441616
+        },
+        "volatility": {
+          "atr": 0.2,
+          "atr_pips": 2.0,
+          "condition": "LOW"
+        },
+        "news": {
+          "evidence": {
+            "checked_at": "2026-10-31T13:35:41.780088+08:00",
+            "requested_from": "2026-10-30",
+            "requested_to": "2026-11-02",
+            "events_received": 2,
+            "usd_high_events": 1,
+            "nearby_usd_high_events": 0,
+            "skipped_usd_times": 0,
+            "unclassified_high_events": 0,
+            "coverage_status": "PROVIDER_RESPONSE_ONLY",
+            "events": [
+              {
+                "title": "Bank of Japan Rate Decision October 2026",
+                "geography": "NON_US",
+                "time": "2026-10-30T03:00:00+00:00",
+                "impact": "high"
+              },
+              {
+                "title": "US ISM Manufacturing PMI November 2026",
+                "geography": "USD",
+                "time": "2026-11-02T15:00:00+00:00",
+                "impact": "high"
+              }
+            ],
+            "provider_count": 2
+          },
+          "block_before_minutes": 30,
+          "block_after_minutes": 30,
+          "currency": "USD",
+          "source": "FinanceCalendar",
+          "source_url": "https://www.financecalendar.com/",
+          "event": null,
+          "time": null,
+          "minutes_to_news": null,
+          "high_impact": false,
+          "status": "CLEAR",
+          "filter": "PASS",
+          "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
+        },
+        "gates": {
+          "setup": true,
+          "score": false,
+          "m5_confirmation": true,
+          "risk": false,
+          "rr": false,
+          "news": true,
+          "data": false,
+          "strategy_focus": true
+        },
+        "plan": {
+          "valid": false,
+          "reason": "Risk 3.5 pips outside 20-80"
+        },
+        "data_health": {
+          "status": "BLOCKED",
+          "allowed": false,
+          "checked_at": "2026-10-31T05:35:41.607374+00:00",
+          "last_candle_open": "2026-10-31T05:30:00+00:00",
+          "last_candle_close": "2026-10-31T05:35:00+00:00",
+          "close_age_minutes": 0.69,
+          "max_close_age_minutes": 10,
+          "recent_gap_count": 0,
+          "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
+          "entry_mode": "INTRABAR",
+          "observed_at": "2026-10-31T05:35:41.607374+00:00",
+          "current_candle_open": null,
+          "current_candle_close": null,
+          "quote_timestamp_verified": false,
+          "provider_evidence": {
+            "received_at": "2026-10-31T05:35:41.607374+00:00",
+            "expected_current_open": "2026-10-31T05:35:00+00:00",
+            "latest_returned_open": "2026-10-31T05:30:00+00:00",
+            "latest_open_age_seconds": 341.607,
+            "missing_current_intervals": 1,
+            "returned_bars": 500,
+            "current_bar_count": 0,
+            "provider_meta": {
+              "symbol": "XAU/USD",
+              "interval": "5min",
+              "currency_base": "Gold Spot",
+              "currency_quote": "US Dollar",
+              "exchange": null,
+              "exchange_timezone": null,
+              "type": "Precious Metal"
+            },
+            "quote_timestamp_verified": false
+          }
+        },
+        "entry_timing": {
+          "mode": "INTRABAR",
+          "observed_at": "2026-10-31T13:35:41.607374+08:00"
+        },
+        "setup_evidence": null,
+        "last_m5": {
+          "datetime": "2026-10-31T05:30:00+00:00",
+          "open": 3875.3529,
+          "high": 3875.47163,
+          "low": 3875.32559,
+          "close": 3875.43792
+        },
+        "entry_window": {
+          "status": "UNAVAILABLE"
+        },
+        "distances_price": {
+          "h1": {
+            "swing_high": -0.09711000000015702,
+            "swing_low": 4.252700000000004
+          },
+          "m15": {
+            "swing_high": -0.09225000000014916,
+            "swing_low": 0.15090999999983978
+          },
+          "m5": {
+            "swing_high": -0.09411000000000058,
+            "swing_low": 0.15182000000004336
+          }
+        }
+      },
+      "provenance": "LIVE_PRE_DELIVERY",
+      "broker_execution": "UNKNOWN"
     }
   }
 }
