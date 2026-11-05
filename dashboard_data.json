@@ -4,11 +4,11 @@
     "version": "SCALPING V3",
     "symbol": "XAU/USD",
     "timeframe": "H1 → M15 → M5",
-    "timestamp": "2026-11-06T00:01:08.545650+08:00",
+    "timestamp": "2026-11-06T00:20:59.563906+08:00",
     "entry_mode": "INTRABAR",
     "entry_logic_version": "V3_20260929_INTRABAR_RESEARCH"
   },
-  "latest_price": 4082.9,
+  "latest_price": 4101.96,
   "session": "NEW YORK",
   "market_mode": "NEUTRAL",
   "regime": {
@@ -32,15 +32,15 @@
   },
   "pd": {
     "zone": "DISCOUNT",
-    "equilibrium": 4109.29,
+    "equilibrium": 4108.31,
     "high": 4139.78,
-    "low": 4078.8
+    "low": 4076.84
   },
   "liquidity": {
     "buy_side_sweep": false,
-    "sell_side_sweep": false,
-    "swept_level": null,
-    "description": "NONE",
+    "sell_side_sweep": true,
+    "swept_level": 4093.49544,
+    "description": "SELL-SIDE LIQUIDITY SWEPT",
     "pdh": null,
     "pdl": null,
     "asia_high": null,
@@ -50,7 +50,7 @@
   },
   "news": {
     "evidence": {
-      "checked_at": "2026-11-06T00:01:08.979700+08:00",
+      "checked_at": "2026-11-06T00:21:00.014269+08:00",
       "requested_from": "2026-11-05",
       "requested_to": "2026-11-08",
       "events_received": null,
@@ -76,10 +76,10 @@
     "error_type": "HTTPError"
   },
   "opportunity": {
-    "type": "NO VALID SETUP",
-    "direction": null,
-    "valid": false,
-    "score": 0
+    "type": "BUY LIQUIDITY SWEEP",
+    "direction": "BUY",
+    "valid": true,
+    "score": 55
   },
   "signal": {
     "active": false,
@@ -117,15 +117,15 @@
       "entry_zone_max_pips": 40
     },
     "entry_mode": "INTRABAR",
-    "observed_at": "2026-11-06T00:01:08.752654+08:00",
+    "observed_at": "2026-11-06T00:20:59.665976+08:00",
     "source_candle": null,
     "setup_evidence": null,
-    "learning_id": "2026-11-05-bb8caf6b1f73d431ed26",
+    "learning_id": "2026-11-06-c41df8c5028e33fc0e2c",
     "id": null,
-    "direction": null,
-    "opportunity": "NO VALID SETUP",
-    "score": 0,
-    "timestamp": "2026-11-06T00:01:08.545650+08:00",
+    "direction": "BUY",
+    "opportunity": "BUY LIQUIDITY SWEEP",
+    "score": 55,
+    "timestamp": "2026-11-06T00:20:59.563906+08:00",
     "delivery": {
       "allowed": false,
       "status": "DATA_BLOCKED",
@@ -134,7 +134,8 @@
     }
   },
   "plan": {
-    "valid": false
+    "valid": false,
+    "reason": "Risk 271.9 pips outside 20-80"
   },
   "potential": {
     "tp1_pips": null,
@@ -150,61 +151,63 @@
   },
   "m15": {
     "direction": "RANGE",
-    "bos": "BEARISH BOS",
+    "bos": null,
     "swing_high": 4135.30725,
     "swing_low": 4093.49544,
     "setup": {
-      "direction": null,
-      "opportunity": "NO VALID SETUP",
-      "valid": false,
-      "reason": [],
+      "direction": "BUY",
+      "opportunity": "BUY LIQUIDITY SWEEP",
+      "valid": true,
+      "reason": [
+        "M15 sell-side liquidity sweep"
+      ],
       "pd": {
         "zone": "DISCOUNT",
-        "equilibrium": 4109.29,
+        "equilibrium": 4108.31,
         "high": 4139.78,
-        "low": 4078.8
+        "low": 4076.84
       },
       "liquidity": {
         "buy_side_sweep": false,
-        "sell_side_sweep": false,
-        "swept_level": null,
-        "description": "NONE"
+        "sell_side_sweep": true,
+        "swept_level": 4093.49544,
+        "description": "SELL-SIDE LIQUIDITY SWEPT"
       },
       "structure": {
         "direction": "RANGE",
-        "bos": "BEARISH BOS",
+        "bos": null,
         "swing_high": 4135.30725,
         "swing_low": 4093.49544
       },
       "range": {
         "is_range": false,
-        "efficiency": 0.4426,
-        "slope_ratio": 0.6208,
-        "atr_width": 4.3628,
+        "efficiency": 0.3506,
+        "slope_ratio": 0.6488,
+        "atr_width": 4.2952,
         "high": 4139.77734,
-        "low": 4078.80246,
-        "width": 60.97487999999976,
-        "location": 0.06715371969571596
+        "low": 4076.84128,
+        "width": 62.93605999999954,
+        "location": 0.2800628129565146
       }
     }
   },
   "m5": {
     "direction": "BEARISH",
-    "bos": "BEARISH BOS",
-    "swing_high": 4120.6304,
-    "swing_low": 4097.521,
+    "bos": null,
+    "swing_high": 4106.77618,
+    "swing_low": 4076.84128,
     "confirmation": {
-      "confirmed": false,
-      "bos": "BEARISH BOS",
-      "candle": false,
-      "momentum": "BEARISH",
-      "reason": "NO DIRECTION"
+      "confirmed": true,
+      "bos": null,
+      "candle": true,
+      "momentum": "BULLISH",
+      "reason": "M5 bullish candle + momentum"
     }
   },
   "filters": {
     "score": false,
-    "setup": false,
-    "m5_confirmation": false,
+    "setup": true,
+    "m5_confirmation": true,
     "risk": false,
     "rr": false,
     "news": false,
@@ -215,9 +218,9 @@
   },
   "confirmations": {
     "h1_bias": "RANGE",
-    "m15_setup": "NO VALID SETUP",
-    "m5_confirmation": "NO DIRECTION",
-    "liquidity": "NONE",
+    "m15_setup": "BUY LIQUIDITY SWEEP",
+    "m5_confirmation": "M5 bullish candle + momentum",
+    "liquidity": "SELL-SIDE LIQUIDITY SWEPT",
     "pd_zone": "DISCOUNT"
   },
   "risk_engine": {
@@ -244,8 +247,8 @@
     "session_filter": "PREFERRED",
     "risk": "UNKNOWN",
     "fresh_zone": "NOT TRACKED",
-    "m15_setup": "NO",
-    "m5_confirmation": "NO"
+    "m15_setup": "YES",
+    "m5_confirmation": "YES"
   },
   "expectancy": {
     "status": "PAPER SIMULATION",
@@ -507,29 +510,29 @@
   },
   "learning_capture": {
     "status": "CAPTURED",
-    "id": "2026-11-05-bb8caf6b1f73d431ed26",
-    "file": "engine/learning/features/2026-11-05.json"
+    "id": "2026-11-06-c41df8c5028e33fc0e2c",
+    "file": "engine/learning/features/2026-11-06.json"
   },
   "data_health": {
     "status": "BLOCKED",
     "allowed": false,
-    "checked_at": "2026-11-05T16:01:08.752654+00:00",
-    "last_candle_open": "2026-11-05T15:55:00+00:00",
-    "last_candle_close": "2026-11-05T16:00:00+00:00",
-    "close_age_minutes": 1.15,
+    "checked_at": "2026-11-05T16:20:59.665976+00:00",
+    "last_candle_open": "2026-11-05T16:15:00+00:00",
+    "last_candle_close": "2026-11-05T16:20:00+00:00",
+    "close_age_minutes": 0.99,
     "max_close_age_minutes": 10,
     "recent_gap_count": 0,
     "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
     "entry_mode": "INTRABAR",
-    "observed_at": "2026-11-05T16:01:08.752654+00:00",
+    "observed_at": "2026-11-05T16:20:59.665976+00:00",
     "current_candle_open": null,
     "current_candle_close": null,
     "quote_timestamp_verified": false,
     "provider_evidence": {
-      "received_at": "2026-11-05T16:01:08.752654+00:00",
-      "expected_current_open": "2026-11-05T16:00:00+00:00",
-      "latest_returned_open": "2026-11-05T15:55:00+00:00",
-      "latest_open_age_seconds": 368.753,
+      "received_at": "2026-11-05T16:20:59.665976+00:00",
+      "expected_current_open": "2026-11-05T16:20:00+00:00",
+      "latest_returned_open": "2026-11-05T16:15:00+00:00",
+      "latest_open_age_seconds": 359.666,
       "missing_current_intervals": 1,
       "returned_bars": 500,
       "current_bar_count": 0,
@@ -561,15 +564,13 @@
   },
   "setup_candidates": [
     {
-      "opportunity": "NO VALID SETUP",
-      "direction": null,
-      "score": 0,
+      "opportunity": "BUY LIQUIDITY SWEEP",
+      "direction": "BUY",
+      "score": 55,
       "eligible": false,
       "selected": true,
-      "reason": null,
+      "reason": "Risk 271.9 pips outside 20-80",
       "blocked_by": [
-        "setup",
-        "m5_confirmation",
         "score",
         "risk",
         "rr"
@@ -579,15 +580,13 @@
   ],
   "entry_timing": {
     "mode": "INTRABAR",
-    "observed_at": "2026-11-06T00:01:08.752654+08:00",
+    "observed_at": "2026-11-06T00:20:59.665976+08:00",
     "current_candle_close": null,
     "note": "Signal M5 intrabar pada snapshot scan; boleh berubah sebelum candle tutup. Bukan tick stream."
   },
   "gate_reasons": {
-    "setup": "Tiada setup M15 V3 yang sah",
-    "score": "Skor 0/100 < minimum 70",
-    "m5_confirmation": "Menunggu arah setup M15",
-    "risk": "Belum dikira: tiada arah setup",
+    "score": "Skor 55/100 < minimum 70",
+    "risk": "SL 271.9 pips melebihi had 80 pips",
     "rr": "Belum dikira: risk tidak lulus",
     "news": "Sumber berita gagal disahkan; signal ditahan",
     "data": "Snapshot candle M5 semasa belum tersedia daripada provider"
@@ -599,13 +598,11 @@
       "max_risk_pips": 80,
       "min_rr": 2.0
     },
-    "risk_distance_pips": null,
+    "risk_distance_pips": 271.9,
     "blocking_reasons": [
       "Snapshot candle M5 semasa belum tersedia daripada provider",
-      "Tiada setup M15 V3 yang sah",
-      "Skor 0/100 < minimum 70",
-      "Menunggu arah setup M15",
-      "Belum dikira: tiada arah setup",
+      "Skor 55/100 < minimum 70",
+      "SL 271.9 pips melebihi had 80 pips",
       "Belum dikira: risk tidak lulus",
       "Sumber berita gagal disahkan; signal ditahan"
     ]
@@ -716,11 +713,11 @@
     "mode": "DATA_COLLECTION_ONLY",
     "model_trained": false,
     "live_decisions_modified": false,
-    "updated_at": "2026-11-06T00:01:08.545650+08:00",
+    "updated_at": "2026-11-06T00:20:59.563906+08:00",
     "day_myt": "2026-11-06",
-    "captured_today": 0,
-    "candidates_today": 0,
-    "rejected_today": 0,
+    "captured_today": 1,
+    "candidates_today": 1,
+    "rejected_today": 1,
     "linked_trades": 1,
     "closed_paper": 1,
     "gross_research_rows": 1,
@@ -729,8 +726,8 @@
     "excluded_legacy_trades": 20,
     "last_capture": {
       "status": "CAPTURED",
-      "id": "2026-11-05-bb8caf6b1f73d431ed26",
-      "file": "engine/learning/features/2026-11-05.json"
+      "id": "2026-11-06-c41df8c5028e33fc0e2c",
+      "file": "engine/learning/features/2026-11-06.json"
     },
     "features_file": "engine/learning/features/2026-11-06.json",
     "note": "No model or automatic optimization. Rejected candidates have no invented outcomes; old trades have no reconstructed training features."
@@ -3953,7 +3950,7 @@
     },
     "historical_fill_exceptions": 6,
     "version": "SCALPING V3",
-    "last_updated": "2026-11-06T00:01:08.545650+08:00",
+    "last_updated": "2026-11-06T00:20:59.563906+08:00",
     "execution": "New paper trades wait up to 30 minutes after alert for a full M5 open inside the frozen zone with risk 20–80 pips and RR TP2 >= 2. Wick-only touches are not fills. Pre-fill SL/TP2 touches invalidate the plan. TP2 exit. Earlier models keep original rules.",
     "signal_policy": "SETUP_DIRECTION_CYCLE_V2"
   },
@@ -3963,30 +3960,30 @@
     },
     "telegram": {
       "status": "DATA_BLOCKED",
-      "checked_at": "2026-11-06T00:01:08.545650+08:00",
+      "checked_at": "2026-11-06T00:20:59.563906+08:00",
       "delivery_tested": false,
       "uncertain_deliveries": []
     },
     "engine": {
       "status": "BLOCKED",
       "allowed": false,
-      "checked_at": "2026-11-05T16:01:08.752654+00:00",
-      "last_candle_open": "2026-11-05T15:55:00+00:00",
-      "last_candle_close": "2026-11-05T16:00:00+00:00",
-      "close_age_minutes": 1.15,
+      "checked_at": "2026-11-05T16:20:59.665976+00:00",
+      "last_candle_open": "2026-11-05T16:15:00+00:00",
+      "last_candle_close": "2026-11-05T16:20:00+00:00",
+      "close_age_minutes": 0.99,
       "max_close_age_minutes": 10,
       "recent_gap_count": 0,
       "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
       "entry_mode": "INTRABAR",
-      "observed_at": "2026-11-05T16:01:08.752654+00:00",
+      "observed_at": "2026-11-05T16:20:59.665976+00:00",
       "current_candle_open": null,
       "current_candle_close": null,
       "quote_timestamp_verified": false,
       "provider_evidence": {
-        "received_at": "2026-11-05T16:01:08.752654+00:00",
-        "expected_current_open": "2026-11-05T16:00:00+00:00",
-        "latest_returned_open": "2026-11-05T15:55:00+00:00",
-        "latest_open_age_seconds": 368.753,
+        "received_at": "2026-11-05T16:20:59.665976+00:00",
+        "expected_current_open": "2026-11-05T16:20:00+00:00",
+        "latest_returned_open": "2026-11-05T16:15:00+00:00",
+        "latest_open_age_seconds": 359.666,
         "missing_current_intervals": 1,
         "returned_bars": 500,
         "current_bar_count": 0,
