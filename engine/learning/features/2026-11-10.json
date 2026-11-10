@@ -32735,6 +32735,241 @@
       },
       "provenance": "LIVE_PRE_DELIVERY",
       "broker_execution": "UNKNOWN"
+    },
+    "2026-11-10-9c284b23e12204ed884f": {
+      "id": "2026-11-10-9c284b23e12204ed884f",
+      "schema": "BOSQUE_LEARNING_V1",
+      "captured_at": "2026-11-10T04:51:01.528712+00:00",
+      "source_candle": "2026-11-10T04:45:00+00:00",
+      "parameters": {
+        "min_risk_pips": 20,
+        "max_risk_pips": 80,
+        "min_score": 70,
+        "min_rr": 2.0,
+        "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
+        "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+        "entry_logic_version": "V3_20260929_INTRABAR_RESEARCH",
+        "entry_mode": "INTRABAR",
+        "strategy_focus": {
+          "mode": "PREFERENCE",
+          "priority": "BREAKOUT RETEST",
+          "directions": [
+            "BUY",
+            "SELL"
+          ],
+          "sessions": "ALL"
+        },
+        "gap_rules": {
+          "timeframe": "M15",
+          "retest": "M5",
+          "max_age_minutes": 240,
+          "min_gap_pips": 1,
+          "min_body_ratio": 0.5,
+          "first_retest_only": true
+        },
+        "entry_wait_minutes": 30,
+        "range_max_efficiency": 0.35,
+        "range_max_slope_ratio": 0.5,
+        "range_max_atr_width": 6.0,
+        "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+        "entry_zone_max_pips": 40,
+        "round_trip_cost_pips": null
+      },
+      "decision_hash": "b94570130d382a3c3878ac594b3daaac720d9a905c4dbfe0e923fea1a5f5e405",
+      "decision": "REJECTED_CANDIDATE",
+      "blocked_by": [
+        "score",
+        "m5_confirmation",
+        "news",
+        "data"
+      ],
+      "features": {
+        "direction": "SELL",
+        "opportunity": "SELL LIQUIDITY SWEEP",
+        "score": 25,
+        "session": "ASIAN",
+        "h1": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 4146.7966,
+          "swing_low": 4100.18101
+        },
+        "m15": {
+          "direction": "BEARISH",
+          "bos": null,
+          "swing_high": 4117.25955,
+          "swing_low": 4108.12822
+        },
+        "m5": {
+          "direction": "BULLISH",
+          "bos": null,
+          "swing_high": 4118.3352,
+          "swing_low": 4108.63224
+        },
+        "confirmation": {
+          "confirmed": false,
+          "bos": null,
+          "candle": false,
+          "momentum": "NEUTRAL",
+          "reason": "NO CONFIRMATION"
+        },
+        "pd": {
+          "zone": "DISCOUNT",
+          "equilibrium": 4125.0,
+          "high": 4141.88,
+          "low": 4108.13
+        },
+        "liquidity": {
+          "buy_side_sweep": true,
+          "sell_side_sweep": false,
+          "swept_level": 4117.25955,
+          "description": "BUY-SIDE LIQUIDITY SWEPT"
+        },
+        "range": {
+          "is_range": false,
+          "efficiency": 0.2358,
+          "slope_ratio": 0.7399,
+          "atr_width": 4.5761,
+          "high": 4141.87742,
+          "low": 4108.12822,
+          "width": 33.7492000000002,
+          "location": 0.2404045132921799
+        },
+        "volatility": {
+          "atr": 3.08,
+          "atr_pips": 30.8,
+          "condition": "NORMAL"
+        },
+        "news": {
+          "evidence": {
+            "checked_at": "2026-11-10T12:51:01.958198+08:00",
+            "requested_from": "2026-11-09",
+            "requested_to": "2026-11-12",
+            "events_received": null,
+            "usd_high_events": 0,
+            "nearby_usd_high_events": 0,
+            "skipped_usd_times": 0,
+            "unclassified_high_events": 0,
+            "coverage_status": "UNVERIFIED",
+            "events": []
+          },
+          "block_before_minutes": 30,
+          "block_after_minutes": 30,
+          "currency": "USD",
+          "source": "FinanceCalendar",
+          "source_url": "https://www.financecalendar.com/",
+          "event": null,
+          "time": null,
+          "minutes_to_news": null,
+          "high_impact": null,
+          "status": "ERROR",
+          "filter": "BLOCK",
+          "reason": "Sumber berita gagal disahkan; signal ditahan",
+          "error_type": "HTTPError"
+        },
+        "gates": {
+          "setup": true,
+          "score": false,
+          "m5_confirmation": false,
+          "risk": true,
+          "rr": true,
+          "news": false,
+          "data": false,
+          "strategy_focus": true
+        },
+        "plan": {
+          "valid": true,
+          "direction": "SELL",
+          "entry": 4111.37,
+          "sl": 4118.95,
+          "risk_pips": 75.8,
+          "tp1": 4105.37,
+          "tp2": 4096.21,
+          "tp3": 4088.63,
+          "tp1_pips": 60,
+          "tp2_pips": 151.6,
+          "tp3_pips": 227.4,
+          "rr_tp1": 0.79,
+          "rr_tp2": 2.0,
+          "rr_tp3": 3.0,
+          "risk_level": "MEDIUM"
+        },
+        "data_health": {
+          "status": "BLOCKED",
+          "allowed": false,
+          "checked_at": "2026-11-10T04:51:01.528712+00:00",
+          "last_candle_open": "2026-11-10T04:45:00+00:00",
+          "last_candle_close": "2026-11-10T04:50:00+00:00",
+          "close_age_minutes": 1.03,
+          "max_close_age_minutes": 10,
+          "recent_gap_count": 0,
+          "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
+          "entry_mode": "INTRABAR",
+          "observed_at": "2026-11-10T04:51:01.528712+00:00",
+          "current_candle_open": null,
+          "current_candle_close": null,
+          "quote_timestamp_verified": false,
+          "provider_evidence": {
+            "received_at": "2026-11-10T04:51:01.528712+00:00",
+            "expected_current_open": "2026-11-10T04:50:00+00:00",
+            "latest_returned_open": "2026-11-10T04:45:00+00:00",
+            "latest_open_age_seconds": 361.529,
+            "missing_current_intervals": 1,
+            "returned_bars": 500,
+            "current_bar_count": 0,
+            "provider_meta": {
+              "symbol": "XAU/USD",
+              "interval": "5min",
+              "currency_base": "Gold Spot",
+              "currency_quote": "US Dollar",
+              "exchange": null,
+              "exchange_timezone": null,
+              "type": "Precious Metal"
+            },
+            "quote_timestamp_verified": false
+          }
+        },
+        "entry_timing": {
+          "mode": "INTRABAR",
+          "observed_at": "2026-11-10T12:51:01.528712+08:00"
+        },
+        "setup_evidence": null,
+        "last_m5": {
+          "datetime": "2026-11-10T04:45:00+00:00",
+          "open": 4116.23259,
+          "high": 4116.35995,
+          "low": 4111.15921,
+          "close": 4111.37062
+        },
+        "entry_window": {
+          "status": "AVAILABLE",
+          "low": 4111.37,
+          "high": 4115.37,
+          "min_risk_pips": 20.0,
+          "max_risk_pips": 80.0,
+          "width_pips": 40.0,
+          "max_width_pips": 40,
+          "policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+          "min_rr": 2.0,
+          "basis": "FROZEN_SL_TP2_BEFORE_COSTS"
+        },
+        "distances_price": {
+          "h1": {
+            "swing_high": -35.42597999999998,
+            "swing_low": 11.189609999999448
+          },
+          "m15": {
+            "swing_high": -5.888930000000073,
+            "swing_low": 3.2424000000000888
+          },
+          "m5": {
+            "swing_high": -6.964580000000751,
+            "swing_low": 2.738379999999779
+          }
+        }
+      },
+      "provenance": "LIVE_PRE_DELIVERY",
+      "broker_execution": "UNKNOWN"
     }
   }
 }
