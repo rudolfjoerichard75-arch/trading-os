@@ -45478,6 +45478,220 @@
       },
       "provenance": "LIVE_PRE_DELIVERY",
       "broker_execution": "UNKNOWN"
+    },
+    "2026-11-25-e69fb7813f5e787b0cd7": {
+      "id": "2026-11-25-e69fb7813f5e787b0cd7",
+      "schema": "BOSQUE_LEARNING_V1",
+      "captured_at": "2026-11-25T09:41:12.329507+00:00",
+      "source_candle": "2026-11-25T09:35:00+00:00",
+      "parameters": {
+        "min_risk_pips": 20,
+        "max_risk_pips": 80,
+        "min_score": 70,
+        "min_rr": 2.0,
+        "signal_policy": "SETUP_DIRECTION_CYCLE_V2",
+        "execution_model": "ZONE_WAIT_M5_OPEN_TP2_V3",
+        "entry_logic_version": "V3_20260929_INTRABAR_RESEARCH",
+        "entry_mode": "INTRABAR",
+        "strategy_focus": {
+          "mode": "PREFERENCE",
+          "priority": "BREAKOUT RETEST",
+          "directions": [
+            "BUY",
+            "SELL"
+          ],
+          "sessions": "ALL"
+        },
+        "gap_rules": {
+          "timeframe": "M15",
+          "retest": "M5",
+          "max_age_minutes": 240,
+          "min_gap_pips": 1,
+          "min_body_ratio": 0.5,
+          "first_retest_only": true
+        },
+        "entry_wait_minutes": 30,
+        "range_max_efficiency": 0.35,
+        "range_max_slope_ratio": 0.5,
+        "range_max_atr_width": 6.0,
+        "entry_zone_policy": "RISK_RR_DIRECTIONAL_40_PIPS_V1",
+        "entry_zone_max_pips": 40,
+        "round_trip_cost_pips": null
+      },
+      "decision_hash": "31cc355fd7f0bb86a6de6e1061229a72ddd942ff9ba3f7062b15e608ed0770d9",
+      "decision": "NO_SETUP",
+      "blocked_by": [
+        "setup",
+        "score",
+        "m5_confirmation",
+        "risk",
+        "rr",
+        "data"
+      ],
+      "features": {
+        "direction": null,
+        "opportunity": "NO VALID SETUP",
+        "score": 0,
+        "session": "LONDON",
+        "h1": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 3575.64561,
+          "swing_low": 3512.37612
+        },
+        "m15": {
+          "direction": "RANGE",
+          "bos": null,
+          "swing_high": 3539.59733,
+          "swing_low": 3517.16376
+        },
+        "m5": {
+          "direction": "RANGE",
+          "bos": "BEARISH BOS",
+          "swing_high": 3536.69319,
+          "swing_low": 3530.75735
+        },
+        "confirmation": {
+          "confirmed": false,
+          "bos": "BEARISH BOS",
+          "candle": false,
+          "momentum": "NEUTRAL",
+          "reason": "NO DIRECTION"
+        },
+        "pd": {
+          "zone": "DISCOUNT",
+          "equilibrium": 3532.39,
+          "high": 3552.4,
+          "low": 3512.38
+        },
+        "liquidity": {
+          "buy_side_sweep": false,
+          "sell_side_sweep": false,
+          "swept_level": null,
+          "description": "NONE"
+        },
+        "range": {
+          "is_range": true,
+          "efficiency": 0.2482,
+          "slope_ratio": 0.3961,
+          "atr_width": 4.3145,
+          "high": 3552.39787,
+          "low": 3512.37612,
+          "width": 40.021749999999884,
+          "location": 0.32514520229625793
+        },
+        "volatility": {
+          "atr": 5.1,
+          "atr_pips": 51.0,
+          "condition": "NORMAL"
+        },
+        "news": {
+          "evidence": {
+            "checked_at": "2026-11-25T17:41:12.744235+08:00",
+            "requested_from": "2026-11-24",
+            "requested_to": "2026-11-27",
+            "events_received": 1,
+            "usd_high_events": 0,
+            "nearby_usd_high_events": 0,
+            "skipped_usd_times": 0,
+            "unclassified_high_events": 0,
+            "coverage_status": "PROVIDER_RESPONSE_ONLY",
+            "events": [],
+            "provider_count": 1
+          },
+          "block_before_minutes": 30,
+          "block_after_minutes": 30,
+          "currency": "USD",
+          "source": "FinanceCalendar",
+          "source_url": "https://www.financecalendar.com/",
+          "event": null,
+          "time": null,
+          "minutes_to_news": null,
+          "high_impact": false,
+          "status": "CLEAR",
+          "filter": "PASS",
+          "reason": "Tiada berita USD high impact berdekatan dalam acara yang dipulangkan sumber"
+        },
+        "gates": {
+          "setup": false,
+          "score": false,
+          "m5_confirmation": false,
+          "risk": false,
+          "rr": false,
+          "news": true,
+          "data": false,
+          "strategy_focus": true
+        },
+        "plan": {
+          "valid": false
+        },
+        "data_health": {
+          "status": "BLOCKED",
+          "allowed": false,
+          "checked_at": "2026-11-25T09:41:12.329507+00:00",
+          "last_candle_open": "2026-11-25T09:35:00+00:00",
+          "last_candle_close": "2026-11-25T09:40:00+00:00",
+          "close_age_minutes": 1.21,
+          "max_close_age_minutes": 10,
+          "recent_gap_count": 0,
+          "reason": "Snapshot candle M5 semasa belum tersedia daripada provider",
+          "entry_mode": "INTRABAR",
+          "observed_at": "2026-11-25T09:41:12.329507+00:00",
+          "current_candle_open": null,
+          "current_candle_close": null,
+          "quote_timestamp_verified": false,
+          "provider_evidence": {
+            "received_at": "2026-11-25T09:41:12.329507+00:00",
+            "expected_current_open": "2026-11-25T09:40:00+00:00",
+            "latest_returned_open": "2026-11-25T09:35:00+00:00",
+            "latest_open_age_seconds": 372.33,
+            "missing_current_intervals": 1,
+            "returned_bars": 500,
+            "current_bar_count": 0,
+            "provider_meta": {
+              "symbol": "XAU/USD",
+              "interval": "5min",
+              "currency_base": "Gold Spot",
+              "currency_quote": "US Dollar",
+              "exchange": null,
+              "exchange_timezone": null,
+              "type": "Precious Metal"
+            },
+            "quote_timestamp_verified": false
+          }
+        },
+        "entry_timing": {
+          "mode": "INTRABAR",
+          "observed_at": "2026-11-25T17:41:12.329507+08:00"
+        },
+        "setup_evidence": null,
+        "last_m5": {
+          "datetime": "2026-11-25T09:35:00+00:00",
+          "open": 3525.49681,
+          "high": 3530.57478,
+          "low": 3525.49681,
+          "close": 3529.4056
+        },
+        "entry_window": {
+          "status": "UNAVAILABLE"
+        },
+        "distances_price": {
+          "h1": {
+            "swing_high": -46.240009999999984,
+            "swing_low": 17.02948000000015
+          },
+          "m15": {
+            "swing_high": -10.191730000000007,
+            "swing_low": 12.241840000000138
+          },
+          "m5": {
+            "swing_high": -7.287589999999909,
+            "swing_low": -1.3517499999998108
+          }
+        }
+      },
+      "provenance": "LIVE_PRE_DELIVERY",
+      "broker_execution": "UNKNOWN"
     }
   }
 }
